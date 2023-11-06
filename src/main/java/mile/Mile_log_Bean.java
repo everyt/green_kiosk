@@ -1,6 +1,6 @@
 package mile;
 
-public class mile_log {
+public class Mile_log_Bean {
 
 	private int mile_no; 			// 변동기록번호
 	private String mile_uid; 		// 변동이 생긴 유저의 고유번호

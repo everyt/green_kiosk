@@ -2,7 +2,7 @@ package coupon;
 
 import java.sql.Timestamp;
 
-public class CouponBean {
+public class Coupon_Bean {
         private int coupon_no;
         private String coupon_name;
         private String coupon_code;
