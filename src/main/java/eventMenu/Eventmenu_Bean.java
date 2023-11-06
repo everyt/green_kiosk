@@ -1,6 +1,6 @@
 package eventMenu;
 
-public class EventMenuBean {
+public class Eventmenu_Bean {
 	private int eventMenu_no;
 	private int eventMenu_eventNo;
 	private int eventMenu_menuNo;

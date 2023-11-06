@@ -1,6 +1,6 @@
 package menu;
 
-public class menu_Menu {
+public class Menu_menu_bean {
 	
 	private int menu_no;           //순서
 	private String menu_name;      //메뉴 이름
