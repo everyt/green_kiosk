@@ -1,6 +1,6 @@
 package user;
 
-public class member {
+public class Member_Bean {
 
 	private int mem_no; 			// 유저고유번호
 	private String mem_id; 			// 아이디
