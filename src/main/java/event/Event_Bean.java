@@ -2,7 +2,7 @@ package event;
 
 import java.sql.Timestamp;
 
-public class EventBean {
+public class Event_Bean {
 	private int event_no;
 	private String event_name;
     private Timestamp event_issueDate;
