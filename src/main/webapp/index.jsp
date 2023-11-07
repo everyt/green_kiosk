@@ -22,7 +22,6 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 		let pw_input = document.getElementById("pw");
 		let ps_hide = document.getElementById("ps_hide");
 		let ps_show = document.getElementById("ps_show");
-		console.log(bool)
 		if (bool == "true") {
 			pw_input.type = "text";
 			ps_hide.style.display = "none";
