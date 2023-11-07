@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
 <% request.setCharacterEncoding("UTF-8"); %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,5 +24,6 @@
 	}
 %>
 %>
+
 </body>
 </html>

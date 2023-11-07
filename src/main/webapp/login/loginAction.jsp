@@ -13,6 +13,11 @@
 		mem_id=(String)session.getAttribute("mem_id");
 	}
 	if (mem_id != null){
+	String userName = null;
+	if(session.getAttribute("userName")!= null){
+		userName=(String)session.getAttribute("userName");
+	}
+	if (userName != null){
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('이미 로그인 되어있습니다.')");
