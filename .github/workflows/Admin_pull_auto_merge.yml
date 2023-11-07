@@ -17,7 +17,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         number: ${{ env.PR_NUMBER }}
-        method: squash # merge rebase
+        method: merge # merge rebase
         repo: chickiyeah/green_kiosk
 
     - name: Merge Pull Request
