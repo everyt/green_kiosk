@@ -18,6 +18,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 </head>
 <body>
 <script>
+	//비밀번호 표시 함수
 	function password_visable(bool) {
 		let pw_input = document.getElementById("pw");
 		let ps_hide = document.getElementById("ps_hide");
