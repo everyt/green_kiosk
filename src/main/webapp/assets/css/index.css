@@ -8,12 +8,13 @@
 
 .w3-sidebar .login { display: flex; justify-content: center; margin-bottom: 10px; width: 100%; }
 
-.w3-sidebar .login .inside .idpw_warp { border: black 1px solid; border-radius: 10px; padding:5px 0 5px 0; max-width: 300px;}
+.w3-sidebar .login .inside .idpw_warp { border: black 1px solid; border-radius: 10px; max-width: 300px;}
 .w3-sidebar .login .inside .idpw_warp input { border: none; width: 100%; padding: 5px 10px 5px 10px; }
 .w3-sidebar .login .inside .idpw_warp input::placeholder { font-size: 20px; }
-.w3-sidebar .login .inside .idpw_warp .pw { border-top: black 1px solid; }
+.w3-sidebar .login .inside .idpw_warp .id { border-top-left-radius: 10px; border-top-right-radius: 10px; padding-top:10px; }
+.w3-sidebar .login .inside .idpw_warp .pw { border-top: black 1px solid; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;}
 
-.w3-sidebar .login .inside .idpw_warp .eyes i { display: inline-block; width: 20px; height: 20px; position: absolute; transform: translateY(-150%) translateX(1320%); cursor: pointer; }
+.w3-sidebar .login .inside .idpw_warp .eyes i { display: inline-block; width: 20px; height: 20px; position: absolute; transform: translateY(-170%) translateX(1320%); cursor: pointer; }
 .w3-sidebar .login .inside .idpw_warp .eyes .on { background-image: url("../images/eye-on.svg"); background-size: cover; }
 .w3-sidebar .login .inside .idpw_warp .eyes .off { background-image: url("../images/eye-off.svg"); background-size: cover; }
 
