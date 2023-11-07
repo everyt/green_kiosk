@@ -9,7 +9,7 @@ env:
 jobs:
   recive_merge:
     permissions: write-all
-    runs-on: ubuntu-latest
+    runs-on: oracle_arm
     steps:   
     - name: Merge Pull Request
       uses: juliangruber/approve-pull-request-action@v2.0.0
