@@ -58,6 +58,11 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 			
 			<div class="bottom">
 				<input class="login_btn" type="button" value="로그인">
+				
+				<div class="login_tool">
+					<span>ID/PW 찾기</span>
+					<span>회원가입</span>
+				</div>
 			</div>
 		</div>
 	  </div>
