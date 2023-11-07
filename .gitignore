@@ -18,6 +18,7 @@ local.properties
 /settings/
 .settings/
 
+
 # External tool builders
 .externalToolBuilders/
 
