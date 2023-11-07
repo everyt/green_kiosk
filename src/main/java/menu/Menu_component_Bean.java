@@ -4,7 +4,7 @@ public class Menu_component_Bean {
 	
 	private int component_no;        //순서
 	private String component_name;   //재료 이름
-	private int component_price;   //재료 가격
+	private int component_price;     //재료 가격
 	private int component_amount;    //재료 수량
 	private String component_imgPath;//재료 사진 경로
 	

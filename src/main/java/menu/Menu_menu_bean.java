@@ -5,12 +5,12 @@ public class Menu_menu_Bean {
 	private int menu_no;           //순서
 	private String menu_name;      //메뉴 이름
 	private String menu_gubn;	   //메뉴 카테고리 구분
-	private int menu_isSale;   //행사 메뉴 분류
+	private int menu_isSale;       //행사 메뉴 분류
 	private String menu_imgPath;   //메뉴 이미지 경로
 	private String menu_component; //관련 메뉴 재료 번호 ","로 구분
 	private int menu_price;        //메뉴가격
 	private int menu_sell_amount;  //메뉴의 판매 수량
-	private int menu_recommend;//추천 메뉴 분류
+	private int menu_recommend;    //추천 메뉴 분류
 	
 	
 	public int getMenu_no() {
