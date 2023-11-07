@@ -31,7 +31,7 @@ jobs:
     - name: 리스트 확인
       run: |
        ls -l
-       cd /
+       cd src
        ls -l
        
     - name: 웹 프로젝트를 압축합니다
