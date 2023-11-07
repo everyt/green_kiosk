@@ -17,6 +17,23 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 .w3-bar-block .w3-bar-item {padding:20px}
 </style>
 </head>
+<script>
+	function password_visable(bool) {
+		let pw_input = document.getElementById("pw");
+		let ps_hide = document.getElementById("ps_hide");
+		let ps_show = document.getElementById("ps_show");
+		console.log(bool)
+		if (bool == "true") {
+			pw_input.type = "text";
+			ps_hide.style.display = "none";
+			ps_show.style.display = "";
+		} else {
+			pw_input.type = "password";
+			ps_show.style.display = "none";
+			ps_hide.style.display = "";
+		}
+	}
+</script>
 <body>
 
 <!-- Sidebar (hidden by default) -->
@@ -31,8 +48,8 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 		  	<input title="아이디" class="id" placeholder="아이디" name="id" maxlength="22">
 		  	<input title="비밀번호" type="password" id="pw" class="pw" placeholder="비밀번호" maxlength="23" name="pw">
 		  	<div class="eyes">
-		  		<i id="ps_hide" onclick="password_visable(true)" class="on"></i>
-		  		<i id="ps_show" onclick="password_visable(false)"></i>
+		  		<i id="ps_hide" onclick="password_visable('true')" class="on"></i>
+		  		<i id="ps_show" onclick="password_visable('false')" style="display:none" class="off"></i>
 		  	</div>
 		</div>
 		
