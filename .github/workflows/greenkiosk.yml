@@ -35,7 +35,7 @@ jobs:
        ls -l
        
     - name: 웹 프로젝트를 압축합니다
-      run: tar -zcvf greenkiosk.tar.gz ./green_kiosk
+      run: tar -zcvf greenkiosk.tar.gz ./src
 
     - name: 폴더를 생성합니다
       run: mkdir -p deploy
