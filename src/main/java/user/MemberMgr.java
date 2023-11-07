@@ -32,7 +32,6 @@ public class MemberMgr {
 			sql = "SELECT mem_pw FROM member WHERE mem_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, mem_id);
-			pstmt.setString(2, mem_pw);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				String pass = rs.getString("mem_pw");
