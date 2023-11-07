@@ -30,7 +30,6 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 			pw_input.type = "password";
 			ps_show.style.display = "none";
 			ps_hide.style.display = "";
-			
 		}
 	}
 </script>
