@@ -70,22 +70,3 @@ jobs:
         source: "deploy/greenkiosk.tar.gz"
         target: ${{ secrets.target_dir }}/webapps
         overwrite: "true"
-
-/*
-    - name: File Touch with SSH
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: "ubuntu"
-        key: ${{ secrets.SECRET_KEY }}
-        port: 22
-        debug: true
-        script: |
-          sudo systemctl stop tomcat9.service
-          sudo cp /var/lib/tomcat9/webapps/parking.war /var/lib/tomcat9/back_webapp/parking.war
-          sudo rm -rf /var/lib/tomcat9/webapps/parking
-          sudo cp /var/lib/tomcat9/webapps/deploy/parking.war /var/lib/tomcat9/webapps/parking.war
-          sudo rm -rf /var/lib/tomcat9/webapps/deploy
-          sudo systemctl restart tomcat9.service
-          sudo systemctl restart apache2
-*/
