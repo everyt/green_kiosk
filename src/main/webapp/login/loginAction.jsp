@@ -8,11 +8,11 @@
 <!DOCTYPE html>
 <meta charset = "UTF-8">
 <%
-	String userName = null;
-	if(session.getAttribute("userName")!= null){
-		userName=(String)session.getAttribute("userName");
+	String mem_id = null;
+	if(session.getAttribute("mem_id")!= null){
+		mem_id=(String)session.getAttribute("mem_id");
 	}
-	if (userName != null){
+	if (mem_id != null){
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('이미 로그인 되어있습니다.')");

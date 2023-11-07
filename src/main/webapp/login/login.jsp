@@ -21,7 +21,7 @@ if (session.getAttribute("userName") != null)
 <title>Login</title>
 </head>
 <body>
-	<nav class="navbar navbar-default">
+<!-- 	<nav class="navbar navbar-default">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed"
 			data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
@@ -51,7 +51,7 @@ if (session.getAttribute("userName") != null)
 		</li>
 	</ul>
 	</div>
-	</nav>
+	</nav> -->
 	<div class="container">
 		<div class="col-lg-4"></div>
 		<div class="col-lg-4">
