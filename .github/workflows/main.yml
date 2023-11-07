@@ -6,7 +6,7 @@ on:
 
 jobs:
   create-pr-on-push:
-    runs-on: oracle_arm
+    runs-on: ARM64
     steps:
     - uses: actions/checkout@1.0.0
     - name: Create pull request Admin Team
