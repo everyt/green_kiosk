@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
 <link rel="stylesheet" href="<%=cPath %>/assets/css/reset.css">
 <link rel="stylesheet" href="<%=cPath %>/assets/css/index.css">
+<link rel="stylesheet" href="<%=cPath %>/assets/css/mypage.css">
 <script src="<%=cPath %>/assets/js/index.js"></script>
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
@@ -163,9 +164,45 @@ function open_register() {
 <div class="w3-main w3-content w3-padding" style="max-width:1300px;margin-top:100px">
 		
 	<div class="w3-row-padding w3-padding-16 w3-center w3-tooltip" id="food">
-		<table border="1" cellspacing="0" cellpadding="2" width="1250">
+		<table class="mypage" border="1" cellspacing="0" cellpadding="2" width="1250">
 			<tr>
-				<td colspan="2">마이페이지</td>
+				<td colspan="2" height="5%">
+					<div class="top">
+						<span class="title">마이페이지</span>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="setting">
+						<div class="order">
+							<span class="title">주문내역</span>
+						</div>
+						
+					</div>
+				</td>
+				<td rowspan="3" width="80%">
+					<div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="setting">
+						<div class="mile">
+							<span class="title">마일리지 적립/사용내역</span>
+						</div>
+					</div>
+				</td>
+			</tr>	
+			<tr>
+				<td>
+					<div class="setting">
+						<div class="unregi">
+							<span class="title">회원탈퇴</span>
+						</div>
+					</div>
+				</td>
 			</tr>
 		</table>
 	</div>
