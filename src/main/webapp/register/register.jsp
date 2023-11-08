@@ -25,7 +25,7 @@ function idcheck() {
 		id.focus();
 	} else {
 		let url = "<%= cPath%>/register/reg_idcheck.jsp?usid="+id.value
-		window.open(url, "아이디 확인", "width=400, height=100");
+		window.open(url, "아이디 확인", "width=500, height=100");
 	}
 }
 
@@ -77,20 +77,60 @@ function register() {
 	}
 }
 
+//비밀번호 표시 함수
+function password_visable(bool) {
+	let pw_input = document.getElementById("pw");
+	let ps_hide = document.getElementById("ps_hide");
+	let ps_show = document.getElementById("ps_show");
+	if (bool == "true") {
+		pw_input.type = "text";
+		ps_hide.style.display = "none";
+		ps_show.style.display = "";
+	} else {
+		pw_input.type = "password";
+		ps_show.style.display = "none";
+		ps_hide.style.display = "";
+	}
+}
+
+//비밀번호 표시 함수
+function re_password_visable(bool) {
+	let pw_input = document.getElementById("pw_re");
+	let ps_hide = document.getElementById("ps_hide_re");
+	let ps_show = document.getElementById("ps_show_re");
+	if (bool == "true") {
+		pw_input.type = "text";
+		ps_hide.style.display = "none";
+		ps_show.style.display = "";
+	} else {
+		pw_input.type = "password";
+		ps_show.style.display = "none";
+		ps_hide.style.display = "";
+	}
+}
+
 </script>
 <body>
 <form action="<%=cPath %>/register/reg_proc.jsp" method="POST" class="joinForm" name="regFrom">
                                                                                                
       <h2>회원가입</h2>
       <div class="textForm">
-        <input name="mem_id" type="text" class="id" placeholder="아이디">
+        <input name="mem_id" type="text" class="id" placeholder="아이디" maxlength="22">
       </div>
       <input class="idcheck" onclick="idcheck()" type="button" value="아이디 중복확인"/>
       <div class="textForm">
-        <input name="mem_pw" type="password" class="pw" placeholder="비밀번호">
+        <input name="mem_pw" type="password" class="pw" id="pw" placeholder="비밀번호" maxlength="23">
+        <div class="eyes_pw">
+			<i id="ps_hide" onclick="password_visable('true')" class="on"></i>
+			<i id="ps_show" onclick="password_visable('false')" style="display:none" class="off"></i>
+		</div>
       </div>
        <div class="textForm">
-        <input name="loginPwConfirm" type="password" class="pw" placeholder="비밀번호 확인">
+        <input name="loginPwConfirm" type="password" class="pw" id="pw_re" placeholder="비밀번호 확인" maxlength="23">
+        <div class="eyes_pw">
+			<i id="ps_hide_re" onclick="re_password_visable('true')" class="on"></i>
+			<i id="ps_show_re" onclick="re_password_visable('false')" style="display:none" class="off"></i>
+		</div>
       </div>
       <div class="textForm">
         <input name="mem_name" type="text" class="name" placeholder="이름">

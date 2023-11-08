@@ -63,7 +63,7 @@ function open_register() {
 				<input class="login_btn" type="button" onclick="login()" value="로그인">
 				
 				<div class="login_tool">
-					<span onclick="location.href='<%=cPath %>/user/find_idpw.jsp'">ID/PW 찾기</span>
+					<span>ID/PW 찾기</span>
 					<span onclick="open_register()">회원가입</span>
 				</div>
 			</div>
@@ -134,8 +134,10 @@ function open_register() {
   <div id="demoAcc1" class="w3-bar-block w3-hide w3-white w3-card-4">
     <a href="<%=cPath %>/index/event/event1.jsp" class="w3-bar-item w3-button">이벤트</a>
     <a href="<%=cPath %>/index/event/event2.jsp" class="w3-bar-item w3-button">쿠폰</a>
-    <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button">3</a>
+    <a href="<%=cPath %>/index/event/event3.jsp" class="w3-bar-item w3-button">3</a>
   </div>
+
+  
   
   <button class="w3-bar-item w3-button" onclick="myAccFunc2()">고객지원</button>
    <div id="demoAcc2" class="w3-bar-block w3-hide w3-white w3-card-4">
@@ -143,12 +145,8 @@ function open_register() {
     <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button">ㅈ</a>
     <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button">ㄷ</a>
   </div>
-  
-  
-</nav>
-
-
-
+ 
+ </nav>
 
 <!-- Top menu -->
 <div class="w3-top">
@@ -161,81 +159,77 @@ function open_register() {
   
 <!-- !PAGE CONTENT! -->
 <div class="w3-main w3-content w3-padding" style="max-width:1300px;margin-top:100px">
-		
-  <!-- First Photo Grid-->
-			
+
 <div class="w3-container w3-teal">
-  <h1>햄버거</h1>
+  <h1>디저트</h1>
 </div>
-
-   <div class="w3-row-padding w3-padding-16 w3-center w3-tooltip" id="food">
-   	<div class="w3-quarter">
-        <img src="<%=cPath %>/assets/images/hamburger0.jpg"  width="300" height="300" alt="hamburger0" style="width:100%">
-      <h3>데리버거</h3>
-	  <p>쇠고기패티에 달콤 짭짤한 데리소스를 더한 가성비 버거</p>
-   </div>
+  <!-- First Photo Grid-->
+  <div class="w3-row-padding w3-padding-16 w3-center" id="food">
 
     <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger1.jpg" width="300" height="300"  alt="hamburger" style="width:100%">
-      <h3>더블 데리버거</h3>
-      <p>두 장의 패티가 이루는 조화로운 맛에 <br>든든함까지 추가된 더블버거 시리즈</p>
+      <img src="<%=cPath %>/assets/images/potato.jpg" width="300" height="300"  alt="potato" style="width:100%">
+      <h3>포테이토</h3>
+      <p>바로 튀겨낸 바삭바삭한 후렌치 포테이토</p>
     </div>
 
+    <div class="w3-quarter">
+      <img src="<%=cPath %>/assets/images/potato1.jpg" width="300" height="300"  alt="potato1" style="width:100%">
+		<h3>양념감자</h3>    
+		<p>시즈닝(오니언, 치즈, 칠리)을 한가지를 선택해 뿌려먹는 포테이토</p>
+    </div>
 
     <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger2.jpg" width="300" height="300"  alt="hamburger2" style="width:100%">
-      <h3>불고기버거</h3>
-      <p>두툼한 쇠고기패티와 한국적인 맛의 소스가 잘 조화된 ???매장의 대표 버거</p>
+      <img src="<%=cPath %>/assets/images/potato.jpg" width="300" height="300"  alt="potato" style="width:100%">
+      <h3>포테이토(L)</h3>
+      <p>바로 튀겨낸 바삭바삭한 후렌치 포테이토</p>
 
     </div>
     <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger3.jpg" width="300"  height="300" alt="hamburger3" style="width:100%">
-      <h3>더블 불고기버거</h3>
-	  <p>불고기 특유의 소스와 쇠고기의 진함을 배로 느끼는 제품</p>
+      <img src="<%=cPath %>/assets/images/cheese.jpg" width="300"  height="300" alt="cheese" style="width:100%">
+      <h3>치즈스틱</h3>
+	  <p>통모짜렐라치즈에 튀김옷을 입혀 만든 바삭하고 고소한 ???가게 대표 디저트 메뉴</p>
   </div>
   </div>
-  
-  <!-- Second Photo Grid-->
 
   <div class="w3-row-padding w3-padding-16 w3-center">
     <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger4.jpg" width="300" height="300"  alt="hamburger4" style="width:100%">
-      <h3>치킨버거</h3>
-	  <p>닭고기패티와 데리야끼 소스로 만든 담백하고 달콤한 맛의 치킨버거</p>
+      <img src="<%=cPath %>/assets/images/cheese2.jpg" width="300"  height="300" alt="cheese2" style="width:100%">
+      <h3>치즈볼</h3>
+	  <p>달콤하고 고소한 치즈가 가득한 치즈볼</p>
     </div>
 
     <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger5.jpg" width="300" height="300"  alt="hamburger5" style="width:100%">
-      <h3>더블 치킨버거</h3>
-      <p>두 장의 패티가 이루는 조화로운 맛에 든든함까지 추가된 더블버거 시리즈</p>
+      <img src="<%=cPath %>/assets/images/chicken.jpg" width="300" height="300"  alt="chicken" style="width:100%">
+      <h3>치킨너겟</h3>
+      <p>닭안심살과 닭가슴살로 만든 담백하고 촉촉한 치킨너겟</p>
     </div>
 
     <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger6.jpg" width="300" height="300"  alt="hamburger1" style="width:100%">
-		<h3>치즈버거</h3>    
-  		<p>부드러운 치즈와 호주산 쇠고기패티의 본연의 맛을 느낄수 있는 치즈버거</p>
+      <img src="<%=cPath %>/assets/images/ojingeo.jpg" width="300" height="300"  alt="ojingeo" style="width:100%">
+      <h3>오징어링</h3>
+      <p>오징어로 리얼한 식감과 풍미가 가득한 디저트</p>
     </div>
  
     <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger7.jpg"  width="300" height="300"  style="width:100%">
-      <h3>더블 클래식치즈버거</h3>
-      <p>두 장의 패티가 이루는 조화로운 맛에 든든함까지 추가된 더블 클래식치즈버거</p>
+      <img src="<%=cPath %>/assets/images/potato3.jpg" width="300" height="300"  alt="potato3" style="width:100%">
+      <h3>웨지포테이토</h3>
+      <p>국내산 감자를 이용한 고소하고 바삭한 웨지포테이토</p>
     </div>
   </div>
 
   <!-- Pagination -->
   <div class="w3-center w3-padding-32">
     <div class="w3-bar">
-      <a href="main.jsp" class="w3-bar-item w3-black w3-button">1</a>
+      <a href="<%=cPath %>/index.jsp" class="w3-bar-item w3-black w3-button">1</a>
       <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button w3-hover-black">2</a>
       <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button w3-hover-black">3</a>
       <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button w3-hover-black">4</a>
     </div>
   </div>
   
+  
   <hr id="about">
   
-  <!-- Footer -->
 
     <div class="w3-third w3-serif">
       <h3>인기 태그</h3>
@@ -255,7 +249,6 @@ function open_register() {
 
 <!-- End page content -->
 </div>
-
 
 
 <script>
@@ -305,6 +298,7 @@ function myAccFunc2() {
 	}
 
 </script>
+
 
 </body>
 </html>
