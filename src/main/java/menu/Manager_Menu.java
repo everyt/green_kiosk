@@ -7,6 +7,7 @@ import java.util.Vector;
 import all.DBConnectionMgr;
 
 
+
 public class Manager_Menu {
 	
 	private DBConnectionMgr pool;
@@ -691,25 +692,29 @@ public class Manager_Menu {
 		
 //----------------------------------------------------------------------------------		
 	
-		// 3. 회계 관리 페이지 - 주문 현황 (수정 요망)
-		public Menu_component_Bean getOrder(int numb) {
+		// 3. 회계 관리 페이지 - 주문 현황
+		public Menu_order_Bean getmgrOrder(int numb) {
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
-			Menu_component_Bean bean = null;
+			Menu_order_Bean bean = null;
 			try {
 				con = pool.getConnection();
-				String sql = "select * from menu_component where numb = ?";
+				String sql = "select * from menu_order where numb = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, numb);
 				rs = pstmt.executeQuery();
 			if (rs.next()) {
-				bean = new Menu_component_Bean();
-				bean.setComponent_no(rs.getInt("component_no"));
-				bean.setComponent_name(rs.getString("component_name"));
-				bean.setComponent_price(rs.getInt("component_price"));
-				bean.setComponent_amount(rs.getInt("component_amount"));
-				bean.setComponent_imgPath(rs.getString("component_imgPath"));
+				bean = new Menu_order_Bean();
+				bean.setMgrodr_no(rs.getInt("mgrodr_no"));
+				bean.setMgrodr_day(rs.getString("mgrodr_day"));
+				bean.setMgrodr_kind(rs.getString("mgrodr_kind"));
+				bean.setMgrodr_sele(rs.getString("mgrodr_sele"));
+				bean.setMgrodr_mtd(rs.getString("mgrodr_mtd"));
+				bean.setMgrodr_hsel(rs.getString("mgrodr_hsel"));
+				bean.setMgrodr_csel(rs.getString("mgrodr_csel"));
+				bean.setMgrodr_sday(rs.getString("mgrodr_sday"));
+				bean.setMgrodr_smon(rs.getString("mgrodr_smon"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -718,7 +723,70 @@ public class Manager_Menu {
 			}
 			return bean;
 		}
-	
+		
+		// 3. 회계 관리 페이지 - 거래 내역
+		public Vector<Menu_order_Bean> getMgrorderList() {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = null;
+			Vector<Menu_order_Bean> vlist = new Vector<Menu_order_Bean>();
+			try {
+				con = pool.getConnection();
+				sql = "select * from car_code ";
+			    pstmt = con.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					Menu_order_Bean bean = new Menu_order_Bean();
+					bean.setMgrodr_no(rs.getInt("mgrodr_no"));
+					bean.setMgrodr_day(rs.getString("mgrodr_day"));
+					bean.setMgrodr_kind(rs.getString("mgrodr_kind"));
+					bean.setMgrodr_sele(rs.getString("mgrodr_sele"));
+					bean.setMgrodr_mtd(rs.getString("mgrodr_mtd"));
+					bean.setMgrodr_hsel(rs.getString("mgrodr_hsel"));
+					bean.setMgrodr_csel(rs.getString("mgrodr_csel"));
+					bean.setMgrodr_sday(rs.getString("mgrodr_sday"));
+					bean.setMgrodr_smon(rs.getString("mgrodr_smon"));
+					vlist.add(bean);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				pool.freeConnection(con, pstmt, rs);
+			}
+			return vlist;
+		}
+				
+		 // 3. 회계 관리 페이지 - 거래내역추가
+		public boolean insertmgrorder(Menu_order_Bean bean) {
+						
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			String sql = null;
+			boolean flag = false;
+			try {
+				con = pool.getConnection();
+				sql = "insert menu_order(mgrodr_no,mgrodr_day,mgrodr_kind,mgrodr_sele,mgrodr_mtd,"
+						+ "mgrodr_hsel,mgrodr_csel,mgrodr_sday,mgrodr_smon)values(?,?,?,?,?,?,?,?)";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, bean.getMgrodr_day());
+				pstmt.setString(2, bean.getMgrodr_kind());
+				pstmt.setString(3, bean.getMgrodr_sele());
+				pstmt.setString(4, bean.getMgrodr_mtd());
+				pstmt.setString(5, bean.getMgrodr_hsel());
+				pstmt.setString(6, bean.getMgrodr_csel());
+				pstmt.setString(7, bean.getMgrodr_sday());
+				pstmt.setString(8, bean.getMgrodr_smon());
+									
+				if (pstmt.executeUpdate() == 1)
+					flag = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				pool.freeConnection(con, pstmt);
+			}
+			return flag;
+		}		
 	
 		// 3. 회계 관리 페이지 - 재료 입고
 		public boolean insertComponent(Menu_component_Bean bean) {
