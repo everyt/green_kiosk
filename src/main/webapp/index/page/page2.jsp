@@ -134,21 +134,17 @@ function open_register() {
   <div id="demoAcc1" class="w3-bar-block w3-hide w3-white w3-card-4">
     <a href="<%=cPath %>/index/event/event1.jsp" class="w3-bar-item w3-button">이벤트</a>
     <a href="<%=cPath %>/index/event/event2.jsp" class="w3-bar-item w3-button">쿠폰</a>
-    <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button">3</a>
+    <a href="<%=cPath %>/index/event/event3.jsp" class="w3-bar-item w3-button">3</a>
   </div>
-  
+
   <button class="w3-bar-item w3-button" onclick="myAccFunc2()">고객지원</button>
    <div id="demoAcc2" class="w3-bar-block w3-hide w3-white w3-card-4">
     <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button">ㅂ</a>
     <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button">ㅈ</a>
     <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button">ㄷ</a>
   </div>
-  
-  
-</nav>
-
-
-
+ 
+ </nav>
 
 <!-- Top menu -->
 <div class="w3-top">
@@ -161,16 +157,13 @@ function open_register() {
   
 <!-- !PAGE CONTENT! -->
 <div class="w3-main w3-content w3-padding" style="max-width:1300px;margin-top:100px">
-		
-  <!-- First Photo Grid-->
-			
-<div class="w3-container w3-teal">
-  <h1>햄버거</h1>
-</div>
 
-   <div class="w3-row-padding w3-padding-16 w3-center w3-tooltip" id="food">
-   	<div class="w3-quarter">
-        <img src="<%=cPath %>/assets/images/hamburger0.jpg"  width="300" height="300" alt="hamburger0" style="width:100%">
+<div class="w3-container w3-teal">
+  <h1>햄버거 세트</h1>
+</div>
+    <div class="w3-row-padding w3-padding-16 w3-center" id="food">
+   <div class="w3-quarter">
+      <img src="<%=cPath %>/assets/images/hamburger0.jpg"  width="300" height="300" alt="hamburger0" style="width:100%">
       <h3>데리버거</h3>
 	  <p>쇠고기패티에 달콤 짭짤한 데리소스를 더한 가성비 버거</p>
    </div>
@@ -226,7 +219,7 @@ function open_register() {
   <!-- Pagination -->
   <div class="w3-center w3-padding-32">
     <div class="w3-bar">
-      <a href="main.jsp" class="w3-bar-item w3-black w3-button">1</a>
+      <a href="<%=cPath %>/index.jsp" class="w3-bar-item w3-black w3-button">1</a>
       <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button w3-hover-black">2</a>
       <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button w3-hover-black">3</a>
       <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button w3-hover-black">4</a>
@@ -305,6 +298,7 @@ function myAccFunc2() {
 	}
 
 </script>
+
 
 </body>
 </html>
