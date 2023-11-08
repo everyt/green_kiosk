@@ -6,13 +6,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/admin/layouts/bootstrap.jsp"%>
-<%@ include file="/admin/admin_check/check.jsp" %> 
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/admin/Menu_upload.css">
+<%@ include file="/admin/admin_check/check.jsp" %>  
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/admin/Menu_upload.css">
 </head>
 <body>
 	<div class="container" style="margin-top: 50px" >
 		<div class="row">
-			<form name="uploadFrm" method="post" enctype="multipart/form-data" action="uploadProc.jsp">
+			<form name="uploadFrm" method="post" enctype="multipart/form-data" action="Menu/uploadProc.jsp">
 				<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 					<thead>
 						<tr>
@@ -37,7 +37,7 @@
 							          <div class="input-group-text">카테고리</div>
 							        </div>
 								<select class="form-select" aria-label="Default select example" name="menu_gubn">
-								  <option selected>햄버거</option>
+								  <option selected>단품</option>
 								  <option value="1">음료</option>
 								  <option value="1">세트</option>
 								  <option value="3">재료</option>

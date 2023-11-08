@@ -13,7 +13,8 @@
 		    	<a href="" class="w3-bar-item w3-button w3-theme-l1">Home</a>
 		    	<a href="javascript:void(0)" class="w3-bar-item w3-button w3-hide-small w3-hover-white"onclick="loadContent('<%=request.getContextPath()%>/admin/Menu')">메뉴 관리</a>
 		    	<a href="javascript:void(0)" class="w3-bar-item w3-button w3-hide-small w3-hover-white" onclick="loadContent('<%=request.getContextPath()%>/admin/Event')">행사 관리</a>
-		    	<a href="javascript:void(0)" class="w3-bar-item w3-button w3-hide-small w3-hover-white" onclick="loadContent('<%=request.getContextPath()%>/admin/Accounting')">회계 관리</a>
+		    	<a href="javascript:void(0)" class="w3-bar-item w3-button w3-hide-small w3-hover-white" onclick="loadContent('<%=request.getContextPath()%>/admin/Accounting/index.jsp')">회계 관리</a>
+
   			</div>
 		</div>
 	</div>
