@@ -36,6 +36,10 @@ body {
   padding: 10px 10px;
 }
 
+.textForm .eyes_pw i { display: block; width: 20px; height: 20px; position: absolute; transform: translateY(-125%) translateX(1450%); cursor: pointer; }
+.textForm .eyes_pw .on { background-image: url("../images/eye-on.svg"); background-size: cover; }
+.textForm .eyes_pw .off { background-image: url("../images/eye-off.svg"); background-size: cover; }
+
 .joinForm .idcheck {
   position:relative;
   left:40%;

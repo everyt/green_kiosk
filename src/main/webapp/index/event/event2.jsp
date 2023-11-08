@@ -63,7 +63,7 @@ function open_register() {
 				<input class="login_btn" type="button" onclick="login()" value="로그인">
 				
 				<div class="login_tool">
-					<span onclick="location.href='<%=cPath %>/user/find_idpw.jsp'">ID/PW 찾기</span>
+					<span>ID/PW 찾기</span>
 					<span onclick="open_register()">회원가입</span>
 				</div>
 			</div>
@@ -133,7 +133,7 @@ function open_register() {
   <button class="w3-bar-item w3-button" onclick="myAccFunc1()">이벤트</button>
   <div id="demoAcc1" class="w3-bar-block w3-hide w3-white w3-card-4">
     <a href="<%=cPath %>/index/event/event1.jsp" class="w3-bar-item w3-button">이벤트</a>
-    <a href="<%=cPath %>/index/event/event2.jsp" class="w3-bar-item w3-button">쿠폰</a>
+    <a href="<%=cPath %>/index/event/event1.jsp" class="w3-bar-item w3-button">쿠폰</a>
     <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button">3</a>
   </div>
   
@@ -164,9 +164,8 @@ function open_register() {
 		
   <!-- First Photo Grid-->
 			
-<div class="w3-container w3-teal">
-  <h1>햄버거</h1>
-</div>
+			<p style="text-align: center; font-size: 30;">햄버거</p>
+
 
    <div class="w3-row-padding w3-padding-16 w3-center w3-tooltip" id="food">
    	<div class="w3-quarter">
@@ -226,7 +225,7 @@ function open_register() {
   <!-- Pagination -->
   <div class="w3-center w3-padding-32">
     <div class="w3-bar">
-      <a href="main.jsp" class="w3-bar-item w3-black w3-button">1</a>
+      <a href="<%=cPath %>/" class="w3-bar-item w3-black w3-button">1</a>
       <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button w3-hover-black">2</a>
       <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button w3-hover-black">3</a>
       <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button w3-hover-black">4</a>
@@ -255,7 +254,6 @@ function open_register() {
 
 <!-- End page content -->
 </div>
-
 
 
 <script>
