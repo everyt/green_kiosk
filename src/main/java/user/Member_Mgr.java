@@ -26,6 +26,7 @@ public class Member_Mgr {
 	// 회원 정보 ===============================================================================
 	// ID 중복 체크
 	public boolean checkId(String usid) {
+		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -33,7 +34,7 @@ public class Member_Mgr {
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "select mem_id from  where mem_id = ?";
+			sql = "select mem_id from member where mem_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, usid);
 			flag = pstmt.executeQuery().next();	
@@ -285,26 +286,33 @@ public class Member_Mgr {
 		}
 	}
 
-	public void register_Member(String mem_id, String mem_pw, String name, String phone) { //함수제작 나경원
+	public String register_Member(String mem_id, String mem_pw, String name, String phone) { //함수제작 나경원
 		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
-		boolean flag = false;
-		try {
-			con = pool.getConnection();
-			sql = "INSERT INTO member (`mem_id`, `mem_pw`, `mem_name`, `mem_phone`) VALUES (?, SHA2('" + mem_pw + "',256), ?, ?)";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, mem_id);
-			pstmt.setString(2, name);
-			pstmt.setString(3, phone);
-			rs = pstmt.executeQuery();
-			flag = rs.next();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt, rs);
+		
+		boolean id_check = checkId(mem_id);
+		
+		if (id_check) {
+			return "400/이미 사용중인 아이디입니다.";
+		} else {
+			try {
+				con = pool.getConnection();
+				sql = "INSERT INTO member (`mem_id`, `mem_pw`, `mem_name`, `mem_phone`, `mem_ac`, `mem_coupon`) VALUES (?, SHA2('" + mem_pw + "',256), ?, ?, \"user\", \"\")";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, mem_id);
+				pstmt.setString(2, name);
+				pstmt.setString(3, phone);
+				pstmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				pool.freeConnection(con, pstmt, rs);
+			}
+			
+			return "200/회원가입에 성공했습니다.";
 		}
 	}
 	

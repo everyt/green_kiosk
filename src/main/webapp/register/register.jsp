@@ -15,8 +15,23 @@ function maxLengthCheck(object) {
 	}
 }
 
+function idcheck() {
+	let regfrm = document.regFrom;
+	
+	let id = regfrm.mem_id;
+	
+	if (id.value.trim() === "") {
+		alert("아이디를 입력해주세요.");
+		id.focus();
+	} else {
+		let url = "<%= cPath%>/register/reg_idcheck.jsp?usid="+id.value
+		window.open(url, "아이디 확인", "width=400, height=100");
+	}
+}
+
+//회원가입
 function register() {
-	let regfrm = document.regForm;
+	let regfrm = document.regFrom;
 	
 	let id = regfrm.mem_id;
 	let pw = regfrm.mem_pw;
@@ -49,7 +64,7 @@ function register() {
 							phone.focus();
 						} else {
 							if (phone.value.length != 11) {
-								alert("전화번호를 11글자 이어야합니다.").
+								alert("전화번호는 11글자 이어야합니다.").
 								phone.focus();
 							} else {
 								regfrm.submit();
@@ -70,6 +85,7 @@ function register() {
       <div class="textForm">
         <input name="mem_id" type="text" class="id" placeholder="아이디">
       </div>
+      <input class="idcheck" onclick="idcheck()" type="button" value="아이디 중복확인"/>
       <div class="textForm">
         <input name="mem_pw" type="password" class="pw" placeholder="비밀번호">
       </div>
@@ -82,7 +98,7 @@ function register() {
       <div class="textForm">
         <input name="mem_phone" type="text" maxlength="11" class="cellphoneNo" oninput="maxLengthCheck(this)" placeholder="전화번호" >
       </div>
-      <input type="button" class="btn" value="가 입 하 기"/>
+      <input type="button" onclick="register()" class="btn" value="가 입 하 기"/>
     </form>
 </body>
 </html>

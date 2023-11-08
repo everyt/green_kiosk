@@ -37,7 +37,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 	//회원가입 창 여는 함수
 	function open_register() {
 		let url = "<%=cPath %>/register/register.jsp"
-		window.open(url, "회원가입", "width=420, height=600")
+		window.open(url, "회원가입", "width=460, height=600")
 	}
 	
 	//로그인 함수
