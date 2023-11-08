@@ -17,17 +17,16 @@ import all.DBConnectionMgr;
  * @param <BeanMember>
  *
  */
-public class Member_Mgr<Bean_Membe> {
+public class Member_Mgr {
 	
 	
-	private static final String Member_Bean = null;
-	private static final String Bean_Member = null;
 	private DBConnectionMgr pool;
 	private Object bean;
 	
 	// 회원 정보 ===============================================================================
 	// ID 중복 체크
 	public boolean checkId(String usid) {
+		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -35,7 +34,7 @@ public class Member_Mgr<Bean_Membe> {
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "select mem_id from  where mem_id = ?";
+			sql = "select mem_id from member where mem_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, usid);
 			flag = pstmt.executeQuery().next();	
@@ -100,6 +99,7 @@ public class Member_Mgr<Bean_Membe> {
 	
 	// 로그인
 	public boolean loginMember(String usid, String uspw) {
+		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -107,10 +107,9 @@ public class Member_Mgr<Bean_Membe> {
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "select usid from Member_bean where usid=? and uspw=? and stat='승인' ";
+			sql = "select mem_id from member where mem_id=? and mem_pw=SHA2('" + uspw + "',256)";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, Bean_Member);
-			pstmt.setString(2, Bean_Member);
+			pstmt.setString(1, usid);
 			rs = pstmt.executeQuery();
 			flag = rs.next();
 		} catch (Exception e) {
@@ -123,13 +122,14 @@ public class Member_Mgr<Bean_Membe> {
 	
 	// 회원 조회 (usid)
 	public Member_Bean getMember(String usid) {
+		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Member_Bean bean = null;
 		try {
 			con = pool.getConnection();
-			String sql = "select * from Member_Bean where usid = ?";
+			String sql = "select * from member where mem_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, usid);
 			rs = pstmt.executeQuery();
@@ -141,14 +141,8 @@ public class Member_Mgr<Bean_Membe> {
 				bean.setMem_name(rs.getString("mem_name"));
 				bean.setMem_phone(rs.getString("mem_phone"));
 				bean.setMem_ac(rs.getString("mem_ac"));
-				bean.setMem_mile(rs.getInt("mem_miie"));
-				bean.setMem_coupon1(rs.getString("mem_coupon1"));
-				String hobbys[] = new String[5];
-				String hobb = rs.getString("hobb");// 01001
-				for (int i = 0; i < hobbys.length; i++) {
-					hobbys[i] = hobb.substring(i, i + 1);
-				}
-			
+				bean.setMem_mile(rs.getInt("mem_mile"));
+				bean.setMem_coupon(rs.getString("mem_coupon"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -287,31 +281,34 @@ public class Member_Mgr<Bean_Membe> {
 		}
 	}
 
-	// 회원 승인 여부 
-	public boolean updatePerm(int recnum, String perm) {
+	public String register_Member(String mem_id, String mem_pw, String name, String phone) { //함수제작 나경원
+		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		boolean flag = false;
-		try {
-			con = pool.getConnection();
-			if (perm.equals("미승인")) {
-				String sql = "update (Member_Bean  set stat='승인' where numb=?";
+		ResultSet rs = null;
+		String sql = null;
+		
+		boolean id_check = checkId(mem_id);
+		
+		if (id_check) {
+			return "400/이미 사용중인 아이디입니다.";
+		} else {
+			try {
+				con = pool.getConnection();
+				sql = "INSERT INTO member (`mem_id`, `mem_pw`, `mem_name`, `mem_phone`, `mem_ac`, `mem_coupon`) VALUES (?, SHA2('" + mem_pw + "',256), ?, ?, \"user\", \"\")";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, recnum);
-			} else {
-				String sql = "update (Member_Bean  set stat='미승인' where numb=?";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, recnum);
+				pstmt.setString(1, mem_id);
+				pstmt.setString(2, name);
+				pstmt.setString(3, phone);
+				pstmt.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				pool.freeConnection(con, pstmt, rs);
 			}
-			int count = pstmt.executeUpdate();
-			if (count > 0)
-				flag = true;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt);
+			
+			return "200/회원가입에 성공했습니다.";
 		}
-		return flag;
 	}
 	
 }
