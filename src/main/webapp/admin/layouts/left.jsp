@@ -8,16 +8,15 @@
 	  <br/>
 	  <h4 class="w3-bar-item"><b>Menu</b></h4>
 	  <hr/>
+	  <% if(session.getAttribute("mem_id") == null) { %>
 	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/login/login.jsp')">로그인</a>
-	  <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
-	  <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
-
-	</nav>
-	  <h4 class="w3-bar-item"><b>Menu</b></h4>
-	  <a class="w3-bar-item w3-button w3-hover-black" href="">로그인</a>
-	  <a class="w3-bar-item w3-button w3-hover-black" href="#"></a>
-	  <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
-	  <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
+	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)">Link</a>
+	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)">Link</a>
+	  <% } else { %>
+	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/login/logout.jsp')">로그아웃</a>
+	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)">Link</a>
+	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)">Link</a>
+	  <% } %>
 	</nav>
 </body>
 </html>
