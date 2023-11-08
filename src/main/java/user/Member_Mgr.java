@@ -107,7 +107,7 @@ public class Member_Mgr {
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "select mem_id from member where mem_id=? and mem_pw=SHA2('" + uspw + "',256)";
+			sql = "select mem_id from member where mem_id=? and mem_pw=SHA2('xq" + uspw + "q43',256)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, usid);
 			rs = pstmt.executeQuery();
@@ -296,7 +296,7 @@ public class Member_Mgr {
 		} else {
 			try {
 				con = pool.getConnection();
-				sql = "INSERT INTO member (`mem_id`, `mem_pw`, `mem_name`, `mem_phone`, `mem_ac`, `mem_coupon`) VALUES (?, SHA2('" + mem_pw + "',256), ?, ?, \"user\", \"\")";
+				sql = "INSERT INTO member (`mem_id`, `mem_pw`, `mem_name`, `mem_phone`, `mem_ac`, `mem_coupon`) VALUES (?, SHA2('xq" + mem_pw + "q43',256), ?, ?, \"user\", \"\")";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, mem_id);
 				pstmt.setString(2, name);
