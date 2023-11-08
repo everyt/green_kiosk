@@ -33,6 +33,32 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 			ps_hide.style.display = "";
 		}
 	}
+	
+	//회원가입 창 여는 함수
+	function open_register() {
+		let url = "<%=cPath %>/register/register.jsp"
+		window.open(url, "회원가입", "width=420, height=600")
+	}
+	
+	//로그인 함수
+	function login() {
+		let loginfrm = document.loginFrm
+		
+		let id = loginfrm.mem_id.value
+		let pw = loginfrm.mem_pw.value
+		
+		if (id.trim() === "") {
+			alert("아이디를 입력해주세요");
+			loginfrm.mem_id.focus();
+		} else {
+			if (pw.trim() === "") {
+				alert("비밀번호를 입력해주세요.");
+				loginfrm.mem_pw.focus();
+			} else {
+				loginfrm.submit();
+			}
+		}
+	}
 </script>
 <!-- Sidebar (hidden by default) -->
 <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" id="mySidebar">
@@ -40,11 +66,11 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 		  <a class="close" href="javascript:void(0)" onclick="w3_close()"
 		  class="w3-bar-item w3-button">X</a>
 		</div>
-	  <div class="login">
+	  <form class="login" name="loginFrm" method="post" action="<%= cPath%>/login/login_proc.jsp">
 	  	<div class="inside">
 		  	<div class="idpw_warp">
-			  	<input title="아이디" class="id" placeholder="아이디" name="id" maxlength="22">
-			  	<input title="비밀번호" type="password" id="pw" class="pw" placeholder="비밀번호" maxlength="23" name="pw">
+			  	<input title="아이디" class="id" placeholder="아이디" name="mem_id" maxlength="22">
+			  	<input title="비밀번호" type="password" id="pw" class="pw" placeholder="비밀번호" maxlength="23" name="mem_pw">
 			  	<div class="eyes">
 			  		<i id="ps_hide" onclick="password_visable('true')" class="on"></i>
 			  		<i id="ps_show" onclick="password_visable('false')" style="display:none" class="off"></i>
@@ -57,15 +83,15 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 			</div>
 			
 			<div class="bottom">
-				<input class="login_btn" type="button" value="로그인">
+				<input class="login_btn" type="button" onclick="login()" value="로그인">
 				
 				<div class="login_tool">
 					<span>ID/PW 찾기</span>
-					<span>회원가입</span>
+					<span onclick="open_register()">회원가입</span>
 				</div>
 			</div>
 		</div>
-	  </div>
+	  </form>
    <button class="w3-bar-item w3-button" onclick="myAccFunc()">햄버거</button>
   <div id="demoAcc" class="w3-bar-block w3-hide w3-white w3-card-4">
     <a href="page/page2.jsp" class="w3-bar-item w3-button">세트</a>

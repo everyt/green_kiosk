@@ -17,11 +17,9 @@ import all.DBConnectionMgr;
  * @param <BeanMember>
  *
  */
-public class Member_Mgr<Bean_Membe> {
+public class Member_Mgr {
 	
 	
-	private static final String Member_Bean = null;
-	private static final String Bean_Member = null;
 	private DBConnectionMgr pool;
 	private Object bean;
 	
@@ -100,6 +98,7 @@ public class Member_Mgr<Bean_Membe> {
 	
 	// 로그인
 	public boolean loginMember(String usid, String uspw) {
+		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -107,10 +106,9 @@ public class Member_Mgr<Bean_Membe> {
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "select usid from Member_bean where usid=? and uspw=? and stat='승인' ";
+			sql = "select mem_id from member where mem_id=? and mem_pw=SHA2('" + uspw + "',256)";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, Bean_Member);
-			pstmt.setString(2, Bean_Member);
+			pstmt.setString(1, usid);
 			rs = pstmt.executeQuery();
 			flag = rs.next();
 		} catch (Exception e) {
@@ -287,31 +285,27 @@ public class Member_Mgr<Bean_Membe> {
 		}
 	}
 
-	// 회원 승인 여부 
-	public boolean updatePerm(int recnum, String perm) {
+	public void register_Member(String mem_id, String mem_pw, String name, String phone) { //함수제작 나경원
+		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			if (perm.equals("미승인")) {
-				String sql = "update (Member_Bean  set stat='승인' where numb=?";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, recnum);
-			} else {
-				String sql = "update (Member_Bean  set stat='미승인' where numb=?";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, recnum);
-			}
-			int count = pstmt.executeUpdate();
-			if (count > 0)
-				flag = true;
+			sql = "INSERT INTO member (`mem_id`, `mem_pw`, `mem_name`, `mem_phone`) VALUES (?, SHA2('" + mem_pw + "',256), ?, ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, mem_id);
+			pstmt.setString(2, name);
+			pstmt.setString(3, phone);
+			rs = pstmt.executeQuery();
+			flag = rs.next();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			pool.freeConnection(con, pstmt);
+			pool.freeConnection(con, pstmt, rs);
 		}
-		return flag;
 	}
 	
 }
