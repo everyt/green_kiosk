@@ -39,7 +39,7 @@ import java.util.Vector;
 public class DBConnectionMgr {
     private Vector connections = new Vector(10);
     private String _driver = "org.gjt.mm.mysql.Driver",
-    _url = "jdbc:mysql://greencom.kro.kr:3306/green_kiosk?useUnicode=true&characterEncoding=UTF-8",
+    _url = "jdbc:mysql://greencom.kro.kr:3306/green_kiosk?useUnicode=true&characterEncoding=UTF-8&useSSL=false",
     _user = "green_kiosk",
     _password = "1234";
     

@@ -14,17 +14,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>할인쿠폰 사용</title>
+<title>마일리지 사용/적립</title>
 <link rel='stylesheet' href='../../assets/css/purchase.css' />
 </head>
 <body>
-  <div class="header"><span>할인쿠폰 사용</span></div>
+  <div class="header"><span>마일리지 사용/적립</span></div>
   <div class="payment-card" style='border-left-width: 2px; border-right-width: 2px; border-bottom-width: 2px;'>
-  	<img src="../../assets/svg/coupon.svg" alt="coupon" width='100' style='margin-bottom: 5px;' />
-  	<form name="couponForm" method="post" action="./process/process-coupon.jsp">
-  	  <input type="text" id='couponCode' name='couponCode' size="20" style='margin-bottom: 12px;'></input>
+  	<img src="../../assets/svg/smile.svg" alt="coupon" width='100' style='margin-bottom: 5px;' />
+  	<form name="smileForm" method="post" action="./process/process-coupon.jsp">
+  	  <input type="text" id='smilePhone' name='couponCode' size="20" style='margin-bottom: 12px;'></input>
   	</form>
-  	<div id="couponText">할인 쿠폰 코드를 입력해 주세요.</div>
+  	<div id="couponText">회원 휴대폰 번호를 입력해 주세요.</div>
   </div>
   <div class="rowbox">
     <div class="payment-cancle" onClick="handleCouponForm()">확인</div>
