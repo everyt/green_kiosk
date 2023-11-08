@@ -3,7 +3,9 @@
 <%@ page import="java.io.PrintWriter" %>
 <% request.setCharacterEncoding("UTF-8"); %>
 <%@ page import="user.Member_Mgr" %>
+<%@ page import="user.Member_Bean" %>
 <jsp:useBean id="mMgr" class="user.Member_Mgr"  />
+<jsp:useBean id="mBean" class="user.Member_Bean"  />
 
 <!DOCTYPE html>
 <html>
@@ -34,9 +36,9 @@
 /*ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ	
 																 등급 체크 (mem_ac)
 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
-	//mem_id로 mem_ac 값 가져오기 (user.MemberMgr 2번)
-	mem_ac = mMgr.Get_mem_ac(mem_id);       
-
+	mBean = mMgr.getMember(mem_id);
+	mem_ac = mBean.getMem_ac();
+		
 		if (!mem_ac.equals("S")) 
 		{
 			PrintWriter script = response.getWriter();
