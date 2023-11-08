@@ -18,6 +18,7 @@
 	System.out.println(result);
 	PrintWriter script = response.getWriter();
 	if (result) {
+		session.setAttribute("mem_id", usid);
 		script.write("<script>");
 		script.write("location.href = "+cPath+"/");
 		script.write("</script>");

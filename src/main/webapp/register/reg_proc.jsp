@@ -2,7 +2,6 @@
 <%@ page import="user.Member_Mgr" %>
 <%@ page import="java.io.PrintWriter" %>
 <% request.setCharacterEncoding("UTF-8"); %>
-<jsp:useBean id="user" class="user.Member_Bean" scope="page"/>
 <!DOCTYPE html>
 <html>
 <head>

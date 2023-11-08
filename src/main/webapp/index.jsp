@@ -1,6 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page import="user.Member_Mgr" %>
+<%@ page import="user.Member_Bean" %>
 <%
 	String cPath = request.getContextPath();
+
+	Object mem_id = session.getAttribute("mem_id");
+	Member_Mgr u_mgr = new Member_Mgr();
+	Member_Bean bean = null;
+	String mem_ac = "user";
+	if (mem_id != null) {
+		bean = u_mgr.getMember(String.valueOf(mem_id));
+		mem_ac = bean.getMem_ac();
+		System.out.println(mem_ac.equals("S"));
+	}
 %>
 <html>
 <head>
@@ -66,6 +78,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 		  <a class="close" href="javascript:void(0)" onclick="w3_close()"
 		  class="w3-bar-item w3-button">X</a>
 		</div>
+		<%if (mem_id == null) {%>
 	  <form class="login" name="loginFrm" method="post" action="<%= cPath%>/login/login_proc.jsp">
 	  	<div class="inside">
 		  	<div class="idpw_warp">
@@ -92,6 +105,55 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 			</div>
 		</div>
 	  </form>
+	  <%} else { if (mem_ac.equals("S")) {%>
+		<div class="login">
+			<div class="inside">
+		  		<div class="info">
+		  			<span class="name">관리자 <%=bean.getMem_name()%>님 환영합니다.</span>
+		  			<div class="equip">
+		  				<span class="mile">보유 마일리지 : <%=bean.getMem_mile() %> 점</span>
+		  				<%	
+		  					Integer count = 0;
+		  					String coupon = bean.getMem_coupon();
+		  					if (coupon != "") {
+		  						String[] coupon_s = coupon.split(",");
+		  						count = coupon_s.length;
+		  					}
+		  					
+		  				%>
+		  				<span class="coupon">보유중인 쿠폰 : <%=count %> 장</span>
+		  			</div>
+		  			<div class="setting">
+		  				<span onclick="location.href='<%=cPath %>/admin'">관리하기</span>
+		  				<span>로그아웃</span>
+		  			</div>
+		  		</div>
+		  	</div>
+		</div>	  
+	  <%} else {%>
+		
+		<div class="login">
+			<div class="inside">
+		  		<div class="info">
+		  			<span class="name"><%=bean.getMem_name()%>님 환영합니다.</span>
+		  			<div class="equip">
+		  				<span class="mile">보유 마일리지 : <%=bean.getMem_mile() %> 점</span>
+		  				<%	
+		  					Integer count = 0;
+		  					String coupon = bean.getMem_coupon();
+		  					if (coupon != "") {
+		  						String[] coupon_s = coupon.split(",");
+		  						count = coupon_s.length;
+		  					}
+		  					
+		  				%>
+		  				<span class="coupon">보유중인 쿠폰 : <%=count %> 장</span>
+		  			</div>
+		  		</div>
+		  	</div>
+		</div>
+		 
+	  <%}} %>
    <button class="w3-bar-item w3-button" onclick="myAccFunc()">햄버거</button>
   <div id="demoAcc" class="w3-bar-block w3-hide w3-white w3-card-4">
     <a href="page/page2.jsp" class="w3-bar-item w3-button">세트</a>

@@ -122,13 +122,14 @@ public class Member_Mgr {
 	
 	// 회원 조회 (usid)
 	public Member_Bean getMember(String usid) {
+		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Member_Bean bean = null;
 		try {
 			con = pool.getConnection();
-			String sql = "select * from Member_Bean where usid = ?";
+			String sql = "select * from member where mem_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, usid);
 			rs = pstmt.executeQuery();
@@ -140,14 +141,8 @@ public class Member_Mgr {
 				bean.setMem_name(rs.getString("mem_name"));
 				bean.setMem_phone(rs.getString("mem_phone"));
 				bean.setMem_ac(rs.getString("mem_ac"));
-				bean.setMem_mile(rs.getInt("mem_miie"));
-				bean.setMem_coupon1(rs.getString("mem_coupon1"));
-				String hobbys[] = new String[5];
-				String hobb = rs.getString("hobb");// 01001
-				for (int i = 0; i < hobbys.length; i++) {
-					hobbys[i] = hobb.substring(i, i + 1);
-				}
-			
+				bean.setMem_mile(rs.getInt("mem_mile"));
+				bean.setMem_coupon(rs.getString("mem_coupon"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
