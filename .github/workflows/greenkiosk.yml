@@ -85,5 +85,5 @@ jobs:
         port: 22
         debug: true
         script: |
-          sudo tarzxvf /var/lib/tomcat9/webapps/deploy/greenkiosk.tar.gz
+          sudo tar zxvf /var/lib/tomcat9/webapps/deploy/greenkiosk.tar.gz
           sudo rm /var/lib/tomcat9/webapps/deploy/greenkiosk.tar.gz
