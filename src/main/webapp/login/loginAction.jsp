@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ page import="user.MemberMgr" %>
+<%@ page import="user.Member_Mgr" %>
 <%@ page import="java.io.PrintWriter" %>
 <% request.setCharacterEncoding("UTF-8"); %>
 <jsp:useBean id = "user" class = "user.Member_Bean" scope = "page" />
@@ -13,25 +13,20 @@
 		mem_id=(String)session.getAttribute("mem_id");
 	}
 	if (mem_id != null){
-	String userName = null;
-	if(session.getAttribute("userName")!= null){
-		userName=(String)session.getAttribute("userName");
-	}
-	if (userName != null){
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('이미 로그인 되어있습니다.')");
-		script.println("location.href = '../index.jsp'");
+        script.println("window.location.href = '" + request.getContextPath() + "/admin/index.jsp';");
 		script.println("</script>");
 	}
-	MemberMgr mMgr = new MemberMgr();
+	Member_Mgr mMgr = new Member_Mgr();
 	int result = mMgr.login(user.getMem_id(), user.getMem_pw());
 	if(result == 1){
 		session.setAttribute("mem_id", user.getMem_id());
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('로그인 성공!')");
-		script.println("location.href = '../index.jsp'");
+        script.println("window.location.href = '" + request.getContextPath() + "/admin/index.jsp';");
 		script.println("</script>");
 	}
 	else if(result==0){

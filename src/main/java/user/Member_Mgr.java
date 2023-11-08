@@ -313,6 +313,7 @@ public class Member_Mgr<Bean_Membe> {
 		}
 		return flag;
 	}
-	
+
+
 }
 
