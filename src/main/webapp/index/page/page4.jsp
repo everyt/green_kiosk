@@ -46,8 +46,8 @@ function open_register() {
 	  <form class="login" name="loginFrm" method="post" action="<%= cPath%>/login/login_proc.jsp">
 	  	<div class="inside">
 		  	<div class="idpw_warp">
-			  	<input title="아이디" class="id" placeholder="아이디" name="mem_id" maxlength="22">
-			  	<input title="비밀번호" type="password" id="pw" class="pw" placeholder="비밀번호" maxlength="23" name="mem_pw">
+			  	<input title="아이디" class="id" placeholder="아이디" onkeyup="if(window.event.keyCode==13){login()}" name="mem_id" maxlength="22">
+			  	<input title="비밀번호" type="password" id="pw" class="pw"  onkeyup="if(window.event.keyCode==13){login()}" placeholder="비밀번호" maxlength="23" name="mem_pw">
 			  	<div class="eyes">
 			  		<i id="ps_hide" onclick="password_visable('true')" class="on"></i>
 			  		<i id="ps_show" onclick="password_visable('false')" style="display:none" class="off"></i>
