@@ -10,8 +10,9 @@
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/admin/style.css">
+<link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/admin/style.css">
 <%@ include file="/admin/layouts/header.jsp" %>
+<%@ include file="/admin/admin_check/check.jsp" %>
 </head>
 <body>
 <br/>

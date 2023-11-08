@@ -4,9 +4,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>관리자 페이지</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/admin/style.css">
 </head>
 <body>
-<h1>회계 관리 페이지</h1>
+	
+	<form name="readFrm" method="get">
+		<input type="button" value="매출 내역" onClick="location.href='Accounting/sales/ac00.jsp'"> &nbsp; &nbsp;
+		<input type="button" value="재고 관리" onClick="location.href='Accounting/inventory/iv00.jsp'"> &nbsp; &nbsp; 
+	</form>
+
 </body>
 </html>
