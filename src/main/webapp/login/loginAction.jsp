@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ page import="user.MemberMgr" %>
+<%@ page import="user.Member_Mgr" %>
 <%@ page import="java.io.PrintWriter" %>
 <% request.setCharacterEncoding("UTF-8"); %>
 <jsp:useBean id = "user" class = "user.Member_Bean" scope = "page" />
@@ -24,7 +24,7 @@
 		script.println("location.href = '../index.jsp'");
 		script.println("</script>");
 	}
-	MemberMgr mMgr = new MemberMgr();
+	Member_Mgr mMgr = new Member_Mgr();
 	int result = mMgr.login(user.getMem_id(), user.getMem_pw());
 	if(result == 1){
 		session.setAttribute("mem_id", user.getMem_id());
