@@ -1,32 +1,38 @@
 body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100vw;
+	height: 100vh;
+}
+.colbox {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 .rowbox {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: inherit;
+	display: flex;
+	flex-direction: row;
+	align-items: start;
+	justify-content: center;
+	width: inherit;
 }
 .small-font {
 	font-size: 0.8rem;
 }
 .header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background: #FAECC5;
-  font-size: 1.4rem;
-  font-weight: 700;
-  width: 490px;
-  height: 40px;
-  border-radius: 30px 30px 0 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	background: #FAECC5;
+	font-size: 1.4rem;
+	font-weight: 700;
+	width: 490px;
+	height: 40px;
+	border-radius: 30px 30px 0 0;
 }
 .payment-options {
     display: flex;
@@ -49,21 +55,47 @@ body {
 .payment-option img {
     height: 100px;
 }
-.payment-cansle {
+.payment-cancle {
     border: 2px solid #ddd;
     border-radius: 15px;
     padding: 1vw 3vw;
     margin: 1vw 0 0 0;
+	cursor: pointer;
 }
 .payment-card {
+    border: solid #ddd;
+  	border-radius: 0px 0px 30px 30px;
 	display: flex;
+    flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	width: 490px;
 	height: 300px;
-	border: soild #ddd;
-	border-left-width: 2px;
-	border-right-width: 2px;
-	border-bottom-width: 2px;
-  	border-radius: 0 0 30px 30px;
+}
+.purchase-page-button-left {
+	width: 11px;
+	height: 11px;
+	border: solid #ccc;
+	border-width: 6px 0 0 6px;
+	rotate: -45deg;
+	margin-top: 9px;
+	margin-left: 5px;
+	cursor: pointer;
+}
+.purchase-page-button-right {
+	width: 11px;
+	height: 11px;
+	border: solid #ccc;
+	border-width: 6px 6px 0 0;
+	rotate: 45deg;
+	margin-top: 9px;
+	margin-right: 5px;
+	cursor: pointer;
+}
+.purchase-page-button-main {
+	font-size: 18px;
+	margin-top: 4px;
+	margin-left: 2px;
+	margin-right: 2px;
+	cursor: pointer;
 }
