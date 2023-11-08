@@ -1,0 +1,9 @@
+@charset "EUC-KR";
+
+.w3-main .w3-center { border: 1px black solid; border-radius: 5px;}
+.w3-main .w3-center .mypage { border-radius: 5px; height: 70%; }
+.w3-main .w3-center .mypage .top { display: grid; width: 100%; }
+.w3-main .w3-center .mypage div .title { justify-self: center; }
+
+.w3-main .w3-center .mypage .setting { display: grid; width: 100%; }
+.w3-main .w3-center .mypage .setting div { display: grid; justify-self: center; background-color: orange; border: 1px #ee4514 solid; border-radius: 5px; color: white; width: 200px; padding: 5px 10px; font-weight: 900; cursor: pointer; }
