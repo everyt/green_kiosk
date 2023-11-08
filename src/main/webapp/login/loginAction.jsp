@@ -13,15 +13,10 @@
 		mem_id=(String)session.getAttribute("mem_id");
 	}
 	if (mem_id != null){
-	String userName = null;
-	if(session.getAttribute("userName")!= null){
-		userName=(String)session.getAttribute("userName");
-	}
-	if (userName != null){
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('이미 로그인 되어있습니다.')");
-		script.println("location.href = '../index.jsp'");
+        script.println("window.location.href = '" + request.getContextPath() + "/admin/index.jsp';");
 		script.println("</script>");
 	}
 	Member_Mgr mMgr = new Member_Mgr();
@@ -31,7 +26,7 @@
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('로그인 성공!')");
-		script.println("location.href = '../index.jsp'");
+        script.println("window.location.href = '" + request.getContextPath() + "/admin/index.jsp';");
 		script.println("</script>");
 	}
 	else if(result==0){

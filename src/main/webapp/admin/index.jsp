@@ -27,17 +27,5 @@
 		<%@ include file="/admin/layouts/footer.jsp" %>
 	</div> --%>
 	
-	</body>
-</head>
-<body>
-
-<%@ include file="/admin/layouts/header.jsp" %>
-
-<%@ include file="/admin/layouts/left.jsp" %>
-
-<%@ include file="/admin/layouts/main.jsp" %>
-
-<%@ include file="/admin/layouts/footer.jsp" %>
-
 </body>
 </html>

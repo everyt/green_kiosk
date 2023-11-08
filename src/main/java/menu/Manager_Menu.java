@@ -7,7 +7,7 @@ import java.util.Vector;
 import all.DBConnectionMgr;
 
 
-public class Maneger_Menu {
+public class Manager_Menu {
 	
 	private DBConnectionMgr pool;
 

@@ -310,6 +310,7 @@ public class Member_Mgr {
 			return "200/회원가입에 성공했습니다.";
 		}
 	}
-	
+
+
 }
 
