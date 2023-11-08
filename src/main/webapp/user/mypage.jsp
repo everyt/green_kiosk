@@ -15,7 +15,7 @@
 %>
 <html>
 <head>
-<title>W3.CSS Templatee</title>
+<title>마이페이지</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -162,79 +162,14 @@ function open_register() {
 <!-- !PAGE CONTENT! -->
 <div class="w3-main w3-content w3-padding" style="max-width:1300px;margin-top:100px">
 		
-  <!-- First Photo Grid-->
-			
-<div class="w3-container w3-teal">
-  <h1>이벤트</h1>
-</div>
+	<div class="w3-row-padding w3-padding-16 w3-center w3-tooltip" id="food">
+		<table border="1" cellspacing="0" cellpadding="2" width="1250">
+			<tr>
+				<td colspan="2">마이페이지</td>
+			</tr>
+		</table>
+	</div>
 
-<div class="w3-row-padding w3-margin-top">
-  <div class="w3-third">
-    <div class="w3-card">
-      <img src="<%=cPath %>/assets/images/event1.jpg" width="300" height="300" style="width:100%">
-      <div class="w3-container">
-        <h5>5 Terre</h5>
-      </div>
-    </div>
-  </div>
-
-  <div class="w3-third">
-    <div class="w3-card">
-      <img src="<%=cPath %>/assets/images/event2.jpg" width="300" height="300" style="width:100%">
-      <div class="w3-container">
-        <h5>Monterosso</h5>
-      </div>
-    </div>
-  </div>
-
-  <div class="w3-third">
-    <div class="w3-card">
-      <img src="img_vernazza.jpg" style="width:100%">
-      <div class="w3-container">
-        <h5>Vernazza</h5>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="w3-row-padding w3-margin-top">
-  <div class="w3-third">
-    <div class="w3-card">
-      <img src="img_manarola.jpg" style="width:100%">
-      <div class="w3-container">
-        <h5>Manarola</h5>
-      </div>
-    </div>
-  </div>
-
-  <div class="w3-third">
-    <div class="w3-card">
-      <img src="img_corniglia.jpg" style="width:100%">
-      <div class="w3-container">
-        <h5>Corniglia</h5>
-      </div>
-    </div>
-  </div>
-
-  <div class="w3-third">
-    <div class="w3-card">
-      <img src="img_riomaggiore.jpg" style="width:100%">
-      <div class="w3-container">
-        <h5>Riomaggiore</h5>
-      </div>
-    </div>
-  </div>
-</div>
-
-  <!-- Pagination -->
-  <div class="w3-center w3-padding-32">
-    <div class="w3-bar">
-      <a href="<%=cPath %>/" class="w3-bar-item w3-black w3-button">1</a>
-      <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button w3-hover-black">2</a>
-      <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button w3-hover-black">3</a>
-      <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button w3-hover-black">4</a>
-    </div>
-  </div>
   
   <hr id="about">
   
@@ -258,6 +193,7 @@ function open_register() {
 
 <!-- End page content -->
 </div>
+
 
 
 <script>

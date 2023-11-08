@@ -114,7 +114,7 @@ function open_register() {
 		  				<span class="coupon">보유중인 쿠폰 : <%=count %> 장</span>
 		  			</div>
 		  			<div class="setting">
-		  				<span onclick="location.href='<%=cPath %>/mypage.jsp'">마이페이지</span>
+		  				<span onclick="location.href='<%=cPath %>/user/mypage.jsp'">마이페이지</span>
 		  				<span onclick="location.href='<%=cPath %>/login/logout.jsp'">로그아웃</span>
 		  			</div>
 		  		</div>

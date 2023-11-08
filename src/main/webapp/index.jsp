@@ -63,7 +63,7 @@ function open_register() {
 				<input class="login_btn" type="button" onclick="login()" value="로그인">
 				
 				<div class="login_tool">
-					<span>ID/PW 찾기</span>
+					<span onclick="location.href='<%=cPath %>/user/find_idpw.jsp'">ID/PW 찾기</span>
 					<span onclick="open_register()">회원가입</span>
 				</div>
 			</div>
@@ -114,7 +114,7 @@ function open_register() {
 		  				<span class="coupon">보유중인 쿠폰 : <%=count %> 장</span>
 		  			</div>
 		  			<div class="setting">
-		  				<span onclick="location.href='<%=cPath %>/mypage.jsp'">마이페이지</span>
+		  				<span onclick="location.href='<%=cPath %>/user/mypage.jsp'">마이페이지</span>
 		  				<span onclick="location.href='<%=cPath %>/login/logout.jsp'">로그아웃</span>
 		  			</div>
 		  		</div>
