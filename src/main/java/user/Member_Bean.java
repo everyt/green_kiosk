@@ -9,7 +9,7 @@ public class Member_Bean {
 	private String mem_phone; 		// 휴대폰번호
 	private String mem_ac; 			// 계정타입
 	private int mem_mile; 			// 마일리지
-	private String mem_coupon1; 	// 소유중인 쿠폰
+	private String mem_coupon; 	// 소유중인 쿠폰
 
 	public int getMem_no() {
 		return mem_no;
@@ -67,12 +67,12 @@ public class Member_Bean {
 		this.mem_mile = mem_mile;
 	}
 
-	public String getMem_coupon1() {
-		return mem_coupon1;
+	public String getMem_coupon() {
+		return mem_coupon;
 	}
 
-	public void setMem_coupon1(String mem_coupon1) {
-		this.mem_coupon1 = mem_coupon1;
+	public void setMem_coupon(String mem_coupon) {
+		this.mem_coupon = mem_coupon;
 	}
 
 }
