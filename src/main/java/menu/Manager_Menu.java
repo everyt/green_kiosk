@@ -11,7 +11,7 @@ public class Manager_Menu {
 	
 	private DBConnectionMgr pool;
 
-	public void Manager_Menu() {
+	public Manager_Menu() {
 		try {
 			pool = DBConnectionMgr.getInstance();
 		} catch (Exception e) {
@@ -50,6 +50,42 @@ public class Manager_Menu {
 			}
 			return bean;
 		}
+		
+		
+		//Menu 리스트 전체 불러오기
+		public Vector<Menu_menu_Bean> getMenuList(){
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = null;
+			Vector<Menu_menu_Bean> vlist = new Vector<Menu_menu_Bean>();
+			try {
+				con = pool.getConnection();
+				sql = "SELECT * FROM menu ORDER BY menu_no DESC";
+				pstmt = con.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				while(rs.next()) {
+					Menu_menu_Bean bean = new Menu_menu_Bean();
+					bean = new Menu_menu_Bean();
+					bean.setMenu_no(rs.getInt("menu_no"));
+					bean.setMenu_name(rs.getString("menu_name"));
+					bean.setMenu_gubn(rs.getString("menu_gubn"));
+					bean.setMenu_isSale(rs.getInt("menu_isSale"));
+					bean.setMenu_imgPath(rs.getString("menu_imgPath"));
+					bean.setMenu_component(rs.getString("menu_component"));
+					bean.setMenu_content(rs.getString("menu_content")); 
+					bean.setMenu_price(rs.getInt("menu_price"));
+					bean.setMenu_sell_amount(rs.getInt("menu_sell_amount"));
+					bean.setMenu_recommend(rs.getInt("menu_recommend"));
+					vlist.add(bean);
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				pool.freeConnection(con, pstmt, rs);
+			}
+			return vlist;
+		}
 	
 	    // 1. 메뉴 관리 페이지 - 메뉴 추가
 		public boolean insertMenu(Menu_menu_Bean bean) {
@@ -60,8 +96,8 @@ public class Manager_Menu {
 			boolean flag = false;
 			try {
 				con = pool.getConnection();
-				sql = "insert menu_menu(menu_name, menu_gubn, menu_isSale, menu_imgPath, menu_component,"
-						+ "menu_price, menu_sell_amount, menu_recommend) values(?,?,?,?,?,?,?,?)";
+				sql = "INSERT INTO menu(menu_name, menu_gubn, menu_isSale, menu_imgPath, menu_component,"
+						+ "menu_price, menu_sell_amount, menu_recommend, menu_isUse, menu_content) VALUES (?,?,?,?,?,?,?,?,?,?)";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, bean.getMenu_name());
 				pstmt.setString(2, bean.getMenu_gubn());
@@ -71,7 +107,8 @@ public class Manager_Menu {
 				pstmt.setInt(6, bean.getMenu_price());
 				pstmt.setInt(7, bean.getMenu_sell_amount());
 				pstmt.setInt(8, bean.getMenu_recommend());
-						
+				pstmt.setInt(9, bean.getMenu_isUse());
+				pstmt.setString(10, bean.getMenu_content());
 				if (pstmt.executeUpdate() == 1)
 					flag = true;
 			} catch (Exception e) {
