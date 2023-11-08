@@ -26,6 +26,23 @@ window.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 	
+	//비밀번호 표시 함수
+function re_password_visable(bool) {
+	let pw_input = document.getElementById("pw_re");
+	let ps_hide = document.getElementById("ps_hide_re");
+	let ps_show = document.getElementById("ps_show_re");
+	if (bool == "true") {
+		pw_input.type = "text";
+		ps_hide.style.display = "none";
+		ps_show.style.display = "";
+	} else {
+		pw_input.type = "password";
+		ps_show.style.display = "none";
+		ps_hide.style.display = "";
+	}
+}
+
+	
 	//로그인 함수
 	function login() {
 		let loginfrm = document.loginFrm

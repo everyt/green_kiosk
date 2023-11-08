@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="<%=cPath %>/assets/css/reset.css">
 <link rel="stylesheet" href="<%=cPath %>/assets/css/index.css">
 <link rel="stylesheet" href="<%=cPath %>/assets/css/mypage.css">
+<link rel="stylesheet" href="<%=cPath %>/assets/css/register.css">
 <script src="<%=cPath %>/assets/js/index.js"></script>
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
@@ -183,8 +184,35 @@ function open_register() {
 				<!-- 해당 위치 고정 -->
 				<td rowspan="4" width="80%">
 					<table cellspacing="0" cellpadding="2" width="100%" height="100%">
-						<tr>
-							<td align="center" colspan="3"><b>개인정보 확인/수정</b></td>	
+						<tr height="5%">
+							<td align="center"><b>개인정보 확인/수정</b></td>	
+						</tr>
+						<tr height="50%">
+							<td>
+								<form action="<%=cPath %>/register/reg_proc.jsp" method="POST" class="joinForm" name="regFrom" style="transform: translate(-20%, -30%)">                                                                     
+							      <div class="textForm">
+							        <input name="mem_name" type="text" class="name" placeholder="이름">
+							      </div>
+							      <div class="textForm">
+							        <input name="mem_pw" type="password" class="pw" id="pw" placeholder="비밀번호" maxlength="23">
+							        <div class="eyes_pw">
+										<i id="ps_hide" onclick="password_visable('true')" class="on"></i>
+										<i id="ps_show" onclick="password_visable('false')" style="display:none" class="off"></i>
+									</div>
+							      </div>
+							       <div class="textForm">
+							        <input name="loginPwConfirm" type="password" class="pw" id="pw_re" placeholder="비밀번호 확인" maxlength="23">
+							        <div class="eyes_pw">
+										<i id="ps_hide_re" onclick="re_password_visable('true')" class="on"></i>
+										<i id="ps_show_re" onclick="re_password_visable('false')" style="display:none" class="off"></i>
+									</div>
+							      </div>
+							      <div class="textForm">
+							        <input name="mem_phone" type="text" maxlength="11" class="cellphoneNo" oninput="maxLengthCheck(this)" placeholder="전화번호" >
+							      </div>
+							      <input type="button" onclick="register()" class="btn" value="수 정 하 기"/>
+							    </form>
+							</td>
 						</tr>
 					</table>
 				</td>
