@@ -15,7 +15,24 @@
 	Object mem_id = session.getAttribute("mem_id");
 	Member_Mgr u_mgr = new Member_Mgr();
 	Member_Bean bean = null;
-	String mem_pw = request.getParameter("mem_pw");;
+	String mem_pw = null;
+	
+	boolean find_pw = false;
+	
+	Cookie[] cookies = request.getCookies();
+	if (cookies.length == 0) {
+		System.out.println("쿠키 없음");
+	} else {
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals("mem_pw")) {
+				mem_pw = cookie.getValue();
+				cookie.setMaxAge(0);
+				response.addCookie(cookie);
+				find_pw = true;
+			}
+		}
+	}
+	
 	String mem_ac = "user";
 	if (mem_id == null) {
 		%>
@@ -28,6 +45,16 @@
 					history.back();
 				}
 				
+			</script>
+		<%
+	}
+	
+	if (find_pw == false) {
+		session.invalidate();
+		%>
+			<script>
+				alert("로그인을 올바르게 진행하지 않은 아이디로 의심됩니다.\n자동으로 로그아웃 되오니,\n다시 로그인을 하고 사용해주시기 바랍니다.");
+				location.href = "<%=cPath%>/"
 			</script>
 		<%
 	}
