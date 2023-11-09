@@ -1,9 +1,19 @@
 package menu;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.PageContext;
+
 import all.DBConnectionMgr;
 
 
@@ -128,16 +138,21 @@ public class Manager_Menu {
 			boolean flag = false;
 			try {
 				con = pool.getConnection();
-				sql = "update menu_menu set menu_name=?, menu_gubn=?, menu_isSale=?, menu_component=?,"
-						+ "menu_price=?, menu_sell_amount=?, menu_recommend=? ";
+				sql = "UPDATE menu SET menu_name=?, menu_gubn=?, menu_isSale=?, menu_component=?,"
+						+ "menu_price=?, menu_sell_amount=?, menu_recommend=?, menu_isUse = ?, menu_content=?, "
+						+ "menu_imgPath=? WHERE menu_no = ?";
+				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, bean.getMenu_name());
 				pstmt.setString(2, bean.getMenu_gubn());
 				pstmt.setInt(3, bean.getMenu_isSale());
-				pstmt.setString(4, bean.getMenu_imgPath());
-				pstmt.setString(5, bean.getMenu_component());
-				pstmt.setInt(6, bean.getMenu_price());
-				pstmt.setInt(7, bean.getMenu_sell_amount());
-				pstmt.setInt(8, bean.getMenu_recommend());
+				pstmt.setString(4, bean.getMenu_component());
+				pstmt.setInt(5, bean.getMenu_price());
+				pstmt.setInt(6, bean.getMenu_sell_amount());
+				pstmt.setInt(7, bean.getMenu_recommend());
+				pstmt.setInt(8, bean.getMenu_isUse());
+				pstmt.setString(9, bean.getMenu_content());
+				pstmt.setString(10, bean.getMenu_imgPath());
+				pstmt.setInt(11, bean.getMenu_no());
 				int count = pstmt.executeUpdate();
 				if (count > 0)
 					flag = true;
@@ -149,23 +164,27 @@ public class Manager_Menu {
 			return flag;
 		}
 		
+		
 		// 1. 메뉴 관리 페이지 - 메뉴 삭제
-		public void deleteMenu(int numb) {
+		public int deleteMenu(int menu_no) {
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			String sql = null;
 			ResultSet rs = null;
 			try {
 				con = pool.getConnection();
-				sql = "delete from menu_menu where numb=?";
+				sql = "DELETE FROM menu WHERE menu_no=?";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, numb);
+				pstmt.setInt(1, menu_no);
 				pstmt.executeUpdate();
+				return 1;
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				pool.freeConnection(con, pstmt, rs);
 			}
+			//실패시 -1 반환
+			return -1;
 		}
 		
 		
@@ -925,7 +944,45 @@ public class Manager_Menu {
 			}
 			return bean;
 		}
-		
-	}
 
 //--------------------------------------------------------------------------------
+	//menu_file download
+
+	public void downLoad(HttpServletRequest req, HttpServletResponse res,
+			JspWriter out, PageContext pageContext) {
+		String SAVEFOLDER = "/downloadfile2";
+		try {
+			String filename = req.getParameter("menu_filePath");
+			File file = new File(UtilMgr.con(SAVEFOLDER + File.separator + filename));
+			byte b[] = new byte[(int) file.length()];
+			res.setHeader("Accept-Ranges", "bytes");
+			String strClient = req.getHeader("User-Agent");
+			if (strClient.indexOf("MSIE6.0") != -1) {
+				res.setContentType("application/smnet;charset=euc-kr");
+				res.setHeader("Content-Disposition", "filename=" + filename + ";");
+			} else {
+				res.setContentType("application/smnet;charset=euc-kr");
+				res.setHeader("Content-Disposition", "attachment;filename="+ filename + ";");
+			}
+			out.clear();
+			out = pageContext.pushBody();
+			if (file.isFile()) {
+				BufferedInputStream fin = new BufferedInputStream(
+						new FileInputStream(file));
+				BufferedOutputStream outs = new BufferedOutputStream(
+						res.getOutputStream());
+				int read = 0;
+				while ((read = fin.read(b)) != -1) {
+					outs.write(b, 0, read);
+				}
+				outs.close();
+				fin.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}  
+	}
+	
+	
+//--------------------------------------------------------------------------------
+}
