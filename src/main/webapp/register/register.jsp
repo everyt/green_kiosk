@@ -133,7 +133,7 @@ function re_password_visable(bool) {
 		</div>
       </div>
       <div class="textForm">
-        <input name="mem_name" type="text" class="name" placeholder="이름">
+        <input name="mem_name" type="text" class="regi_name" placeholder="이름">
       </div>
       <div class="textForm">
         <input name="mem_phone" type="text" maxlength="11" class="cellphoneNo" oninput="maxLengthCheck(this)" placeholder="전화번호" >
