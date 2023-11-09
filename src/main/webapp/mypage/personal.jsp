@@ -10,22 +10,44 @@
 	Object pw_ok = session.getAttribute("pw_ok");
 	if (pw_ok != null) {
 		String s_pw_ok = String.valueOf(pw_ok);
-		if (failed_count != null) {
-			Integer f_count = Integer.parseInt(String.valueOf(failed_count));
-			if (f_count >= 3) {
-				session.invalidate();
+		if (s_pw_ok.equals("true")) {
+			session.setAttribute("pw_ok", null);
+			session.setAttribute("failed_count", null);
+			%>
+				<script>
+					res = "true";
+					document.cookie = "mem_pw = ; path = <%=cPath%>/user/pw_check.jsp; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+				</script>
+			<%
+		} else {
+			if (failed_count != null) {
+				Integer f_count = Integer.parseInt(String.valueOf(failed_count));
+				if (f_count >= 3) {
+					session.invalidate();
+					%>
+						<script>				
+							alert("비밀번호 오류 허용 횟수 3회를 초과하였습니다.\n강제 로그아웃됩니다.");
+							location.href="<%=cPath%>/";
+						</script>
+					<%
+				} else {
+					f_count = f_count + 1;
+					Integer rem = 4 - f_count;
+					%>
+						<script>				
+							alert("비밀번호가 틀렸습니다.\n남은 오류 허용 횟수 <%=rem%>회\n횟수를 모두 소진하면 강제 로그아웃됩니다.");
+						</script>
+					<%
+					session.setAttribute("failed_count", f_count);
+				}
+			} else {
 				%>
 					<script>				
-						alert("비밀번호 오류 허용 횟수 3회를 초과하였습니다.\n강제 로그아웃됩니다.");
-						location.href="<%=cPath%>/";
+						alert("비밀번호가 틀렸습니다.\n남은 오류 허용 횟수 3회\n횟수를 모두 소진하면 강제 로그아웃됩니다.");
 					</script>
 				<%
-			} else {
-				f_count = f_count + 1;
-				session.setAttribute("failed_count", f_count);
+				session.setAttribute("failed_count", 1);
 			}
-		} else {
-			session.setAttribute("failed_count", 1);
 		}
 	}
 	Member_Mgr u_mgr = new Member_Mgr();
@@ -36,18 +58,18 @@
 		bean = u_mgr.getMember(String.valueOf(mem_id));
 		mem_ac = bean.getMem_ac();
 		mem_pw = bean.getMem_pw();
-		System.out.println(mem_pw);
 		%> 
-			<span style="display:hidden" correct="false" id="pw_res"></span>
 			<script id="pw_ingage"> 
-				let pw = prompt("민감한 정보를 다루는 곳입니다.\n비밀번호를 입력하세요.");
-				
-				if (pw == null) {
-					res = "true";
-				} else {
-					location.href = "<%=cPath%>/user/pw_check.jsp?mem_pw="+pw
+				if (res != "true") {
+					let pw = prompt("민감한 정보를 다루는 페이지입니다.\n비밀번호를 입력하세요.");
+					
+					if (pw == null) {
+						history.back();
+					} else {
+						document.cookie = "mem_pw = "+pw+"; path = <%=cPath%>/user/pw_check.jsp";
+						location.href = "<%=cPath%>/user/pw_check.jsp";
+					}
 				}
-				
 			</script>		
 		<%
 	} else {
@@ -82,127 +104,9 @@ function open_register() {
 </script>
 <body>
 <!-- Sidebar (hidden by default) -->
-<nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" id="mySidebar">
-	<div class="close_div">
-		  <a class="close" href="javascript:void(0)" onclick="w3_close()"
-		  class="w3-bar-item w3-button">X</a>
-		</div>
-		<%if (mem_id == null) {%>
-	  <form class="login" name="loginFrm" method="post" action="<%= cPath%>/login/login_proc.jsp">
-	  	<div class="inside">
-		  	<div class="idpw_warp">
-			  	<input title="아이디" class="id" placeholder="아이디" onkeyup="if(window.event.keyCode==13){login()}" name="mem_id" maxlength="22">
-			  	<input title="비밀번호" type="password" id="pw" class="pw"  onkeyup="if(window.event.keyCode==13){login()}" placeholder="비밀번호" maxlength="23" name="mem_pw">
-			  	<div class="eyes">
-			  		<i id="ps_hide" onclick="password_visable('true')" class="on"></i>
-			  		<i id="ps_show" onclick="password_visable('false')" style="display:none" class="off"></i>
-			  	</div>
-			</div>
-			
-			<div class="checkbox">
-				<input type="checkbox" id="save_id">
-				<label id="string_save_id" for="save_id">아이디 저장</label>
-			</div>
-			
-			<div class="bottom">
-				<input class="login_btn" type="button" onclick="login()" value="로그인">
-				
-				<div class="login_tool">
-					<span>ID/PW 찾기</span>
-					<span onclick="open_register()">회원가입</span>
-				</div>
-			</div>
-		</div>
-	  </form>
-	  <%} else { if (mem_ac.equals("S")) {%>
-		<div class="login">
-			<div class="inside">
-		  		<div class="info">
-		  			<span class="name">관리자 <%=bean.getMem_name()%>님 환영합니다.</span>
-		  			<div class="equip">
-		  				<span class="mile">보유 마일리지 : <%=bean.getMem_mile() %> 점</span>
-		  				<%	
-		  					Integer count = 0;
-		  					String coupon = bean.getMem_coupon();
-		  					if (coupon != "") {
-		  						String[] coupon_s = coupon.split(",");
-		  						count = coupon_s.length;
-		  					}
-		  					
-		  				%>
-		  				<span class="coupon">보유중인 쿠폰 : <%=count %> 장</span>
-		  			</div>
-		  			<div class="setting">
-		  				<span onclick="location.href='<%=cPath %>/admin'">관리하기</span>
-		  				<span onclick="location.href='<%=cPath %>/login/logout.jsp'">로그아웃</span>
-		  			</div>
-		  		</div>
-		  	</div>
-		</div>	  
-	  <%} else {%>
-		
-		<div class="login">
-			<div class="inside">
-		  		<div class="info">
-		  			<span class="name"><%=bean.getMem_name()%>님 환영합니다.</span>
-		  			<div class="equip">
-		  				<span class="mile">보유 마일리지 : <%=bean.getMem_mile() %> 점</span>
-		  				<%	
-		  					Integer count = 0;
-		  					String coupon = bean.getMem_coupon();
-		  					if (coupon != "") {
-		  						String[] coupon_s = coupon.split(",");
-		  						count = coupon_s.length;
-		  					}
-		  					
-		  				%>
-		  				<span class="coupon">보유중인 쿠폰 : <%=count %> 장</span>
-		  			</div>
-		  			<div class="setting">
-		  				<span onclick="location.href='<%=cPath %>/mypage/personal.jsp'">마이페이지</span>
-		  				<span onclick="location.href='<%=cPath %>/login/logout.jsp'">로그아웃</span>
-		  			</div>
-		  		</div>
-		  	</div>
-		</div>
-		 
-	  <%}} %>
-   <button class="w3-bar-item w3-button" onclick="myAccFunc()">햄버거</button>
-  <div id="demoAcc" class="w3-bar-block w3-hide w3-white w3-card-4">
-  	<a href="<%=cPath %>/index.jsp" class="w3-bar-item w3-button">단품</a>
-    <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button">세트</a>
-    <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button">디저트</a>
-    <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button">음료수</a>
-  </div>
-
-  <button class="w3-bar-item w3-button" onclick="myAccFunc1()">이벤트</button>
-  <div id="demoAcc1" class="w3-bar-block w3-hide w3-white w3-card-4">
-    <a href="<%=cPath %>/index/event/event1.jsp" class="w3-bar-item w3-button">이벤트</a>
-    <a href="<%=cPath %>/index/event/event2.jsp" class="w3-bar-item w3-button">쿠폰</a>
-    <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button">3</a>
-  </div>
-  
-  <button class="w3-bar-item w3-button" onclick="myAccFunc2()">고객지원</button>
-   <div id="demoAcc2" class="w3-bar-block w3-hide w3-white w3-card-4">
-    <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button">ㅂ</a>
-    <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button">ㅈ</a>
-    <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button">ㄷ</a>
-  </div>
-  
-  
-</nav>
-
-
-
-
+<%@ include file="/index/base/sidebar.jsp"%>
 <!-- Top menu -->
-<div class="w3-top">
-  <div class="w3-white w3-xlarge" style="max-width:1300px;margin:auto">
-    <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
-    <div class="w3-right w3-padding-16">Mail</div>
-    <div class="w3-center w3-padding-16">???가게 메뉴</div>
-  </div>
-</div>
+<%@ include file="/index/base/head.jsp" %>
   
 <!-- !PAGE CONTENT! -->
 <div class="w3-main w3-content w3-padding" style="max-width:1300px;margin-top:100px;height:920px;width:1300px">
@@ -246,26 +150,15 @@ function open_register() {
 							<td>
 								<form action="<%=cPath %>/register/reg_proc.jsp" method="POST" class="joinForm" name="regFrom" style="transform: translate(-20%, -30%)">                                                                     
 							      <div class="textForm">
-							        <input name="mem_name" type="text" class="regi_name" placeholder="이름">
+							        <input name="mem_name" type="text" class="regi_name" placeholder="아이디" value=<%=bean.getMem_id() %> readonly>
 							      </div>
 							      <div class="textForm">
-							        <input name="mem_pw" type="password" class="pw" id="pw" placeholder="비밀번호" maxlength="23">
-							        <div class="eyes_pw">
-										<i id="ps_hide" onclick="password_visable('true')" class="on"></i>
-										<i id="ps_show" onclick="password_visable('false')" style="display:none" class="off"></i>
-									</div>
-							      </div>
-							       <div class="textForm">
-							        <input name="loginPwConfirm" type="password" class="pw" id="pw_re" placeholder="비밀번호 확인" maxlength="23">
-							        <div class="eyes_pw">
-										<i id="ps_hide_re" onclick="re_password_visable('true')" class="on"></i>
-										<i id="ps_show_re" onclick="re_password_visable('false')" style="display:none" class="off"></i>
-									</div>
+							        <input name="mem_name" type="text" class="regi_name" placeholder="이름" value=<%=bean.getMem_name() %>>
 							      </div>
 							      <div class="textForm">
-							        <input name="mem_phone" type="text" maxlength="11" class="cellphoneNo" oninput="maxLengthCheck(this)" placeholder="전화번호" >
+							        <input name="mem_phone" type="text" maxlength="11" class="cellphoneNo" oninput="maxLengthCheck(this)" placeholder="전화번호" value=<%=bean.getMem_phone() %>>
 							      </div>
-							      <input type="button" onclick="register()" class="btn" value="수 정 하 기"/>
+							      <input type="button" onclick="register()" class="btn" style="transform: translateX(-50%) translateY(360%);" value="수 정 하 기"/>
 							    </form>
 							</td>
 						</tr>

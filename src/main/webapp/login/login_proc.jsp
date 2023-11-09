@@ -4,6 +4,7 @@
 <% request.setCharacterEncoding("UTF-8"); %>
 <%
 	String cPath = request.getContextPath();
+	Cookie[] cookies = request.getCookies();
 %>
 <jsp:useBean id="user" class="user.Member_Bean" scope="page"/>
 <!DOCTYPE html>
@@ -15,7 +16,6 @@
 	String uspw = request.getParameter("mem_pw");
 	Member_Mgr Mgr = new Member_Mgr();
 	Boolean result = Mgr.loginMember(usid, uspw);
-	System.out.println(result);
 	PrintWriter script = response.getWriter();
 	if (result) {
 		session.setAttribute("mem_id", usid);
