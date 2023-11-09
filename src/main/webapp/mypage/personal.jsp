@@ -1,16 +1,59 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ page import="user.Member_Mgr" %>
 <%@ page import="user.Member_Bean" %>
+<script> let res = "false"; </script>
 <%
 	String cPath = request.getContextPath();
 
 	Object mem_id = session.getAttribute("mem_id");
+	Object failed_count = session.getAttribute("failed_count");
+	Object pw_ok = session.getAttribute("pw_ok");
+	if (pw_ok != null) {
+		String s_pw_ok = String.valueOf(pw_ok);
+		if (failed_count != null) {
+			Integer f_count = Integer.parseInt(String.valueOf(failed_count));
+			if (f_count >= 3) {
+				session.invalidate();
+				%>
+					<script>				
+						alert("비밀번호 오류 허용 횟수 3회를 초과하였습니다.\n강제 로그아웃됩니다.");
+						location.href="<%=cPath%>/";
+					</script>
+				<%
+			} else {
+				f_count = f_count + 1;
+				session.setAttribute("failed_count", f_count);
+			}
+		} else {
+			session.setAttribute("failed_count", 1);
+		}
+	}
 	Member_Mgr u_mgr = new Member_Mgr();
 	Member_Bean bean = null;
+	String mem_pw = null;
 	String mem_ac = "user";
 	if (mem_id != null) {
 		bean = u_mgr.getMember(String.valueOf(mem_id));
 		mem_ac = bean.getMem_ac();
+		mem_pw = bean.getMem_pw();
+		System.out.println(mem_pw);
+		%> 
+			<span style="display:hidden" correct="false" id="pw_res"></span>
+			<script id="pw_ingage"> 
+				let pw = prompt("민감한 정보를 다루는 곳입니다.\n비밀번호를 입력하세요.");
+				
+				if (pw == null) {
+					res = "true";
+				} else {
+					location.href = "<%=cPath%>/user/pw_check.jsp?mem_pw="+pw
+				}
+				
+			</script>		
+		<%
+	} else {
+		%>
+		<script> alert("잘못된 접근입니다."); location.href = "<%= cPath%>/" </script>
+ 		<%
 	}
 %>
 <html>
@@ -162,7 +205,7 @@ function open_register() {
 </div>
   
 <!-- !PAGE CONTENT! -->
-<div class="w3-main w3-content w3-padding" style="max-width:1300px;margin-top:100px">
+<div class="w3-main w3-content w3-padding" style="max-width:1300px;margin-top:100px;height:920px;width:1300px">
 		
 	<div class="w3-row-padding w3-padding-16 w3-center w3-tooltip" id="food">
 		<table border="1" class="mypage" cellspacing="0" cellpadding="2" width="1250">
@@ -174,11 +217,23 @@ function open_register() {
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td align="center">
 					<div class="setting">
 						<div class="order" onclick="location.href='<%=cPath %>/mypage/personal.jsp'">
 							<span class="title">개인정보 확인/수정</span>
-						</div>		
+						</div>
+						
+						<div class="order" onclick="location.href='<%=cPath %>/mypage/order.jsp'">
+							<span class="title">주문내역</span>
+						</div>	
+						
+						<div class="mile" onclick="location.href='<%=cPath %>/mypage/mile.jsp'">
+							<span class="title">마일리지 적립/사용내역</span>
+						</div>
+						
+						<div class="unregi" onclick="location.href='<%=cPath %>/mypage/unregi.jsp'">
+							<span class="title">회원탈퇴</span>
+						</div>
 					</div>
 				</td>
 				<!-- 해당 위치 고정 -->
@@ -191,7 +246,7 @@ function open_register() {
 							<td>
 								<form action="<%=cPath %>/register/reg_proc.jsp" method="POST" class="joinForm" name="regFrom" style="transform: translate(-20%, -30%)">                                                                     
 							      <div class="textForm">
-							        <input name="mem_name" type="text" class="name" placeholder="이름">
+							        <input name="mem_name" type="text" class="regi_name" placeholder="이름">
 							      </div>
 							      <div class="textForm">
 							        <input name="mem_pw" type="password" class="pw" id="pw" placeholder="비밀번호" maxlength="23">
@@ -217,33 +272,6 @@ function open_register() {
 					</table>
 				</td>
 				<!-- 해당 위치 고정 -->
-			</tr>
-			<tr>
-				<td>
-					<div class="setting">
-						<div class="order" onclick="location.href='<%=cPath %>/mypage/order.jsp'">
-							<span class="title">주문내역</span>
-						</div>		
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<div class="setting">
-						<div class="mile" onclick="location.href='<%=cPath %>/mypage/mile.jsp'">
-							<span class="title">마일리지 적립/사용내역</span>
-						</div>
-					</div>
-				</td>
-			</tr>	
-			<tr>
-				<td>
-					<div class="setting">
-						<div class="unregi" onclick="location.href='<%=cPath %>/mypage/unregi.jsp'">
-							<span class="title">회원탈퇴</span>
-						</div>
-					</div>
-				</td>
 			</tr>
 		</table>
 	</div>
