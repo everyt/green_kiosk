@@ -36,17 +36,31 @@
 		}
 	}
 %>
-
+<script src="../../../assets/js/kiosk/purchase/getCookie.js"></script>
 <script>
 	if (<%=isCorrect%>) {
-		const coupon = {
-				name: '<%=coupon_bean.getCoupon_name()%>',
-				menuNo: '<%=coupon_bean.getCoupon_menuNo()%>',
-				discount: '<%=coupon_bean.getCoupon_discount()%>'
-		}
-		localstorage.setItem("coupon", coupon);
-		location.href = '../coupon.jsp?isCorrect=true';
+    const coupon = {
+	      code: <%=coupon_bean.getCoupon_code()%>,
+	      name: '<%=coupon_bean.getCoupon_name()%>',
+	      menuNo: <%=coupon_bean.getCoupon_menuNo()%>,
+	      discount: <%=coupon_bean.getCoupon_discount()%>
+    };
+    
+    let oldCoupons = '';
+    oldCoupons = getCookie('coupons');
+    
+    let coupons = JSON.stringify(coupon);
+    
+    let replaced_coupons = coupons.replace(/([|])/g, '');
+    
+    if (!(oldCoupons === undefined)) {
+    	replaced_coupons += ',' + oldCoupons;
+    }
+    
+    document.cookie = "coupons" + "=[" + encodeURIComponent(replaced_coupons) + "]; path=/;";
+		location.href = '../main.jsp?couponIsCorrect=true';
 	} else {
+	       
 		location.href = '../coupon.jsp?isCorrect=false';
 	}
 </script>
