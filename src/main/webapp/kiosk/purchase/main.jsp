@@ -5,11 +5,6 @@
     <meta charset="UTF-8" />
     <title>결제 시스템</title>
     <link rel="stylesheet" href="../../assets/css/purchase.css" />
-    <script>
-    	const hrefTo = (href) => {
-    		location.href(href);
-    	}
-    </script>
   </head>
   <body>
     <div class="rowbox">
@@ -28,9 +23,8 @@
           <div class="purchase-page-button-right"></div>
         </div>
         <div id="callPrice" style="width: 240px"></div>
+        <div id="discountedPrice" style="width: 240px"></div>
         <div id="discountPrice" style="width: 240px"></div>
-        <div id="payPrice" style="width: 240px"></div>
-        <div id="paidPrice" style="width: 240px"></div>
       </div>
       <div class="colbox">
         <div class="header" style="width: 244px; font-weight: 400; font-size: 1.2rem; border-radius: 0;">
@@ -38,42 +32,42 @@
           <span style="margin-left: 2vw">포장 선택</span>
         </div>
         <div class="rowbox">
-          <div class="payment-option small-font" style="border-bottom-width: 2px">
-            <img src="../../assets/svg/bag.svg" alt="bag" width="70" />
+          <div class="payment-option small-font" onClick="handleClick('bag')" style="border-bottom-width: 2px; cursor: pointer;">
+            <img id="bag" src="../../assets/svg/bag.svg" alt="bag" width="70" />
             <span>포장</span><span>(1회용기 제공)</span>
           </div>
-          <div class="payment-option small-font" style="border-right-width: 2px; border-bottom-width: 2px">
-            <img src="../../assets/svg/shop.svg" alt="shop" width="70" />
+          <div class="payment-option small-font" onClick="handleClick('shop')" style="border-right-width: 2px; border-bottom-width: 2px; cursor: pointer;">
+            <img id="shop" src="../../assets/svg/shop.svg" alt="shop" width="70" />
             <span>매장</span><span>(다회용기 제공)</span>
           </div>
         </div>
-        <div class="header" style="width: 244px; font-weight: 400; font-size: 1.2rem; border-radius: 0">
+        <div class="header" style="width: 244px; font-weight: 400; font-size: 1.2rem; border-radius: 0;">
           <span>STEP 2.</span>
           <span style="margin-left: 2vw">할인/적립</span>
         </div>
         <div class="rowbox">
-          <div class="payment-option small-font" style="border-bottom-width: 2px" onClick="hrefTo('./discount.jsp')">
-            <img src="../../assets/svg/coupon.svg" alt="coupon" width="80" />
+          <div class="payment-option small-font" onClick="handleClick('coupon')" style="border-bottom-width: 2px; cursor: pointer;">
+            <img id="coupon" src="../../assets/svg/coupon.svg" alt="coupon" width="80" />
             할인쿠폰 사용
           </div>
-          <div class="payment-option small-font" style="border-right-width: 2px; border-bottom-width: 2px">
-            <img src="../../assets/svg/smile.svg" alt="smile" width="80" />
-            마일리지 적립
+          <div class="payment-option small-font" onClick="handleClick('smile')" style="border-right-width: 2px; border-bottom-width: 2px; cursor: pointer;">
+            <img id="smile" src="../../assets/svg/smile.svg" alt="smile" width="80" />
+            마일리지
           </div>
         </div>
-        <div class="header" style="width: 244px; font-weight: 400; font-size: 1.2rem; border-radius: 0">
+        <div class="header" style="width: 244px; font-weight: 400; font-size: 1.2rem; border-radius: 0;">
           <span>STEP 3.</span>
           <span style="margin-left: 2vw">결제방법 선택</span>
         </div>
         <div class="rowbox">
-          <div class="payment-option small-font" style="border-bottom-width: 2px;">
-            <img src="../../assets/svg/creditcard.svg" alt="credit-card" width="80" />
+          <div class="payment-option small-font" onClick="handleClick('card')" style="border-bottom-width: 2px; cursor: pointer;">
+            <img id="card" src="../../assets/svg/card.svg" alt="credit-card" width="80" />
             신용/체크카드
           </div>
           <div
-            class="payment-option small-font"
-            style="border-right-width: 2px; border-bottom-width: 2px;">
-            <img src="../../assets/svg/phone.svg" alt="phone" width="80" />
+            class="payment-option small-font" onClick="handleClick('mobile')"
+            style="border-right-width: 2px; border-bottom-width: 2px; cursor: pointer;">
+            <img id="mobile" src="../../assets/svg/mobile.svg" alt="phone" width="80" />
             모바일/바코드
           </div>
         </div>
@@ -91,12 +85,88 @@
       //   count: '갯수',
       //   price: '가격',
       // }]
+      
+   	  [
+   		  'bag',
+   		  'shop',
+   		  'coupon',
+   		  'smile',
+   		  'card',
+   		  'mobile',
+   	  ].forEach(v => {
+   	      const element = document.getElementById(v);
+   		  if (JSON.parse(localStorage.getItem(v))) {
+   	    		element.src = '../../assets/svg/check.svg';
+   		  } else {
+ 	    		element.src = '../../assets/svg/' + v + '.svg';
+   		  }
+   	  })
+      
+	  const hrefTo = (href) => {
+	    location.href = href;
+	  }
+      
+      const changeIcon = (str, boolean) => {
+    	const element = document.getElementById(str);
+    	const src = '../../assets/svg/' + str + '.svg';
+    	const check = '../../assets/svg/check.svg';
+    	let isChecked = false;
+    	
+    	const selectOne = (se1, se2) => {
+       	  if (str === se1) {
+       		const doubleCheck = JSON.parse(localStorage.getItem(se2));
+       		if (doubleCheck) {
+       	      localStorage.setItem(se2, false);
+         	  document.getElementById(se2).src = '../../assets/svg/' + se2 + '.svg';
+       	      isChecked = false;
+       		}
+       	  }
+    	}
+    	
+        if (!(localStorage.getItem(str) === null)) {
+        	isChecked = JSON.parse(localStorage.getItem(str));
+        	selectOne('bag', 'shop');
+        	selectOne('shop', 'bag');
+        	selectOne('card', 'mobile');
+        	selectOne('mobile', 'card');
+        }
+    	if (isChecked) {
+    		isChecked = false;
+    		element.src = src;
+    	} else {
+    		isChecked = true;
+    		element.src = check;
+    	}
+    	localStorage.setItem(str, isChecked);
+      }
+      
+      const handleClick = (who) => {
+        changeIcon(who);
+        
+    	if (who === 'coupon' || who === 'smile') {
+    		hrefTo(who + '.jsp');
+    	}
+      }
+	  const inputDigits = (i) => {
+		const str = i.toString();
+	   	const l = str.length;
+	   	let result = '';
+	   	let j = 0;
+	   	
+	   	for (let k = l - 1; k >= 0; k--) {
+	   	  j++;
+	   	  result += str[k];
+	   	  if (j % 3 === 0) result += ',';
+	   	}
+	   		
+	   	return result.split('').reverse().join('');
+	  }
 
       let basketArray = [];
       let basketLength = 0;
 
       if (JSON.parse(localStorage.getItem('basketArray')) === null) {
-        // devMode;
+        // devMode; 개발이 끝나면 예외처리
         basketArray = [
           {
             index: 0,
@@ -110,11 +180,6 @@
         basketArray = JSON.parse(localStorage.getItem('basketArray'));
         basketLength = basketArray.length;
       }
-      
-      let callPrice = 0;
-      basketArray.forEach(v => callPrice += v.price);
-
-      document.getElementById('callPrice').innerHTML = '주문금액: ' + callPrice;
 
       const basketPages = Math.floor(basketLength / 10);
 
@@ -159,9 +224,32 @@
 
       getnerateBasketPageButtonHTML();
       
-      document.getElementById('discountPrice').innerHTML = '할인금액: 0';
-      document.getElementById('payPrice').innerHTML = '결제할금액: 0';
-      document.getElementById('paidPrice').innerHTML = '결제한금액: 0';
+      let callPrice = 0;
+      basketArray.forEach(v => callPrice += v.price);
+
+      document.getElementById('callPrice').innerHTML = '<div class="flex-between""><span class="price-name">주문금액:</span><span class="price-value">' + inputDigits(callPrice) + '</span></div>';
+
+      let couponArray = [];
+      let discountedPrice = 0;
+      let discountPrice = 0;
+
+      if (JSON.parse(localStorage.getItem('couponArray')) === null) {
+        // devMode; 개발이 끝나면 예외처리
+        couponArray = {
+          name: '테스트',
+          menuNo: 1,
+          discount: 50,
+        };
+        discountPrice = callPrice / Math.floor(1000 / couponArray.discount) * 10;
+        discountedPrice = callPrice - discountPrice;
+      } else {
+        basketArray = JSON.parse(localStorage.getItem('couponArray'));
+        discountPrice = callPrice / Math.floor(1000 / couponArray.discount) * 10;
+        discountedPrice = callPrice - discountPrice;
+      }
+      
+      document.getElementById('discountedPrice').innerHTML = '<div class="flex-between"><span class="price-name">할인금액:</span><span class="price-value">' + inputDigits(discountedPrice) + '</span></div>';
+      document.getElementById('discountPrice').innerHTML = '<div class="flex-between" style="background-color: #bb2649; color: white; font-weight: 500;"><span class="price-name">결제할금액:</span><span class="price-value">' + inputDigits(discountPrice) + '</span></div>';
     </script>
   </body>
 </html>
