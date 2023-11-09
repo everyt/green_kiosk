@@ -5,15 +5,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<%@ page import="java.util.Vector" %>
-<%@ page import= "menu.Manager_Menu" %>
-<%@ page import= "menu.Menu_menu_Bean" %>
-<jsp:useBean id="menuMgr" class="menu.Manager_Menu" />
+<%@ include file="/admin/layouts/BeanManager.jsp" %>
+<%@ include file="/admin/layouts/indexBase.jsp" %>
 <%@ include file="/admin/layouts/bootstrap.jsp"%> 
 <%@ include file="/admin/admin_check/check.jsp" %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/admin/menu.css" />
+<%@ include file="/admin/layouts/header.jsp" %>
+
 </head>
 <body>
+<%@ include file="/admin/layouts/left.jsp" %>
+<%@ include file="/admin/layouts/main.jsp" %>
 <main>
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
@@ -21,7 +23,7 @@
         <h1 class="fw-light">메뉴 관리 페이지</h1>
         <p class="lead text-body-secondary"></p>
         <p>
-          <a href="javascript:void(0)" class="btn btn-primary my-2" onclick="loadContent('<%=request.getContextPath()%>/admin/Menu/upload.jsp')">제품 등록하기</a>
+          <a href="javascript:void(0)" class="btn btn-primary my-2" onclick="openPopup('<%=request.getContextPath()%>/admin/Menu/upload.jsp')">제품 등록하기</a>
           <!-- <a href="#" class="btn btn-secondary my-2"></a> -->
         </p>
       </div>
@@ -32,6 +34,7 @@
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       <%
+      	int menu_no = 0;
 		String menu_imgPath = null;
 		String menu_name = null;
 		String menu_gubn = null;
@@ -45,6 +48,7 @@
 		int vlistsize = vlist.size();
 		
 		for (Menu_menu_Bean bean : vlist) {
+			menu_no = bean.getMenu_no();
 			menu_name = bean.getMenu_name();
 			menu_gubn = bean.getMenu_gubn();
 			menu_price = bean.getMenu_price();
@@ -63,10 +67,13 @@
               <p class="card-text" align="center"><%=menu_content%></p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                  <a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup('<%=request.getContextPath()%>/admin/Menu/View.jsp?menu_no=<%=menu_no%>')">상세보기</a>
+                  <a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup('<%=request.getContextPath()%>/admin/Menu/Edit.jsp?menu_no=<%=menu_no%>')">수정하기</a>
                 </div>
-                <small class="text-body-secondary">9 mins</small>
+                <%
+                	String menu_price1 = formatNumber(menu_price);
+                %>
+                <small class="text-body-secondary"><%=menu_price1%>원</small>
               </div>
             </div>
           </div>
@@ -92,5 +99,17 @@
 
     
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	<%!
+    public String formatNumber(double number) {
+        // 숫자를 3자리마다 쉼표로 구분
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
+        return df.format(number);
+    }
+	
+	public String formatTime(Long number) {
+		java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
+		return df.format(number);
+	}
+%>
 </body>
 </html>

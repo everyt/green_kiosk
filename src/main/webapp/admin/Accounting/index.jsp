@@ -1,23 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+
+String cPath = request.getContextPath();
+String url1 = "../Accounting/sales/ac00.jsp";
+String url2 = "../Accounting/inventory/iv00.jsp";
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>관리자 페이지</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/admin/style.css">
 </head>
+<html>
 <body>
-	
-	<form name="readFrm" method="get">
-		<input type="button" value="매출 내역" onClick="location.href='Accounting/sales/ac00.jsp'"> &nbsp; &nbsp;
-		<input type="button" value="재고 관리" onClick="location.href='Accounting/inventory/iv00.jsp'"> &nbsp; &nbsp; 
-	</form>
-
+<table width="1280" cellpadding="0" cellspacing="0" >
+		<tr>
+			<td width="250">&nbsp;</td>
+			<td><input type="button" value="매출 관리 페이지"  onClick="loadContent('Accounting/sales/ac00.jsp')"></td>
+			<td><input type="button" value="재고 관리 페이지" onClick="loadContent('Accounting/inventory/iv00.jsp')"></td>
+	    </tr>
+	</table>
 </body>
 </html>
+
