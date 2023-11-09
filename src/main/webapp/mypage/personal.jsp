@@ -10,22 +10,43 @@
 	Object pw_ok = session.getAttribute("pw_ok");
 	if (pw_ok != null) {
 		String s_pw_ok = String.valueOf(pw_ok);
-		if (failed_count != null) {
-			Integer f_count = Integer.parseInt(String.valueOf(failed_count));
-			if (f_count >= 3) {
-				session.invalidate();
+		if (s_pw_ok.equals("true")) {
+			session.setAttribute("pw_ok", null);
+			session.setAttribute("failed_count", null);
+			%>
+			<script>res = "true"</script>
+			<%
+		} else {
+			if (failed_count != null) {
+				Integer f_count = Integer.parseInt(String.valueOf(failed_count));
+				System.out.println("personal 22: "+f_count);
+				if (f_count > 3) {
+					session.invalidate();
+					%>
+						<script>				
+							alert("비밀번호 오류 허용 횟수 3회를 초과하였습니다.\n강제 로그아웃됩니다.");
+							location.href="<%=cPath%>/";
+						</script>
+					<%
+				} else {
+					System.out.println("personal 32: in");
+					f_count = f_count + 1;
+					Integer rem = 4 - f_count;
+					%>
+						<script>				
+							alert("비밀번호가 틀렸습니다.\n남은 오류 허용 횟수 <%=rem%>회\n횟수를 모두 소진하면 강제 로그아웃됩니다.");
+						</script>
+					<%
+					session.setAttribute("failed_count", f_count);
+				}
+			} else {
 				%>
 					<script>				
-						alert("비밀번호 오류 허용 횟수 3회를 초과하였습니다.\n강제 로그아웃됩니다.");
-						location.href="<%=cPath%>/";
+						alert("비밀번호가 틀렸습니다.\n남은 오류 허용 횟수 3회\n횟수를 모두 소진하면 강제 로그아웃됩니다.");
 					</script>
 				<%
-			} else {
-				f_count = f_count + 1;
-				session.setAttribute("failed_count", f_count);
+				session.setAttribute("failed_count", 1);
 			}
-		} else {
-			session.setAttribute("failed_count", 1);
 		}
 	}
 	Member_Mgr u_mgr = new Member_Mgr();
@@ -38,16 +59,16 @@
 		mem_pw = bean.getMem_pw();
 		System.out.println(mem_pw);
 		%> 
-			<span style="display:hidden" correct="false" id="pw_res"></span>
 			<script id="pw_ingage"> 
-				let pw = prompt("민감한 정보를 다루는 곳입니다.\n비밀번호를 입력하세요.");
-				
-				if (pw == null) {
-					res = "true";
-				} else {
-					location.href = "<%=cPath%>/user/pw_check.jsp?mem_pw="+pw
+				if (res != "true") {
+					let pw = prompt("민감한 정보를 다루는 곳입니다.\n비밀번호를 입력하세요.");
+					
+					if (pw == null) {
+						history.back();
+					} else {
+						location.href = "<%=cPath%>/user/pw_check.jsp?mem_pw="+pw
+					}
 				}
-				
 			</script>		
 		<%
 	} else {

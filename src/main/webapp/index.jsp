@@ -13,6 +13,7 @@
 		mem_ac = bean.getMem_ac();
 	}
 %>
+
 <html>
 <head>
 <title>W3.CSS Templatee</title>

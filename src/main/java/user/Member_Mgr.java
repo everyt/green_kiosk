@@ -144,7 +144,6 @@ public class Member_Mgr {
 				bean.setMem_ac(rs.getString("mem_ac"));
 				bean.setMem_mile(rs.getInt("mem_mile"));
 				bean.setMem_coupon(rs.getString("mem_coupon"));
-				System.out.println("mem_ac : " + rs.getString("mem_ac"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

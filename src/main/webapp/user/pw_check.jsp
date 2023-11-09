@@ -44,18 +44,23 @@
 	PrintWriter script = response.getWriter();
 	
 	if (result) {
+		session.setAttribute("pw_ok", "true");
+		session.setAttribute("failed_count", 0);
 		%>
 			<script>
-				opener.document.getElementById("pw_res").attributes.correct.value = "true";
-				self.close();
+				if (beforeurl.includes("/mypage/personal")){
+					location.href = "<%=cPath%>/mypage/personal.jsp"
+				}
 			</script>
 		<%
 	} else {
+		session.setAttribute("pw_ok", "false");
 		%>
-		<script>
-			opener.document.getElementById("pw_res").attributes.correct.value = "false";
-			self.close();
-		</script>
-	<%
+			<script>
+				if (beforeurl.includes("/mypage/personal")){
+					location.href = "<%=cPath%>/mypage/personal.jsp"
+				}
+			</script>
+		<%
 	}
 %>
