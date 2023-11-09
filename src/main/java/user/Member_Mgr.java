@@ -251,5 +251,7 @@ public class Member_Mgr {
 		}
 		return bean;
 	}
+	
+	
 }
 
