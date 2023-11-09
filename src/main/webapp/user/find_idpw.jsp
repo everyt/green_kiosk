@@ -164,11 +164,42 @@ function open_register() {
 		
 	<div class="w3-row-padding w3-padding-16 w3-center w3-tooltip" id="food">
 		<!-- 여기부터 작업 시작 -->
-	</div>
+		
+
+
+	<script>
+	function clickLogin(){
+		document.fm.action="#이동할 컨트롤러";
+		document.fm.method="post";
+	}
+</script>
+<form action="test.jsp">
+	<table>
+		<!-- 아이디 비밀번호 찾는 페이지 
+		find_idpw.jsp 페이지에서는 이름과 전화번호를 input태그를 통해서 입력 받아야 한다. -->
+	    <tr>
+	      <td>이름 :</td>
+	      <td><input type="text" required name="name"></td>
+	    </tr>
+	    <tr>
+	      <td>전화번호 :</td>
+	      <td><input type="text" required name="phone"></td>
+	    </tr>
+	    <tr>
+	      <td colspan="2">
+	        <button type="submit"><span>아이디찾기</span></button>
+	      </td>
+	    </tr>
+	</table>
+</form>
+
+
 
   
   <hr id="about">
   
+  
+ 
   <!-- Footer -->
 
     <div class="w3-third w3-serif">
