@@ -29,27 +29,26 @@ public class Eventmenu_Mgr {
 		try {
 			this.conn = pool.getConnection();
 			this.pst = conn.prepareStatement(query);
-		} catch (Exception e) {
+        } catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	//커넥션 풀 해제
-	private void Closer() {
-		int flag = 0;
-		if (this.conn != null) {
-			flag += 1;
-		}
-		if (this.pst != null) {
-			flag += 1;
-		}
-		if (flag == 1) {
-			pool.freeConnection(this.conn);
-		} else if (flag == 2) {
-			pool.freeConnection(this.conn, this.pst);
-		} else {
-			pool.freeConnection(this.conn, this.pst, this.rs);
-		}
-	}
+    private void Closer() {
+        try {
+            if (this.rs != null) {
+                this.rs.close();
+            }
+            if (this.pst != null) {
+                this.pst.close();
+            }
+            if (this.conn != null) {
+                pool.freeConnection(this.conn);
+            }
+        } catch (Exception e) {
+			e.printStackTrace();
+        }
+    }
 	
 	public Vector<Eventmenu_Bean> readAllEventmenuByEventNo(int eventNo) {
 		Vector<Eventmenu_Bean> vector = new Vector<Eventmenu_Bean>();
@@ -65,8 +64,8 @@ public class Eventmenu_Mgr {
 	            bean.setEventMenu_discount(this.rs.getInt("eventMenu.discount"));
 	            vector.add(bean);
 	        }
-		} catch (Exception error) {
-			error.printStackTrace();
+        } catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			this.Closer();
 		}
@@ -87,8 +86,8 @@ public class Eventmenu_Mgr {
 	            bean.setEventMenu_discount(this.rs.getInt("eventMenu.discount"));
 	            vector.add(bean);
 	        }
-		} catch (Exception error) {
-			error.printStackTrace();
+        } catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			this.Closer();
 		}
@@ -126,8 +125,8 @@ public class Eventmenu_Mgr {
 			if (this.pst.executeUpdate() == 1) {
 				flag = true;
 			};
-		} catch (Exception error) {
-			error.printStackTrace();
+        } catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			this.Closer();
 		}
@@ -146,8 +145,8 @@ public class Eventmenu_Mgr {
 			if (this.pst.executeUpdate() == 1) {
 				flag = true;
 			};
-		} catch (Exception error) {
-			error.printStackTrace();
+        } catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			this.Closer();
 		}

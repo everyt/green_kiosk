@@ -19,12 +19,12 @@
 <title>할인쿠폰 사용</title>
 <link rel='stylesheet' href='../../assets/css/purchase.css' />
 </head>
-<body>
+<body style="overflow: hidden;">
   <div class="header"><span>할인쿠폰 사용</span></div>
   <div class="payment-card within-top-border" style='height: 500px;'>
     <img src="../../assets/svg/coupon.svg" alt="coupon" width='100' style='margin-bottom: 5px;' />
     <div class="rowbox">
-	    <div class="colbox" style="border: 2px solid #eee; padding: 10px; margin-right: 16px;">
+	    <div id="couponDOM2" class="colbox" style="border: 2px solid #eee; padding: 10px; margin-right: 16px;">
 	      <!-- 여기서 쿠폰 리스트 JS로 표시, 정해진 줄 길이, 넘어가면 페이지로,  -->
 	      <span style="width: 120px; background-color: #eee; border: 2px solid #ddd; align-self: center; padding: 3px 0;">적용된 쿠폰</span>
 	      <div id="couponDOM"></div>
@@ -35,7 +35,7 @@
 		      <input type="text"
 		       id='couponCode'
 		       name='couponCode'
-		       size="20"
+		       size="16"
 		       style='
 		        margin-bottom: 24px;
 		        font-size: 1.2rem;
@@ -71,7 +71,7 @@
     </div>
   </div>
   <div class="rowbox">
-    <div class="payment-cancle" onClick="handleCouponForm()">확인</div>
+    <div class="payment-ok" onClick="handleCouponForm()">확인</div>
     <div class="payment-cancle" onClick="back()">취소</div>
   </div>
   <script src="../../assets/js/kiosk/purchase/getCookie.js"></script>
@@ -99,16 +99,14 @@
     const generateCouponHTML = (arr, count) => {
       let couponHTML = '';
       
-      if (arr === []) {
-        couponHTML += `<div class='rowbox' style='border: solid #ddd; border-width: 0 0 2px 0; align-self: center; padding: 3px 0;'>`;
-        couponHTML += `<span style='width: 120px;'>없음</span>`;
-        couponHTML += `</div>`;
-      } else {
+      if (!arr === []){
         for (let i = 0; i < count; i++) {
           couponHTML += `<div class='rowbox' style='border: solid #ddd; border-width: 0 0 2px 0; align-self: center; padding: 3px 0;'>`;
           couponHTML += `<span style='width: 120px;'>` + arr[i].name + `</span>`;
           couponHTML += `</div>`;
         }
+      } else {
+    	  document.getElementById('couponDOM2').style.display = 'none';
       }
 
       const couponElement = document.getElementById('couponDOM');
@@ -118,14 +116,7 @@
     
     let couponArray = [];
 
-    if (getCookie('coupons') === undefined) {
-      // devMode; 개발이 끝나면 예외처리
-      couponArray = [{
-        name: '테스트',
-        menuNo: 1,
-        discount: 50,
-      }];
-    } else {
+    if (!getCookie('coupons') === undefined) {
       couponArray = JSON.parse(decodeURIComponent(getCookie('coupons')));
     }
     

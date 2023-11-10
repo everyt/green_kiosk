@@ -34,23 +34,22 @@ public class Coupon_Mgr {
 		}
 	}
 	//커넥션 풀 해제
-	private void Closer() {
-		int flag = 0;
-		if (this.conn != null) {
-			flag += 1;
-		}
-		if (this.pst != null) {
-			flag += 1;
-		}
-		if (flag == 1) {
-			pool.freeConnection(this.conn);
-		} else if (flag == 2) {
-			pool.freeConnection(this.conn, this.pst);
-		} else {
-			pool.freeConnection(this.conn, this.pst, this.rs);
-		}
-	}
-	
+    private void Closer() {
+        try {
+            if (this.rs != null) {
+                this.rs.close();
+            }
+            if (this.pst != null) {
+                this.pst.close();
+            }
+            if (this.conn != null) {
+                pool.freeConnection(this.conn);
+            }
+        } catch (Exception e) {
+			e.printStackTrace();
+        }
+    }
+
 	public Vector<Coupon_Bean> readAllCoupon() {
 		Vector<Coupon_Bean> vector = new Vector<Coupon_Bean>();
 		try {
@@ -69,8 +68,8 @@ public class Coupon_Mgr {
 	            bean.setCoupon_limitTime2(this.rs.getTimestamp("coupon_limitTime2"));
 	            vector.add(bean);
 	        }
-		} catch (Exception error) {
-			error.printStackTrace();
+        } catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			this.Closer();
 		}
@@ -86,8 +85,8 @@ public class Coupon_Mgr {
 	        if (this.rs.next()) {
 	            result = this.rs.getString("coupon_name");
 	        }
-		} catch (Exception error) {
-			error.printStackTrace();
+        } catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			this.Closer();
 		}
@@ -111,8 +110,8 @@ public class Coupon_Mgr {
 	            bean.setCoupon_limitTime1(this.rs.getTimestamp("coupon_limitTime1"));
 	            bean.setCoupon_limitTime2(this.rs.getTimestamp("coupon_limitTime2"));
 	        }
-		} catch (Exception error) {
-			error.printStackTrace();
+        } catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			this.Closer();
 		}
@@ -128,8 +127,8 @@ public class Coupon_Mgr {
 	        if (this.rs.next()) {
 	            result = this.rs.getInt("coupon_no");
 	        }
-		} catch (Exception error) {
-			error.printStackTrace();
+        } catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			this.Closer();
 		}
@@ -153,8 +152,8 @@ public class Coupon_Mgr {
 			if (this.pst.executeUpdate() == 1) {
 				flag = true;
 			};
-		} catch (Exception error) {
-			error.printStackTrace();
+        } catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			this.Closer();
 		}
@@ -179,8 +178,8 @@ public class Coupon_Mgr {
 			if (this.pst.executeUpdate() == 1) {
 				flag = true;
 			};
-		} catch (Exception error) {
-			error.printStackTrace();
+        } catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			this.Closer();
 		}
@@ -195,8 +194,8 @@ public class Coupon_Mgr {
 			if (this.pst.executeUpdate() == 1) {
 				flag = true;
 			};
-		} catch (Exception error) {
-			error.printStackTrace();
+        } catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			this.Closer();
 		}

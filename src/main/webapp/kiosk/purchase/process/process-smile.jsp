@@ -26,16 +26,28 @@
 
 <script>
   if (<%=isCorrect%>) {
+	  const value = "";
+	  if ('<%=smileType%>' === 'phoneNumber') {
+		  value = '<%=member_bean.getMem_phone()%>';
+	  } else {
+	    value = '<%=member_bean.getMem_id()%>';
+	  }
+	  
     const smile = {
         index: '<%=member_bean.getMem_no()%>',
         name: '<%=member_bean.getMem_name()%>',
         mileage: '<%=member_bean.getMem_mile()%>',
+        value: value,
+        type: '<%=smileType%>',
     }
     
     document.cookie = "smile" + "=[" + encodeURIComponent(JSON.stringify(smile)) + "]; path=/;";
     
     location.href = '../main.jsp?smileIsCorrect=true';
   } else {
+	  
+	  
+	  
     location.href = '../smile.jsp?isCorrect=false';
   }
 </script>
