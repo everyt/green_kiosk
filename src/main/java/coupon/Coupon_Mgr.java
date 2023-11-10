@@ -1,12 +1,12 @@
 package coupon;
 
-import DBconnector.DBConnectionMgr;
+import all.DBConnectionMgr;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
 
-/*
+/**
  * Wrote by GwakTaeWoong
  */
 
@@ -117,6 +117,23 @@ public class Coupon_Mgr {
 			this.Closer();
 		}
 		return bean;
+	}
+	
+	public int checkCouponCode(String code) {
+		int result = 0;
+		try {
+			this.Initializer("SELECT coupon_no FROM coupon WHERE coupon_code=?");
+			this.pst.setString(1, code);
+			this.rs = this.pst.executeQuery();
+	        if (this.rs.next()) {
+	            result = this.rs.getInt("coupon_no");
+	        }
+		} catch (Exception error) {
+			error.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+		return result;
 	}
 	
 	public boolean createCoupon(Coupon_Bean bean) {

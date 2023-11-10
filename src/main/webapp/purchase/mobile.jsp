@@ -53,7 +53,7 @@
     MicroModal.init();
     
   	const back = () => {
-  		sessionStorage.setItem('mobile', false);
+ 	  localStorage.setItem('mobile', false);
   	  location.href = 'main.jsp';
   	}
   	const hrefTo = (type) => {
