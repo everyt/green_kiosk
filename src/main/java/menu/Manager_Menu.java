@@ -225,26 +225,19 @@ public class Manager_Menu {
 		}
 	
 	    // 1. 메뉴 관리 페이지 - 토핑 메뉴 추가
-		public boolean insertTopingMenu(Menu_menu_Bean bean) {
-			
+		public boolean insertTopingMenu(Menu_component_Bean bean) {
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			String sql = null;
 			boolean flag = false;
 			try {
 				con = pool.getConnection();
-				sql = "insert menu_menu(menu_name, menu_gubn, menu_isSale, menu_imgPath, menu_component,"
-						+ "menu_price, menu_sell_amount, menu_recommend) values(?,?,?,?,?,?,?,?)";
+				sql = "INSERT INTO menu_component (component_name, component_price, component_amount, component_imgPath) values(?,?,?,?)";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, bean.getMenu_name());
-				pstmt.setString(2, bean.getMenu_gubn());
-				pstmt.setInt(3, bean.getMenu_isSale());
-				pstmt.setString(4, bean.getMenu_imgPath());
-				pstmt.setString(5, bean.getMenu_component());
-				pstmt.setInt(6, bean.getMenu_price());
-				pstmt.setInt(7, bean.getMenu_sell_amount());
-				pstmt.setInt(8, bean.getMenu_recommend());
-						
+				pstmt.setString(1, bean.getComponent_name());
+				pstmt.setInt(2, bean.getComponent_price());
+				pstmt.setInt(3, bean.getComponent_amount());
+				pstmt.setString(4, bean.getComponent_imgPath());
 				if (pstmt.executeUpdate() == 1)
 					flag = true;
 			} catch (Exception e) {
