@@ -31,20 +31,18 @@
 		int menu_isUse = 0;
 		int menu_isSale = 0;
 		int count = 0;
+		int menu_amount = 0;
 	
 		
-		Vector<Menu_menu_Bean> vlist = menuMgr.getMenuList();
+		Vector<Menu_component_Bean> vlist = menuMgr.getComponenctlist();
 		int vlistsize = vlist.size();
 		
-		for (Menu_menu_Bean bean : vlist) {
-			menu_no = bean.getMenu_no();
-			menu_name = bean.getMenu_name();
-			menu_gubn = bean.getMenu_gubn();
-			menu_price = bean.getMenu_price();
-			menu_content = bean.getMenu_content();
-			menu_imgPath = bean.getMenu_imgPath();
-			menu_isUse = bean.getMenu_isUse();
-			menu_isSale = bean.getMenu_isSale();
+		for (Menu_component_Bean bean : vlist) {
+			menu_no = bean.getComponent_no();
+			menu_name = bean.getComponent_name();
+			menu_price = bean.getComponent_price();
+			menu_imgPath = bean.getComponent_imgPath();
+			menu_amount = bean.getComponent_amount();
 			count++;
 		
       %>
@@ -166,5 +164,26 @@ function closePopup(popup) {
 		window.open('', 'aaa','width=300,height=200,scrollbars=no,resizable=no,status=yes,menubar=no,toolbar=no,top=50,left=50');
 		document.regFrm.target = 'aaa'
 		document.regFrm.submit();	
+	}
+	
+	function sub2() {
+		let frm = document.regFrm; 
+		let no = frm.component_no.value;
+		let name = frm.component_name.value;
+		let price = frm.component_price.value;
+		let amount = frm.component_amount.value;
+		let component_imgPath = frm.component_imgPath.value;
+		fetch("<%=request.getContextPath()%>/api/admin/edit_jaego?no="+no+"&name="+name+"&price="+price+"&amount="+amount+"&imgpath="+component_imgPath, {
+			method: "post"
+		}).then(response => {
+			response.json().then((res) => {
+				if (res.result == "success") {
+					alert("수정에 성공했습니다")
+					loadContent('inventory/iv00.jsp');
+				} else {
+					alert("변경에 실패했습니다")
+				}
+			})
+		})
 	}
 </script>

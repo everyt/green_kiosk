@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ page import="menu.Menu_component_Bean"%>
 <jsp:useBean id="menuMgr" class="menu.Manager_Menu"/>
 <%
@@ -31,7 +31,7 @@
 							<tr>
 								<td>재료 이름</td>
 								<td><input name="component_name" size="15"
-									value="<%=cmBean.getComponent_name()%>" readonly ></td>
+									value="<%=cmBean.getComponent_name()%>"></td>
 							</tr>
 							<tr>
 								<td>재료 가격</td>
@@ -51,7 +51,7 @@
 							</tr>        
 							<tr>
 								<td colspan="3" align="center">
-								<input onclick="sub()" type="button" value="수정완료"> &nbsp; &nbsp; 
+								<input onclick="sub2()" type="button" value="수정완료"> &nbsp; &nbsp; 
 								<input type="reset" value="다시쓰기"> &nbsp; &nbsp; 
 								<input type="button" value="메인 화면" onClick="history.go(-1)"></td>						
 							</tr>
