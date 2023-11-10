@@ -16,7 +16,7 @@
 	  }
 	  if (request.getParameter("menuType") != null && !request.getParameter("menuType").isEmpty())
 	  {
-		  menuType = "main";
+		  menuType = request.getParameter("menuType");
 	  } else if (request.getParameter("menuType") == null && menuType == null){
 	  
 			  PrintWriter script = response.getWriter();
@@ -25,14 +25,13 @@
 			  script.println("history.back()");
 			  script.println("</script>");
 		  }
-	
 	  %>
 	  <%
 	  //menu page 일 경우 
 	  if(menuType.equals("menu")) { %>
-	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/admin/layouts/menu_main.jsp')">전체 메뉴</a>
-	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)">Link</a>
-	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)">Link</a>
+	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/admin/layouts/Menu/menu_main.jsp')">전체</a>
+	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/admin/layouts/Menu/menu_single.jsp')">단품</a>
+	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/admin/layouts/Menu/menu_drink.jsp')">음료</a>
 	  <%
 	  //Event page 일 경우 
 	  } else if (menuType.equals("Event")){ %>

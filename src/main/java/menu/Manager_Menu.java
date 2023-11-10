@@ -84,6 +84,9 @@ public class Manager_Menu {
 			} else if (type == 2)
 			{
 				sql = "SELECT * FROM menu WHERE menu_gubn = '세트' ORDER BY menu_no DESC";
+			} else if (type == 3)
+			{
+				sql = "SELECT * FROM menu WHERE menu_gubn = '음료' ORDER BY menu_no DESC";
 			}
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
