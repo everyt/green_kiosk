@@ -37,45 +37,115 @@
 		    menu_isUse = 1;
 		}
 		
-		if (multi.getParameter("menu_name") != null && !multi.getParameter("menu_name").isEmpty() && 
-			    multi.getParameter("menu_gubn") != null && !multi.getParameter("menu_gubn").isEmpty() &&
-			    multi.getParameter("menu_price") != null && !multi.getParameter("menu_price").isEmpty() &&
-			    multi.getParameter("menu_content") != null && !multi.getParameter("menu_content").isEmpty())
+/***************************************************************************************************************************************************************************
+																				입력값 불러오기
+****************************************************************************************************************************************************************************/
+		String menu_gubn = null;
+		if (multi.getParameter("menu_gubn") != null && !multi.getParameter("menu_gubn").isEmpty())
 		{
-		String fileName = multi.getFilesystemName("menu_imgPath");
-		String menu_name = multi.getParameter("menu_name");
-		String menu_gubn = multi.getParameter("menu_gubn");
-		int menu_price = Integer.parseInt(multi.getParameter("menu_price"));
-		String menu_content = multi.getParameter("menu_content");
+			menu_gubn = multi.getParameter("menu_gubn");
+/***************************************************************************************************************************************************************************
+																				재료 추가 하기
+****************************************************************************************************************************************************************************/
 
-		if (multi.getParameter("menu_gubn").equals("재료")){
-			
-		} else if (multi.getParameter("menu_gubn").equals("이벤트")){
-			
-		} else {
-				menuBean = new Menu_menu_Bean();
-				menuBean.setMenu_name(menu_name);
-				menuBean.setMenu_gubn(menu_gubn);
-				menuBean.setMenu_isSale(menu_isSale);
-				menuBean.setMenu_imgPath(fileName);
-				menuBean.setMenu_price(menu_price);
-				menuBean.setMenu_content(menu_content); 
-				menuBean.setMenu_isUse(menu_isUse);
-				menuBean.setMenu_component("0");
-				menuBean.setMenu_sell_amount(0);
-				menuBean.setMenu_recommend(0);
-				boolean result = menuMgr.insertMenu(menuBean);
+			//menu_gubn이 menu_component 항목일 때 
+			if (menu_gubn.equals("재료")){
+				if (multi.getParameter("menu_name") != null && !multi.getParameter("menu_name").isEmpty() &&
+					multi.getParameter("menu_price") != null && !multi.getParameter("menu_price").isEmpty())
+					{
+					String menu_name = multi.getParameter("menu_name");
+					int menu_price = Integer.parseInt(multi.getParameter("menu_price"));
+					String fileName = multi.getFilesystemName("menu_imgPath");
+						menuComponentBean = new Menu_component_Bean();
+						menuComponentBean.setComponent_name(menu_name);
+						menuComponentBean.setComponent_amount(0);
+						menuComponentBean.setComponent_imgPath(fileName);
+						menuComponentBean.setComponent_price(menu_price);
+						boolean result = menuMgr.insertTopingMenu(menuComponentBean);
+						//table insert에 성공 했을 경우
+						if (result == true)
+						{
+							PrintWriter script = response.getWriter();
+							script.println("<script>");
+							script.println("window.close();");
+							script.println("window.opener.location.reload();");
+							script.println("</script>");
+							//table insert 실패 했을 경우
+						} else {
+							PrintWriter script = response.getWriter();
+							script.println("<script>");
+							script.println("alert('정보 등록에 실패했습니다.')");
+							script.println("history.back()");
+							script.println("</script>");
+						}
+					}
+				}
+/***************************************************************************************************************************************************************************
+			 																이벤트 메뉴 추가 하기
+****************************************************************************************************************************************************************************/
+			//menu_gubn이 event 항목일 때 
+			else if (menu_gubn.equals("이벤트")){
+					eventMenuBean = new Eventmenu_Bean();
+			} 
+/***************************************************************************************************************************************************************************
+																			일반 메뉴 추가 하기
+****************************************************************************************************************************************************************************/
+			//menu_gubn이 menu 항목 일 때
+			else {
+			if (multi.getParameter("menu_name") != null && !multi.getParameter("menu_name").isEmpty() &&
+				    multi.getParameter("menu_price") != null && !multi.getParameter("menu_price").isEmpty() &&
+				    multi.getParameter("menu_content") != null && !multi.getParameter("menu_content").isEmpty())
+			{
+				String fileName = multi.getFilesystemName("menu_imgPath");
+				String menu_name = multi.getParameter("menu_name");
+				int menu_price = Integer.parseInt(multi.getParameter("menu_price"));
+				String menu_content = multi.getParameter("menu_content");
 				
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("location.href='index.jsp';");
-				script.println("</script>");
+					menuBean = new Menu_menu_Bean();
+					menuBean.setMenu_name(menu_name);
+					menuBean.setMenu_gubn(menu_gubn);
+					menuBean.setMenu_isSale(menu_isSale);
+					menuBean.setMenu_imgPath(fileName);
+					menuBean.setMenu_price(menu_price);
+					menuBean.setMenu_content(menu_content); 
+					menuBean.setMenu_isUse(menu_isUse);
+					menuBean.setMenu_component("0");
+					menuBean.setMenu_sell_amount(0);
+					menuBean.setMenu_recommend(0);
+					boolean result = menuMgr.insertMenu(menuBean);
+					//table insert에 성공 했을 경우
+					if (result == true)
+					{
+						PrintWriter script = response.getWriter();
+						script.println("<script>");
+						script.println("window.close();");
+						script.println("window.opener.location.reload();");
+						script.println("</script>");
+						//table insert 실패 했을 경우
+					} else {
+						PrintWriter script = response.getWriter();
+						script.println("<script>");
+						script.println("alert('정보 등록에 실패했습니다.')");
+						script.println("history.back()");
+						script.println("</script>");
+					}
+				} 
+				//getParameter 값 중 null이 있을 경우
+				else { //null 값 처리 실패
+					PrintWriter script = response.getWriter();
+					script.println("<script>");
+					script.println("alert('모든 필드에 입력해주세요')");
+					script.println("history.back()");
+					script.println("</script>");
+				} 
 			}
-		} else { //null 값 처리 실패
+		}
+		//menu_gubn parameter 값 check 
+		 else { 
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
-			script.println("alert('모든 필드에 입력해주세요')");
-			script.println("location.href='index.jsp';");
+			script.println("alert('카테고리를 지정해주세요')");
+			script.println("history.back()");
 			script.println("</script>");
 		}
 		

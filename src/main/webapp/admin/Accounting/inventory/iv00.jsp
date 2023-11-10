@@ -34,17 +34,6 @@
 		document.readFrm.target="content";
 		document.readFrm.submit();
 	}
-
-	function check() {
-	     if (document.searchFrm.keyWord.value == "") {
-			alert("검색어를 입력하세요.");
-			document.searchFrm.keyWord.focus();
-			return;
-	     }
-	  document.searchFrm.action="iv00.jsp";
-      document.searchFrm.target="content";
-	  document.searchFrm.submit();
-	 }
 </script>
 
 </head>
@@ -53,7 +42,7 @@
 <div align="center">
     <br/>
 		<h2>재고 관리 페이지</h2>
-		<input type="button" value="재료 등록" onClick="loadContent('Accounting/inventory/iv01.jsp')"> &nbsp; &nbsp;
+		<input type="button" value="재료 등록" onClick="loadContent('inventory/iv01.jsp')"> &nbsp; &nbsp;
 	<br>
 	<table align="center" width="800" border="1">
 		<tr>
@@ -107,10 +96,10 @@
  						   <%=component_imgPath%>
 						</td>
 						<td align="center">
-						   <a href="javascript:iv02('<%=numb%>')">수정</a>
+						   <a onClick="loadContent('inventory/iv02.jsp')" href="javascript:('<%=numb%>')">수정</a>
 						</td>
 						<td align="center">
-						   <a href="javascript:iv03('<%=numb%>')">삭제</a>
+						   <a onClick="loadContent('inventory/iv01.jsp')" href="javascript:">삭제</a>
 						</td>
 					</tr>
 					<%}//for%>
