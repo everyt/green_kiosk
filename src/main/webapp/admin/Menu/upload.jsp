@@ -12,7 +12,7 @@
 <body>
 	<div class="container" style="margin-top: 50px" >
 		<div class="row">
-			<form name="uploadFrm" method="post" enctype="multipart/form-data" action="Menu/uploadProc.jsp">
+			<form name="uploadFrm" method="post" enctype="multipart/form-data" action="<%=request.getContextPath()%>/admin/Menu/uploadProc.jsp" onSubmit="return validateForm()">
 				<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 					<thead>
 						<tr>
@@ -36,13 +36,13 @@
 							        <div class="input-group-prepend">
 							          <div class="input-group-text">카테고리</div>
 							        </div>
-								<select class="form-select" aria-label="Default select example" name="menu_gubn">
+								<select class="form-select" aria-label="Default select example" name="menu_gubn" id="menu_gubn" onchange="handleCategoryChange()">
 								  <option selected>단품</option>
-								  <option value="1">음료</option>
-								  <option value="1">세트</option>
-								  <option value="3">재료</option>
-								  <option value="4">사이드</option>
-								  <option value="5">이벤트</option>
+								  <option value="음료">음료</option>
+								  <option value="세트">세트</option>
+								  <option value="재료">재료</option>
+								  <option value="사이드">사이드</option>
+								  <option value="이벤트">이벤트</option>
 								</select>
 								</div>
 							</td>
@@ -52,7 +52,7 @@
 								          <div class="input-group-text">사용여부</div>
 								        </div>
 										<label>
-										  &nbsp;<input role="switch" type="checkbox" name="menu_isUse"/>
+										  &nbsp;<input role="switch" type="checkbox" name="menu_isUse" id="menu_isUse"/>
 										</label>
 								</div>
 							</td>
@@ -64,7 +64,7 @@
 							        <div class="input-group-prepend">
 							          <div class="input-group-text">가격</div>
 						        </div>
-							<input type="text" class="form-control" name="menu_price" maxlength="30">
+							<input type="text" class="form-control" id="menu_price" name="menu_price" maxlength="30">
 								</div>
 							</td>
 								<td>
@@ -73,7 +73,7 @@
 								          <div class="input-group-text">행사여부</div>
 								        </div>
 										<label>
-										  &nbsp;<input role="switch" type="checkbox" name="menu_isSale" />
+										  &nbsp;<input role="switch" type="checkbox" name="menu_isSale" id="menu_isSale"/>
 										</label>
 								</div>
 							</td>
@@ -94,5 +94,34 @@
 		</div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	
+	<script>
+	function validateForm() {
+	    var menuPrice = document.getElementById("menu_price").value;
+	    if (menuPrice == null || menuPrice.trim() === "" || isNaN(menuPrice)) {
+	        alert("가격은 숫자로 입력하세요.");
+	        return false;
+	    }
+	}
+	
+	function handleCategoryChange() {
+	    var category = document.getElementById("menu_gubn").value;
+	    var contentTextarea = document.getElementById("menu_content");
+	    var saleCheckbox = document.getElementById("menu_isSale");
+		var useCheckbox = document.getElementById("menu_isUse");
+	    if (category === "재료" || category === "이벤트") {
+	        // 재료나 이벤트일 경우 행사여부 체크박스와 상품설명을 읽기 전용으로 설정
+	        saleCheckbox.disabled = true;
+	        contentTextarea.readOnly = true;
+	        useCheckbox.disabled = true;
+	    } else {
+	        // 다른 카테고리일 경우 사용 가능하게 설정
+	        saleCheckbox.disabled = false;
+	        contentTextarea.disabled = false;
+	        useCheckbox.disabled = false;
+	    }
+	}
+	</script>
+	
 	</body>
 </html>

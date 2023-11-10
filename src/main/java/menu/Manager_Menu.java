@@ -1,10 +1,21 @@
 package menu;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.PageContext;
+
 import all.DBConnectionMgr;
+import car.Bean_Code;
 
 
 
@@ -20,155 +31,167 @@ public class Manager_Menu {
 		}
 	}
 	
-	    // 1. 메뉴내역페이지 - 메뉴 목록 
-		public Menu_menu_Bean getMenu(int numb) {
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			Menu_menu_Bean bean = null;
-			try {
-				con = pool.getConnection();
-				String sql = "select * from menu_menu where numb = ?";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, numb);
-				rs = pstmt.executeQuery();
-				if (rs.next()) {
-					bean = new Menu_menu_Bean();
-					bean.setMenu_no(rs.getInt("menu_no"));
-					bean.setMenu_name(rs.getString("menu_name"));
-					bean.setMenu_gubn(rs.getString("menu_gubn"));
-					bean.setMenu_isSale(rs.getInt("menu_isSale"));
-					bean.setMenu_imgPath(rs.getString("menu_imgPath"));
-					bean.setMenu_component(rs.getString("menu_component"));
-					bean.setMenu_price(rs.getInt("menu_price"));
-					bean.setMenu_sell_amount(rs.getInt("menu_sell_amount"));
-					bean.setMenu_recommend(rs.getInt("menu_recommend"));
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				pool.freeConnection(con);
+    // 1. 메뉴내역페이지 - 메뉴 목록 
+	public Menu_menu_Bean getMenu(int numb) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Menu_menu_Bean bean = null;
+		try {
+			con = pool.getConnection();
+			String sql = "select * from menu where menu_no = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, numb);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				bean = new Menu_menu_Bean();
+				bean = new Menu_menu_Bean();
+				bean.setMenu_no(rs.getInt("menu_no"));
+				bean.setMenu_name(rs.getString("menu_name"));
+				bean.setMenu_gubn(rs.getString("menu_gubn"));
+				bean.setMenu_isSale(rs.getInt("menu_isSale"));
+				bean.setMenu_isUse(rs.getInt("menu_isUse"));
+				bean.setMenu_imgPath(rs.getString("menu_imgPath"));
+				bean.setMenu_component(rs.getString("menu_component"));
+				bean.setMenu_content(rs.getString("menu_content")); 
+				bean.setMenu_price(rs.getInt("menu_price"));
+				bean.setMenu_sell_amount(rs.getInt("menu_sell_amount"));
+				bean.setMenu_recommend(rs.getInt("menu_recommend"));
 			}
-			return bean;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con);
 		}
-		
-		
-		//Menu 리스트 전체 불러오기
-		public Vector<Menu_menu_Bean> getMenuList(){
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			String sql = null;
-			Vector<Menu_menu_Bean> vlist = new Vector<Menu_menu_Bean>();
-			try {
-				con = pool.getConnection();
-				sql = "SELECT * FROM menu ORDER BY menu_no DESC";
-				pstmt = con.prepareStatement(sql);
-				rs = pstmt.executeQuery();
-				while(rs.next()) {
-					Menu_menu_Bean bean = new Menu_menu_Bean();
-					bean = new Menu_menu_Bean();
-					bean.setMenu_no(rs.getInt("menu_no"));
-					bean.setMenu_name(rs.getString("menu_name"));
-					bean.setMenu_gubn(rs.getString("menu_gubn"));
-					bean.setMenu_isSale(rs.getInt("menu_isSale"));
-					bean.setMenu_imgPath(rs.getString("menu_imgPath"));
-					bean.setMenu_component(rs.getString("menu_component"));
-					bean.setMenu_content(rs.getString("menu_content")); 
-					bean.setMenu_price(rs.getInt("menu_price"));
-					bean.setMenu_sell_amount(rs.getInt("menu_sell_amount"));
-					bean.setMenu_recommend(rs.getInt("menu_recommend"));
-					vlist.add(bean);
-				}
-			} catch(Exception e) {
-				e.printStackTrace();
-			} finally {
-				pool.freeConnection(con, pstmt, rs);
-			}
-			return vlist;
-		}
+		return bean;
+	}
 	
-	    // 1. 메뉴 관리 페이지 - 메뉴 추가
-		public boolean insertMenu(Menu_menu_Bean bean) {
-			
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			String sql = null;
-			boolean flag = false;
-			try {
-				con = pool.getConnection();
-				sql = "INSERT INTO menu(menu_name, menu_gubn, menu_isSale, menu_imgPath, menu_component,"
-						+ "menu_price, menu_sell_amount, menu_recommend, menu_isUse, menu_content) VALUES (?,?,?,?,?,?,?,?,?,?)";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, bean.getMenu_name());
-				pstmt.setString(2, bean.getMenu_gubn());
-				pstmt.setInt(3, bean.getMenu_isSale());
-				pstmt.setString(4, bean.getMenu_imgPath());
-				pstmt.setString(5, bean.getMenu_component());
-				pstmt.setInt(6, bean.getMenu_price());
-				pstmt.setInt(7, bean.getMenu_sell_amount());
-				pstmt.setInt(8, bean.getMenu_recommend());
-				pstmt.setInt(9, bean.getMenu_isUse());
-				pstmt.setString(10, bean.getMenu_content());
-				if (pstmt.executeUpdate() == 1)
-					flag = true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				pool.freeConnection(con, pstmt);
+	
+	//Menu 리스트 전체 불러오기
+	public Vector<Menu_menu_Bean> getMenuList(){
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		Vector<Menu_menu_Bean> vlist = new Vector<Menu_menu_Bean>();
+		try {
+			con = pool.getConnection();
+			sql = "SELECT * FROM menu ORDER BY menu_no DESC";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Menu_menu_Bean bean = new Menu_menu_Bean();
+				bean = new Menu_menu_Bean();
+				bean.setMenu_no(rs.getInt("menu_no"));
+				bean.setMenu_name(rs.getString("menu_name"));
+				bean.setMenu_gubn(rs.getString("menu_gubn"));
+				bean.setMenu_isSale(rs.getInt("menu_isSale"));
+				bean.setMenu_isUse(rs.getInt("menu_isUse"));
+				bean.setMenu_imgPath(rs.getString("menu_imgPath"));
+				bean.setMenu_component(rs.getString("menu_component"));
+				bean.setMenu_content(rs.getString("menu_content")); 
+				bean.setMenu_price(rs.getInt("menu_price"));
+				bean.setMenu_sell_amount(rs.getInt("menu_sell_amount"));
+				bean.setMenu_recommend(rs.getInt("menu_recommend"));
+				vlist.add(bean);
 			}
-			return flag;
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
 		}
+		return vlist;
+	}
+
+    // 1. 메뉴 관리 페이지 - 메뉴 추가
+	public boolean insertMenu(Menu_menu_Bean bean) {
 		
-		// 1. 메뉴 관리 페이지 - 메뉴 수정
-		public boolean updateMenu(Menu_menu_Bean bean) {
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			String sql = null;
-			boolean flag = false;
-			try {
-				con = pool.getConnection();
-				sql = "update menu_menu set menu_name=?, menu_gubn=?, menu_isSale=?, menu_component=?,"
-						+ "menu_price=?, menu_sell_amount=?, menu_recommend=? ";
-				pstmt.setString(1, bean.getMenu_name());
-				pstmt.setString(2, bean.getMenu_gubn());
-				pstmt.setInt(3, bean.getMenu_isSale());
-				pstmt.setString(4, bean.getMenu_imgPath());
-				pstmt.setString(5, bean.getMenu_component());
-				pstmt.setInt(6, bean.getMenu_price());
-				pstmt.setInt(7, bean.getMenu_sell_amount());
-				pstmt.setInt(8, bean.getMenu_recommend());
-				int count = pstmt.executeUpdate();
-				if (count > 0)
-					flag = true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				pool.freeConnection(con, pstmt);
-			}
-			return flag;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		boolean flag = false;
+		try {
+			con = pool.getConnection();
+			sql = "INSERT INTO menu(menu_name, menu_gubn, menu_isSale, menu_imgPath, menu_component,"
+					+ "menu_price, menu_sell_amount, menu_recommend, menu_isUse, menu_content) VALUES (?,?,?,?,?,?,?,?,?,?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, bean.getMenu_name());
+			pstmt.setString(2, bean.getMenu_gubn());
+			pstmt.setInt(3, bean.getMenu_isSale());
+			pstmt.setString(4, bean.getMenu_imgPath());
+			pstmt.setString(5, bean.getMenu_component());
+			pstmt.setInt(6, bean.getMenu_price());
+			pstmt.setInt(7, bean.getMenu_sell_amount());
+			pstmt.setInt(8, bean.getMenu_recommend());
+			pstmt.setInt(9, bean.getMenu_isUse());
+			pstmt.setString(10, bean.getMenu_content());
+			if (pstmt.executeUpdate() == 1)
+				flag = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
 		}
-		
-		// 1. 메뉴 관리 페이지 - 메뉴 삭제
-		public void deleteMenu(int numb) {
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			String sql = null;
-			ResultSet rs = null;
-			try {
-				con = pool.getConnection();
-				sql = "delete from menu_menu where numb=?";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, numb);
-				pstmt.executeUpdate();
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				pool.freeConnection(con, pstmt, rs);
-			}
+		return flag;
+	}
+	
+	// 1. 메뉴 관리 페이지 - 메뉴 수정
+	public boolean updateMenu(Menu_menu_Bean bean) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		boolean flag = false;
+		try {
+			con = pool.getConnection();
+			sql = "UPDATE menu SET menu_name=?, menu_gubn=?, menu_isSale=?, menu_component=?,"
+					+ "menu_price=?, menu_sell_amount=?, menu_recommend=?, menu_isUse = ?, menu_content=?, "
+					+ "menu_imgPath=? WHERE menu_no = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, bean.getMenu_name());
+			pstmt.setString(2, bean.getMenu_gubn());
+			pstmt.setInt(3, bean.getMenu_isSale());
+			pstmt.setString(4, bean.getMenu_component());
+			pstmt.setInt(5, bean.getMenu_price());
+			pstmt.setInt(6, bean.getMenu_sell_amount());
+			pstmt.setInt(7, bean.getMenu_recommend());
+			pstmt.setInt(8, bean.getMenu_isUse());
+			pstmt.setString(9, bean.getMenu_content());
+			pstmt.setString(10, bean.getMenu_imgPath());
+			pstmt.setInt(11, bean.getMenu_no());
+			int count = pstmt.executeUpdate();
+			if (count > 0)
+				flag = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
 		}
-		
-		
+		return flag;
+	}
+	
+	
+	// 1. 메뉴 관리 페이지 - 메뉴 삭제
+	public int deleteMenu(int menu_no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		ResultSet rs = null;
+		try {
+			con = pool.getConnection();
+			sql = "DELETE FROM menu WHERE menu_no=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, menu_no);
+			pstmt.executeUpdate();
+			return 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		//실패시 -1 반환
+		return -1;
+	}
+	
 	
 		// 1. 메뉴내역페이지 - 토핑 목록  
 		public Menu_menu_Bean getTopingMenu(int numb) {
@@ -203,26 +226,19 @@ public class Manager_Menu {
 		}
 	
 	    // 1. 메뉴 관리 페이지 - 토핑 메뉴 추가
-		public boolean insertTopingMenu(Menu_menu_Bean bean) {
-			
+		public boolean insertTopingMenu(Menu_component_Bean bean) {
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			String sql = null;
 			boolean flag = false;
 			try {
 				con = pool.getConnection();
-				sql = "insert menu_menu(menu_name, menu_gubn, menu_isSale, menu_imgPath, menu_component,"
-						+ "menu_price, menu_sell_amount, menu_recommend) values(?,?,?,?,?,?,?,?)";
+				sql = "INSERT INTO menu_component (component_name, component_price, component_amount, component_imgPath) values(?,?,?,?)";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, bean.getMenu_name());
-				pstmt.setString(2, bean.getMenu_gubn());
-				pstmt.setInt(3, bean.getMenu_isSale());
-				pstmt.setString(4, bean.getMenu_imgPath());
-				pstmt.setString(5, bean.getMenu_component());
-				pstmt.setInt(6, bean.getMenu_price());
-				pstmt.setInt(7, bean.getMenu_sell_amount());
-				pstmt.setInt(8, bean.getMenu_recommend());
-						
+				pstmt.setString(1, bean.getComponent_name());
+				pstmt.setInt(2, bean.getComponent_price());
+				pstmt.setInt(3, bean.getComponent_amount());
+				pstmt.setString(4, bean.getComponent_imgPath());
 				if (pstmt.executeUpdate() == 1)
 					flag = true;
 			} catch (Exception e) {
@@ -899,16 +915,16 @@ public class Manager_Menu {
 	
 	
 		// 3. 회계 관리 페이지 - 재료 현황
-		public Menu_component_Bean getComponenct(int numb) {
+		public Vector<Menu_component_Bean> getComponenctlist() {
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			Menu_component_Bean bean = null;
+			Vector<Menu_component_Bean> vlist = new Vector<Menu_component_Bean>();
 			try {
 				con = pool.getConnection();
-				String sql = "select * from menu_component where numb = ?";
+				String sql = "select * from menu_component";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, numb);
 				rs = pstmt.executeQuery();
 				if (rs.next()) {
 					bean = new Menu_component_Bean();
@@ -917,15 +933,82 @@ public class Manager_Menu {
 					bean.setComponent_price(rs.getInt("component_price"));
 					bean.setComponent_amount(rs.getInt("component_amount"));
 					bean.setComponent_imgPath(rs.getString("component_imgPath"));
+				  vlist.add(bean);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				pool.freeConnection(con);
 			}
-			return bean;
+			return vlist;
 		}
 		
-	}
+		// 3. 회계 관리 페이지 - 등록 재료 조회
+				public Menu_component_Bean getComponent1(int numb) {
+					Connection con = null;
+					PreparedStatement pstmt = null;
+					ResultSet rs = null;
+					Menu_component_Bean bean = null;
+					try {
+						con = pool.getConnection();
+						String sql = "select * from menu_component where component_no = ?";
+						pstmt = con.prepareStatement(sql);
+						pstmt.setInt(1, numb);
+						rs = pstmt.executeQuery();
+						if (rs.next()) {
+							bean = new Menu_component_Bean();
+							bean.setComponent_no(rs.getInt("component_no"));
+							bean.setComponent_name(rs.getString("component_name"));
+							bean.setComponent_price(rs.getInt("component_price"));
+							bean.setComponent_amount(rs.getInt("component_amount"));
+							bean.setComponent_imgPath(rs.getString("component_imgPath"));
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						pool.freeConnection(con);
+					}
+					return bean;
+				}
 
 //--------------------------------------------------------------------------------
+	//menu_file download
+
+	public void downLoad(HttpServletRequest req, HttpServletResponse res,
+			JspWriter out, PageContext pageContext) {
+		String SAVEFOLDER = "/downloadfile2";
+		try {
+			String filename = req.getParameter("menu_filePath");
+			File file = new File(UtilMgr.con(SAVEFOLDER + File.separator + filename));
+			byte b[] = new byte[(int) file.length()];
+			res.setHeader("Accept-Ranges", "bytes");
+			String strClient = req.getHeader("User-Agent");
+			if (strClient.indexOf("MSIE6.0") != -1) {
+				res.setContentType("application/smnet;charset=euc-kr");
+				res.setHeader("Content-Disposition", "filename=" + filename + ";");
+			} else {
+				res.setContentType("application/smnet;charset=euc-kr");
+				res.setHeader("Content-Disposition", "attachment;filename="+ filename + ";");
+			}
+			out.clear();
+			out = pageContext.pushBody();
+			if (file.isFile()) {
+				BufferedInputStream fin = new BufferedInputStream(
+						new FileInputStream(file));
+				BufferedOutputStream outs = new BufferedOutputStream(
+						res.getOutputStream());
+				int read = 0;
+				while ((read = fin.read(b)) != -1) {
+					outs.write(b, 0, read);
+				}
+				outs.close();
+				fin.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}  
+	}
+	
+	
+//--------------------------------------------------------------------------------
+}

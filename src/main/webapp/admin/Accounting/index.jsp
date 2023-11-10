@@ -1,23 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	String cPath = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
-<title>관리자 페이지</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/admin/style.css">
+<link rel="stylesheet" href="<%=cPath %>/assets/css/admin/Accounting/account.css">
+<title>Insert title here</title>
+<%@ include file="/admin/layouts/indexBase.jsp" %>
+<%@ include file="/admin/layouts/bootstrap.jsp"%> 
+<%@ include file="/admin/admin_check/check.jsp" %>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/admin/menu.css" />
+<%@ include file="/admin/layouts/header.jsp" %>
+
 </head>
 <body>
-	
-	<form name="readFrm" method="get">
-		<input type="button" value="매출 내역" onClick="location.href='Accounting/sales/ac00.jsp'"> &nbsp; &nbsp;
-		<input type="button" value="재고 관리" onClick="location.href='Accounting/inventory/iv00.jsp'"> &nbsp; &nbsp; 
-	</form>
-
+<%@ include file="/admin/layouts/left.jsp" %>
+<div class="mainContent" id="mainContent">
+	<%@ include file="/admin/Accounting/main/menu_main.jsp" %>
+</div>
 </body>
 </html>
+

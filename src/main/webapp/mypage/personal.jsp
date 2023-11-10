@@ -16,7 +16,7 @@
 			%>
 				<script>
 					res = "true";
-					document.cookie = "mem_pw = ; path = <%=cPath%>/user/pw_check.jsp; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+					document.cookie = "mem_pw = ; path = <%=cPath%>/check_pw; expires=Thu, 01 Jan 1970 00:00:01 GMT";
 				</script>
 			<%
 		} else {
@@ -150,13 +150,16 @@ function open_register() {
 							<td>
 								<form action="<%=cPath %>/register/reg_proc.jsp" method="POST" class="joinForm" name="regFrom" style="transform: translate(-20%, -30%)">                                                                     
 							      <div class="textForm">
-							        <input name="mem_name" type="text" class="regi_name" placeholder="아이디" value=<%=bean.getMem_id() %> readonly>
+							        <input name="mem_name" id="mem_name" type="text" class="regi_name" placeholder="아이디" value=<%=bean.getMem_id() %> readonly>
+							        <label for="mem_name" style="position:absolute; transform: translateX(-427px) translateY(3px); width:100px;">아이디 : </label>
 							      </div>
 							      <div class="textForm">
 							        <input name="mem_name" type="text" class="regi_name" placeholder="이름" value=<%=bean.getMem_name() %>>
+							        <label for="mem_name" style="position:absolute; transform: translateX(-427px) translateY(3px); width:100px;">비밀번호 : </label>
 							      </div>
 							      <div class="textForm">
 							        <input name="mem_phone" type="text" maxlength="11" class="cellphoneNo" oninput="maxLengthCheck(this)" placeholder="전화번호" value=<%=bean.getMem_phone() %>>
+							      	<label for="mem_name" style="position:absolute; transform: translateX(-427px) translateY(3px); width:100px;">전화번호 : </label>
 							      </div>
 							      <input type="button" onclick="register()" class="btn" style="transform: translateX(-50%) translateY(360%);" value="수 정 하 기"/>
 							    </form>
