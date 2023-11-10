@@ -34,17 +34,6 @@
 		document.readFrm.target="content";
 		document.readFrm.submit();
 	}
-
-	function check() {
-	     if (document.searchFrm.keyWord.value == "") {
-			alert("검색어를 입력하세요.");
-			document.searchFrm.keyWord.focus();
-			return;
-	     }
-	  document.searchFrm.action="iv00.jsp";
-      document.searchFrm.target="content";
-	  document.searchFrm.submit();
-	 }
 </script>
 
 </head>
