@@ -17,7 +17,7 @@
 <title>마일리지 사용/적립</title>
 <link rel='stylesheet' href='../../assets/css/purchase.css' />
 </head>
-<body>
+<body style="overflow: hidden;">
   <div class="header"><span>마일리지 사용/적립</span></div>
   <div class="payment-card within-top-border" style='height: 460px;'>
   
@@ -67,7 +67,7 @@
      </div>
  	</div>
   <div class="rowbox">
-    <div class="payment-cancle" onClick="handleSmileForm()">확인</div>
+    <div class="payment-ok" onClick="handleSmileForm()">확인</div>
     <div class="payment-cancle" onClick="back()">취소</div>
   </div>
   <script>

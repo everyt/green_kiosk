@@ -1,4 +1,10 @@
+@font-face {
+  font-family: 'SUIT Variable';
+  font-weight: 100 900;
+  src: url('../font/SUIT-Variable.woff2') format('woff2-variations');
+}
 body {
+  font-family: SUIT Variable;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -55,6 +61,14 @@ body {
 }
 .payment-option img {
   height: 100px;
+}
+.payment-ok {
+  background-color: #bb2649;
+  border: 2px solid #ddd;
+  border-radius: 15px;
+  padding: 1vw 3vw;
+  margin: 1vw 0 0 0;
+  cursor: pointer;
 }
 .payment-cancle {
   border: 2px solid #ddd;

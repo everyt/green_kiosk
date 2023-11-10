@@ -38,8 +38,8 @@ const changeIcon = (str) => {
   
   const selectOnlyOne = (se1, se2) => {
     if (str === se1) {
-      const secondCheck = JSON.parse(sessionStorage.getItem(se2));
-      if (secondCheck) {
+      const secondCheck = sessionStorage.getItem(se2);
+      if (secondCheck === null || JSON.parse(secondCheck)) {
         sessionStorage.setItem(se2, false);
         document.getElementById(se2).src = '../../assets/svg/' + se2 + '.svg';
         isChecked = false;
@@ -49,11 +49,14 @@ const changeIcon = (str) => {
   
   if (!(sessionStorage.getItem(str) === null)) {
     isChecked = JSON.parse(sessionStorage.getItem(str));
-    selectOnlyOne('bag', 'shop');
-    selectOnlyOne('shop', 'bag');
-    selectOnlyOne('card', 'mobile');
-    selectOnlyOne('mobile', 'card');
+  } else {
+    sessionStorage.setItem(str, false);
+    isChecked = false;
   }
+  selectOnlyOne('bag', 'shop');
+  selectOnlyOne('shop', 'bag');
+  selectOnlyOne('card', 'mobile');
+  selectOnlyOne('mobile', 'card');
   if (isChecked) {
     isChecked = false;
     element.src = src;
@@ -130,7 +133,7 @@ const acceptCoupon = (arr1, arr2) => {
     arr1.forEach(v1 => {
       arr2.forEach(v2 => {
         if (v1.menuNo === v2.index) {
-          const discountValue = v2.price / Math.floor(1000 / v1.discount) * 10;
+          const discountValue = v2.price * v2.count / Math.floor(1000 / v1.discount) * 10;
           if (v2.hasOwnProperty('discount')) {
             if (v2.discount < discountValue) {
               v2.discount = discountValue;
@@ -145,6 +148,29 @@ const acceptCoupon = (arr1, arr2) => {
     console.log('적용될 쿠폰이 없습니다.');
   }
   return arr2;
+}
+
+const getSessionStorageValue = (str) => {
+  if (!JSON.parse(sessionStorage.getItem(str)) === null) {
+    return JSON.parse(sessionStorage.getItem(str));
+  } else {
+    return null;
+  }
+}
+
+const getOptionValue = (op1, op2) => {
+  const v_op1 = getSessionStorageValue(op1);
+  const v_op2 = getSessionStorageValue(op2);
+  
+  if (v_op1 === null && v_op2 === null) {
+    return 'null';
+  } else if (v_op1 === null || v_op1 === false) {
+    return op1;
+  } else if (v_op2 === null || v_op2 === false) {
+    return op2;
+  } else {
+    return 'error';
+  }
 }
 
 
@@ -172,6 +198,21 @@ const acceptCoupon = (arr1, arr2) => {
   }
 })
 
+if (getSessionStorageValue('order') !== null) {
+  if (getOptionValue('bag', 'shop') === 'null') {
+    document.querySelector('#1').innerHTML = '<span style="color: red;">포장 여부를 선택해주세요.</span>';
+    setTimeout(() => {
+      document.querySelector('#1').innerHTML = '포장 선택';
+    }, 2500)
+  }
+  if (getOptionValue('card', 'mobile') === 'null') {
+    document.querySelector('#1').innerHTML = '<span style="color: red;">결제 방법을 선택해주세요.</span>';
+    setTimeout(() => {
+      document.querySelector('#1').innerHTML = '결제방법 선택';
+    }, 2500)
+  }
+}
+
 let basketArray = [];
 let basketLength = 0;
 
@@ -197,8 +238,9 @@ basketElement.innerHTML = generateBasketArrayHTML(basketArray, basketLength);
 const basketPageButtonElement = document.getElementById('basketPageButtonDOM');
 basketPageButtonElement.innerHTML = getnerateBasketPageButtonHTML(basketLength);
 
-let callPrice = 0;
-basketArray.forEach(v => callPrice += v.price);
+let callPrice = basketArray.reduce((acc, cur) => {
+  return acc + cur.count * cur.price
+}, 0)
 
 document.getElementById('callPrice').innerHTML = '<div class="flex-between""><span class="price-name">주문금액:</span><span class="price-value">' + inputDigits(callPrice) + '</span></div>';
 
@@ -217,13 +259,13 @@ if (JSON.parse(localStorage.getItem('couponArray')) === null) {
 
 basketArray = acceptCoupon(couponArray, basketArray);
 
-let discountedPrice = 0;
-
-basketArray.forEach(v => {
-  if (v.hasOwnProperty('discount')) {
-    discountedPrice += v.discount;
+let discountedPrice = basketArray.reduce((arr, cur) => {
+  if (cur.hasOwnProperty('discount')) {
+    return arr + cur.discount;
+  } else {
+    return arr;
   }
-})
+}, 0)
 
 let discountPrice = callPrice - discountedPrice;
 
@@ -231,5 +273,52 @@ document.getElementById('discountedPrice').innerHTML = '<div class="flex-between
 document.getElementById('discountPrice').innerHTML = '<div class="flex-between" style="background-color: #bb2649; color: white; font-weight: 500;"><span class="price-name">결제할금액:</span><span class="price-value">' + inputDigits(discountPrice) + '</span></div>';
 
 const handleClickPayButton = () => {
-  let order = {};
+  
+  let order = new Order(callPrice, discountedPrice, getOptionValue('card', 'mobile'));
+  
+  order.setCoupon(couponArray.map(v => ({
+    name: v.name
+  })));
+  
+  order.setFoods(basketArray.map(v => ({
+    name: v.name,
+    amount: v.count,
+    price: v.price
+  })));
+  
+  const smile = JSON.parse(decodeURIComponent(getCookie('smile')))[0];
+  
+  let add_mile = false;
+  let add_mile_amount = 0;
+  let use_mile = false;
+  let use_mile_amount = 0;
+  
+  if (smile.type === 'phoneNumber' || smile.type === 'userID') {
+    add_mile = true;
+    add_mile_amount = Math.floor(discountPrice / 20);
+  }
+  if (smile.type === 'userID') {
+    use_mile = true;
+    use_mile_amount = Math.floor(discountPrice / 20);
+  }
+  
+  order.smile(add_mile, add_mile_amount, use_mile, use_mile_amount);
+  
+  sessionStorage.setItem(
+    'order', encodeURIComponent(
+      JSON.stringify(
+        order.toObject()
+      )
+    )
+  );
+  
+  if (getOptionValue('bag', 'shop') === 'null' || order.type === 'null') {
+    location.href = 'main.jsp';
+  } else if (order.type === 'card') {
+    location.href = 'card.jsp';
+  } else if (order.type === 'mobile') {
+    location.href = 'mobile.jsp';
+  } else {
+    location.href = 'error.jsp';
+  }
 }
