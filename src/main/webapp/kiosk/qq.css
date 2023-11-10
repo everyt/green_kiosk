@@ -1,26 +1,14 @@
-
 .container {
-    display: grid;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        grid-gap: 10px;
-        padding: 10px;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-auto-rows: 150px;
-        
-        
-    }
-    
-    .head {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid #181818;
-        font-size: 1.5rem;
-        font-weight 150px;
-    }
-    
-    
-    .color1{
-        background-color: #d7bee2;
-    }
+	grid-template-areas:
+		"header header header"
+		"   a    main    b   "
+		"   .     .      .   "
+		"footer footer footer";
+}
+
+.header { grid-area: header; }
+.sidebar-a { grid-area: a; }
+.main-content { grid-area: main; }
+.sidebar-b { grid-area: b; }
+.footer { grid-area: footer; }
+/* 이름 값에 따옴표가 없는 것에 주의하세요 */
