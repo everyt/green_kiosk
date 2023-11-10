@@ -76,7 +76,7 @@
 		%>
 			<script>
 				if (beforeurl.includes("/mypage/personal")){
-					location.href = "<%=cPath%>/mypage/personal.jsp"
+					location.href = "<%=cPath%>/mypage/personal"
 				}
 			</script>
 		<%
@@ -85,7 +85,7 @@
 		%>
 			<script>
 				if (beforeurl.includes("/mypage/personal")){
-					location.href = "<%=cPath%>/mypage/personal.jsp"
+					location.href = "<%=cPath%>/mypage/personal"
 				}
 			</script>
 		<%
