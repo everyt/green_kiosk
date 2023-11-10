@@ -32,6 +32,28 @@
 			</div>
 		</div>
 	  </form>
+	  
+	     <button class="w3-bar-item w3-button" onclick="myAccFunc()">메뉴</button>
+		  <div id="demoAcc" class="w3-bar-block w3-hide w3-white w3-card-4">
+		  	<a href="<%=cPath %>/" class="w3-bar-item w3-button w3-bar-child">햄버거 단품</a>
+		    <a href="<%=cPath %>/setMenu" class="w3-bar-item w3-button w3-bar-child">햄버거 세트</a>
+		    <a href="<%=cPath %>/dessert" class="w3-bar-item w3-button w3-bar-child">디저트</a>
+		    <a href="<%=cPath %>/drink" class="w3-bar-item w3-button w3-bar-child">음료수</a>
+		  </div>
+		
+		  <button class="w3-bar-item w3-button" onclick="myAccFunc1()">이벤트</button>
+		  <div id="demoAcc1" class="w3-bar-block w3-hide w3-white w3-card-4">
+		    <a href="<%=cPath %>/Event" class="w3-bar-item w3-button w3-bar-child">이벤트 목록</a>
+		    <a href="<%=cPath %>/" class="w3-bar-item w3-button w3-bar-child">쿠폰 목록</a>
+		    <!--  <a href="/index/page/page4.jsp" class="w3-bar-item w3-button w3-bar-child">3</a> -->
+		  </div>
+		  
+		  <button class="w3-bar-item w3-button" onclick="myAccFunc2()">고객지원</button>
+		   <div id="demoAcc2" class="w3-bar-block w3-hide w3-white w3-card-4">
+		    <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button w3-bar-child">ㅂ</a>
+		    <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button w3-bar-child">ㅈ</a>
+		    <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button w3-bar-child">ㄷ</a>
+		  </div>
 	  <%} else { if (mem_ac.equals("S")) {%>
 		<div class="login">
 			<div class="inside">
@@ -56,7 +78,29 @@
 		  			</div>
 		  		</div>
 		  	</div>
-		</div>	  
+		</div>	
+		
+		   <button class="w3-bar-item w3-button" onclick="myAccFunc()">메뉴</button>
+		  <div id="demoAcc" class="w3-bar-block w3-hide w3-white w3-card-4">
+		  	<a href="<%=cPath %>/" class="w3-bar-item w3-button w3-bar-child">햄버거 단품</a>
+		    <a href="<%=cPath %>/setMenu" class="w3-bar-item w3-button w3-bar-child">햄버거 세트</a>
+		    <a href="<%=cPath %>/dessert" class="w3-bar-item w3-button w3-bar-child">디저트</a>
+		    <a href="<%=cPath %>/drink" class="w3-bar-item w3-button w3-bar-child">음료수</a>
+		  </div>
+		
+		  <button class="w3-bar-item w3-button" onclick="myAccFunc1()">이벤트</button>
+		  <div id="demoAcc1" class="w3-bar-block w3-hide w3-white w3-card-4">
+		    <a href="<%=cPath %>/Event" class="w3-bar-item w3-button w3-bar-child">이벤트 목록</a>
+		    <a href="<%=cPath %>/Coupon" class="w3-bar-item w3-button w3-bar-child">쿠폰 목록</a>
+		    <!--  <a href="/index/page/page4.jsp" class="w3-bar-item w3-button w3-bar-child">3</a> -->
+		  </div>
+		  
+		  <button class="w3-bar-item w3-button" onclick="myAccFunc2()">고객지원</button>
+		   <div id="demoAcc2" class="w3-bar-block w3-hide w3-white w3-card-4">
+		    <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button w3-bar-child">ㅂ</a>
+		    <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button w3-bar-child">ㅈ</a>
+		    <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button w3-bar-child">ㄷ</a>
+		  </div>  
 	  <%} else {%>
 		
 		<div class="login">
@@ -83,29 +127,29 @@
 		  		</div>
 		  	</div>
 		</div>
-		 
-	  <%}} %>
-   <button class="w3-bar-item w3-button" onclick="myAccFunc()">햄버거</button>
+		    <button class="w3-bar-item w3-button" onclick="myAccFunc()">메뉴</button>
   <div id="demoAcc" class="w3-bar-block w3-hide w3-white w3-card-4">
-  	<a href="<%=cPath %>/index.jsp" class="w3-bar-item w3-button">단품</a>
-    <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button">세트</a>
-    <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button">디저트</a>
-    <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button">음료수</a>
+  	<a href="<%=cPath %>/" class="w3-bar-item w3-button w3-bar-child">햄버거 단품</a>
+    <a href="<%=cPath %>/setMenu" class="w3-bar-item w3-button w3-bar-child">햄버거 세트</a>
+    <a href="<%=cPath %>/dessert" class="w3-bar-item w3-button w3-bar-child">디저트</a>
+    <a href="<%=cPath %>/drink" class="w3-bar-item w3-button w3-bar-child">음료수</a>
   </div>
 
   <button class="w3-bar-item w3-button" onclick="myAccFunc1()">이벤트</button>
   <div id="demoAcc1" class="w3-bar-block w3-hide w3-white w3-card-4">
-    <a href="<%=cPath %>/index/event/event1.jsp" class="w3-bar-item w3-button">이벤트</a>
-    <a href="<%=cPath %>/index/event/event2.jsp" class="w3-bar-item w3-button">쿠폰</a>
-    <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button">3</a>
+    <a href="<%=cPath %>/Event" class="w3-bar-item w3-button w3-bar-child">이벤트 목록</a>
+    <a href="<%=cPath %>/Coupon" class="w3-bar-item w3-button w3-bar-child">쿠폰 목록</a>
+    <!--  <a href="/index/page/page4.jsp" class="w3-bar-item w3-button w3-bar-child">3</a> -->
   </div>
   
   <button class="w3-bar-item w3-button" onclick="myAccFunc2()">고객지원</button>
    <div id="demoAcc2" class="w3-bar-block w3-hide w3-white w3-card-4">
-    <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button">ㅂ</a>
-    <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button">ㅈ</a>
-    <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button">ㄷ</a>
+    <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button w3-bar-child">ㅂ</a>
+    <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button w3-bar-child">ㅈ</a>
+    <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button w3-bar-child">ㄷ</a>
   </div>
+	  <%}} %>
+
   
   
 </nav>
