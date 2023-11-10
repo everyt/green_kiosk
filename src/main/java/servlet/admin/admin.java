@@ -13,7 +13,7 @@ import menu.Menu_component_Bean;
 /*
  * Wrote by Na gyung won 
  */
-@WebServlet({ "/admin", "/api/admin/edit_jaego", "/api/admin/edit_jaego"})
+@WebServlet({ "/admin", "/api/admin/edit_jaego"})
 public class admin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

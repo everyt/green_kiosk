@@ -4,6 +4,8 @@ import java.lang.reflect.Member;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -252,6 +254,55 @@ public class Member_Mgr {
 		return bean;
 	}
 	
+	public List<String> findId(String name, String p_num) {
+		DBConnectionMgr pool = new DBConnectionMgr();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		List<String> res = new ArrayList<String>();
+		try {
+			con = pool.getConnection();
+			sql = "select mem_id from member where mem_name = ? AND mem_phone = ? ";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, name);
+			pstmt.setString(2, p_num);
+			rs = pstmt.executeQuery();
+			
+			
+			while (rs.next()) {
+				res.add(rs.getString("mem_id"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return res;
+	}
 	
+	public List<String> findpw(String id, String name , String phone ) {
+		DBConnectionMgr pool = new DBConnectionMgr();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		List<String> res = new ArrayList<String>();
+		try {
+			con = pool.getConnection();
+			sql = "select mem_pw from member where mem_id = ? AND mem_name = ? AND mem_phone = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, name);
+			pstmt.setString(3, phone);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return res;
+	}
+	
+
 }
 
