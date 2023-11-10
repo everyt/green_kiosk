@@ -20,7 +20,7 @@
 <body>
 <%@ include file="/admin/layouts/left.jsp" %>
 <div class="mainContent" id="mainContent">
-	<%@ include file="/admin/Accounting/main/menu_main.jsp" %>
+	<%@ include file="/admin/Accounting/main/menu_main.jsp" %> 
 </div>
 </body>
 </html>

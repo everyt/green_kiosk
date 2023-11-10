@@ -10,10 +10,14 @@
 	  <h4 class="w3-bar-item"><b>Menu</b></h4>
 	  <hr/>
 	  <% String menuType = null;
+	  if(request.getParameter("menuType") == null)
+	  {
+		  menuType = "main";
+	  }
 	  if (request.getParameter("menuType") != null && !request.getParameter("menuType").isEmpty())
 	  {
 		  menuType = request.getParameter("menuType");
-	  } else {
+	  } else if (request.getParameter("menuType") == null && menuType == null){
 		  PrintWriter script = response.getWriter();
 		  script.println("<script>");
 		  script.println("alert('정상 접근이 아닙니다!')");

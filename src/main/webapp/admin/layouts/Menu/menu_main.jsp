@@ -85,7 +85,7 @@
   </div>
 </footer>
 
-    
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 	<%!
     public String formatNumber(double number) {
@@ -114,8 +114,16 @@ function loadContent(url) {
   xhr.send();
 }
 </script>
-<script>
 
+<script type="text/javascript">
+var auto_refresh = setInterval(
+function ()
+{
+$('#mainContent').load('menu_main.jsp').fadeIn("slow");
+}, 500); 
+</script>
+
+<script>
 function openPopup(url) {
 	  // 팝업 창을 엽니다.
 	  // 'url'은 열고자 하는 페이지의 URL입니다.
@@ -134,6 +142,15 @@ function openPopup(url) {
 	  }, 100);
 	   --%>
 	}
+function sleep(sec) {
+	  return new Promise(resolve => setTimeout(resolve, sec * 1000));
+}
+
+async function sub() {
+	window.open('', 'aaa','width=300,height=200,scrollbars=no,resizable=no,status=yes,menubar=no,toolbar=no,top=50,left=50');
+	document.regFrm.target = 'aaa'
+	document.regFrm.submit();	
+}
 
 	//팝업창을 닫습니다.
 function closePopup(popup) {
