@@ -96,10 +96,10 @@
  						   <%=component_imgPath%>
 						</td>
 						<td align="center">
-						   <a onClick="loadContent('inventory/iv02.jsp')" href="javascript:('<%=numb%>')">수정</a>
+						   <a onClick="loadContent('inventory/iv02.jsp?numb=<%=component_no%>')" href="javascript:">수정</a>
 						</td>
 						<td align="center">
-						   <a onClick="loadContent('inventory/iv01.jsp')" href="javascript:">삭제</a>
+						   <a onClick="loadContent('inventory/iv03.jsp?numb=<%=component_no%>')" href="javascript:">삭제</a>
 						</td>
 					</tr>
 					<%}//for%>

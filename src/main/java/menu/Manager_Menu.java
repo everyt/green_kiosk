@@ -15,9 +15,6 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
 import all.DBConnectionMgr;
-import car.Bean_Code;
-
-
 
 public class Manager_Menu {
 	
@@ -68,7 +65,7 @@ public class Manager_Menu {
 	
 	
 	//Menu 리스트 전체 불러오기
-	public Vector<Menu_menu_Bean> getMenuList(){
+	public Vector<Menu_menu_Bean> getMenuList(int type){
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -76,7 +73,18 @@ public class Manager_Menu {
 		Vector<Menu_menu_Bean> vlist = new Vector<Menu_menu_Bean>();
 		try {
 			con = pool.getConnection();
-			sql = "SELECT * FROM menu ORDER BY menu_no DESC";
+			//전체 메뉴
+			if(type == 0)
+			{
+				sql = "SELECT * FROM menu ORDER BY menu_no DESC";
+			//단품 메뉴
+			} else if (type == 1)
+			{
+				sql = "SELECT * FROM menu WHERE menu_gubn = '단품' ORDER BY menu_no DESC";
+			} else if (type == 2)
+			{
+				sql = "SELECT * FROM menu WHERE menu_gubn = '세트' ORDER BY menu_no DESC";
+			}
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -876,12 +884,13 @@ public class Manager_Menu {
 			boolean flag = false;
 			try {
 				con = pool.getConnection();
-				sql = "update menu_component set component_name=?, component_price=?, component_amount=?, component_imgpath=?";
+				sql = "update menu_component set component_name=?, component_price=?, component_amount=?, component_imgpath=? where component_no = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, bean.getComponent_name());
 				pstmt.setInt(2, bean.getComponent_price());
 				pstmt.setInt(3, bean.getComponent_amount());
 				pstmt.setString(4, bean.getComponent_imgPath());
+				pstmt.setInt(5, bean.getComponent_no());
 				int count = pstmt.executeUpdate();
 				if (count > 0)
 					flag = true;
@@ -926,7 +935,7 @@ public class Manager_Menu {
 				String sql = "select * from menu_component";
 				pstmt = con.prepareStatement(sql);
 				rs = pstmt.executeQuery();
-				if (rs.next()) {
+				while (rs.next()) {
 					bean = new Menu_component_Bean();
 					bean.setComponent_no(rs.getInt("component_no"));
 					bean.setComponent_name(rs.getString("component_name"));
@@ -955,7 +964,7 @@ public class Manager_Menu {
 						pstmt = con.prepareStatement(sql);
 						pstmt.setInt(1, numb);
 						rs = pstmt.executeQuery();
-						if (rs.next()) {
+						while (rs.next()) {
 							bean = new Menu_component_Bean();
 							bean.setComponent_no(rs.getInt("component_no"));
 							bean.setComponent_name(rs.getString("component_name"));

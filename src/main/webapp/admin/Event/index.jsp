@@ -4,9 +4,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>관리자(메뉴)</title>
+<link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/admin/Accounting/account.css">
+<link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/admin/menu.css">
+<%@ include file="/admin/layouts/indexBase.jsp" %>
+<%@ include file="/admin/layouts/bootstrap.jsp"%> 
+<%@ include file="/admin/admin_check/check.jsp" %>
+<%@ include file="/admin/layouts/header.jsp" %>
+
 </head>
 <body>
-<h1>행사 관리 페이지</h1>
+<%@ include file="/admin/layouts/left.jsp" %>
+<%@ include file="/admin/layouts/Menu/menu_main.jsp" %>
+<div class="mainContent">
+	
+</div>
 </body>
 </html>
