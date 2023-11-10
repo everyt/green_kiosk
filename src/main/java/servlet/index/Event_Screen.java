@@ -1,4 +1,4 @@
-package servlet;
+package servlet.index;
 
 import java.io.IOException;
 
@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class index
+ * Servlet implementation class Event_Screen
  */
-@WebServlet({ "/index", "/setMenu" })
-public class Index_Screen extends HttpServlet {
+@WebServlet({ "/Event_Screen", "/Event", "/Coupon" })
+public class Event_Screen extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Index_Screen() {
+    public Event_Screen() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,10 +29,19 @@ public class Index_Screen extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//request.getContextPath()
 		String endPoint = request.getServletPath();
-		if (endPoint.equals("/setMenu")) {
-			RequestDispatcher rd = request.getRequestDispatcher("/index/page/page2.jsp");
+		if (endPoint.equals("/Event")) {
+			RequestDispatcher rd = request.getRequestDispatcher("/index/event/event1.jsp");
+			rd.forward(request, response);
+		}
+		
+		if (endPoint.equals("/Coupon")) {
+			RequestDispatcher rd = request.getRequestDispatcher("/index/event/event2.jsp");
+			rd.forward(request, response);
+		}
+		
+		if (endPoint.equals("/drink")) {
+			RequestDispatcher rd = request.getRequestDispatcher("/index/page/page4.jsp");
 			rd.forward(request, response);
 		}
 	}
