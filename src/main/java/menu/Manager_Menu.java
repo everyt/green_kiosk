@@ -67,7 +67,7 @@ public class Manager_Menu {
 	
 	
 	//Menu 리스트 전체 불러오기
-	public Vector<Menu_menu_Bean> getMenuList(){
+	public Vector<Menu_menu_Bean> getMenuList(int type){
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -75,7 +75,18 @@ public class Manager_Menu {
 		Vector<Menu_menu_Bean> vlist = new Vector<Menu_menu_Bean>();
 		try {
 			con = pool.getConnection();
-			sql = "SELECT * FROM menu ORDER BY menu_no DESC";
+			//전체 메뉴
+			if(type == 0)
+			{
+				sql = "SELECT * FROM menu ORDER BY menu_no DESC";
+			//단품 메뉴
+			} else if (type == 1)
+			{
+				sql = "SELECT * FROM menu WHERE menu_gubn = '단품' ORDER BY menu_no DESC";
+			} else if (type == 2)
+			{
+				sql = "SELECT * FROM menu WHERE menu_gubn = '세트' ORDER BY menu_no DESC";
+			}
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
