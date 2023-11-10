@@ -34,6 +34,25 @@ function open_register() {
 	let url = "<%=cPath %>/register/register.jsp"
 	window.open(url, "회원가입", "width=460, height=600")
 }
+
+function q_findid(){
+	let findfrm = document.findid;
+	let name = findfrm.name.value;
+	let phone = findfrm.phone.value;
+	
+	fetch("<%=cPath%>/api/user/find_id?name="+name+"&phone="+phone,{
+		method: "post"
+	}).then(response => {
+		response.json().then((data) => {
+			if (data.result == "") {
+				alert("검색된 아이디가 없습니다.\n다른 정보로 다시 시도해보세요.")
+			} else {
+				alert("검색된 아이디\n"+data.result)
+			}
+			
+		})
+	})
+}
 </script>
 <body>
 <!-- Sidebar (hidden by default) -->
@@ -164,16 +183,10 @@ function open_register() {
 		
 	<div class="w3-row-padding w3-padding-16 w3-center w3-tooltip" id="food">
 		<!-- 여기부터 작업 시작 -->
-	
-		<script>
-	function clickLogin(){
-		document.fm.action="#이동할 컨트롤러";
-		document.fm.method="post";
-	}
-</script>
+
 <div style="display:flex; justify-content: space-around;">
 	<div>
-		<form action=".jsp">
+		<form method="post" name="findid" action="<%=cPath %>/api/user/find_id">
 			<table>
 			
 				<!-- 아이디 비밀번호 찾는 페이지 
@@ -188,7 +201,7 @@ function open_register() {
 			    </tr>
 			    <tr>
 			      <td colspan="2">
-			        <button type="submit"><span>아이디찾기</span></button>
+			        <button onclick="q_findid()" type="button"><span>아이디찾기</span></button>
 			      </td>
 			      </tr>
 			     
@@ -212,7 +225,7 @@ function open_register() {
 			    </tr>
 			    <tr>
 			      <td colspan="2">
-			        <button type="submit"><span>비밀번호찾기</span></button>
+			        <a href="find_idpw.jsp"><button type="submit"><span>비밀번호찾기</span></button></a>
 			      </td>
 			    </tr>
 			</table>
@@ -222,6 +235,9 @@ function open_register() {
   
   <hr id="about">
 
+
+      </form>
+ 
 
   <!-- Footer -->
 
