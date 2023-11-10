@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	String cPath = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="<%=cPath %>/assets/css/admin/Accounting/account.css">
 <title>Insert title here</title>
 <%@ include file="/admin/layouts/indexBase.jsp" %>
 <%@ include file="/admin/layouts/bootstrap.jsp"%> 
@@ -14,7 +18,7 @@
 </head>
 <body>
 <%@ include file="/admin/layouts/left.jsp" %>
-<div id="mainContent" style="height:94vh; transform: translateY(43px); padding-left: 250px;">
+<div class="mainContent" id="mainContent">
 	<%@ include file="/admin/Accounting/main/menu_main.jsp" %>
 </div>
 </body>
