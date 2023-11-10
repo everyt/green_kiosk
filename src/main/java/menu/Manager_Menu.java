@@ -918,16 +918,16 @@ public class Manager_Menu {
 	
 	
 		// 3. 회계 관리 페이지 - 재료 현황
-		public Menu_component_Bean getComponenct(int numb) {
+		public Vector<Menu_component_Bean> getComponenctlist() {
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			Menu_component_Bean bean = null;
+			Vector<Menu_component_Bean> vlist = new Vector<Menu_component_Bean>();
 			try {
 				con = pool.getConnection();
-				String sql = "select * from menu_component where numb = ?";
+				String sql = "select * from menu_component";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, numb);
 				rs = pstmt.executeQuery();
 				if (rs.next()) {
 					bean = new Menu_component_Bean();
@@ -936,13 +936,14 @@ public class Manager_Menu {
 					bean.setComponent_price(rs.getInt("component_price"));
 					bean.setComponent_amount(rs.getInt("component_amount"));
 					bean.setComponent_imgPath(rs.getString("component_imgPath"));
+				  vlist.add(bean);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				pool.freeConnection(con);
 			}
-			return bean;
+			return vlist;
 		}
 
 //--------------------------------------------------------------------------------

@@ -9,6 +9,7 @@
 <%@ include file="/admin/layouts/header.jsp" %>
 <%@ include file="/admin/admin_check/check.jsp" %>
 </head>
+
 <body>
 <br/>
 	<div class="layout_left">

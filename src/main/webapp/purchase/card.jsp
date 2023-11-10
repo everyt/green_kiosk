@@ -8,7 +8,7 @@
 </head>
 <body>
   <div class="header"><span>신용/체크카드</span></div>
-  <div class="payment-card within-top-border" style='position: relative;'>
+  <div class="payment-card" style='border-left-width: 2px; border-right-width: 2px; border-bottom-width: 2px; position: relative;'>
   	<div style='position: absolute; font-size: 0.6rem; top: 31vh;'>
   		<a href="https://www.freepik.com/free-vector/hand-holding-debit-credit-card-near-scanner-electronic-terminal-making-purchase-smart-transaction-via-digital-machine-flat-vector-illustration-contactless-payment-emv-commerce-concept_21683828.htm#query=credit%20card%20payment&position=1&from_view=keyword&track=ais">Image by pch.vector</a> on Freepik
   	</div>
@@ -18,7 +18,7 @@
   <div class="payment-cancle" onClick="back()">취소</div>
   <script>
   	const back = () => {
-  		sessionStorage.setItem('card', false);
+   	  localStorage.setItem('card', false);
   	  location.href = 'main.jsp';
   	}
   </script>
