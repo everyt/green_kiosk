@@ -40,7 +40,7 @@ function q_findid(){
 	let name = findfrm.name.value;
 	let phone = findfrm.phone.value;
 	
-	fetch("<%=cPath%>/api/user/find_pw?id+"pw"&name="+name+"&phone="+phone"{
+	fetch("<%=cPath%>/api/user/find_id?name="+name+"&phone="+phone, {
 		method: "post"
 	}).then(response => {
 		response.json().then((data) => {
