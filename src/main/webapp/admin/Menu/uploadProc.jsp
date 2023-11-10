@@ -49,9 +49,12 @@
 		String menu_content = multi.getParameter("menu_content");
 
 		if (multi.getParameter("menu_gubn").equals("재료")){
-			
+				menuComponentBean = new Menu_component_Bean();
+				menuComponentBean.setComponent_name(menu_name);
+				menuComponentBean.setComponent_amount(0);
+				menuComponentBean.setComponent_imgPath(fileName);
 		} else if (multi.getParameter("menu_gubn").equals("이벤트")){
-			
+				eventMenuBean = new Eventmenu_Bean();
 		} else {
 				menuBean = new Menu_menu_Bean();
 				menuBean.setMenu_name(menu_name);
@@ -68,14 +71,15 @@
 				
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
-				script.println("location.href='index.jsp';");
+				script.println("window.close();");
+				script.println("window.opener.location.reload();");
 				script.println("</script>");
 			}
 		} else { //null 값 처리 실패
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert('모든 필드에 입력해주세요')");
-			script.println("location.href='index.jsp';");
+			script.println("history.back()");
 			script.println("</script>");
 		}
 		
