@@ -158,4 +158,26 @@ function closePopup(popup) {
 	    popup.close();
 	  }
 	}
+	
+	function sub2() {
+		let frm = document.regFrm;
+		let no = frm.menu_no.value;
+		let name = frm.menu_name.value;
+		let gubn = frm.menu_gubn.value;
+		let price = frm.menu_price.value;
+		let content = frm.menu_content.value;
+		let imgPath = frm.menu_imgPath.value;
+		let isUse = frm.menu_isUse.value;
+		let isSale = frm.menu_isSale.value;
+		fetch("<%=request.getContextPath()%>/api/admin/edit_menu?no="+no+"&name"+name+"&gubn"+gubn+"&price"+price+
+				"&content"+content+"&imgPath"+imgPath+"&isUse"+isUse+"&isSale"+isSale,{
+			method: "post"
+		}).then(response => {
+			response.json().then(res) => {
+				if(res.result == "success") {
+					loadContent('menu_main.jsp');
+				}
+			}
+		})
+	}
 </script>
