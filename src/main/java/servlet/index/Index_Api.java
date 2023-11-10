@@ -17,7 +17,7 @@ import user.Member_Mgr;
 /**
  * Servlet implementation class Index_Api
  */
-@WebServlet({ "/Index_Api", "/check_pw" })
+@WebServlet({ "/Index_Api", "/api/user/check_pw" })
 public class Index_Api extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -43,7 +43,7 @@ public class Index_Api extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String endPoint = request.getServletPath();
-		if (endPoint.equals("/check_pw")) {
+		if (endPoint.equals("/api/user/check_pw_2")) {
 			PrintWriter out = response.getWriter();
 			
 			HttpSession session = request.getSession();
