@@ -2,7 +2,6 @@ package servlet.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import menu.Manager_Menu;
 import menu.Menu_component_Bean;
 
-/**
- * Servlet implementation class admin
+/*
+ * Wrote by Na gyung won 
  */
 @WebServlet({ "/admin", "/api/admin/edit_jaego" })
 public class admin extends HttpServlet {
@@ -41,11 +40,11 @@ public class admin extends HttpServlet {
 		String endPoint = request.getServletPath();
 		if (endPoint.equals("/api/admin/edit_jaego")) {
 			Menu_component_Bean bean = new Menu_component_Bean();
-			bean.setComponent_amount(Integer.parseInt(request.getParameter("amount")));
-			bean.setComponent_imgPath(request.getParameter("imgpath"));
-			bean.setComponent_name(request.getParameter("name"));
 			bean.setComponent_no(Integer.parseInt(request.getParameter("no")));
+			bean.setComponent_name(request.getParameter("name"));
+			bean.setComponent_amount(Integer.parseInt(request.getParameter("amount")));
 			bean.setComponent_price(Integer.parseInt(request.getParameter("price")));
+			bean.setComponent_imgPath(request.getParameter("imgpath"));
 			
 			Manager_Menu menuMgr = new Manager_Menu();
 			PrintWriter out = response.getWriter();

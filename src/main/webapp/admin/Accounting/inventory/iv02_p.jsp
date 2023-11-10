@@ -13,7 +13,7 @@ window.resizeTo( 300, 200 )
 %>
 <script type="text/javascript">
 		opener.loadContent('inventory/iv00.jsp');
-		self.close();
+		s
 </script>
 <% } else {%>
 <script type="text/javascript">

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/admin/layouts/BeanManager.jsp" %>
 
+
 <main>
   <section class="py-5 text-center container">
     <div class="row py-lg-5">

@@ -884,7 +884,7 @@ public class Manager_Menu {
 			boolean flag = false;
 			try {
 				con = pool.getConnection();
-				sql = "update menu_component set component_name=?, component_price=?, component_amount=?, component_imgpath=?";
+				sql = "update menu_component set component_name=?, component_price=?, component_amount=?, component_imgpath=? where component_no = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, bean.getComponent_name());
 				pstmt.setInt(2, bean.getComponent_price());
