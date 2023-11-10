@@ -88,7 +88,7 @@ function open_register() {
 		  				<span class="coupon">보유중인 쿠폰 : <%=count %> 장</span>
 		  			</div>
 		  			<div class="setting">
-		  				<span onclick="location.href='<%=cPath %>/admin'">관리하기</span>
+		  				<span onclick="location.href='<%=cPath %>/admin/?menuType='">관리하기</span>
 		  				<span onclick="location.href='<%=cPath %>/login/logout.jsp'">로그아웃</span>
 		  			</div>
 		  		</div>
