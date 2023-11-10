@@ -40,7 +40,7 @@ function q_findid(){
 	let name = findfrm.name.value;
 	let phone = findfrm.phone.value;
 	
-	fetch("<%=cPath%>/api/user/find_id?name="+name+"&phone="+phone,{
+	fetch("<%=cPath%>/api/user/find_pw?id+"pw"&name="+name+"&phone="+phone"{
 		method: "post"
 	}).then(response => {
 		response.json().then((data) => {
@@ -53,6 +53,13 @@ function q_findid(){
 		})
 	})
 }
+
+function open_register() {
+	let url = "<%=cPath %>/register/register.jsp"
+	window.open(url, "회원가입", "width=460, height=600")
+}
+
+
 </script>
 <body>
 <!-- Sidebar (hidden by default) -->

@@ -140,7 +140,7 @@ public class Member_Mgr {
 		ResultSet rs = null;
 		try {
 			con = pool.getConnection();
-			sql = "delete from chul_admin where numb=?";
+			sql = "delete from member_admin where numb=?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, numb);
 			pstmt.executeUpdate();
