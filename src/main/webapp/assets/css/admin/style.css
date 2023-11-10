@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+@media all and (max-width: 992px) {
+	.mainContent {padding-left: 0px;}
+}
+
 html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 .w3-sidebar {
   z-index: 3;

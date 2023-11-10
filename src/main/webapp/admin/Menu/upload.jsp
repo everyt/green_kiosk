@@ -36,7 +36,7 @@
 							        <div class="input-group-prepend">
 							          <div class="input-group-text">카테고리</div>
 							        </div>
-								<select class="form-select" aria-label="Default select example" name="menu_gubn">
+								<select class="form-select" aria-label="Default select example" name="menu_gubn" id="menu_gubn" onchange="handleCategoryChange()">
 								  <option selected>단품</option>
 								  <option value="음료">음료</option>
 								  <option value="세트">세트</option>
@@ -52,7 +52,7 @@
 								          <div class="input-group-text">사용여부</div>
 								        </div>
 										<label>
-										  &nbsp;<input role="switch" type="checkbox" name="menu_isUse"/>
+										  &nbsp;<input role="switch" type="checkbox" name="menu_isUse" id="menu_isUse"/>
 										</label>
 								</div>
 							</td>
@@ -73,7 +73,7 @@
 								          <div class="input-group-text">행사여부</div>
 								        </div>
 										<label>
-										  &nbsp;<input role="switch" type="checkbox" name="menu_isSale" />
+										  &nbsp;<input role="switch" type="checkbox" name="menu_isSale" id="menu_isSale"/>
 										</label>
 								</div>
 							</td>
@@ -94,7 +94,8 @@
 		</div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
+	
+	<script>
 	function validateForm() {
 	    var menuPrice = document.getElementById("menu_price").value;
 	    if (menuPrice == null || menuPrice.trim() === "" || isNaN(menuPrice)) {
@@ -102,7 +103,25 @@
 	        return false;
 	    }
 	}
-</script>
-
+	
+	function handleCategoryChange() {
+	    var category = document.getElementById("menu_gubn").value;
+	    var contentTextarea = document.getElementById("menu_content");
+	    var saleCheckbox = document.getElementById("menu_isSale");
+		var useCheckbox = document.getElementById("menu_isUse");
+	    if (category === "재료" || category === "이벤트") {
+	        // 재료나 이벤트일 경우 행사여부 체크박스와 상품설명을 읽기 전용으로 설정
+	        saleCheckbox.disabled = true;
+	        contentTextarea.readOnly = true;
+	        useCheckbox.disabled = true;
+	    } else {
+	        // 다른 카테고리일 경우 사용 가능하게 설정
+	        saleCheckbox.disabled = false;
+	        contentTextarea.disabled = false;
+	        useCheckbox.disabled = false;
+	    }
+	}
+	</script>
+	
 	</body>
 </html>

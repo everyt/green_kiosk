@@ -11,7 +11,7 @@
 <body>
 <%
 	int menu_no = Integer.parseInt(request.getParameter("menu_no"));
-	int result = menuMgr.deleteMenu(menu_no);
+	int result = menuMgr.deleteMenu(menu_no); 
 	PrintWriter script = response.getWriter();
 	if (result != 1)
 	{
@@ -21,6 +21,7 @@
 		script.println("</script>");
 	} else {
 		script.println("<script>");
+		script.println("window.opener.location.reload();");
 		script.println("window.close();");
 		script.println("</script>");
 	}

@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css">
 </head>
 <script type="text/javascript">
-function q_component_inputcheck(){
+function component_inputcheck(){
 	if(document.cpntFrm.inventory.value==""){
 		alert("재료를 입력해 주세요.");
 		document.cpntFrm.code.focus();
@@ -57,9 +57,9 @@ function q_component_inputcheck(){
 								<td width="30%">재료 이미지</td>
 							</tr>
 								<td colspan="3" align="center">
-								    <input type="button" value="재료등록" onclick="q_component_inputcheck()"> &nbsp; &nbsp; 
+								    <input type="button" value="재료등록" onclick="component_inputcheck()"> &nbsp; &nbsp; 
 								    <input type="reset" value="다시쓰기"> &nbsp; &nbsp; 
-  								    <input type="button" value="뒤로가기" onClick="loadContent('Accounting/inventory/iv00.jsp')">						
+  								    <input type="button" value="뒤로가기" onClick="loadContent('inventory/iv00.jsp')">						
 								 </td>
 							</tr>
 						</table>
