@@ -21,19 +21,19 @@
 	<title>코드관리</title>
 	<link href="../main/style.css" rel="stylesheet" type="text/css" >
 <script type="text/javascript">
-	function iv02(numb){
-		document.readFrm.numb.value=numb;
-		document.readFrm.action="iv02.jsp";
-		document.readFrm.target="content";
-		document.readFrm.submit();
-	}
-
-	function iv03(numb){
-		document.readFrm.numb.value=numb;
-		document.readFrm.action="iv03.jsp";
-		document.readFrm.target="content";
-		document.readFrm.submit();
-	}
+	function count()  {
+		  // 결과를 표시할 element
+		  const resultElement = document.getElementById('result');
+		  
+		  // 현재 화면에 표시된 값
+		  let number = resultElement.innerText;
+		  
+		  // 더하기/빼기
+		  if(type === 'plus') {
+		    number = parseInt(number) + 1;
+		  }else if(type === 'minus')  {
+		    number = parseInt(number) - 1;
+		  }
 </script>
 
 </head>
@@ -42,7 +42,6 @@
 <div align="center">
     <br/>
 		<h2>재고 관리 페이지</h2>
-		<input type="button" value="재료 등록" onClick="loadContent('inventory/iv01.jsp')"> &nbsp; &nbsp;
 	<br>
 	<table align="center" width="800" border="1">
 		<tr>
@@ -68,7 +67,8 @@
 						<td>재료 수량</td>
 						<td>이미지 경로</td>
 						<td>수 정</td>
-						<td>삭 제</td>
+						<td>수량 설정</td>
+						<td>수량 적용</td>
 					</tr>  	   
 			          <% 
 						  for (int i = 0;i<listSize; i++) {
@@ -89,7 +89,7 @@
 						<td align="center">
  						   <%=component_price%>
 						</td>
-						<td align="center">
+						<td align="center" id="amount<%=component_no%>">
  						   <%=component_amount%>
 						</td>
 						<td align="center">
@@ -99,7 +99,15 @@
 						   <a onClick="loadContent('inventory/iv02.jsp?numb=<%=component_no%>')" href="javascript:">수정</a>
 						</td>
 						<td align="center">
-						   <a onClick="loadContent('inventory/iv03.jsp?numb=<%=component_no%>')" href="javascript:">삭제</a>
+						   <input type='button'
+							       onclick='count("plus",<%=component_no%>)'
+							       value='+'/>
+							<input type='button'
+							       onclick='count("minus",<%=component_no%>)'
+							       value='-'/>
+						</td>
+						<td align="center">
+							<button onclick="count_apply(<%=component_no%>)" type="button">적용</button>
 						</td>
 					</tr>
 					<%}//for%>

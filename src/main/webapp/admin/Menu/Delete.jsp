@@ -21,7 +21,7 @@
 		script.println("</script>");
 	} else {
 		script.println("<script>");
- 		script.println("window.opener.location.reload();");
+		script.println("window.opener.location.reload();");
  		script.println("window.close();");
 		script.println("</script>");
 	}
