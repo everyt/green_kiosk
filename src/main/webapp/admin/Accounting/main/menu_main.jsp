@@ -187,4 +187,52 @@ function closePopup(popup) {
 			})
 		})
 	}
+	function check() {
+		if (document.delFrm.pass.value == "") {
+			alert("재고를 삭제합니다.");
+			document.delFrm.pass.focus();
+			return false;
+		}
+		document.delFrm.submit();
+	}
+	function count(type, num)  {
+		  // 결과를 표시할 element
+		  const resultElement = document.getElementById('amount'+num);
+		  
+		  // 현재 화면에 표시된 값
+		  let number = resultElement.innerText;
+		  
+		  // 더하기/빼기
+		  if(type === 'plus') {
+		    number = parseInt(number) + 1;
+		  }else if(type === 'minus')  {
+			  number = parseInt(number) - 1;
+			  
+		   
+		  }
+		  if (number < 0) {
+			  alert("갯수는 0미만일수 없습니다.")
+		  } else {
+			  // 결과 출력
+			  resultElement.innerText = number;
+		  }
+		}
+	
+	function count_apply(no) {
+		let amount = document.getElementById('amount'+no).innerText;
+		fetch("<%=request.getContextPath()%>/api/admin/set_amount?no="+no+"&amount="+amount,{
+			method: "post"
+		}).then(response => {
+			response.json().then((res) => {
+				if (res.result == "success") {
+					alert("갯수 변경 성공");
+				} else {
+					alert("갯수 변경중 오류가 발생하였습니다.\n"+res);
+				}
+			})
+		})
+	}
 </script>
+	
+
+
