@@ -14,7 +14,7 @@ import menu.Menu_menu_Bean;
 /**
  * Servlet implementation class admin
  */
-@WebServlet({ "/admin", "/api/admin/edit_jaego", "/api/admin/edit_menu"})
+@WebServlet({ "/admin", "/api/admin/edit_jaego", "/api/admin/edit_menu", "/api/admin/set_amount"})
 public class admin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -39,6 +39,7 @@ public class admin extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String endPoint = request.getServletPath();
+		PrintWriter out = response.getWriter();
 		if (endPoint.equals("/api/admin/edit_jaego")) {
 			Menu_component_Bean bean = new Menu_component_Bean();
 			bean.setComponent_amount(Integer.parseInt(request.getParameter("amount")));
@@ -48,7 +49,6 @@ public class admin extends HttpServlet {
 			bean.setComponent_price(Integer.parseInt(request.getParameter("price")));
 			
 			Manager_Menu menuMgr = new Manager_Menu();
-			PrintWriter out = response.getWriter();
 			boolean result = menuMgr.updateComponent(bean);
 			  if(result){
 				  out.write("{\"result\":\"success\"}");
@@ -67,14 +67,25 @@ public class admin extends HttpServlet {
 			bean.setMenu_no(Integer.parseInt(request.getParameter("menu_no")));
 			
 			Manager_Menu menuMgr = new Manager_Menu();
-			PrintWriter out = response.getWriter();
+			
 			boolean result = menuMgr.updateMenu(bean);
 			  if(result){
 				  out.write("{\"result\":\"success\"}");
 			  } else {
 				  out.write("{\"result\":\"failed\"}");
 			  }
+		} else if (endPoint.equals("/api/admin/set_amount")) {
+			Manager_Menu menuMgr = new Manager_Menu();
+			Integer no = Integer.parseInt(String.valueOf(request.getParameter("no")));
+			Integer amount = Integer.parseInt(String.valueOf(request.getParameter("amount")));
+			
+			boolean res = menuMgr.setAmount(amount, no);
+			if(res){
+				  out.write("{\"result\":\"success\"}");
+			  } else {
+				  out.write("{\"result\":\"failed\"}");
+			  }
 		}
 	}
-
+	
 }

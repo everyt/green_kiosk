@@ -914,7 +914,7 @@ public class Manager_Menu {
 			ResultSet rs = null;
 			try {
 				con = pool.getConnection();
-				sql = "delete from menu_component where numb=?";
+				sql = "delete from menu_component where component_no=?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, numb);
 				pstmt.executeUpdate();
@@ -982,7 +982,28 @@ public class Manager_Menu {
 					}
 					return bean;
 				}
-
+	// 3. 회계 관리 페이지 - 갯수 적용  버튼
+				public Boolean setAmount(int amount, int no) {
+					Connection con = null;
+					PreparedStatement pstmt = null;
+					ResultSet rs = null;
+					Menu_component_Bean bean = null;
+					try {
+						con = pool.getConnection();
+						String sql = "update menu_component SET `component_amount` = ? where component_no = ?";
+						pstmt = con.prepareStatement(sql);
+						pstmt.setInt(1, amount);
+						pstmt.setInt(2, no);
+						pstmt.executeUpdate();
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+						return false;
+					} finally {
+						pool.freeConnection(con);
+					}
+					return true;
+				}
 //--------------------------------------------------------------------------------
 	//menu_file download
 
