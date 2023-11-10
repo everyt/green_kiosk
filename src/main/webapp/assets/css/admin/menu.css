@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
-.menu_name {
- 
+.menu_name { 
 position: absolute; top: 10px; right: 30px; background-color: rgba(255, 255, 255, 0.8); padding: 5px; font-size:18px;
 font-weight: bold;;
 }
+
