@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>관리자(메뉴)</title>
 <%@ include file="/admin/layouts/indexBase.jsp" %>
 <%@ include file="/admin/layouts/bootstrap.jsp"%> 
 <%@ include file="/admin/admin_check/check.jsp" %>
@@ -14,7 +14,7 @@
 </head>
 <body>
 <%@ include file="/admin/layouts/left.jsp" %>
-<%@ include file="/admin/layouts/menu_main.jsp" %>
+<%@ include file="/admin/layouts/Menu/menu_main.jsp" %>
 
 </body>
 </html>
