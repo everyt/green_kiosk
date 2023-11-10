@@ -55,7 +55,7 @@ public class admin extends HttpServlet {
 			  } else {
 				  out.write("{\"result\":\"failed\"}");
 			  }
-		} else if (endPoint.equals("api/admin/edit_menu")) {
+		} else if (endPoint.equals("/api/admin/edit_menu")) {
 			Menu_menu_Bean bean = new Menu_menu_Bean();
 			bean.setMenu_name(request.getParameter("menu_name"));
 			bean.setMenu_gubn(request.getParameter("menu_gubn"));
