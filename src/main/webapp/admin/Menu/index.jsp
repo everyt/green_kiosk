@@ -16,6 +16,5 @@
 <body>
 <%@ include file="/admin/layouts/left.jsp" %>
 <%@ include file="/admin/layouts/Menu/menu_main.jsp" %>
-
 </body>
 </html>
