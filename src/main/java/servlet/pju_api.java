@@ -84,6 +84,7 @@ public class pju_api extends HttpServlet {
 			
 			out.write("{\"result\":\""+s_res+"\"}");
 		}
+			
+		}
 	}
 
-}
