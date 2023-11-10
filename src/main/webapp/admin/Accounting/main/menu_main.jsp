@@ -206,11 +206,16 @@ function closePopup(popup) {
 		  if(type === 'plus') {
 		    number = parseInt(number) + 1;
 		  }else if(type === 'minus')  {
-		    number = parseInt(number) - 1;
+			  number = parseInt(number) - 1;
+			  
+		   
 		  }
-		  
-		  // 결과 출력
-		  resultElement.innerText = number;
+		  if (number < 0) {
+			  alert("갯수는 0미만일수 없습니다.")
+		  } else {
+			  // 결과 출력
+			  resultElement.innerText = number;
+		  }
 		}
 	
 	function count_apply(no) {
