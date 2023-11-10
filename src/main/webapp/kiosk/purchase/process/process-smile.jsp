@@ -7,11 +7,19 @@
 <%
   request.setCharacterEncoding("UTF-8");
   String smilePhone = request.getParameter("smilePhone");
-  Member_Bean member_bean = Member_Mgr.get_user_with_phone(smilePhone);
+  String smileType = request.getParameter("smileType");
+  Member_Bean member_bean = null;
+  boolean isMember = false;
+  
+  if (smileType == "phoneNumber") {
+	  member_bean = Member_Mgr.get_user_with_phone(smilePhone);
+  } else if (smileType == "userID") {
+	  isMember = Member_Mgr.checkId(smilePhone);
+  }
   
   boolean isCorrect = false;
   
-  if (member_bean != null && member_bean.getMem_id() != null) {
+  if ((member_bean != null && member_bean.getMem_id() != null) || isMember) {
 	  isCorrect = true;
   }
 %>
