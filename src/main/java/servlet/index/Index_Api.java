@@ -43,7 +43,7 @@ public class Index_Api extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String endPoint = request.getServletPath();
-		if (endPoint.equals("/api/user/check_pw_2")) {
+		if (endPoint.equals("/api/user/check_p")) {
 			PrintWriter out = response.getWriter();
 			
 			HttpSession session = request.getSession();
