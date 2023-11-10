@@ -14,10 +14,8 @@
 
 </head>
 <body>
-<%@ include file="/admin/layouts/Menu/menu_left.jsp" %>
+<%@ include file="/admin/layouts/left.jsp" %>
 <%@ include file="/admin/layouts/Menu/menu_main.jsp" %>
-<div class="mainContent">
-	
-</div>
+
 </body>
 </html>
