@@ -66,8 +66,8 @@
 					if (pw == null) {
 						history.back();
 					} else {
-						document.cookie = "mem_pw = "+pw+"; path = <%=cPath%>/api/user/pw_check";
-						location.href = "<%=cPath%>/api/user/pw_check";
+						document.cookie = "mem_pw = "+pw+"; path = <%=cPath%>/api/user/check_pw";
+						location.href = "<%=cPath%>/api/user/check_pw";
 					}
 				}
 			</script>		
