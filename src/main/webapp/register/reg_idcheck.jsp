@@ -15,9 +15,9 @@
 		<br /> <b><%=usid%></b>
 		<%
 			if (result) {
-				out.println("는 이미 사용중인 아이디 입니다.<p>");
+				out.println("은(는) 이미 사용중인 아이디 입니다.<p>");
 			} else {
-				out.println("는 사용가능한 아이디 입니다.<p>");
+				out.println("은(는) 사용가능한 아이디 입니다.<p>");
 			}
 		%>
 		<a href="#" onClick="self.close()">닫기</a>

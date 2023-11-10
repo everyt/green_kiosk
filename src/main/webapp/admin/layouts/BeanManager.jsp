@@ -7,6 +7,7 @@
 <!--  재료  -->
 <%@ page import="menu.Menu_component_Bean" %>
 <jsp:useBean id="menuComponentBean" class="menu.Menu_component_Bean" />
+
 <!-- 이벤트 메뉴 -->
 <%@ page import="eventMenu.Eventmenu_Mgr" %>
 <%@ page import="eventMenu.Eventmenu_Bean" %>
