@@ -890,6 +890,7 @@ public class Manager_Menu {
 				pstmt.setInt(2, bean.getComponent_price());
 				pstmt.setInt(3, bean.getComponent_amount());
 				pstmt.setString(4, bean.getComponent_imgPath());
+				pstmt.setInt(5, bean.getComponent_no());
 				int count = pstmt.executeUpdate();
 				if (count > 0)
 					flag = true;

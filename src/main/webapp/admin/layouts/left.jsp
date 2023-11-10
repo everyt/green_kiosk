@@ -17,15 +17,15 @@
 	  if (request.getParameter("menuType") != null && !request.getParameter("menuType").isEmpty())
 	  {
 		  menuType = "main";
-	  } else {
-		  menuType = request.getParameter("menuType");
 	  } else if (request.getParameter("menuType") == null && menuType == null){
-		  PrintWriter script = response.getWriter();
-		  script.println("<script>");
-		  script.println("alert('정상 접근이 아닙니다!')");
-		  script.println("history.back()");
-		  script.println("</script>");
-	  }
+	  
+			  PrintWriter script = response.getWriter();
+			  script.println("<script>");
+			  script.println("alert('정상 접근이 아닙니다!')");
+			  script.println("history.back()");
+			  script.println("</script>");
+		  }
+	
 	  %>
 	  <%
 	  //menu page 일 경우 
