@@ -132,25 +132,8 @@ function openPopup(url) {
 	  var popupX = (window.screen.width/2) - (popupWidth/2);
 	  var popupY = (window.screen.height/2) - (popupHeight/2);
 	  var popup = window.open(url, 'PopupWindow', 'width=popupWidth, height=popupHeight, scrollbars=yes, left=popupX, top=popupY');
-
-<%-- 	  // 팝업이 닫힐 때 이벤트를 감지하여 부모 창의 loadContent 함수를 호출하여 menu_main.jsp를 새로고침합니다.
-	  var interval = setInterval(function() {
-	    if (popup.closed) {
-	      clearInterval(interval);
-	      loadContent('<%=request.getContextPath()%>/admin/layouts/menu_main.jsp');
-	    }
-	  }, 100);
-	   --%>
 	}
-function sleep(sec) {
-	  return new Promise(resolve => setTimeout(resolve, sec * 1000));
-}
 
-async function sub() {
-	window.open('', 'aaa','width=300,height=200,scrollbars=no,resizable=no,status=yes,menubar=no,toolbar=no,top=50,left=50');
-	document.regFrm.target = 'aaa'
-	document.regFrm.submit();	
-}
 
 	//팝업창을 닫습니다.
 function closePopup(popup) {
@@ -173,11 +156,11 @@ function closePopup(popup) {
 				"&content"+content+"&imgPath"+imgPath+"&isUse"+isUse+"&isSale"+isSale,{
 			method: "post"
 		}).then(response => {
-			response.json().then(res) => {
+			response.json().then((res) => {
 				if(res.result == "success") {
 					loadContent('menu_main.jsp');
 				}
-			}
+			})
 		})
 	}
 </script>
