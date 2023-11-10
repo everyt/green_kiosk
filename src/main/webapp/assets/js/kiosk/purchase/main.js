@@ -273,20 +273,18 @@ document.getElementById('discountedPrice').innerHTML = '<div class="flex-between
 document.getElementById('discountPrice').innerHTML = '<div class="flex-between" style="background-color: #bb2649; color: white; font-weight: 500;"><span class="price-name">결제할금액:</span><span class="price-value">' + inputDigits(discountPrice) + '</span></div>';
 
 const handleClickPayButton = () => {
-  let order = {
-    'time': new Date().toISOString(),
-    'foods': basketArray.map(v => ({
-      name: v.name,
-      amount: v.count,
-      price: v.price
-    })),
-    'price': callPrice,
-    'discount': discountedPrice,
-    'coupon': couponArray.map(v => ({
-      name: v.name
-    })),
-    'type': getOptionValue('card', 'mobile')
-  };
+  
+  let order = new Order(callPrice, discountedPrice, getOptionValue('card', 'mobile'));
+  
+  order.setCoupon(couponArray.map(v => ({
+    name: v.name
+  })));
+  
+  order.setFoods(basketArray.map(v => ({
+    name: v.name,
+    amount: v.count,
+    price: v.price
+  })));
   
   const smile = JSON.parse(decodeURIComponent(getCookie('smile')))[0];
   
@@ -295,26 +293,24 @@ const handleClickPayButton = () => {
   let use_mile = false;
   let use_mile_amount = 0;
   
-  if (smile.type === 'phoneNumber') {
+  if (smile.type === 'phoneNumber' || smile.type === 'userID') {
     add_mile = true;
     add_mile_amount = Math.floor(discountPrice / 20);
-  } else if (smile.type === 'userID') {
-    add_mile = true;
-    add_mile_amount = Math.floor(discountPrice / 20);
+  }
+  if (smile.type === 'userID') {
     use_mile = true;
     use_mile_amount = Math.floor(discountPrice / 20);
   }
   
-  let order_smile = {
-    use_mile,
-    use_mile_amount,
-    add_mile,
-    add_mile_amount,
-  }
+  order.smile(add_mile, add_mile_amount, use_mile, use_mile_amount);
   
-  order = [...order, ...order_smile];
-  
-  sessionStorage.setItem('order', encodeURIComponent(JSON.stringify(order)));
+  sessionStorage.setItem(
+    'order', encodeURIComponent(
+      JSON.stringify(
+        order.toObject()
+      )
+    )
+  );
   
   if (getOptionValue('bag', 'shop') === 'null' || order.type === 'null') {
     location.href = 'main.jsp';

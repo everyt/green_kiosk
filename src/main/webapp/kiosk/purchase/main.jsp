@@ -123,6 +123,7 @@
       </div>
     </div>
     <script src="../../assets/js/kiosk/purchase/getCookie.js"></script>
+    <script src="../../assets/js/kiosk/purchase/order.js"></script>
     <script src="../../assets/js/kiosk/purchase/main.js"></script>
   </body>
 </html>
