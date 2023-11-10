@@ -27,7 +27,8 @@ body {
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	background: #FAECC5;
+  background-color: #bb2649;
+  color: white;
 	font-size: 1.4rem;
 	font-weight: 700;
 	width: 490px;
@@ -109,20 +110,28 @@ body {
 	font-weight: 400;
 	letter-spacing: 0.034rem;
 }
+.flex-between {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: space-between;
+  width: 210px;
+  padding: 7px 14px;
+}
 .numeric-keypad {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60px;
-  width: 60px;
-  background-color: #ccc;
-  border-radius: 15px;
+  height: 42px;
+  width: 62px;
+  background-color: #eee;
+  border-radius: 8px;
   cursor: pointer;
-  margin: 5px;
+  margin: 3px;
 }
 .numeric-clear {
-  height: 120px;
-  width: 130px;
+  height: 42px;
+  width: 134px;
 }
 .bottom-border {
   border-bottom-width: 2px;
