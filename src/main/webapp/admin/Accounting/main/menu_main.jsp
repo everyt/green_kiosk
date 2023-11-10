@@ -33,7 +33,7 @@
 		int count = 0;
 	
 		
-		Vector<Menu_menu_Bean> vlist = menuMgr.getMenuList();
+		Vector<Menu_menu_Bean> vlist = menuMgr.getMenuList(0);
 		int vlistsize = vlist.size();
 		
 		for (Menu_menu_Bean bean : vlist) {

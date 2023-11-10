@@ -15,9 +15,6 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
 import all.DBConnectionMgr;
-import car.Bean_Code;
-
-
 
 public class Manager_Menu {
 	
