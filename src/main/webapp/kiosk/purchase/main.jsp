@@ -1,57 +1,46 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="java.net.URLEncoder" %>
-<%@ page import="java.net.URLDecoder" %>
-<%@ page import="com.google.gson.Gson" %>
-<%@ page import="com.google.gson.reflect.TypeToken" %>
+<%@ page import="cookie.Cookie_Singleton" %>
+<%@ page import="cookie.Cookie_Verification_Coupon" %>
+<%@ page import="cookie.Cookie_Verification_Smile" %>
 
 <jsp:useBean id="Coupon_Mgr" class="coupon.Coupon_Mgr"/>
 
 <%
 	String couponIsCorrect = request.getParameter("couponIsCorrect");
+  String smileIsCorrect = request.getParameter("smileIsCorrect");
+
+  if (smileIsCorrect == "true" && (smileIsCorrect == null || smileIsCorrect.isEmpty())) {
+
+	    Cookie[] cookies = request.getCookies();
+	    
+	    Cookie_Singleton cs = Cookie_Singleton.getInstance(); 
+	    Cookie_Verification_Smile cvs = new Cookie_Verification_Smile();
+	    
+	    cs.setCookieInfo("smile", cookies);
+	    cs.deleteCookie(response);
+	    
+	    cs.verifyCookieByTypeWithNo("value", cvs);
+	    
+	    if (cs.isThereCookie()) {
+	      cs.addCookie(response);
+	    }
+  }
 	
 	if (couponIsCorrect == "true" && (couponIsCorrect == null || couponIsCorrect.isEmpty())) {
+
 	  Cookie[] cookies = request.getCookies();
-	  String coupons = "";
-    
-    for(int i = 0; i < cookies.length; i++){
-      if (cookies[i].getName().equals("coupons")) {
-        coupons = URLDecoder.decode(cookies[i].getValue(),"UTF-8");
-      }
-    }
-    Cookie cookie = new Cookie("coupons", "");
-    cookie.setHttpOnly(false);
-    cookie.setMaxAge(0); // 쿠키의 유효기간을 만료시킴
-    cookie.setSecure(true);
-    cookie.setPath("/");
-    response.addCookie(cookie);
-    
-    List<Map<String, String>> m_coupon = new ArrayList<Map<String, String>>();
-    Gson gson = new Gson();
-    
-    if (!coupons.isBlank()) {
-      m_coupon = gson
-          .fromJson(coupons, new TypeToken<ArrayList<Map<String, String>>>(){}
-          .getType());
-    }
-    coupons = "";
-    
-    for(Map<String, String> coupon : m_coupon) {
-      if (Coupon_Mgr.checkCouponCode(coupon.get("code")) > 0) {
-        coupons += gson.toJson(coupon) + ",";
-      }
-    }
-    if (!coupons.isBlank()) {
-      coupons = coupons.substring(0, coupons.length() - 1);
-      cookie = new Cookie("coupons", "[" + URLEncoder.encode(coupons, "UTF-8") + "]");
-      cookie.setHttpOnly(false);
-      cookie.setMaxAge(-1);
-      cookie.setSecure(true);
-      cookie.setPath("/");
-      response.addCookie(cookie);
-    }
+	  
+		Cookie_Singleton cs = Cookie_Singleton.getInstance(); 
+	  Cookie_Verification_Coupon cvc = new Cookie_Verification_Coupon();
+	  
+	  cs.setCookieInfo("coupons", cookies);
+	  cs.deleteCookie(response);
+	  
+	  cs.verifyCookie("code", cvc);
+	  
+	  if (cs.isThereCookie()) {
+		  cs.addCookie(response);
+	  }
 	}
 %>
 
@@ -62,7 +51,7 @@
     <title>결제 시스템</title>
     <link rel="stylesheet" href="../../assets/css/purchase.css" />
   </head>
-  <body>
+  <body style="overflow: hidden;">
     <div class="rowbox">
       <div class="colbox">
         <div class="rowbox" style="background-color: #eee; border: 2px solid #ddd; align-self: center; padding: 3px 0;">
@@ -85,7 +74,7 @@
       <div class="colbox">
         <div class="header" style="width: 244px; font-weight: 400; font-size: 1.2rem; border-radius: 0;">
           <span>STEP 1.</span>
-          <span style="margin-left: 2vw">포장 선택</span>
+          <span id="1"  style="margin-left: 2vw">포장 선택</span>
         </div>
         <div class="rowbox">
           <div class="payment-option small-font bottom-border" onClick="handleClick('bag')" style="cursor: pointer;">
@@ -99,7 +88,7 @@
         </div>
         <div class="header" style="width: 244px; font-weight: 400; font-size: 1.2rem; border-radius: 0;">
           <span>STEP 2.</span>
-          <span style="margin-left: 2vw">할인/적립</span>
+          <span id="2" style="margin-left: 2vw">할인/적립</span>
         </div>
         <div class="rowbox">
           <div class="payment-option small-font bottom-border" onClick="handleClick('coupon')" style="cursor: pointer;">
@@ -113,7 +102,7 @@
         </div>
         <div class="header" style="width: 244px; font-weight: 400; font-size: 1.2rem; border-radius: 0;">
           <span>STEP 3.</span>
-          <span style="margin-left: 2vw">결제방법 선택</span>
+          <span id="3"  style="margin-left: 2vw">결제방법 선택</span>
         </div>
         <div class="rowbox">
           <div class="payment-option small-font bottom-border" onClick="handleClick('card')" style="cursor: pointer;">
@@ -128,11 +117,12 @@
           </div>
         </div>
         <div class="rowbox">
-          <div class="payment-cancle">결제</div>
+          <div class="payment-ok" onClick="handleClickPayButton()">결제</div>
           <div class="payment-cancle">취소</div>
         </div>
       </div>
     </div>
+    <script src="../../assets/js/kiosk/purchase/getCookie.js"></script>
     <script src="../../assets/js/kiosk/purchase/main.js"></script>
   </body>
 </html>
