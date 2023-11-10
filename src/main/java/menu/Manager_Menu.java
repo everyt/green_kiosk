@@ -934,7 +934,7 @@ public class Manager_Menu {
 				String sql = "select * from menu_component";
 				pstmt = con.prepareStatement(sql);
 				rs = pstmt.executeQuery();
-				if (rs.next()) {
+				while (rs.next()) {
 					bean = new Menu_component_Bean();
 					bean.setComponent_no(rs.getInt("component_no"));
 					bean.setComponent_name(rs.getString("component_name"));
@@ -963,7 +963,7 @@ public class Manager_Menu {
 						pstmt = con.prepareStatement(sql);
 						pstmt.setInt(1, numb);
 						rs = pstmt.executeQuery();
-						if (rs.next()) {
+						while (rs.next()) {
 							bean = new Menu_component_Bean();
 							bean.setComponent_no(rs.getInt("component_no"));
 							bean.setComponent_name(rs.getString("component_name"));

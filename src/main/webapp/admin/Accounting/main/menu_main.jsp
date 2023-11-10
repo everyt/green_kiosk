@@ -143,3 +143,28 @@ function closePopup(popup) {
 	  }
 	}
 </script>
+<script>
+	function iv02(numb){
+		document.readFrm.numb.value=numb;
+		document.readFrm.action="iv02.jsp";
+		document.readFrm.target="content";
+		document.readFrm.submit();
+	}
+
+	function iv03(numb){
+		document.readFrm.numb.value=numb;
+		document.readFrm.action="iv03.jsp";
+		document.readFrm.target="content";
+		document.readFrm.submit();
+	}
+	
+	function sleep(sec) {
+		  return new Promise(resolve => setTimeout(resolve, sec * 1000));
+	}
+	
+	async function sub() {
+		window.open('', 'aaa','width=300,height=200,scrollbars=no,resizable=no,status=yes,menubar=no,toolbar=no,top=50,left=50');
+		document.regFrm.target = 'aaa'
+		document.regFrm.submit();	
+	}
+</script>
