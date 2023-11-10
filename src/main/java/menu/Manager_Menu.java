@@ -15,6 +15,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
 import all.DBConnectionMgr;
+import car.Bean_Code;
 
 
 
@@ -952,6 +953,34 @@ public class Manager_Menu {
 			}
 			return vlist;
 		}
+		
+		// 3. 회계 관리 페이지 - 등록 재료 조회
+				public Menu_component_Bean getComponent1(int numb) {
+					Connection con = null;
+					PreparedStatement pstmt = null;
+					ResultSet rs = null;
+					Menu_component_Bean bean = null;
+					try {
+						con = pool.getConnection();
+						String sql = "select * from menu_component where component_no = ?";
+						pstmt = con.prepareStatement(sql);
+						pstmt.setInt(1, numb);
+						rs = pstmt.executeQuery();
+						if (rs.next()) {
+							bean = new Menu_component_Bean();
+							bean.setComponent_no(rs.getInt("component_no"));
+							bean.setComponent_name(rs.getString("component_name"));
+							bean.setComponent_price(rs.getInt("component_price"));
+							bean.setComponent_amount(rs.getInt("component_amount"));
+							bean.setComponent_imgPath(rs.getString("component_imgPath"));
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						pool.freeConnection(con);
+					}
+					return bean;
+				}
 
 //--------------------------------------------------------------------------------
 	//menu_file download

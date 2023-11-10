@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <link rel="stylesheet" href="<%=cPath %>/assets/css/admin/Accounting/account.css">
 <title>Insert title here</title>
