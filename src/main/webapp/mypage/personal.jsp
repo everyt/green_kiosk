@@ -4,7 +4,6 @@
 <script> let res = "false"; </script>
 <%
 	String cPath = request.getContextPath();
-
 	Object mem_id = session.getAttribute("mem_id");
 	Object failed_count = session.getAttribute("failed_count");
 	Object pw_ok = session.getAttribute("pw_ok");
@@ -54,8 +53,18 @@
 	Member_Bean bean = null;
 	String mem_pw = null;
 	String mem_ac = "user";
-	if (mem_id != null) {
+	if (mem_id == null) {
+		System.out.println("ERROR");
+		response.sendRedirect(cPath+"/");
+		
+	} else {
 		bean = u_mgr.getMember(String.valueOf(mem_id));
+		if (bean.getMem_id() == null) {
+			%>
+			<script> alert("잘못된 접근입니다."); location.href = "<%= cPath%>/" </script>
+	 		<%
+		}
+		System.out.println(bean.getMem_id());
 		mem_ac = bean.getMem_ac();
 		mem_pw = bean.getMem_pw();
 		%> 
@@ -66,18 +75,17 @@
 					if (pw == null) {
 						history.back();
 					} else {
-						document.cookie = "mem_pw = "+pw+"; path = <%=cPath%>/user/pw_check.jsp";
-						location.href = "<%=cPath%>/user/pw_check.jsp";
+						document.cookie = "mem_pw = "+pw+"; path = <%=cPath%>/check_pw";
+						fetch("/green_kiosk/check_pw", { method: "POST" }).then(response => {
+							response.json().then((res) => {
+								if (res.result == "failed") {
+									location.reload();
+								}
+							})
+						})
 					}
 				}
-			</script>		
-		<%
-	} else {
-		%>
-		<script> alert("잘못된 접근입니다."); location.href = "<%= cPath%>/" </script>
- 		<%
-	}
-%>
+			</script>	
 <html>
 <head>
 <title>마이페이지</title>
@@ -245,3 +253,6 @@ function myAccFunc2() {
 
 </body>
 </html>
+<%
+
+} %>
