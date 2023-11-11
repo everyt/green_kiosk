@@ -5,7 +5,7 @@
 <%@ page import="java.io.PrintWriter" %>
 <script>
 	let beforeurl = document.referrer;
-	if (beforeurl.contains("green_kiosk") == false) {
+	if (beforeurl.includes("green_kiosk") == false) {
 		self.close();
 	}
 </script>
