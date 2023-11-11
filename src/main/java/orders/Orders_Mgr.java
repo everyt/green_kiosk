@@ -133,7 +133,7 @@ public class Orders_Mgr {
 		return flag;
 	}
 	
-	public boolean updateOrder(Orders_Bean order, int order_no) {
+	public boolean updateOrder(Orders_Bean order) {
 		boolean flag = false;
 		try {
 			this.Initializer("UPDATE `orders` SET (`order_time` = ?, `order_foods` = ?, `order_price` = ?, `order_discount` = ?, `order_coupon` = ?, `order_type` = ?, `order_use_mile` = ?, `oeder_use_mile_amount` = ?, `order_add_mile` = ?, `order_add_mile_amount` = ?, `order_is_maked` = ?) WHERE `order_no` = ?");
@@ -148,7 +148,7 @@ public class Orders_Mgr {
 			this.pst.setBoolean(9, order.isOrder_add_mile());
 			this.pst.setInt(9, order.getOrder_add_amount());
 			this.pst.setBoolean(10, order.isOrder_is_maked());
-			this.pst.setInt(11, order_no);
+			this.pst.setInt(11, order.getOrder_no());
 			if (this.pst.executeUpdate() == 1) {
 				flag = true;
 			};
