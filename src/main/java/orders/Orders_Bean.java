@@ -16,6 +16,8 @@ public class Orders_Bean {
 	private boolean order_add_mile;
 	private Integer order_add_amount;
 	private boolean order_is_maked;
+	private String order_who;
+	
 
 	public Integer getOrder_no() {
 		return order_no;
@@ -88,5 +90,11 @@ public class Orders_Bean {
 	}
 	public void setOrder_is_maked(boolean order_is_maked) {
 		this.order_is_maked = order_is_maked;
+	}
+	public String get_who() {
+		return order_who;
+	}
+	public void set_who(String order_who) {
+		this.order_who = order_who;
 	}
 }

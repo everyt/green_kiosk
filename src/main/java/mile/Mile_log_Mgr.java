@@ -146,7 +146,7 @@ public class Mile_log_Mgr {
 	public boolean updateMileLog(Mile_log_Bean bean) {
 		boolean flag = false;
 		try {
-			this.Initializer("UPDATE `orders` SET (`mile_uid` = ?, `mine_type` = ?, `mile_reason` = ?, `mile_deff` = ?, `mile_order_no` = ?, `mile_timestamp` = ?) WHERE `mile_no` = ?");
+			this.Initializer("UPDATE `orders` SET `mile_uid` = ?, `mine_type` = ?, `mile_reason` = ?, `mile_deff` = ?, `mile_order_no` = ?, `mile_timestamp` = ? WHERE `mile_no` = ?");
 			
 			this.pst.setString(1, bean.getMile_uid());
 			this.pst.setString(2, bean.getMile_type());
