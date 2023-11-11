@@ -101,6 +101,28 @@ function open_register() {
 	let url = "<%=cPath %>/register/register.jsp"
 	window.open(url, "회원가입", "width=460, height=600")
 }
+
+function edit() {
+	let frm = document.querySelector(".joinform")
+	let name = frm.mem_name.value
+	let phone = frm.mem_phone.value
+	let url = "<%=cPath %>/api/user/update?name="+name+"&phone="+phone
+	
+	fetch(url, {
+		method: "post"
+	}).then(response => {
+		response.json().then((res) => {
+			let result = res.result;
+			
+			if (result == "success") {
+				alert("개인정보를 성공적으로 변경했습니다.");
+				location.reload();
+			} else {
+				alert("개인정보 변경중 오류가 발생하였습니다.");
+			}
+		})
+	})
+}
 </script>
 <body>
 <!-- Sidebar (hidden by default) -->
@@ -123,7 +145,7 @@ function open_register() {
 			<tr>
 				<td align="center">
 					<div class="setting">
-						<div class="order" onclick="location.href='<%=cPath %>/mypage/personal.jsp'">
+						<div class="order" style="background-color: orangered; border-color: darkorchid; border-width: 3px;" onclick="location.href='<%=cPath %>/mypage/personal.jsp'">
 							<span class="title">개인정보 확인/수정</span>
 						</div>
 						
@@ -143,25 +165,22 @@ function open_register() {
 				<!-- 해당 위치 고정 -->
 				<td rowspan="4" width="80%">
 					<table cellspacing="0" cellpadding="2" width="100%" height="100%">
-						<tr height="5%">
-							<td align="center"><b>개인정보 확인/수정</b></td>	
-						</tr>
 						<tr height="50%">
 							<td>
 								<form action="<%=cPath %>/register/reg_proc.jsp" method="POST" class="joinForm" name="regFrom" style="transform: translate(-20%, -30%)">                                                                     
 							      <div class="textForm">
-							        <input name="mem_name" id="mem_name" type="text" class="regi_name" placeholder="아이디" value=<%=bean.getMem_id() %> readonly>
-							        <label for="mem_name" style="position:absolute; transform: translateX(-427px) translateY(3px); width:100px;">아이디 : </label>
+							        <input name="mem_id" id="mem_id" type="text" class="regi_name" placeholder="아이디" value=<%=bean.getMem_id() %> readonly>
+							        <label for="mem_name" style="position:absolute; transform: translateX(-481px) translateY(3px); width:140px;">아이디 (변경불가) : </label>
 							      </div>
 							      <div class="textForm">
 							        <input name="mem_name" type="text" class="regi_name" placeholder="이름" value=<%=bean.getMem_name() %>>
-							        <label for="mem_name" style="position:absolute; transform: translateX(-427px) translateY(3px); width:100px;">비밀번호 : </label>
+							        <label for="mem_name" style="position:absolute; transform: translateX(-415px) translateY(3px); width:100px;">이름 : </label>
 							      </div>
 							      <div class="textForm">
 							        <input name="mem_phone" type="text" maxlength="11" class="cellphoneNo" oninput="maxLengthCheck(this)" placeholder="전화번호" value=<%=bean.getMem_phone() %>>
 							      	<label for="mem_name" style="position:absolute; transform: translateX(-427px) translateY(3px); width:100px;">전화번호 : </label>
 							      </div>
-							      <input type="button" onclick="register()" class="btn" style="transform: translateX(-50%) translateY(360%);" value="수 정 하 기"/>
+							      <input type="button" onclick="edit()" class="btn" style="transform: translateX(-50%) translateY(360%);" value="수 정 하 기"/>
 							    </form>
 							</td>
 						</tr>

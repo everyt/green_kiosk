@@ -67,6 +67,7 @@ public class Orders_Mgr {
 	            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
 	            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
 	            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
+	            bean.set_who(this.rs.getString("order_who"));
 	            vector.add(bean);
 	        }
 		} catch (Exception error) {
@@ -97,6 +98,38 @@ public class Orders_Mgr {
 	            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
 	            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
 	            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
+	            bean.set_who(this.rs.getString("order_who"));
+	            vector.add(bean);
+	        }
+		} catch (Exception error) {
+			error.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+		return vector;
+	}
+	
+	public Vector<Orders_Bean> getOrdersByUser(String mem_id) {
+		Vector<Orders_Bean> vector = new Vector<Orders_Bean>();
+		try {
+			this.Initializer("SELECT * FROM orders WHERE `order_who` = ?");
+			this.pst.setString(1, mem_id);
+			this.rs = this.pst.executeQuery();
+			while (this.rs.next()) {
+				Orders_Bean bean = new Orders_Bean();
+	            bean.setOrder_no(this.rs.getInt("order_no"));
+	            bean.setOrder_time(this.rs.getTimestamp("order_time"));
+	            bean.setOrder_foods(this.rs.getString("order_foods"));
+	            bean.setOrder_price(this.rs.getInt("order_price"));
+	            bean.setOrder_discount(this.rs.getInt("order_discount"));
+	            bean.setOrder_coupon(this.rs.getString("order_coupon"));
+	            bean.setOrder_type(this.rs.getString("order_type"));
+	            bean.setOrder_use_mile(this.rs.getBoolean("order_use_mile"));
+	            bean.setOrder_use_amount(this.rs.getInt("order_use_mile_amount"));
+	            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
+	            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
+	            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
+	            bean.set_who(this.rs.getString("order_who"));
 	            vector.add(bean);
 	        }
 		} catch (Exception error) {
@@ -136,7 +169,7 @@ public class Orders_Mgr {
 	public boolean updateOrder(Orders_Bean order) {
 		boolean flag = false;
 		try {
-			this.Initializer("UPDATE `orders` SET (`order_time` = ?, `order_foods` = ?, `order_price` = ?, `order_discount` = ?, `order_coupon` = ?, `order_type` = ?, `order_use_mile` = ?, `oeder_use_mile_amount` = ?, `order_add_mile` = ?, `order_add_mile_amount` = ?, `order_is_maked` = ?) WHERE `order_no` = ?");
+			this.Initializer("UPDATE `orders` SET `order_time` = ?, `order_foods` = ?, `order_price` = ?, `order_discount` = ?, `order_coupon` = ?, `order_type` = ?, `order_use_mile` = ?, `oeder_use_mile_amount` = ?, `order_add_mile` = ?, `order_add_mile_amount` = ?, `order_is_maked` = ? WHERE `order_no` = ?");
 			this.pst.setTimestamp(1, order.getOrder_time());
 			this.pst.setString(2, order.getOrder_foods());
 			this.pst.setInt(3, order.getOrder_price());

@@ -1,18 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page import="orders.Orders_Bean" %>
+<%@ page import="orders.Orders_Mgr" %>
 <%@ page import="user.Member_Mgr" %>
 <%@ page import="user.Member_Bean" %>
+<%@ page import="java.util.Vector" %>
+<script> let res = "false"; </script>
 <%
+	Orders_Mgr mgr = new Orders_Mgr();
 	String cPath = request.getContextPath();
 
 	Object mem_id = session.getAttribute("mem_id");
+	Object failed_count = session.getAttribute("failed_count");
+	Object pw_ok = session.getAttribute("pw_ok");
+	
 	Member_Mgr u_mgr = new Member_Mgr();
-	Member_Bean bean = null;
-	String mem_ac = "user";
-	if (mem_id != null) {
-		bean = u_mgr.getMember(String.valueOf(mem_id));
-		mem_ac = bean.getMem_ac();
+	Member_Bean bean = u_mgr.getMember(String.valueOf(mem_id));
+	if (bean == null) {
+		%> <script> alert("로그인 상태가 아닙니다.");location.href="<%=cPath %>/"</script> <%
 	}
-%>
+	String mem_ac = bean.getMem_ac();
+	
+	Vector<Orders_Bean> orders = mgr.getOrdersByUser(String.valueOf(mem_id)); %>
 <html>
 <head>
 <title>마이페이지</title>
@@ -23,6 +31,7 @@
 <link rel="stylesheet" href="<%=cPath %>/assets/css/reset.css">
 <link rel="stylesheet" href="<%=cPath %>/assets/css/index.css">
 <link rel="stylesheet" href="<%=cPath %>/assets/css/mypage.css">
+<link rel="stylesheet" href="<%=cPath %>/assets/css/register.css">
 <script src="<%=cPath %>/assets/js/index.js"></script>
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
@@ -35,6 +44,28 @@ function open_register() {
 	let url = "<%=cPath %>/register/register.jsp"
 	window.open(url, "회원가입", "width=460, height=600")
 }
+
+function edit() {
+	let frm = document.querySelector(".joinform")
+	let name = frm.mem_name.value
+	let phone = frm.mem_phone.value
+	let url = "<%=cPath %>/api/user/update?name="+name+"&phone="+phone
+	
+	fetch(url, {
+		method: "post"
+	}).then(response => {
+		response.json().then((res) => {
+			let result = res.result;
+			
+			if (result == "success") {
+				alert("개인정보를 성공적으로 변경했습니다.");
+				location.reload();
+			} else {
+				alert("개인정보 변경중 오류가 발생하였습니다.");
+			}
+		})
+	})
+}
 </script>
 <body>
 <!-- Sidebar (hidden by default) -->
@@ -43,7 +74,7 @@ function open_register() {
 <%@ include file="/index/base/head.jsp" %>
   
 <!-- !PAGE CONTENT! -->
-<div class="w3-main w3-content w3-padding" style="max-width:1300px;margin-top:100px">
+<div class="w3-main w3-content w3-padding" style="max-width:1300px;margin-top:100px;height:920px;width:1300px">
 		
 	<div class="w3-row-padding w3-padding-16 w3-center w3-tooltip" id="food">
 		<table border="1" class="mypage" cellspacing="0" cellpadding="2" width="1250">
@@ -55,49 +86,64 @@ function open_register() {
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td align="center">
 					<div class="setting">
 						<div class="order" onclick="location.href='<%=cPath %>/mypage/personal.jsp'">
 							<span class="title">개인정보 확인/수정</span>
-						</div>		
-					</div>
-				</td>
-				<!-- 해당 위치 고정 -->
-				<td rowspan="4" width="80%">
-					<table cellspacing="0" cellpadding="2" width="100%" height="100%">
-						<tr>
-							<td align="center" colspan="3"><b>주문내역</b></td>	
-						</tr>
-					</table>
-				</td>
-				<!-- 해당 위치 고정 -->
-			</tr>
-			<tr>
-				<td>
-					<div class="setting">
-						<div class="order" onclick="location.href='<%=cPath %>/mypage/order.jsp'">
+						</div>
+						
+						<div class="order" style="background-color: orangered; border-color: darkorchid; border-width: 3px;" onclick="location.href='<%=cPath %>/mypage/order.jsp'">
 							<span class="title">주문내역</span>
-						</div>		
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<div class="setting">
+						</div>	
+						
 						<div class="mile" onclick="location.href='<%=cPath %>/mypage/mile.jsp'">
 							<span class="title">마일리지 적립/사용내역</span>
 						</div>
-					</div>
-				</td>
-			</tr>	
-			<tr>
-				<td>
-					<div class="setting">
+						
 						<div class="unregi" onclick="location.href='<%=cPath %>/mypage/unregi.jsp'">
 							<span class="title">회원탈퇴</span>
 						</div>
 					</div>
 				</td>
+				<!-- 해당 위치 고정 -->
+				<td rowspan="4" width="80%">
+					<table border="1" style="border-top-width: 0px; border-left-width: 0px; border-right-width: 0px; border-bottom-width: 0px;" cellspacing="0" cellpadding="2" width="100%" height="100%">
+						<tr align="center" height="5%">
+							<td width="5%">번호</td>
+							<td width="25%">주문 일시</td>
+							<td width="45%">주문 음식</td>
+							<td width="15%">총 금액</td>
+							<td width="10%">영수증 발급</td>
+						</tr>		
+						<%
+							boolean runned = false;
+							for(Orders_Bean order : orders) {
+								if (runned == false) {
+									runned = true;
+								}
+								
+						%>
+							<tr align="center">
+								<td><%=order.getOrder_no() %></td>
+								<td><%=order.getOrder_time() %></td>
+								<td><%=order.getOrder_foods() %></td>
+								<td><%=order.getOrder_price() %></td>
+								<td><button no="<%=order.getOrder_no() %>" type="button">영수증 발급</button></td>
+							</tr>
+						<%	
+							}
+							
+							if (runned == false) {
+								%>
+								<tr align="center">
+									<td colspan="5"><h2>주문 내역이 존재 하지 않습니다.</h2></td>
+								</tr>
+								<%
+							}
+						%>
+					</table>
+				</td>
+				<!-- 해당 위치 고정 -->
 			</tr>
 		</table>
 	</div>
