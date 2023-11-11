@@ -33,7 +33,7 @@
 		</div>
 	  </form>
 	  
-	     <button class="w3-bar-item w3-button" onclick="myAccFunc()">메뉴</button>
+	     <button class="w3-bar-item w3-button side_main_btn" onclick="myAccFunc()">메뉴</button>
 		  <div id="demoAcc" class="w3-bar-block w3-hide w3-white w3-card-4">
 		  	<a href="<%=cPath %>/" class="w3-bar-item w3-button w3-bar-child">햄버거 단품</a>
 		    <a href="<%=cPath %>/setMenu" class="w3-bar-item w3-button w3-bar-child">햄버거 세트</a>
@@ -41,14 +41,14 @@
 		    <a href="<%=cPath %>/drink" class="w3-bar-item w3-button w3-bar-child">음료수</a>
 		  </div>
 		
-		  <button class="w3-bar-item w3-button" onclick="myAccFunc1()">이벤트</button>
+		  <button class="w3-bar-item w3-button side_main_btn" onclick="myAccFunc1()">이벤트</button>
 		  <div id="demoAcc1" class="w3-bar-block w3-hide w3-white w3-card-4">
 		    <a href="<%=cPath %>/Event" class="w3-bar-item w3-button w3-bar-child">이벤트 목록</a>
 		    <a href="<%=cPath %>/" class="w3-bar-item w3-button w3-bar-child">쿠폰 목록</a>
 		    <!--  <a href="/index/page/page4.jsp" class="w3-bar-item w3-button w3-bar-child">3</a> -->
 		  </div>
 		  
-		  <button class="w3-bar-item w3-button" onclick="myAccFunc2()">고객지원</button>
+		  <button class="w3-bar-item w3-button side_main_btn" onclick="myAccFunc2()">고객지원</button>
 		   <div id="demoAcc2" class="w3-bar-block w3-hide w3-white w3-card-4">
 		    <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button w3-bar-child">ㅂ</a>
 		    <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button w3-bar-child">ㅈ</a>
