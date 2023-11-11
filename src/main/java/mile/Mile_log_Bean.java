@@ -1,5 +1,7 @@
 package mile;
 
+import java.sql.Timestamp;
+
 public class Mile_log_Bean {
 
 	private int mile_no; 			// 변동기록번호
@@ -7,6 +9,8 @@ public class Mile_log_Bean {
 	private String mile_type; 		// 종류
 	private String mile_reason; 	// 변동이 생긴 이유
 	private int mile_deff; 		// 마일리지 변동 양
+	private Timestamp mile_timestamp;
+	private int mile_order_no;
 
 	public int getMile_no() {
 
@@ -47,6 +51,22 @@ public class Mile_log_Bean {
 
 	public void setMile_deff(int mile_deff) {
 		this.mile_deff = mile_deff;
+	}
+
+	public Timestamp get_timestamp() {
+		return mile_timestamp;
+	}
+
+	public void set_timestamp(Timestamp mile_timestamp) {
+		this.mile_timestamp = mile_timestamp;
+	}
+
+	public int getMile_order_no() {
+		return mile_order_no;
+	}
+
+	public void setMile_order_no(int mile_order_no) {
+		this.mile_order_no = mile_order_no;
 	}
 
 }
