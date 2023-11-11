@@ -104,25 +104,21 @@ public class Member_Mgr {
 	}
 
 	// 회원 정보 수정
-	public boolean updateMember(Member_Bean bean) {
+	public boolean updateMember(String mem_id, String name, String phone) {
+		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			String sql = "update Member_Bean set mem_id=?, mom_pw=?, mem_name=?, mem_phone=?, mem_ac=?, mem_mile=?, mem_coupon1=?, brth=?,";
-			pstmt.setInt(1, bean.getMem_no());
-			pstmt.setString(2, bean.getMem_id());
-			pstmt.setString(3, bean.getMem_pw());
-			pstmt.setString(4, bean.getMem_name());
-			pstmt.setString(5, bean.getMem_phone());
-			pstmt.setString(6, bean.getMem_ac());
-			pstmt.setInt(7, bean.getMem_mile());
-			pstmt.setString(8, bean.getMem_coupon1());
-		
-			int count = pstmt.executeUpdate();
-			if (count > 0)
+			String sql = "UPDATE `member` SET `mem_name` = ?, `mem_phone`= ? WHERE `mem_id` = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, name);
+			pstmt.setString(2, phone);
+			pstmt.setString(3, mem_id);
+			if (pstmt.executeUpdate() == 1) {
 				flag = true;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
