@@ -166,7 +166,7 @@ public class Mile_log_Mgr {
 		return flag;
 	}
 	
-	public boolean deleteEventByNo(int no) {
+	public boolean deleteMileLogByNo(int no) {
 		boolean flag = false;
 		try {
 			this.Initializer("DELETE FROM `orders` WHERE `mile_no`=?");
