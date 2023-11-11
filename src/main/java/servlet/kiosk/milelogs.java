@@ -51,11 +51,13 @@ public class milelogs extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Mile_log_Bean bean = new Gson().fromJson(request.getParameter("bean"), Mile_log_Bean.class); ;
+		String param = request.getParameter("bean");
+		
 		PrintWriter out = response.getWriter();
-		if (bean == null) {
+		if (param == null) {
 			out.write("{\"result\":\"failed\",\"reason\":\"no parameter\"}");
 		} else {
+			Mile_log_Bean bean = new Gson().fromJson(param, Mile_log_Bean.class); ;
 			boolean res = this.mgr.addMileLog(bean);
 			if (res) {
 				out.write("{\"result\":\"success\"}");
@@ -69,11 +71,12 @@ public class milelogs extends HttpServlet {
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Mile_log_Bean bean = new Gson().fromJson(request.getParameter("bean"), Mile_log_Bean.class); ;
+		String param = request.getParameter("bean");
 		PrintWriter out = response.getWriter();
-		if (bean == null) {
+		if (param == null) {
 			out.write("{\"result\":\"failed\",\"reason\":\"no parameter\"}");
 		} else {
+			Mile_log_Bean bean = new Gson().fromJson(param, Mile_log_Bean.class); ;
 			boolean res = this.mgr.updateMileLog(bean);
 			if (res) {
 				out.write("{\"result\":\"success\"}");
@@ -87,11 +90,12 @@ public class milelogs extends HttpServlet {
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Integer no = Integer.parseInt(request.getParameter("no"));
+		String param = request.getParameter("no");
 		PrintWriter out = response.getWriter();
-		if (no == null) {
+		if (param == null) {
 			out.write("{\"result\":\"failed\",\"reason\":\"no parameter\"}");
-		}  else {
+		} else {
+			Integer no = Integer.parseInt(param);
 			boolean res = this.mgr.deleteMileLogByNo(no);
 			if (res) {
 				out.write("{\"result\":\"success\"}");
