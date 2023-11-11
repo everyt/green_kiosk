@@ -32,7 +32,7 @@
 		int count = 0;
 	
 		
-		Vector<Menu_menu_Bean> vlist = menuMgr.getMenuList(0);
+		Vector<Menu_menu_Bean> vlist = menuMgr.getMenuList(3);
 		int vlistsize = vlist.size();
 		
 		for (Menu_menu_Bean bean : vlist) {
@@ -85,7 +85,7 @@
   </div>
 </footer>
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 	<%!
     public String formatNumber(double number) {
@@ -99,7 +99,7 @@
 		return df.format(number);
 	}
 %>
-<script>
+<%-- <script>
 function loadContent(url) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
@@ -115,7 +115,7 @@ function loadContent(url) {
 }
 </script>
 
-<%-- <script type="text/javascript">
+<script type="text/javascript">
 var auto_refresh = setInterval(
 function ()
 {
@@ -146,35 +146,17 @@ $('#mainContent').load('menu_main.jsp').fadeIn("slow");
 	  var popupX = (window.screen.width/2) - (popupWidth/2);
 	  var popupY = (window.screen.height/2) - (popupHeight/2);
 	  var popup = window.open(url, 'PopupWindow', 'width=popupWidth, height=popupHeight, scrollbars=yes, left=popupX, top=popupY');
+	
+	  var interval = setInterval(function() {
+	    if (popup.closed) {
+	      clearInterval(interval);
+	      loadContent('<%=request.getContextPath()%>/admin/layouts/menu_main.jsp');
+	    }
+	  }, 100);
 	}
 	
 	function closePopup(popup) {
 	  if (popup && !popup.closed) {
 	    popup.close();
 	  }
-	}
-	</script>
-	 --%>
-<%-- 	function sub2() {
-	  let frm = document.regFrm;
-	  let no = frm.menu_no.value;
-	  let name = frm.menu_name.value;
-	  let gubn = frm.menu_gubn.value;
-	  let price = frm.menu_price.value;
-	  let content = frm.menu_content.value;
-	  let imgPath = frm.menu_imgPath.value;
-	  let isUse = frm.menu_isUse.value;
-	  let isSale = frm.menu_isSale.value;
-	  
-	  fetch("<%=request.getContextPath()%>/api/admin/edit_menu?no=" + no + "&name=" + name + "&gubn=" + gubn +
-	        "&price=" + price + "&content=" + content + "&imgPath=" + imgPath + "&isUse=" + isUse + "&isSale=" + isSale, {
-	    method: "post"
-	  }).then(response => {
-	    response.json().then((res) => {
-	      if (res.result == "success") {
-	        loadContent('<%=request.getContextPath()%>/admin/layouts/menu_main.jsp');
-	      }
-	    })
-	  })
 	} --%>
-

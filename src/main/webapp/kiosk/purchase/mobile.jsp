@@ -8,7 +8,7 @@
 <link rel='stylesheet' href='../../assets/css/micromodal.css' />
 <script src='https://unpkg.com/micromodal/dist/micromodal.min.js'></script>
 </head>
-<body>
+<body style="overflow: hidden;">
   <div class="header"><span>원하시는 결제 방법을 선택해 주세요.</span></div>
   <div class="payment-options">
     <div class="payment-option select">
@@ -57,10 +57,12 @@
   	  location.href = 'main.jsp';
   	}
   	const hrefTo = (type) => {
-   	  localStorage.setItem('paymentType', type);
    	  MicroModal.show('modal-1');
+   	  let order = JSON.parse(decodeURIComponent(sessionStorage.getItem('order')));
+   	  order.type = type;
+      document.cookie = "order" + "=[" + encodeURIComponent(JSON.stringify(order)) + "]; path=/;";
    	  setTimeout(() => {
-   	  	  location.href = 'main.jsp';
+   	  	  location.href = 'process/process-final.jsp';
    	  }, 2500)
     }
   </script>
