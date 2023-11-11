@@ -21,4 +21,10 @@
 	margin-bottom: 26px;
 }
 
+.w3-main .w3-center .mypage .setting div:hover {
+	background-color: orangered;
+	border-color: darkorchid;
+	border-width: 1.5px;
+}
+
 .w3-main .w3-center .mypage .setting .unregi { margin-top: 322px; }
