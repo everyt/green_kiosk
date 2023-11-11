@@ -57,7 +57,7 @@
     	replaced_coupons += ',' + oldCoupons;
     }
     
-    document.cookie = "coupons" + "=[" + encodeURIComponent(replaced_coupons) + "]; path=/;";
+    sessionStorage.setItem('coupons', '[' + encodeURIComponent(replaced_coupons) + ']');
 		location.href = '../main.jsp?couponIsCorrect=true';
 	} else {
 	       
