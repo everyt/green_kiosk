@@ -55,6 +55,7 @@ class State {
   use_mile_amount: number;
   add_mile: boolean;
   add_mile_amount: number;
+  is_maked: boolean;
   who: number;
 
   constructor() {
@@ -68,6 +69,7 @@ class State {
     this.use_mile_amount = 0;
     this.add_mile = false;
     this.add_mile_amount = 0;
+    this.is_maked = false;
     this.who = null;
   }
 
@@ -83,6 +85,7 @@ class State {
       use_mile_amount: this.use_mile_amount,
       add_mile: this.add_mile,
       add_mile_amount: this.add_mile_amount,
+      is_maked: this.is_maked,
       who: this.who,
     };
   }
