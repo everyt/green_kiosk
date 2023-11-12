@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ page import="orders.Orders_Bean" %>
-<%@ page import="orders.Orders_Mgr" %>
+<%@ page import="mile.Mile_log_Bean" %>
+<%@ page import="mile.Mile_log_Mgr" %>
 <%@ page import="user.Member_Mgr" %>
 <%@ page import="user.Member_Bean" %>
 <%@ page import="java.util.Vector" %>
 <script> let res = "false"; </script>
 <%
-	Orders_Mgr mgr = new Orders_Mgr();
+	Mile_log_Mgr mgr = new Mile_log_Mgr();
 	String cPath = request.getContextPath();
 
 	Object mem_id = session.getAttribute("mem_id");
@@ -20,7 +20,7 @@
 	}
 	String mem_ac = bean.getMem_ac();
 	
-	Vector<Orders_Bean> orders = mgr.getOrdersByUser(String.valueOf(mem_id)); %>
+	Vector<Mile_log_Bean> mile_datas = mgr.getMileLogsByUid(String.valueOf(mem_id)); %>
 <html>
 <head>
 <title>마이페이지</title>
@@ -119,18 +119,24 @@ function edit() {
 						</tr>		
 						<%
 							boolean runned = false;
-							for(Orders_Bean order : orders) {
+							for(Mile_log_Bean mile : mile_datas) {
 								if (runned == false) {
 									runned = true;
 								}
 								
+								String mile_type = "추가";
+								if (mile.getMile_type().equals("delete")) {
+									mile_type ="감소";
+								}
+								
 						%>
 							<tr align="center">
-								<td><%=order.getOrder_no() %></td>
-								<td><%=order.getOrder_time() %></td>
-								<td><%=order.getOrder_foods() %></td>
-								<td><%=order.getOrder_price() %></td>
-								<td><button no="<%=order.getOrder_no() %>" type="button">영수증 발급</button></td>
+								<td><%=mile.getMile_no() %></td>
+								<td><%=mile.getMile_order_no() %></td>
+								<td><%=mile_type %></td>
+								<td><%=mile.getMile_deff() %></td>
+								<td><%=mile.getMile_reason() %></td>
+								<td><%=mile.get_timestamp() %></td>
 							</tr>
 						<%	
 							}
