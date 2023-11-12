@@ -136,7 +136,7 @@ function edit() {
 								<td><%=mile_type %></td>
 								<td><%=mile.getMile_deff() %></td>
 								<td><%=mile.getMile_reason() %></td>
-								<td><%=mile.get_timestamp() %></td>
+								<td><%=String.valueOf(mile.get_timestamp()).substring(0,19) %></td>
 							</tr>
 						<%	
 							}
