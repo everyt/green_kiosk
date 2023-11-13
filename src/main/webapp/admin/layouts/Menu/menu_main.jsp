@@ -1,37 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/admin/layouts/BeanManager.jsp" %>
-
-<script type="text/javascript">
-	function getListfunction() {
-		$.ajax({
-			type: "POST",
-			url: "./api/admin/edit_menu",
-			dataType="json",
-	        contentType: "application/json; charset=UTF-8", 
-			success: function(response) {
-	            if (response && response.length > 0) {
-				var ListHtml = '';
-				for (var i=0; i<response.length; i++){
-					var menu_no = response[i].menu_no;
-					var menu_imgPath = response[i].menu_imgPath;
-					var menu_name = response[i].menu_name;
-					var menu_gubn = response[i].menu_gubn;
-					var menu_price = reponse[i].menu_price;
-					var menu_content = response[i].menu_content;
-					var menu_isUse = response[i].menu_isUse;
-					var menu_isSale = response[i].menu_isSale;
-					
-				}
-                $('#getChatlist').html(chatListHtml);
-				}
-			}
-		});
-		$('#content').val(' ');
-	}
-</script> 
-
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/menu_main_main.js"></script>
 <main class="mainContent">
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
@@ -102,7 +73,6 @@
       </div>
     </div>
   </div>
-
 </main>
 
 <!-- <footer class="text-body-secondary py-5">
@@ -115,75 +85,22 @@
   </div>
 </footer> -->
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-	<%!
-    public String formatNumber(double number) {
-        // 숫자를 3자리마다 쉼표로 구분
-        java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
-        return df.format(number);
-    }
-	
-	public String formatTime(Long number) {
-		java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
-		return df.format(number);
-	}
+
+
+
+<%! 
+    public String formatNumber(double number) { 
+        // 숫자를 3자리마다 쉼표로 구분 
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#,###"); 
+        return df.format(number); 
+    } 
+
+    public String formatTime(Long number) { 
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#,###"); 
+        return df.format(number); 
+    } 
 %>
-<script>
-function loadContent(url) {
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      // Ajax 요청이 완료되고 페이지를 가져온 경우 메인 페이지를 업데이트
-      document.getElementById('mainContent').innerHTML = xhr.responseText;
-      // 맨 상단으로 가도록
-      window.scrollTo(0, 0);
-    }
-  };
-  xhr.open('GET', url, true);
-  xhr.send();
-}
-</script>
 
-<%-- <script type="text/javascript">
-var auto_refresh = setInterval(
-function ()
-{
-$('#mainContent').load('menu_main.jsp').fadeIn("slow");
-}, 500); 
-</script>
-
-<script type="text/javascript">
-	var auto_refresh = setInterval(function () {
-	  $('#mainContent').load('<%=request.getContextPath()%>/admin/layouts/menu_main.jsp').fadeIn("slow");
-	}, 500);
-	
-	function loadContent(url) {
-	  var xhr = new XMLHttpRequest();
-	  xhr.onreadystatechange = function() {
-	    if (xhr.readyState === 4 && xhr.status === 200) {
-	      document.getElementById('mainContent').innerHTML = xhr.responseText;
-	      window.scrollTo(0, 0);
-	    }
-	  };
-	  xhr.open('GET', url, true);
-	  xhr.send();
-	}
-	
-	function openPopup(url) {
-	  var popupWidth = 500;
-	  var popupHeight = 300;
-	  var popupX = (window.screen.width/2) - (popupWidth/2);
-	  var popupY = (window.screen.height/2) - (popupHeight/2);
-	  var popup = window.open(url, 'PopupWindow', 'width=popupWidth, height=popupHeight, scrollbars=yes, left=popupX, top=popupY');
-	}
-	
-	function closePopup(popup) {
-	  if (popup && !popup.closed) {
-	    popup.close();
-	  }
-	}
-	</script>
-	 --%>
 
 

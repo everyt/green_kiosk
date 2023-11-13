@@ -32,7 +32,6 @@ public class admin_menu extends HttpServlet {
     		String type = null;
     		if (request.getParameter("type") != null) {
     			type = request.getParameter("type");
-    			System.out.println("type : " + type);
     		}
             Vector<Menu_menu_Bean> menu_list = null;
             
