@@ -60,7 +60,7 @@ public class Mile_log_Mgr {
 	            bean.setMile_uid(this.rs.getString("mile_uid"));
 	            bean.setMile_type(this.rs.getString("mile_type"));
 	            bean.setMile_reason(this.rs.getString("mile_reason"));
-	            bean.setMile_deff(this.rs.getInt("mile_diff"));
+	            bean.setMile_deff(this.rs.getInt("mile_deff"));
 	            bean.setMile_order_no(this.rs.getInt("mile_order_no"));
 	            vector.add(bean);
 	        }
@@ -75,7 +75,7 @@ public class Mile_log_Mgr {
 	public Vector<Mile_log_Bean> getMileLogsByUid(String uid) {
 		Vector<Mile_log_Bean> vector = new Vector<Mile_log_Bean>();
 		try {
-			this.Initializer("SELECT * FROM orders WHERE `mile_uid` = ?");
+			this.Initializer("SELECT * FROM mile_log  WHERE `mile_uid` = ?");
 			this.pst.setString(1, uid);
 			this.rs = this.pst.executeQuery();
 			while (this.rs.next()) {
@@ -85,7 +85,7 @@ public class Mile_log_Mgr {
 	            bean.setMile_uid(this.rs.getString("mile_uid"));
 	            bean.setMile_type(this.rs.getString("mile_type"));
 	            bean.setMile_reason(this.rs.getString("mile_reason"));
-	            bean.setMile_deff(this.rs.getInt("mile_diff"));
+	            bean.setMile_deff(this.rs.getInt("mile_deff"));
 	            bean.setMile_order_no(this.rs.getInt("mile_order_no"));
 	            vector.add(bean);
 	        }
@@ -110,7 +110,7 @@ public class Mile_log_Mgr {
 	            bean.setMile_uid(this.rs.getString("mile_uid"));
 	            bean.setMile_type(this.rs.getString("mile_type"));
 	            bean.setMile_reason(this.rs.getString("mile_reason"));
-	            bean.setMile_deff(this.rs.getInt("mile_diff"));
+	            bean.setMile_deff(this.rs.getInt("mile_deff"));
 	            bean.setMile_order_no(this.rs.getInt("mile_order_no"));
 	            vector.add(bean);
 	        }

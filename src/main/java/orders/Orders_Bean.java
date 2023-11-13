@@ -2,11 +2,12 @@ package orders;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Map;
 
 public class Orders_Bean {
 	private Integer order_no;
 	private Timestamp order_time;
-	private String order_foods;
+	private Map<String, Object> order_foods;
 	private Integer	order_price;
 	private Integer order_discount;
 	private String order_coupon;
@@ -31,10 +32,10 @@ public class Orders_Bean {
 	public void setOrder_time(Timestamp order_time) {
 		this.order_time = order_time;
 	}
-	public String getOrder_foods() {
+	public Map<String, Object> getOrder_foods() {
 		return order_foods;
 	}
-	public void setOrder_foods(String order_foods) {
+	public void setOrder_foods(Map<String, Object> order_foods) {
 		this.order_foods = order_foods;
 	}
 	public Integer getOrder_price() {
