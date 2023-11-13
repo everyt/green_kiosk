@@ -6,8 +6,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
-import java.sql.Timestamp;
-import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -19,42 +17,39 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import orders.Orders_Bean;
-import orders.Orders_Mgr;
-import orders.Orders_VO;
+import user.Member_Mgr;
+import mile.Mileage_VO;
 
-@WebServlet("/api/kiosk/purchase/order")
-public class Order_Servlet extends HttpServlet {
+@WebServlet("/api/kiosk/purchase/mileage")
+public class Mileage_Servlet extends HttpServlet {
 	private static final long serialVersionUID = 822377164049874508L;
 
 	private Gson gson;
-	private Orders_Mgr orders_mgr;
+	private Member_Mgr member_mgr;
 	
-	public Order_Servlet() {
+	public Mileage_Servlet() {
         super();
 	}
 	
     @Override
 	public void init(ServletConfig config) throws ServletException {
-			super.init();
-			this.gson = new Gson();
-			this.orders_mgr = new Orders_Mgr();
+		this.gson = new Gson();
+		this.member_mgr = new Member_Mgr();
     }
     
     @Override
 	public void destroy() {
-			super.destroy();
-			this.gson = new Gson();
-			this.orders_mgr = null;
+		this.gson = null;
+		this.member_mgr = null;
     }
     
     @Override
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 			super.service(req, res) ;
     }
-	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		PrintWriter out = res.getWriter();
 		
 		BufferedReader reader = req.getReader();
@@ -63,36 +58,48 @@ public class Order_Servlet extends HttpServlet {
 		while ((line = reader.readLine()) != null) {
 			sb.append(line);
 		}
-		String order = sb.toString();
+		String mileage = sb.toString();
 		
-		if (order == null || order.isEmpty()) {
+		if (mileage == null || mileage.isEmpty()) {
 			res.sendError(400, "Parameter is null");
 			return;
 		}
 		
 		try {
-			order = URLDecoder.decode(order, "UTF-8");
+			mileage = URLDecoder.decode(mileage, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			res.sendError(400, "Parameter is not encode by RFC-3986");
 			e.printStackTrace();
           return;
 		}
 
-		Orders_VO orders_vo = this.gson.fromJson(order, Orders_VO.class);
-		
-		
-		boolean flag = this.orders_mgr.addOrder(new Orders_Bean(orders_vo));
-		
-		if (flag) {
-			int pk = this.orders_mgr.getLastOrder();
-			out.write("[{"
-					+ "\"result\": true"
-					+ "\"primaryKey\":" + pk + ","
-					+ "}]");
-		} else {
-			out.write("[{"
-					+ "\"result\": false"
-					+ "}]");
+		Type type = new TypeToken<Mileage_VO>() {}.getType();
+		Mileage_VO mileage_vo = gson.fromJson(mileage, type);
+		if (mileage_vo.getType().equals("phoneNumber")) {
+			if (member_mgr.checkPhone(mileage_vo.getValue())) {
+				out.write(gson.toJson(mileage_vo));
+			} else {
+				out.write("[{"
+						+ "\"index\": 0,"
+						+ "\"name\": \"x\","
+						+ "\"mileage\": 0,"
+						+ "\"value\": \"x\","
+						+ "\"type\": \"x\""
+						+ "}]");
+			}
+		} else if (mileage_vo.getType().equals("cardNumber")) {
+			if (member_mgr.checkCard(mileage_vo.getValue())) {
+				out.write(gson.toJson(mileage_vo));
+			} else {
+				out.write("[{"
+						+ "\"index\": 0,"
+						+ "\"name\": \"x\","
+						+ "\"mileage\": 0,"
+						+ "\"value\": \"x\","
+						+ "\"type\": \"x\""
+						+ "}]");
+			}
 		}
-	}
+    }
+
 }

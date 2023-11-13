@@ -215,7 +215,7 @@ public class Member_Mgr {
 		}
 	}
 
-	public boolean checkphone(String phone) {
+	public boolean checkPhone(String phone) { // 오타 교정
 		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -224,9 +224,30 @@ public class Member_Mgr {
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "select phone from member where phone = ?";
+			sql = "select mem_phone from member where mem_phone = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, phone);
+			flag = pstmt.executeQuery().next();	
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return flag;
+	}
+	
+	public boolean checkCard(String card) {
+		DBConnectionMgr pool = new DBConnectionMgr();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		boolean flag = false;
+		try {
+			con = pool.getConnection();
+			sql = "select mem_card from member where mem_card = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, card);
 			flag = pstmt.executeQuery().next();	
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -279,7 +300,39 @@ public class Member_Mgr {
 				bean.setMem_ac(rs.getString("mem_ac"));
 				bean.setMem_mile(rs.getInt("mem_mile"));
 				bean.setMem_coupon(rs.getString("mem_coupon"));
-				bean.set_card(rs.getString("mem_card"));
+				bean.setMem_phone(rs.getString("mem_card"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con);
+		}
+		return bean;
+	}
+	
+	public Member_Bean get_user_with_card(String c_num) {
+		DBConnectionMgr pool = new DBConnectionMgr();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Member_Bean bean = null;
+		try {
+			con = pool.getConnection();
+			String sql = "select * from member where mem_card = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, c_num);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				bean = new Member_Bean();
+				bean.setMem_no(rs.getInt("mem_no"));
+				bean.setMem_id(rs.getString("mem_id"));
+				bean.setMem_pw(rs.getString("mem_pw"));
+				bean.setMem_name(rs.getString("mem_name"));
+				bean.setMem_phone(rs.getString("mem_phone"));
+				bean.setMem_ac(rs.getString("mem_ac"));
+				bean.setMem_mile(rs.getInt("mem_mile"));
+				bean.setMem_coupon(rs.getString("mem_coupon"));
+				bean.setMem_phone(rs.getString("mem_card"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
