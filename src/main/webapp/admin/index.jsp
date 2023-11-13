@@ -16,14 +16,10 @@
 	<div class="layout_left">
 		<%@ include file="/admin/layouts/left.jsp" %>
 	</div>
-	<div class="layout_main">
-		<%@ include file="/admin/layouts/main.jsp" %>
+	<div class="mainContent" id="mainContent">
+		<%@ include file="/admin/layouts/index/index_main.jsp" %>
 	</div>
 	<br/>
-	
-<%-- 	<div class="layout_footer">
-		<%@ include file="/admin/layouts/footer.jsp" %>
-	</div> --%>
-	
 </body>
+<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index_index.js"></script>
 </html>
