@@ -1,4 +1,4 @@
-.mainContent {height:95vh; transform: translateY(43px); padding-left: 250px;}
+.mainContent {height:95vh; transform: translateY(4.9%); padding-left: 13.15%;}
 
 @media all and (max-width: 992px) {
 	.mainContent {padding-left: 0px;}

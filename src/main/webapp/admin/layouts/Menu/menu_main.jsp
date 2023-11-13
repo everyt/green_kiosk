@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/admin/layouts/BeanManager.jsp" %>
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/menu_main_main.js"></script>
 <main class="mainContent">
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
@@ -20,7 +21,7 @@
     
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      <%
+<%--       <%
       	int menu_no = 0;
 		String menu_imgPath = null;
 		String menu_name = null;
@@ -49,10 +50,10 @@
       %>
         <div class="col">
           <div class="card shadow-sm">
-            <img src="/downloadfile2/<%=menu_imgPath%>"class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span class="menu_name"><%=menu_name%></span></text></image>
+            <img id="menu_imgPath" src="/downloadfile2/<%=menu_imgPath%>"class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span class="menu_name" id="menu_name"><%=menu_name%></span></text></image>
             <div class="card-body">
-              <p class="card-text" align="center"><%=menu_content%></p>
+              <p class="card-text" align="center" id="menu_content"><%=menu_content%></p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup('<%=request.getContextPath()%>/admin/Menu/View.jsp?menu_no=<%=menu_no%>')">상세보기</a>
@@ -67,114 +68,30 @@
           </div>
         </div>
         
-        <% } %>
+        <% } %> --%>
+        <div class="getMenuList"></div>
 <!-- not repeat div -->
       </div>
     </div>
   </div>
-
 </main>
 
-<footer class="text-body-secondary py-5">
-  <div class="container">
-    <p class="float-end mb-1">
-      <a href="#">Back to top</a>
-    </p>
-    <p class="mb-1">Album example is © Bootstrap, but please download and customize it for yourself!</p>
-    <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="/docs/5.3/getting-started/introduction/">getting started guide</a>.</p>
-  </div>
-</footer>
-
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-	<%!
-    public String formatNumber(double number) {
-        // 숫자를 3자리마다 쉼표로 구분
-        java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
-        return df.format(number);
-    }
-	
-	public String formatTime(Long number) {
-		java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
-		return df.format(number);
-	}
+
+
+
+<%! 
+    public String formatNumber(double number) { 
+        // 숫자를 3자리마다 쉼표로 구분 
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#,###"); 
+        return df.format(number); 
+    } 
+
+    public String formatTime(Long number) { 
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#,###"); 
+        return df.format(number); 
+    } 
 %>
-<script>
-function loadContent(url) {
-  var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      // Ajax 요청이 완료되고 페이지를 가져온 경우 메인 페이지를 업데이트
-      document.getElementById('mainContent').innerHTML = xhr.responseText;
-      // 맨 상단으로 가도록
-      window.scrollTo(0, 0);
-    }
-  };
-  xhr.open('GET', url, true);
-  xhr.send();
-}
-</script>
 
-<%-- <script type="text/javascript">
-var auto_refresh = setInterval(
-function ()
-{
-$('#mainContent').load('menu_main.jsp').fadeIn("slow");
-}, 500); 
-</script>
 
-<script type="text/javascript">
-	var auto_refresh = setInterval(function () {
-	  $('#mainContent').load('<%=request.getContextPath()%>/admin/layouts/menu_main.jsp').fadeIn("slow");
-	}, 500);
-	
-	function loadContent(url) {
-	  var xhr = new XMLHttpRequest();
-	  xhr.onreadystatechange = function() {
-	    if (xhr.readyState === 4 && xhr.status === 200) {
-	      document.getElementById('mainContent').innerHTML = xhr.responseText;
-	      window.scrollTo(0, 0);
-	    }
-	  };
-	  xhr.open('GET', url, true);
-	  xhr.send();
-	}
-	
-	function openPopup(url) {
-	  var popupWidth = 500;
-	  var popupHeight = 300;
-	  var popupX = (window.screen.width/2) - (popupWidth/2);
-	  var popupY = (window.screen.height/2) - (popupHeight/2);
-	  var popup = window.open(url, 'PopupWindow', 'width=popupWidth, height=popupHeight, scrollbars=yes, left=popupX, top=popupY');
-	}
-	
-	function closePopup(popup) {
-	  if (popup && !popup.closed) {
-	    popup.close();
-	  }
-	}
-	</script>
-	 --%>
-<%-- 	function sub2() {
-	  let frm = document.regFrm;
-	  let no = frm.menu_no.value;
-	  let name = frm.menu_name.value;
-	  let gubn = frm.menu_gubn.value;
-	  let price = frm.menu_price.value;
-	  let content = frm.menu_content.value;
-	  let imgPath = frm.menu_imgPath.value;
-	  let isUse = frm.menu_isUse.value;
-	  let isSale = frm.menu_isSale.value;
-	  
-	  fetch("<%=request.getContextPath()%>/api/admin/edit_menu?no=" + no + "&name=" + name + "&gubn=" + gubn +
-	        "&price=" + price + "&content=" + content + "&imgPath=" + imgPath + "&isUse=" + isUse + "&isSale=" + isSale, {
-	    method: "post"
-	  }).then(response => {
-	    response.json().then((res) => {
-	      if (res.result == "success") {
-	        loadContent('<%=request.getContextPath()%>/admin/layouts/menu_main.jsp');
-	      }
-	    })
-	  })
-	} --%>
 
