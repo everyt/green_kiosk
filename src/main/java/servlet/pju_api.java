@@ -34,7 +34,6 @@ public class pju_api extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 		RequestDispatcher rd = request.getRequestDispatcher("/user/change_pw.jsp");
 		rd.forward(request, response);
 	}
@@ -79,9 +78,12 @@ public class pju_api extends HttpServlet {
 			
 			if (res) {
 				session.setAttribute("find_pw_id", mem_id);
-				doGet(request, response);
 				
-				//response.sendRedirect("/green_kiosk/user/change_pw.jsp");
+				response.setContentType("text/html; charset=UTF-8");
+				request.setCharacterEncoding("UTF-8");
+				
+				
+				response.sendRedirect(request.getContextPath()+"/api/user/find_pw");
 			} else {
 				out.write("{\"result\":\"아이디가 없습니다\"}");
 			}
