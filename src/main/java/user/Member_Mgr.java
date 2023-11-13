@@ -316,20 +316,27 @@ public class Member_Mgr {
 		return res;
 	}
 	
-	public List<String> findpw(String id, String name , String phone ) {
+	public boolean findpw(String id, String name , String phone ) {
 		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
-		List<String> res = new ArrayList<String>();
+		boolean res = false;
 		try {
 			con = pool.getConnection();
-			sql = "select mem_pw from member where mem_id = ? AND mem_name = ? AND mem_phone = ?";
+			sql = "select mem_id from member where mem_id = ? AND mem_name = ? AND mem_phone = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setString(2, name);
 			pstmt.setString(3, phone);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				res = true;
+			} else {
+				res = false;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
