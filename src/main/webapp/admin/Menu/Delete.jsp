@@ -21,11 +21,13 @@
 		script.println("</script>");
 	} else {
 		script.println("<script>");
-/* 		script.println("window.opener.location.reload();");
- */ 		script.println("window.close();");
+        script.println("window.opener.updateMenu('drink');");
+        script.println("window.opener.updateMenu('single');");
+        script.println("window.opener.updateMenu('all');");
+ 		script.println("window.close();");
 		script.println("</script>");
 	}
 %>
 
 </body>
-</html>x`
+</html>

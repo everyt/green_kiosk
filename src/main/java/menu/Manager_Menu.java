@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +16,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import all.DBConnectionMgr;
+import orders.Orders_Bean;
 
 public class Manager_Menu {
 	
 	private DBConnectionMgr pool;
+	
+	private Gson gson = new Gson();
 
 	public Manager_Menu() {
 		try {
@@ -789,28 +797,28 @@ public class Manager_Menu {
 		}
 		
 		// 3. 회계 관리 페이지 - 거래 내역
-		public Vector<Menu_order_Bean> getMgrorderList() {
+		public Vector<Orders_Bean> getMgrorderList() {
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			String sql = null;
-			Vector<Menu_order_Bean> vlist = new Vector<Menu_order_Bean>();
+			Vector<Orders_Bean> vlist = new Vector<Orders_Bean>();
 			try {
 				con = pool.getConnection();
-				sql = "select * from car_code ";
+				sql = "select * from orders";
 			    pstmt = con.prepareStatement(sql);
 				rs = pstmt.executeQuery();
 				while (rs.next()) {
-					Menu_order_Bean bean = new Menu_order_Bean();
-					bean.setMgrodr_no(rs.getInt("mgrodr_no"));
-					bean.setMgrodr_day(rs.getString("mgrodr_day"));
-					bean.setMgrodr_kind(rs.getString("mgrodr_kind"));
-					bean.setMgrodr_sele(rs.getString("mgrodr_sele"));
-					bean.setMgrodr_mtd(rs.getString("mgrodr_mtd"));
-					bean.setMgrodr_hsel(rs.getString("mgrodr_hsel"));
-					bean.setMgrodr_csel(rs.getString("mgrodr_csel"));
-					bean.setMgrodr_sday(rs.getString("mgrodr_sday"));
-					bean.setMgrodr_smon(rs.getString("mgrodr_smon"));
+					Orders_Bean bean = new Orders_Bean();
+					bean.setOrder_no(rs.getInt("order_no"));
+					bean.setOrder_time(rs.getTimestamp("order_time"));
+					bean.setOrder_foods(gson.fromJson(rs.getString("order_foods"), new TypeToken<List<Map<String, Object>>>() {}.getType()));
+					bean.setOrder_price(rs.getInt("order_price"));
+					bean.setOrder_discount(rs.getInt("order_discount"));
+					bean.setOrder_coupon(rs.getString("order_coupon"));
+					bean.setOrder_type(rs.getString("order_type"));
+					bean.setOrder_add_mile(rs.getBoolean("order_add_mile"));
+					bean.setOrder_is_maked(rs.getBoolean("order_is_maked"));
 					vlist.add(bean);
 				}
 			} catch (Exception e) {
