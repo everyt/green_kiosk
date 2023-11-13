@@ -17,12 +17,12 @@ type coupon = {
   discount: number;
 };
 
-type smile = {
+type mileage = {
   index: number;
   name: string;
   mileage: number;
   value: string;
-  type: 'phoneNumber' | 'userID';
+  type: 'phoneNumber' | 'cardNumber' | 'x';
 };
 
 class PurchaseException extends Error {
@@ -75,18 +75,18 @@ class State {
 
   toObject() {
     return {
-      time: this.time,
-      foods: this.foods,
-      price: this.price,
-      discount: this.discount,
-      coupon: this.coupon,
-      type: this.type,
-      use_mile: this.use_mile,
-      use_mile_amount: this.use_mile_amount,
-      add_mile: this.add_mile,
-      add_mile_amount: this.add_mile_amount,
-      is_maked: this.is_maked,
-      who: this.who,
+      order_time: this.time,
+      order_foods: this.foods,
+      order_price: this.price,
+      order_discount: this.discount,
+      order_coupon: this.coupon,
+      order_type: this.type,
+      order_use_mile: this.use_mile,
+      order_use_mile_amount: this.use_mile_amount,
+      order_add_mile: this.add_mile,
+      order_add_mile_amount: this.add_mile_amount,
+      order_is_maked: this.is_maked,
+      order_who: this.who,
     };
   }
 }
@@ -97,17 +97,18 @@ class Item {
     this.store = storage;
   }
   get(str: string) {
-    return this.store.getItem(str) === null ? null : JSON.parse(this.store.getItem(str));
+    return this.store.getItem(str) === null ? null : this.store.getItem(str);
   }
-  set(str: string, data: any) {
-    this.store.setItem(str, JSON.stringify(data));
+  set(str: string, data: string) {
+    this.store.setItem(str, data);
   }
 }
 
 const SVG_PATH = '../../assets/svg/';
 
 const ARRAY_ICONS = ['bag', 'shop', 'coupon', 'smile', 'card', 'mobile'];
-const ARRAY_HREF_ICONS = ['card', 'mobile'];
+const ARRAY_HREF_ICONS = ['coupon', 'smile'];
+const ARRAY_PAY_ICONS = ['card', 'mobile'];
 
 const PAIRS_ICONS = [
   ['bag', 'shop'],
@@ -134,64 +135,18 @@ const inputDigits = (num: number) => {
   return result.reverse().join('');
 };
 
-const fetchDetail = async (url: string, type: string, body: string) => {
-  try {
-    const response = await fetch(url, {
-      method: type,
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: encodeURIComponent(body),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Network response was not ok: ${response.statusText}`);
-    }
-
-    const json = await response.json();
-
-    return json;
-  } catch (error) {
-    // 네트워크 오류 및 JSON 파싱 오류에 대한 예외 처리
-    console.error('Fetch error:', error);
-    throw new PurchaseException('Failed to fetch data');
-  }
-};
-
 const drawArrayToHTMLElement = (element: HTMLElement, arr: any[], drawCallback: (arr: any[]) => string) => {
   if (arr == null) {
     element.innerHTML = 'Null';
+  } else {
+    let html = drawCallback(arr);
+  
+    element.innerHTML = html;
   }
-  let html = drawCallback(arr);
-
-  element.innerHTML = html;
-};
-
-const generateBasketPageButtonHTML = (arr: any[]) => {
-  let html: string;
-
-  const pages = Math.ceil(arr.length / 10);
-
-  for (let i = 1; i <= pages; i++) {
-    html +=
-      `<div class='purchase-page-button-main'` +
-      `onClick='GenerateBasketPageHTML(state.foods, ` +
-      i +
-      `)'>` +
-      i +
-      `</div>`;
-  }
-
-  return html;
 };
 
 const generateBasketPageHTML = (arr: any[], page: number = 0) => {
-  let html: string;
+  let html: string = '';
   const divCountValue = 10 * page;
 
   for (let i = 0 + divCountValue; i < 10 + divCountValue; i++) {
@@ -205,10 +160,30 @@ const generateBasketPageHTML = (arr: any[], page: number = 0) => {
   return html;
 };
 
-const drawPriceToHTMLElement = (str: string, value: number) => {
+const generateBasketPageButtonHTML = (arr: any[]) => {
+  let html: string = '';
+
+  const pages = Math.ceil(arr.length / 10);
+
+  for (let i = 1; i <= pages; i++) {
+    html +=
+      `<div class='purchase-page-button-main'` +
+      `onClick='generateBasketPageHTML(state.foods, ` +
+      i +
+      `)'>` +
+      i +
+      `</div>`;
+  }
+
+  return html;
+};
+
+const drawPriceToHTMLElement = (str: string, text: string, value: number) => {
   document.querySelector(str).innerHTML =
     '<div class="flex-between">' +
-    '<span class="price-name">적립될 마일리지: </span>' +
+    '<span class="price-name">' +
+    text +
+    ': </span>' +
     '<span class="price-value">' +
     inputDigits(value) +
     '</span>' +
@@ -224,26 +199,49 @@ const item = new Item(sessionStorage);
 
 (async () => {
   // 즉시 실행 함수 IIFE, 스코프 제한, 메모리 관리를 위해 사용됩니다.
+  item.set('basketArray', JSON.stringify([{
+    index: 0,
+    name: '치즈버거',
+    price: 3000,
+    amount: 5,
+  }]));
+  item.set('couponArray', JSON.stringify([{
+    code: '1234-1234-1234-1234',
+    name: '홍길동',
+    menuNo: 0,
+    discount: 30
+  }]));
   if (item.get('basketArray')) {
-    state.foods = item.get('basketArray');
+    // 장바구니 데이터 관리
+    state.foods = JSON.parse(item.get('basketArray')); // 장바구니 상태관리
     state.price = state.foods.reduce((acc, cur) => {
+      // 누산기로 총 가격 계산, 머리터질거같아서 일일이 주석 달아줌
       return acc + cur.amount * cur.price;
     }, 0);
 
     drawArrayToHTMLElement(document.querySelector('#basketPageElement'), state.foods, generateBasketPageHTML);
     drawArrayToHTMLElement(
+      // 미리 생성해놓은 위치의 HTMLElement들에게 html코드를 생성해서 주입
       document.querySelector('#basketPageButtonElement'),
       state.foods,
       generateBasketPageButtonHTML,
     );
 
-    drawPriceToHTMLElement('#priceElement', state.price);
+    drawPriceToHTMLElement('#priceElement', '주문금액', state.price); // 가격 보여줌, 디스플레이
   } else {
     throw new PurchaseException('basketArray is null');
   }
 
   if (item.get('couponArray')) {
-    const couponArray = await fetchDetail('/api/kiosk/purchase/coupons', 'POST', item.get('couponArray'));
+    // 쿠폰 데이터 관리
+    const couponArray = await detailedFetch(
+      // 쿠폰 데이터를 세션스토리지에서 couponArray라는 이름으로 꺼내오고
+      '/green_kiosk/api/kiosk/purchase/couponArray', // JSON문자열화 시킨다음에 api서버로 POST 요청 후 응답을 couponArray에 삽입
+      'POST', // 이제 다 다른 서블릿을 쓰니까 coupons 이런 ㅁㅁㄴ 안해도 되고 smile도 array일 필요 X
+      // 국제표준을 지키는 모습을 보여주기 위해서 encodeURIcomponent 사용
+      // 내부에서 encode 처리 해줘도 되는데 그러면 너무 관리가 빡셈 보기가 어려워
+      encodeURIComponent(item.get('couponArray')),
+    );
     state.coupon = couponArray;
 
     if (state.coupon) {
@@ -269,24 +267,28 @@ const item = new Item(sessionStorage);
         }
       }, 0);
 
-      drawPriceToHTMLElement('#discountElement', state.discount);
-      drawPriceToHTMLElement('#discountedPriceElement', state.price - state.discount);
+      drawPriceToHTMLElement('#discountElement', '할인금액', state.discount);
+      drawPriceToHTMLElement('#discountedPriceElement', '결제할금액', state.price - state.discount);
     } else {
       throw new PurchaseException('fetch failed: /api/kiosk/purchase/coupons');
     }
   }
 
-  if (item.get('smileArray')) {
-    const smileArray = await fetchDetail('/api/kiosk/purchase/mileage', 'POST', item.get('smileArray'));
+  if (item.get('mileage')) {
+    const mileage = await detailedFetch(
+      '/green_kiosk/api/kiosk/purchase/mileage',
+      'POST',
+      encodeURIComponent(JSON.stringify(item.get('mileage'))),
+    );
 
-    if (smileArray) {
+    if (mileage) {
       const mileAmount = Math.floor((state.price - state.discount) / 10);
       state.add_mile = true;
       state.add_mile_amount = mileAmount;
-      state.use_mile = smileArray.type === 'userID' ? true : false;
-      state.use_mile_amount = smileArray.type === 'userID' && mileAmount;
-      state.who = smileArray.index;
-      drawPriceToHTMLElement('#mileageElement', state.add_mile_amount);
+      state.use_mile = mileage.type === 'cardNumber' ? true : false;
+      state.use_mile_amount = mileage.type === 'cardNumber' && mileAmount;
+      state.who = mileage.index;
+      drawPriceToHTMLElement('#mileageElement', '적립마일리지', state.add_mile_amount);
     } else {
       throw new PurchaseException('fetch failed: /api/kiosk/purchase/mileage');
     }
@@ -294,37 +296,49 @@ const item = new Item(sessionStorage);
 
   ARRAY_ICONS.forEach((value) => {
     const element = document.querySelector('#' + value) as HTMLImageElement;
-    element.src = item.get(value) ? formatSVGPath('check') : formatSVGPath(value);
+    element.src = item.get(value) === null 
+    ? formatSVGPath(value)
+    : JSON.parse(item.get(value)) === false
+    ? formatSVGPath(value)
+    : formatSVGPath('check');
   });
-
-  //TODO: 즉시실행함수에서 필요한 기능은 모두 구현했고, 나머지는 클릭 가능한 아이콘과 결제 버튼에서 필요한 프로세스
 })();
 
 const swapIcon = (str: string) => {
   const element = document.querySelector('#' + str) as HTMLImageElement;
   let boolean = false;
-  boolean = item.get(str) === null ? false : item.get(str);
-
-  for (let pair of PAIRS_ICONS)
-    if (boolean && ((str === pair[0] && item.get(pair[1])) || (str === pair[1] && item.get(pair[0])))) {
-      item.set(str === pair[0] ? pair[1] : pair[0], false);
-      const pairElement = document.querySelector('#' + str === pair[0] ? pair[1] : pair[0]) as HTMLImageElement;
-      pairElement.src = formatSVGPath(str === pair[0] ? pair[1] : pair[0]);
+  
+  boolean = item.get(str) === null ? false : JSON.parse(item.get(str)) === false ? false : true;
+  
+  boolean = !boolean;
+  
+  if (boolean) {
+    for (let pair of PAIRS_ICONS) {
+      if (str === pair[0] && JSON.parse(item.get(pair[1])) === true) {
+        item.set(pair[1], JSON.stringify(false));
+        const pairElement = document.querySelector('#' + pair[1]) as HTMLImageElement;
+        pairElement.src = formatSVGPath(pair[1]);
+      } else if (str === pair[1] && JSON.parse(item.get(pair[0])) === true) {
+        item.set(pair[0], JSON.stringify(false));
+        const pairElement = document.querySelector('#' + pair[0]) as HTMLImageElement;
+        pairElement.src = formatSVGPath(pair[0]);
+      }
     }
+  }
 
-  element.src = boolean ? formatSVGPath(str) : formatSVGPath('check');
-  item.set(str, boolean);
+  element.src = boolean ? formatSVGPath('check') : formatSVGPath(str);
+  item.set(str, JSON.stringify(boolean));
 };
 
 const handleClickIcon = (str: string) => {
   swapIcon(str);
 
-  for (let icon of ARRAY_HREF_ICONS) location.href = str === icon && icon + '.jsp';
+  for (let icon of ARRAY_HREF_ICONS) if (str === icon) location.href = icon + '.jsp';
 };
 
 const allOpionSelected = () => {
-  for (let icon of ARRAY_ICONS) {
-    if (item.get(icon) === null) {
+  for (let pair of PAIRS_ICONS) {
+    if (!item.get(pair[0]) && !item.get(pair[1])) {
       return false;
     }
   }
@@ -333,8 +347,8 @@ const allOpionSelected = () => {
 
 const changeLoreForOptionNotSelected = () => {
   for (let i = 1; i <= PAIRS_ICONS.length; i++) {
-    if (item.get(PAIRS_ICONS[i][0]) === null || item.get(PAIRS_ICONS[i][1]) === null) {
-      const element = document.querySelector('#' + i.toString());
+    if ((!item.get(PAIRS_ICONS[i][0]) || !item.get(PAIRS_ICONS[i][1]))) {
+      const element = document.querySelector('#icon-' + i.toString());
       const originValue = element.innerHTML;
       element.innerHTML = '<span style="color: red;">둘 중 하나를 선택해 주세요.</span>';
       setTimeout(() => {
@@ -344,15 +358,18 @@ const changeLoreForOptionNotSelected = () => {
   }
 };
 
-const handleClickOk = () => {
+const handleClickOk = async () => {
   if (allOpionSelected()) {
-    if (item.get(ARRAY_HREF_ICONS[0]) || item.get(ARRAY_HREF_ICONS[1])) {
-      state.type = item.get(ARRAY_HREF_ICONS[0]) ? item.get(ARRAY_HREF_ICONS[0]) : item.get(ARRAY_HREF_ICONS[1]);
+    if (item.get(ARRAY_PAY_ICONS[0]) || item.get(ARRAY_PAY_ICONS[1])) {
+      state.type = item.get(ARRAY_PAY_ICONS[0])
+        ? ARRAY_PAY_ICONS[0] as 'card'
+        : ARRAY_PAY_ICONS[1] as 'mobile';
     } else {
       throw new PurchaseException('Unexpected error: item.get(icon) has null');
     }
     const orderObject = state.toObject();
-    fetchDetail('/api/kiosk/purchase/order', 'POST', JSON.stringify(orderObject));
+    item.set('order', JSON.stringify(orderObject));
+    location.href = state.type + '.jsp';
   } else {
     changeLoreForOptionNotSelected();
   }

@@ -1,17 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%
-	request.setCharacterEncoding("UTF-8");
-	String isCorrect = request.getParameter("isCorrect");
-	boolean isFirstConnect = false;
-	
-	
-	if (isCorrect == null || isCorrect.isEmpty()) {
-		isFirstConnect = true;
-	}
-	
-%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,16 +8,16 @@
 <link rel='stylesheet' href='../../assets/css/purchase.css' />
 </head>
 <body style="overflow: hidden;">
-  <div class="header"><span>할인쿠폰 사용</span></div>
-  <div class="payment-card within-top-border" style='height: 500px;'>
+  <header class="header"><span>할인쿠폰 사용</span></header>
+  <main class="payment-card within-top-border" style='height: 500px;'>
     <img src="../../assets/svg/coupon.svg" alt="coupon" width='100' style='margin-bottom: 5px;' />
-    <div class="rowbox">
-	    <div id="couponDOM2" class="colbox" style="border: 2px solid #eee; padding: 10px; margin-right: 16px;">
+    <section class="rowbox">
+	    <article id="couponDOM2" class="colbox" style="border: 2px solid #eee; padding: 10px; margin-right: 16px;">
 	      <!-- 여기서 쿠폰 리스트 JS로 표시, 정해진 줄 길이, 넘어가면 페이지로,  -->
 	      <span style="width: 120px; background-color: #eee; border: 2px solid #ddd; align-self: center; padding: 3px 0;">적용된 쿠폰</span>
 	      <div id="couponDOM"></div>
-	    </div>
-	    <div class="colbox" style="border: 2px solid #eee; padding: 10px;">
+	    </article>
+	    <article class="colbox" style="border: 2px solid #eee; padding: 10px;">
 		    <div id="couponText" style="margin-bottom: 16px;">할인 쿠폰 코드를 입력해 주세요.</div>
 		    <form name="couponForm" method="post" action="./process/process-coupon.jsp">
 		      <input type="text"
@@ -67,25 +55,14 @@
 		      <div class="numeric-keypad" onClick="handleKeypad(0)">0</div>
 		      <div class="numeric-keypad numeric-clear" onClick="clearInput('#couponCode')">Clear</div>
 		    </div>
-	    </div>
-    </div>
-  </div>
-  <div class="rowbox">
+	    </article>
+    </section>
+  </main>
+  <footer class="rowbox">
     <div class="payment-ok" onClick="handleCouponForm()">확인</div>
-    <div class="payment-cancle" onClick="backTo('coupon')">취소</div>
-  </div>
-  <script src="../../assets/js/kiosk/purchase/util.js"></script>
+    <div class="payment-cancle" onClick="handleClickCancle2()">취소</div>
+  </footer>
+  <script src="../../assets/js/kiosk/purchase/detailedFetch.js"></script>
   <script src="../../assets/js/kiosk/purchase/coupon.js"></script>
-  <script>
-	  if (!<%=isFirstConnect%>) {
-		  if (!<%=isCorrect%>) {
-		    const couponTextElement = document.getElementById('couponText');
-		    couponTextElement.innerHTML = '<span style="color: red;">현재 사용할 수 없는 쿠폰입니다.</span>';
-		    setTimeout(() => {
-		      couponTextElement.innerHTML = '할인 쿠폰 코드를 입력해 주세요.';
-		    }, 3000);
-		  }
-		}
-  </script>
 </body>
 </html>

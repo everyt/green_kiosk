@@ -47,7 +47,7 @@ body {
   align-items: center;
 }
 .payment-option {
-  border: solid #ddd;
+  border: 0px solid #ddd;
   border-width: 2px 0 0 2px;
   padding: 10px;
   display: flex;
@@ -69,6 +69,7 @@ body {
   padding: 1vw 3vw;
   margin: 1vw 0 0 0;
   cursor: pointer;
+  color: white;
 }
 .payment-cancle {
   border: 2px solid #ddd;
@@ -90,7 +91,7 @@ body {
 .purchase-page-button-left {
   width: 11px;
   height: 11px;
-  border: solid #ccc;
+  border: 0px solid #ccc;
   border-width: 6px 0 0 6px;
   rotate: -45deg;
   margin-top: 9px;
@@ -100,7 +101,7 @@ body {
 .purchase-page-button-right {
   width: 11px;
   height: 11px;
-  border: solid #ccc;
+  border: 0px solid #ccc;
   border-width: 6px 6px 0 0;
   rotate: 45deg;
   margin-top: 9px;
@@ -153,7 +154,7 @@ body {
   align-items: start;
   justify-content: center;
   width: inherit;
-  border: solid #ddd;
+  border: 0px solid #ddd;
   border-bottom-width: 2px;
   align-self: center;
   padding: 3px 0;
