@@ -95,6 +95,7 @@ public class Member_Mgr {
 				bean.setMem_ac(rs.getString("mem_ac"));
 				bean.setMem_mile(rs.getInt("mem_mile"));
 				bean.setMem_coupon(rs.getString("mem_coupon"));
+				bean.set_card(rs.getString("mem_card"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -278,6 +279,7 @@ public class Member_Mgr {
 				bean.setMem_ac(rs.getString("mem_ac"));
 				bean.setMem_mile(rs.getInt("mem_mile"));
 				bean.setMem_coupon(rs.getString("mem_coupon"));
+				bean.set_card(rs.getString("mem_card"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
