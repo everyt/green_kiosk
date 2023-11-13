@@ -1,6 +1,7 @@
 var menuType = "all";
 
 function updateMenu(menuType) {
+	document.cookie = "menuType=" + menuType;
 	console.log('Received menuType:', menuType);
     $.ajax({
         type: "POST",

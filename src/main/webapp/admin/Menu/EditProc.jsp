@@ -77,9 +77,19 @@
 				
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
-		        script.println("window.opener.updateMenu('all');");
-		        script.println("window.opener.updateMenu('drink');");
-		        script.println("window.opener.updateMenu('single');");
+				if (menu_gubn.equals("단품")){
+				    script.println("window.opener.updateMenu('single');");
+			        script.println("window.opener.updateMenu('all');");
+				} else if (menu_gubn.equals("음료"))
+				{
+			        script.println("window.opener.updateMenu('drink');");
+			        script.println("window.opener.updateMenu('all');");
+				} else if (menu_gubn.equals("세트"))
+				{
+			        script.println("window.opener.updateMenu('all');");
+				} else {
+			        script.println("window.opener.updateMenu('all');");
+				}
  				script.println("window.close()");
 				script.println("</script>");
 			}
