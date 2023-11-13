@@ -115,6 +115,8 @@
 						   
 						   TotalPrice = (price*amount);
 						 
+						  
+						    
 						
 						
 						%>
@@ -127,20 +129,20 @@
 				}//if
 				%> 
      <table align="center" width="800" border="1">
-     <%
- 	 int TotalPrice = 0;
-     int sum = 0;
-	 int AllPrice = 0;						
-          for(int i = 1; i<=TotalPrice;  i++) {
-        	  
-        	  sum+= i;
-        	  AllPrice = sum;
-        	   }
-
-     
-     %>
+    <%
+        list = bean.getComponent_no();
+        int i = 0;
+		int TotalPrice;
+		    TotalPrice = (list.size()*TotalPrice);				
+		int AllPrice =0;
+		int sum = 1;
+		sum += AllPrice;
+	   for(i=0; i<=TotalPrice; i++);
+			
+	 %>
 		<tr>
-			<tdalign="center" > 재고 총 금액 : <%=AllPrice%></td>
+			<td align="center" >
+			 재고 총 금액 : <%=AllPrice%></td>
 		</tr>
 	</table>
 			 </td>
