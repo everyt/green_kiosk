@@ -64,7 +64,7 @@
 				if (fileName == null){
 					fileName = multi.getParameter("menu_imgPath");
 				}
-				menuBean.setMenu_imgPath(fileName);
+				menuBean.setMenu_imgPath("/downloadfile2/" + fileName);
 				menuBean.setMenu_price(menu_price);
 				menuBean.setMenu_content(menu_content); 
 				menuBean.setMenu_isUse(menu_isUse);

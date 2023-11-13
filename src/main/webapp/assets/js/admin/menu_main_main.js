@@ -35,7 +35,7 @@ function updateMenu() {
 			var htmlTemplate =
 				'<div class="col">' +
 			    '<div class="card shadow-sm">' +
-			    '<img id="menu_imgPath" src="/downloadfile2/' + menu_imgPath + '" class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">' +
+			    '<img id="menu_imgPath" src="' + menu_imgPath + '" class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">' +
 			    '<title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span class="menu_name" id="menu_name">' + menu_name + '</span></text></image>' +
 			    '<div class="card-body">' +
 			    '<p class="card-text" align="center" id="menu_content">' + menu_content + '</p>' +

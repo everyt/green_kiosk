@@ -21,55 +21,7 @@
     
     <div class="container">
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 getMenuList">
- <%--      <%
-      	int menu_no = 0;
-		String menu_imgPath = null;
-		String menu_name = null;
-		String menu_gubn = null;
-		int menu_price = 0;
-		String menu_content = null;
-		int menu_isUse = 0;
-		int menu_isSale = 0;
-		int count = 0;
-	
-		
-		Vector<Menu_menu_Bean> vlist = menuMgr.getMenuList(0);
-		int vlistsize = vlist.size();
-		
-		for (Menu_menu_Bean bean : vlist) {
-			menu_no = bean.getMenu_no();
-			menu_name = bean.getMenu_name();
-			menu_gubn = bean.getMenu_gubn();
-			menu_price = bean.getMenu_price();
-			menu_content = bean.getMenu_content();
-			menu_imgPath = bean.getMenu_imgPath();
-			menu_isUse = bean.getMenu_isUse();
-			menu_isSale = bean.getMenu_isSale();
-			count++;
-		
-      %>
-        <div class="col">
-          <div class="card shadow-sm">
-            <img id="menu_imgPath" src="/downloadfile2/<%=menu_imgPath%>"class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span class="menu_name" id="menu_name"><%=menu_name%></span></text></image>
-            <div class="card-body">
-              <p class="card-text" align="center" id="menu_content"><%=menu_content%></p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup('<%=request.getContextPath()%>/admin/Menu/View.jsp?menu_no=<%=menu_no%>')">상세보기</a>
-                  <a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup('<%=request.getContextPath()%>/admin/Menu/Edit.jsp?menu_no=<%=menu_no%>')">수정하기</a>
-                </div>
-                <%
-                	String menu_price1 = formatNumber(menu_price);
-                %>
-                <small class="text-body-secondary"><%=menu_price1%>원</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <% } %> --%>
-        <div class="getMenuList"></div>
+<div class="getMenuList"></div>
 <!-- not repeat div -->
       </div>
     </div>

@@ -59,7 +59,7 @@
 						menuComponentBean = new Menu_component_Bean();
 						menuComponentBean.setComponent_name(menu_name);
 						menuComponentBean.setComponent_amount(0);
-						menuComponentBean.setComponent_imgPath(fileName);
+						menuComponentBean.setComponent_imgPath("/downloadfile2/" + fileName);
 						menuComponentBean.setComponent_price(menu_price);
 						boolean result = menuMgr.insertTopingMenu(menuComponentBean);
 						//table insert에 성공 했을 경우
@@ -98,7 +98,7 @@
 					menuBean.setMenu_name(menu_name);
 					menuBean.setMenu_gubn(menu_gubn);
 					menuBean.setMenu_isSale(menu_isSale);
-					menuBean.setMenu_imgPath(fileName);
+					menuBean.setMenu_imgPath("/downloadfile2/" +fileName);
 					menuBean.setMenu_price(menu_price);
 					menuBean.setMenu_content(menu_content); 
 					menuBean.setMenu_isUse(menu_isUse);
