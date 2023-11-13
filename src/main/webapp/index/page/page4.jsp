@@ -1,18 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ page import="user.Member_Mgr" %>
 <%@ page import="user.Member_Bean" %>
-<%
+<%@ page import="menu.Manager_Menu"%>
+<%@ page import="java.util.Vector" %>
+<%@ page import="menu.Menu_menu_Bean" %>
+
+
+<% 
 	String cPath = request.getContextPath();
 
 	Object mem_id = session.getAttribute("mem_id");
 	Member_Mgr u_mgr = new Member_Mgr();
 	Member_Bean bean = null;
 	String mem_ac = "user";
+	Manager_Menu mgr = new Manager_Menu();
+	Vector<Menu_menu_Bean> Menu = mgr.getMenuList(3);
 	if (mem_id != null) {
 		bean = u_mgr.getMember(String.valueOf(mem_id));
 		mem_ac = bean.getMem_ac();
 	}
 %>
+
 <html>
 <head>
 <title>W3.CSS Templatee</title>
@@ -49,67 +57,18 @@ function open_register() {
 </div>
   <!-- First Photo Grid-->
   <div class="w3-row-padding w3-padding-16 w3-center" id="food">
-
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/cola.jpg" width="300" height="300"  alt="cola" style="width:100%">
-      <h3>콜라</h3>
-      <p>톡 쏘는 시원 상쾌한 콜라</p>
-    </div>
-
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/cola1.jpg" width="300" height="300"  alt="cola1" style="width:100%">
-		<h3>제로콜라</h3>    
-      <p>톡 쏘는 시원 상쾌한 제로콜라</p>
-    </div>
-
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/saida.jpg" width="300" height="300"  alt="saida" style="width:100%">
-      <h3>사이다</h3>
-      <p>톡 쏘는 시원 상쾌한 제로콜라</p>
-
-    </div>
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/saida1.jpg" width="300" height="300"  alt="saida1" style="width:100%">
-      <h3>제로사이다</h3>
-      <p>톡 쏘는 시원 상쾌한 제로콜라</p>
-  </div>
-  </div>
-
-  <div class="w3-row-padding w3-padding-16 w3-center">
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/milkiseu.jpg" width="300"  height="300" alt="milkiseu" style="width:100%">
-      <h3>밀키스</h3>
-      <p>톡 쏘는 시원 상쾌한 밀키스</p>
-    </div>
-
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/mauntindyu.jpg" width="300" height="300"  alt="mauntindyu" style="width:100%">
-      <h3>마운틴듀</h3>
-      <p>톡 쏘는 시원 상쾌한 마운틴듀</p>
-    </div>
-
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/fanta.jpg" width="300" height="300"  alt="fanta" style="width:100%">
-      <h3>환타(포도,파인애플,오렌지)</h3>
-      <p>톡 쏘는 시원 상쾌한 마운틴듀</p>
-    </div>
- 
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/orange juice.jpg" width="300" height="300"  alt="orange juice" style="width:100%">
-      <h3>오렌지주스(PET)</h3>
-      <p>갓 짜낸 오렌지의 상큼함을 담은 100% 오렌지주스</p>
-    </div>
-  </div>
-
-  <!-- Pagination -->
-  <div class="w3-center w3-padding-32">
-    <div class="w3-bar">
-      <a href="<%=cPath %>/" class="w3-bar-item w3-black w3-button">1</a>
-      <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button w3-hover-black">2</a>
-      <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button w3-hover-black">3</a>
-      <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button w3-hover-black">4</a>
-    </div>
-  </div>
+	   	<%
+	for( Menu_menu_Bean menu : Menu ) {
+	%>
+			<div class="w3-quarter">
+        <img src="<%=menu.getMenu_imgPath() %>"  width="300" height="300" alt="hamburger0" style="width:100%">
+      <h3><%=menu.getMenu_name() %></h3>
+	  <p><%=menu.getMenu_content() %></p>
+   </div>	
+	<%
+	}	
+   	%>
+	
   
   
   <hr id="about">
