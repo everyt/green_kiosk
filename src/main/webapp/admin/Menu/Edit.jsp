@@ -113,7 +113,7 @@
 				</table>
 					<div class="mb-3">
 						<a href="javascript:void(0);" onclick="down('<%=menu_imgPath%>')"><%=menu_imgPath%></a>
-					  <input class="form-control" type="file" id="formFile" name="menu_imgPath" value="/downloadfile2/<%=menu_imgPath%>">
+					  <input class="form-control" type="file" id="formFile" name="menu_imgPath" value="<%=menu_imgPath%>">
 					</div>
 					  <input type="text" name="menu_imgPath" id="menu_imgPath" value="<%=menu_imgPath%>" style="display: none;">
 				<input type="submit" class="btn btn-success pull-right" value="수정하기">

@@ -195,12 +195,16 @@ function closePopup(popup) {
 		}
 		document.delFrm.submit();
 	}
-	function count(type, num)  {
+	//--재고 관리 페이지 수량 조절
+	function count(type, num)  {   
 		  // 결과를 표시할 element
 		  const resultElement = document.getElementById('amount'+num);
-		  
+		  const per_price = parseInt(document.getElementById('price'+num).innerText);
+		  const totalElement = document.getElementById('total'+num);
+		  let price = 0; 
 		  // 현재 화면에 표시된 값
 		  let number = resultElement.innerText;
+		  
 		  
 		  // 더하기/빼기
 		  if(type === 'plus') {
@@ -215,23 +219,24 @@ function closePopup(popup) {
 		  } else {
 			  // 결과 출력
 			  resultElement.innerText = number;
+			  
+			   price = number * per_price;
+			   totalElement.innerText = price+"원";
+				fetch("<%=request.getContextPath()%>/api/admin/set_amount?no="+num+"&amount="+number,{
+					method: "post"
+				}).then(response => {
+					response.json().then((res) => {
+						if (res.result == "success") {
+						} else {
+							alert("갯수 변경중 오류가 발생하였습니다.\n"+res);
+						}
+					})
+				})
 		  }
-		}
-	
-	function count_apply(no) {
-		let amount = document.getElementById('amount'+no).innerText;
-		fetch("<%=request.getContextPath()%>/api/admin/set_amount?no="+no+"&amount="+amount,{
-			method: "post"
-		}).then(response => {
-			response.json().then((res) => {
-				if (res.result == "success") {
-					alert("갯수 변경 성공");
-				} else {
-					alert("갯수 변경중 오류가 발생하였습니다.\n"+res);
-				}
-			})
-		})
 	}
+	
+	
+	
 </script>
 	
 
