@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ page import="user.Member_Mgr" %>
 <%@ page import="user.Member_Bean" %>
+<%@ page import="java.text.DecimalFormat" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <script> let res = "false"; </script>
 <%
 	String cPath = request.getContextPath();
@@ -54,10 +57,28 @@
 	Member_Bean bean = null;
 	String mem_pw = null;
 	String mem_ac = "user";
+	List<String> list_mem_card = new ArrayList<String>();
+	DecimalFormat decFormat = new DecimalFormat("####-####");
+	String mem_card = "";
 	if (mem_id != null) {
 		bean = u_mgr.getMember(String.valueOf(mem_id));
 		mem_ac = bean.getMem_ac();
 		mem_pw = bean.getMem_pw();
+		mem_card = bean.get_card();
+		while (!mem_card.equals("")) {
+			list_mem_card.add(mem_card.substring(0, 4));
+			mem_card = mem_card.substring(4);
+		}
+		mem_card = "";
+		for (String card_part : list_mem_card) {
+			if (mem_card.equals("")) {
+				mem_card = card_part;
+			} else {
+				mem_card = mem_card+"-"+card_part;
+			}
+		}
+		
+		
 		%> 
 			<script id="pw_ingage"> 
 				if (res != "true") {
@@ -173,6 +194,10 @@ function edit() {
 							        <label for="mem_name" style="position:absolute; transform: translateX(-481px) translateY(3px); width:140px;">아이디 (변경불가) : </label>
 							      </div>
 							      <div class="textForm">
+							        <input name="mem_card" id="mem_card" type="text" class="regi_name" placeholder="멤버십 카드" value=<%=mem_card %> readonly>
+							        <label for="mem_name" style="position:absolute; transform: translateX(-520px) translateY(3px); width:180px;">멤버십 카드 (변경불가) : </label>
+							      </div>
+							      <div class="textForm">
 							        <input name="mem_name" type="text" class="regi_name" placeholder="이름" value=<%=bean.getMem_name() %>>
 							        <label for="mem_name" style="position:absolute; transform: translateX(-415px) translateY(3px); width:100px;">이름 : </label>
 							      </div>
@@ -180,7 +205,7 @@ function edit() {
 							        <input name="mem_phone" type="text" maxlength="11" class="cellphoneNo" oninput="maxLengthCheck(this)" placeholder="전화번호" value=<%=bean.getMem_phone() %>>
 							      	<label for="mem_name" style="position:absolute; transform: translateX(-427px) translateY(3px); width:100px;">전화번호 : </label>
 							      </div>
-							      <input type="button" onclick="edit()" class="btn" style="transform: translateX(-50%) translateY(360%);" value="수 정 하 기"/>
+							      <input type="button" onclick="edit()" class="btn" style="transform: translateX(-50%) translateY(100%);" value="수 정 하 기"/>
 							    </form>
 							</td>
 						</tr>
