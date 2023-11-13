@@ -10,6 +10,7 @@ public class Member_Bean {
 	private String mem_ac; 			// 계정타입
 	private int mem_mile; 			// 마일리지
 	private String mem_coupon; 	// 소유중인 쿠폰
+	private String mem_card; //멤버십 카드
 
 	public int getMem_no() {
 		return mem_no;
@@ -73,6 +74,14 @@ public class Member_Bean {
 
 	public void setMem_coupon(String mem_coupon) {
 		this.mem_coupon = mem_coupon;
+	}
+
+	public String get_card() {
+		return mem_card;
+	}
+	
+	public void set_card(String card) {
+		this.mem_card = card;
 	}
 
 }
