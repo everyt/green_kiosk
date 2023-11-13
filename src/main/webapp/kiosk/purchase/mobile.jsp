@@ -49,6 +49,8 @@
     </div>
   </div>
   
+  <script src="../../assets/js/kiosk/purchase/purchase.js"></script>
+  <script src="../../assets/js/kiosk/purchase/detailedFetch.js"></script>
   <script>
     MicroModal.init();
     
@@ -58,11 +60,8 @@
   	}
   	const hrefTo = (type) => {
    	  MicroModal.show('modal-1');
-   	  let order = JSON.parse(decodeURIComponent(sessionStorage.getItem('order')));
-   	  order.type = type;
-      document.cookie = "order" + "=[" + encodeURIComponent(JSON.stringify(order)) + "]; path=/;";
    	  setTimeout(() => {
-   	  	  location.href = 'process/process-final.jsp';
+          purchase(type);
    	  }, 2500)
     }
   </script>

@@ -5,10 +5,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 public class Orders_Bean {
 	private Integer order_no;
 	private Timestamp order_time;
-	private List<Map<String, Object>> order_foods;
+	private String order_foods;
 	private Integer	order_price;
 	private Integer order_discount;
 	private String order_coupon;
@@ -18,7 +21,7 @@ public class Orders_Bean {
 	private boolean order_add_mile;
 	private Integer order_add_amount;
 	private boolean order_is_maked;
-	private String order_who;
+	private Integer order_who;
 	
 
 	public Integer getOrder_no() {
@@ -33,10 +36,10 @@ public class Orders_Bean {
 	public void setOrder_time(Timestamp order_time) {
 		this.order_time = order_time;
 	}
-	public List<Map<String, Object>> getOrder_foods() {
+	public String getOrder_foods() {
 		return order_foods;
 	}
-	public void setOrder_foods(List<Map<String, Object>> order_foods) {
+	public void setOrder_foods(String order_foods) {
 		this.order_foods = order_foods;
 	}
 	public Integer getOrder_price() {
@@ -93,10 +96,31 @@ public class Orders_Bean {
 	public void setOrder_is_maked(boolean order_is_maked) {
 		this.order_is_maked = order_is_maked;
 	}
-	public String get_who() {
+	public Integer get_who() {
 		return order_who;
 	}
-	public void set_who(String order_who) {
+	public void set_who(Integer order_who) {
 		this.order_who = order_who;
 	}
+	
+	public Orders_Bean() {
+		super();
+	}
+	public Orders_Bean(Orders_VO orders_vo) {
+		super();
+		this.order_no = orders_vo.getOrder_no();
+		this.order_time = orders_vo.getOrder_time();
+		this.order_foods = new Gson().toJson(orders_vo.getOrder_foods(), new TypeToken<Map<String, String>>(){}.getType());
+		this.order_price = orders_vo.getOrder_price();
+		this.order_discount = orders_vo.getOrder_discount();
+		this.order_coupon = new Gson().toJson(orders_vo.getOrder_coupon(), new TypeToken<Map<String, String>>(){}.getType());
+		this.order_type = orders_vo.getOrder_type();
+		this.order_use_mile = orders_vo.isOrder_use_mile();
+		this.order_use_amount = orders_vo.getOrder_use_amount();
+		this.order_add_mile = orders_vo.isOrder_add_mile();
+		this.order_add_amount = orders_vo.getOrder_add_amount();
+		this.order_is_maked = orders_vo.isOrder_is_maked();
+		this.order_who = orders_vo.getOrder_who();
+	}
+	
 }
