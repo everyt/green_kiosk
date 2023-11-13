@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="utf-8"%>
 <%@ page import="user.Member_Mgr" %>
 <%@ page import="user.Member_Bean" %>
 <%
@@ -81,7 +81,6 @@ function validatePassword() {
 		resultDiv.style.color = 'red';
 	}
 }
-
 
 
 </script>

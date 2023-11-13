@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,6 +35,8 @@ public class pju_api extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		RequestDispatcher rd = request.getRequestDispatcher("/user/change_pw.jsp");
+		rd.forward(request, response);
 	}
 
 	/**
@@ -76,7 +79,9 @@ public class pju_api extends HttpServlet {
 			
 			if (res) {
 				session.setAttribute("find_pw_id", mem_id);
+				doGet(request, response);
 				
+				//response.sendRedirect("/green_kiosk/user/change_pw.jsp");
 			} else {
 				out.write("{\"result\":\"아이디가 없습니다\"}");
 			}
