@@ -5,6 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자(메뉴)</title>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/menu_index.js"></script>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/admin/Accounting/account.css">
 <link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/admin/menu.css">
 <%@ include file="/admin/layouts/indexBase.jsp" %>
@@ -20,6 +22,5 @@
 </main> 
 
 </body>
-<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/menu_index.js"></script>
 </html>
 

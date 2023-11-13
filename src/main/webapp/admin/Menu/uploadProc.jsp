@@ -14,6 +14,19 @@
 <title>menu_uploadProcess</title>
 </head>
 <body>
+<%@ page import="java.net.URLDecoder" %>
+
+	<%
+	    String menuType = "";
+	    if (request.getCookies() != null) {
+	        for (javax.servlet.http.Cookie cookie : request.getCookies()) {
+	            if (cookie.getName().equals("menuType")) {
+	                menuType = URLDecoder.decode(cookie.getValue(), "UTF-8");
+	                break;
+	            }
+	        }
+	    }
+	%>
 	<%
 		//해당 주소는 서버 주소입니다. 로컬에서 실행시 오류 발생하므로 서버에 올려서 테스트
 		String savePath= "/usr/local/tomcat/webapps/downloadfile2";
@@ -59,7 +72,7 @@
 						menuComponentBean = new Menu_component_Bean();
 						menuComponentBean.setComponent_name(menu_name);
 						menuComponentBean.setComponent_amount(0);
-						menuComponentBean.setComponent_imgPath(fileName);
+						menuComponentBean.setComponent_imgPath("/downloadfile2/" + fileName);
 						menuComponentBean.setComponent_price(menu_price);
 						boolean result = menuMgr.insertTopingMenu(menuComponentBean);
 						//table insert에 성공 했을 경우
@@ -67,7 +80,9 @@
 						{
 							PrintWriter script = response.getWriter();
 							script.println("<script>");
-							script.println("window.opener.updateMenu();");
+					        script.println("window.opener.updateMenu('all');");
+					        script.println("window.opener.updateMenu('drink');");
+					        script.println("window.opener.updateMenu('single');");
 							script.println("window.close();");
  							script.println("</script>");
 							//table insert 실패 했을 경우
@@ -98,7 +113,7 @@
 					menuBean.setMenu_name(menu_name);
 					menuBean.setMenu_gubn(menu_gubn);
 					menuBean.setMenu_isSale(menu_isSale);
-					menuBean.setMenu_imgPath(fileName);
+					menuBean.setMenu_imgPath("/downloadfile2/" +fileName);
 					menuBean.setMenu_price(menu_price);
 					menuBean.setMenu_content(menu_content); 
 					menuBean.setMenu_isUse(menu_isUse);
@@ -111,7 +126,19 @@
 					{
 						PrintWriter script = response.getWriter();
 						script.println("<script>");
-				        script.println("window.opener.updateMenu();");
+						if (menu_gubn.equals("단품")){
+						    script.println("window.opener.updateMenu('single');");
+					        script.println("window.opener.updateMenu('all');");
+						} else if (menu_gubn.equals("음료"))
+						{
+					        script.println("window.opener.updateMenu('drink');");
+					        script.println("window.opener.updateMenu('all');");
+						} else if (menu_gubn.equals("세트"))
+						{
+					        script.println("window.opener.updateMenu('all');");
+						} else {
+					        script.println("window.opener.updateMenu('all');");
+						}
 						script.println("window.close();");
 						script.println("</script>");
 						//table insert 실패 했을 경우

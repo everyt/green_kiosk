@@ -1,14 +1,15 @@
+var menuType = "all";
 
-
-function updateMenu() {
-	var type = "all";
+function updateMenu(menuType) {
+	document.cookie = "menuType=" + menuType;
+	console.log('Received menuType:', menuType);
     $.ajax({
         type: "POST",
-        url: "./getMenuData",
-        data: {
-        	type: type
-        },
+        url: "./getMenuData?type="+menuType,
         dataType: "json",
+        data: {
+        	type : menuType
+        },
         contentType: "application/json; charset=UTF-8", 
         success: function (response) {
             if (response && response.length > 0) {
@@ -35,7 +36,7 @@ function updateMenu() {
 			var htmlTemplate =
 				'<div class="col">' +
 			    '<div class="card shadow-sm">' +
-			    '<img id="menu_imgPath" src="/downloadfile2/' + menu_imgPath + '" class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">' +
+			    '<img id="menu_imgPath" src="' + menu_imgPath + '" class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">' +
 			    '<title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span class="menu_name" id="menu_name">' + menu_name + '</span></text></image>' +
 			    '<div class="card-body">' +
 			    '<p class="card-text" align="center" id="menu_content">' + menu_content + '</p>' +
@@ -66,7 +67,10 @@ function updateMenu() {
     });
 }
 
-updateMenu();
+
+window.addEventListener('DOMContentLoaded', function() {
+    updateMenu(menuType);
+});
 
 
 function formatNumber(number) {
@@ -76,7 +80,7 @@ function formatNumber(number) {
 }
 
 
-function loadContent(url) {
+/*function loadContent(url) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
@@ -88,7 +92,7 @@ function loadContent(url) {
   };
   xhr.open('GET', url, true);
   xhr.send();
-}
+}*/
 
 /*
 var auto_refresh = setInterval(
@@ -136,9 +140,4 @@ function openPopup(url) {
   var popup = window.open(url, 'PopupWindow', 'width=popupWidth, height=popupHeight, scrollbars=yes, left=popupX, top=popupY');
 }
 
-/*
-window.addEventListener('DOMContentLoaded', function() {
-	setInterval(function() {
-	    updateMenu();
-	}, 3000);
-})*/
+

@@ -1,13 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ page import="user.Member_Mgr" %>
 <%@ page import="user.Member_Bean" %>
-<%
+<%@ page import="menu.Manager_Menu"%>
+<%@ page import="java.util.Vector" %>
+<%@ page import="menu.Menu_menu_Bean" %>
+
+
+<% 
 	String cPath = request.getContextPath();
 
 	Object mem_id = session.getAttribute("mem_id");
 	Member_Mgr u_mgr = new Member_Mgr();
 	Member_Bean bean = null;
 	String mem_ac = "user";
+	Manager_Menu mgr = new Manager_Menu();
+	Vector<Menu_menu_Bean> Menu = mgr.getMenuList(1);
 	if (mem_id != null) {
 		bean = u_mgr.getMember(String.valueOf(mem_id));
 		mem_ac = bean.getMem_ac();
@@ -52,69 +59,18 @@ function open_register() {
 </div>
 
    <div class="w3-row-padding w3-padding-16 w3-center w3-tooltip" id="food">
-   	<div class="w3-quarter">
-        <img src="<%=cPath %>/assets/images/hamburger0.jpg"  width="300" height="300" alt="hamburger0" style="width:100%">
-      <h3>데리버거</h3>
-	  <p>쇠고기패티에 달콤 짭짤한 데리소스를 더한 가성비 버거</p>
-   </div>
-
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger1.jpg" width="300" height="300"  alt="hamburger" style="width:100%">
-      <h3>더블 데리버거</h3>
-      <p>두 장의 패티가 이루는 조화로운 맛에 <br>든든함까지 추가된 더블버거 시리즈</p>
-    </div>
-
-
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger2.jpg" width="300" height="300"  alt="hamburger2" style="width:100%">
-      <h3>불고기버거</h3>
-      <p>두툼한 쇠고기패티와 한국적인 맛의 소스가 잘 조화된 ???매장의 대표 버거</p>
-
-    </div>
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger3.jpg" width="300"  height="300" alt="hamburger3" style="width:100%">
-      <h3>더블 불고기버거</h3>
-	  <p>불고기 특유의 소스와 쇠고기의 진함을 배로 느끼는 제품</p>
-  </div>
-  </div>
-  
-  <!-- Second Photo Grid-->
-
-  <div class="w3-row-padding w3-padding-16 w3-center">
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger4.jpg" width="300" height="300"  alt="hamburger4" style="width:100%">
-      <h3>치킨버거</h3>
-	  <p>닭고기패티와 데리야끼 소스로 만든 담백하고 달콤한 맛의 치킨버거</p>
-    </div>
-
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger5.jpg" width="300" height="300"  alt="hamburger5" style="width:100%">
-      <h3>더블 치킨버거</h3>
-      <p>두 장의 패티가 이루는 조화로운 맛에 든든함까지 추가된 더블버거 시리즈</p>
-    </div>
-
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger6.jpg" width="300" height="300"  alt="hamburger1" style="width:100%">
-		<h3>치즈버거</h3>    
-  		<p>부드러운 치즈와 호주산 쇠고기패티의 본연의 맛을 느낄수 있는 치즈버거</p>
-    </div>
- 
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger7.jpg"  width="300" height="300"  style="width:100%">
-      <h3>더블 클래식치즈버거</h3>
-      <p>두 장의 패티가 이루는 조화로운 맛에 든든함까지 추가된 더블 클래식치즈버거</p>
-    </div>
-  </div>
-
-  <!-- Pagination -->
-  <div class="w3-center w3-padding-32">
-    <div class="w3-bar">
-      <a href="main.jsp" class="w3-bar-item w3-black w3-button">1</a>
-      <a href="<%=cPath %>/index/page/page2.jsp" class="w3-bar-item w3-button w3-hover-black">2</a>
-      <a href="<%=cPath %>/index/page/page3.jsp" class="w3-bar-item w3-button w3-hover-black">3</a>
-      <a href="<%=cPath %>/index/page/page4.jsp" class="w3-bar-item w3-button w3-hover-black">4</a>
-    </div>
-  </div>
+   	<%
+	for( Menu_menu_Bean menu : Menu ) {
+	%>
+			<div class="w3-quarter">
+        <img src="<%=menu.getMenu_imgPath() %>"  width="300" height="300" alt="hamburger0" style="width:100%">
+      <h3><%=menu.getMenu_name() %></h3>
+	  <p><%=menu.getMenu_content() %></p>
+   </div>	
+	<%
+	}	
+   	%>
+   
   
   <hr id="about">
   
@@ -133,6 +89,7 @@ function open_register() {
         <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">치즈버거</span>
         <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">전주 맛집</span>
         <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">키오스크</span>
+        
       </p>
     </div>
 

@@ -1,7 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="utf-8"%>
 <%@ page import="user.Member_Mgr" %>
 <%@ page import="user.Member_Bean" %>
 <%
+
 	String cPath = request.getContextPath();
 
 	Object mem_id = session.getAttribute("mem_id");
@@ -21,6 +22,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
 <link rel="stylesheet" href="<%=cPath %>/assets/css/reset.css">
+<link rel="stylesheet" href="<%=cPath %>/assets/css/register.css">
 <link rel="stylesheet" href="<%=cPath %>/assets/css/index.css">
 <script src="<%=cPath %>/assets/js/index.js"></script>
 <style>
@@ -79,7 +81,6 @@ function validatePassword() {
 		resultDiv.style.color = 'red';
 	}
 }
-
 
 
 </script>
@@ -214,52 +215,20 @@ function validatePassword() {
 		<!-- 여기부터 작업 시작 -->
 
 <div style="display:flex; justify-content: space-around;">
-	<div>
-		<form method="post" name="findid" action="<%=cPath %>/api/user/find_id">
-			<table>
-			
-				<!-- 아이디 비밀번호 찾는 페이지 
-				find_idpw.jsp 페이지에서는 이름과 전화번호를 input태그를 통해서 입력 받아야 한다. -->
-			    <tr>
-			      <td>이름 :</td>
-			      <td><input type="text" required name="name"></td>
-			    </tr>
-			    <tr>
-			      <td>전화번호 :</td>
-			      <td><input type="text" required name="phone"></td>
-			    </tr>
-			    <tr>
-			      <td colspan="2">
-			        <button onclick="q_findid()" type="button"><span>아이디찾기</span></button>
-			      </td>
-			      </tr>
-			     
-			</table>
-		 </form>
-	</div>
-	<div>
-		<form method="post" name="findid" action="<%=cPath %>/api/user/find_pw">
-			<table>
-				<tr>
-		 		<td>아이디 :</td>
-			      <td><input type="text" required name="id"></td>
-			    </tr>
-			    <tr>
-			      <td>이름 :</td>
-			      <td><input type="text" required name="name"></td>
-			    </tr>
-			    <tr>
-			      <td>전화번호 :</td>
-			      <td><input type="text" required name="phone" ></td>
-			    </tr>
-			    <tr>
-			      <td colspan="2">
-			        <a href="find_idpw.jsp"><button type="submit"><span>비밀번호찾기</span></button></a>
-			      </td>
-			    </tr>
-			</table>
-		</form>
-	</div>
+
+									
+								<form action="<%=cPath %>/api/user/find_pw method="POST" class="joinForm" name="regFrom" style="transform: translate(-20%, -30%)">                                                                     
+							      <div class="textForm">
+							        <input name="mem_id" id="mem_id" type="text" class="regi_name" placeholder="아이디">
+							        <label for="mem_name" style="position:absolute; transform: translateX(-481px) translateY(3px); width:140px;">아이디 : </label>
+							      </div>
+							      <div class="textForm">
+							        <input name="mem_name" type="text" class="regi_name" placeholder="이름">
+							        <label for="mem_name" style="position:absolute; transform: translateX(-415px) translateY(3px); width:100px;">이름 : </label>
+							      </div>
+							      <input type="button" onclick="edit()" class="btn" style="transform: translateX(-50%) translateY(360%);" value="수 정 하 기"/>
+							    </form>
+
 </div>
   
   <hr id="about">

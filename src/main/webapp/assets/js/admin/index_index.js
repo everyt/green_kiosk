@@ -1,3 +1,5 @@
+var menuType = "all";
+
 function loadContent(url) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
