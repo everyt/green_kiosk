@@ -21,7 +21,7 @@
     
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      <%
+<%--       <%
       	int menu_no = 0;
 		String menu_imgPath = null;
 		String menu_name = null;
@@ -68,22 +68,13 @@
           </div>
         </div>
         
-        <% } %>
+        <% } %> --%>
+        <div class="getMenuList"></div>
 <!-- not repeat div -->
       </div>
     </div>
   </div>
 </main>
-
-<!-- <footer class="text-body-secondary py-5">
-  <div class="container">
-    <p class="float-end mb-1">
-      <a href="#">Back to top</a>
-    </p>
-    <p class="mb-1">Album example is © Bootstrap, but please download and customize it for yourself!</p>
-    <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="/docs/5.3/getting-started/introduction/">getting started guide</a>.</p>
-  </div>
-</footer> -->
 
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 

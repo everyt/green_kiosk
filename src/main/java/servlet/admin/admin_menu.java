@@ -15,7 +15,7 @@ import menu.Manager_Menu;
 import menu.Menu_menu_Bean;
 
 
-@WebServlet("/getMenuData")
+@WebServlet("/admin/Menu/getMenuData")
 public class admin_menu extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -27,11 +27,11 @@ public class admin_menu extends HttpServlet {
     	
     	String endPoint = request.getServletPath();
     	
-    	if("/getMenuData".equals(endPoint))
+    	if("/admin/Menu/getMenuData".equals(endPoint))
     	{
-    		String type = null;
+    		String type = "all";
     		if (request.getParameter("type") != null) {
-    			type = request.getParameter("type");
+    			type = "all";
     		}
             Vector<Menu_menu_Bean> menu_list = null;
             

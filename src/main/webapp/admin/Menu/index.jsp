@@ -16,6 +16,7 @@
 <body>
 <%@ include file="/admin/layouts/left.jsp" %>
 <main class="mainContent" id="mainContent">
+<%@ include file="/admin/layouts/Menu/menu_main.jsp" %>
 </main> 
 
 </body>
