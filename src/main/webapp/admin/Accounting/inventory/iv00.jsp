@@ -130,13 +130,12 @@
 				%> 
      <table align="center" width="800" border="1">
     <%
-        list = bean.getComponent_no();
+        
         int i = 0;
-		int TotalPrice;
-		    TotalPrice = (list.size()*TotalPrice);				
+		int TotalPrice=0;		    
 		int AllPrice =0;
 		int sum = 1;
-		sum += AllPrice;
+		 AllPrice = (sum);
 	   for(i=0; i<=TotalPrice; i++);
 			
 	 %>
