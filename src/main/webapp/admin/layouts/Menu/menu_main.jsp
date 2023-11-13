@@ -2,6 +2,36 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/admin/layouts/BeanManager.jsp" %>
 
+<script type="text/javascript">
+	function getListfunction() {
+		$.ajax({
+			type: "POST",
+			url: "./api/admin/edit_menu",
+			dataType="json",
+	        contentType: "application/json; charset=UTF-8", 
+			success: function(response) {
+	            if (response && response.length > 0) {
+				var ListHtml = '';
+				for (var i=0; i<response.length; i++){
+					var menu_no = response[i].menu_no;
+					var menu_imgPath = response[i].menu_imgPath;
+					var menu_name = response[i].menu_name;
+					var menu_gubn = response[i].menu_gubn;
+					var menu_price = reponse[i].menu_price;
+					var menu_content = response[i].menu_content;
+					var menu_isUse = response[i].menu_isUse;
+					var menu_isSale = response[i].menu_isSale;
+					
+				}
+                $('#getChatlist').html(chatListHtml);
+				}
+			}
+		});
+		$('#content').val(' ');
+	}
+</script> 
+
+
 <main class="mainContent">
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
@@ -49,10 +79,10 @@
       %>
         <div class="col">
           <div class="card shadow-sm">
-            <img src="/downloadfile2/<%=menu_imgPath%>"class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span class="menu_name"><%=menu_name%></span></text></image>
+            <img id="menu_imgPath" src="/downloadfile2/<%=menu_imgPath%>"class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span class="menu_name" id="menu_name"><%=menu_name%></span></text></image>
             <div class="card-body">
-              <p class="card-text" align="center"><%=menu_content%></p>
+              <p class="card-text" align="center" id="menu_content"><%=menu_content%></p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup('<%=request.getContextPath()%>/admin/Menu/View.jsp?menu_no=<%=menu_no%>')">상세보기</a>
@@ -75,7 +105,7 @@
 
 </main>
 
-<footer class="text-body-secondary py-5">
+<!-- <footer class="text-body-secondary py-5">
   <div class="container">
     <p class="float-end mb-1">
       <a href="#">Back to top</a>
@@ -83,7 +113,7 @@
     <p class="mb-1">Album example is © Bootstrap, but please download and customize it for yourself!</p>
     <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="/docs/5.3/getting-started/introduction/">getting started guide</a>.</p>
   </div>
-</footer>
+</footer> -->
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
@@ -155,26 +185,5 @@ $('#mainContent').load('menu_main.jsp').fadeIn("slow");
 	}
 	</script>
 	 --%>
-<%-- 	function sub2() {
-	  let frm = document.regFrm;
-	  let no = frm.menu_no.value;
-	  let name = frm.menu_name.value;
-	  let gubn = frm.menu_gubn.value;
-	  let price = frm.menu_price.value;
-	  let content = frm.menu_content.value;
-	  let imgPath = frm.menu_imgPath.value;
-	  let isUse = frm.menu_isUse.value;
-	  let isSale = frm.menu_isSale.value;
-	  
-	  fetch("<%=request.getContextPath()%>/api/admin/edit_menu?no=" + no + "&name=" + name + "&gubn=" + gubn +
-	        "&price=" + price + "&content=" + content + "&imgPath=" + imgPath + "&isUse=" + isUse + "&isSale=" + isSale, {
-	    method: "post"
-	  }).then(response => {
-	    response.json().then((res) => {
-	      if (res.result == "success") {
-	        loadContent('<%=request.getContextPath()%>/admin/layouts/menu_main.jsp');
-	      }
-	    })
-	  })
-	} --%>
+
 

@@ -75,8 +75,8 @@
 				
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
-				script.println("window.opener.location.reload();");
-				script.println("window.close()");
+/* 				script.println("window.opener.location.reload();");
+ */				script.println("window.close()");
 				script.println("</script>");
 			}
 		} else { //null 값 처리 실패

@@ -50,6 +50,38 @@ function closePopup(popup) {
   }
 }
 
+<%-- 	function sub2() {
+	  let formData = new FormData();
+/* 	  formData.append("menu_no", document.getElementById("menu_no").value);
+ */	  formData.append("menu_name", document.getElementById("menu_name").value);
+/* /* 	  formData.append("menu_gubn", document.getElementById("menu_gubn").value);
+ */ */	  formData.append("menu_price", document.getElementById("menu_price").innerHTML);
+	  formData.append("menu_content", document.getElementById("menu_content").innerHTML);
+/* 	  formData.append("menu_imgPath", document.getElementById("menu_imgPath").value);
+	  formData.append("menu_isUse", document.getElementById("menu_isUse").value);
+	  formData.append("menu_isSale", document.getElementById("menu_isSale").value); */
+
+	  
+	  fetch("<%=request.getContextPath()%>/api/admin/edit_menu", {
+		    method: "POST",
+		    body: formData
+		  }).then(response => {
+		    if (response.ok) {
+		      return response.json();
+		    } else {
+		      throw new Error('Network response was not ok.');
+		    }
+		  }).then(res => {
+		    if (res.result == "success") {
+		      // 성공적으로 업데이트되었을 때, 화면을 다시 불러옵니다.
+		      loadContent('<%=request.getContextPath()%>/admin/layouts/menu_main.jsp');
+		    } else {
+		      console.error("Update failed.");
+		    }
+		  }).catch(error => {
+		    console.error('There has been a problem with your fetch operation:', error);
+		  });
+		} --%>
 </script>
 </html>
 
