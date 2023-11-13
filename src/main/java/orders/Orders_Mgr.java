@@ -64,11 +64,7 @@ public class Orders_Mgr {
 				Orders_Bean bean = new Orders_Bean();
 	            bean.setOrder_no(this.rs.getInt("order_no"));
 	            bean.setOrder_time(this.rs.getTimestamp("order_time"));
-<<<<<<< Updated upstream
-	            bean.setOrder_foods(this.gson.fromJson(this.rs.getString("order_foods"), new TypeToken<List<Map<String,Object>>>(){}.getType()));
-=======
 	            bean.setOrder_foods(this.rs.getString("order_foods"));
->>>>>>> Stashed changes
 	            bean.setOrder_price(this.rs.getInt("order_price"));
 	            bean.setOrder_discount(this.rs.getInt("order_discount"));
 	            bean.setOrder_coupon(this.rs.getString("order_coupon"));
@@ -99,11 +95,7 @@ public class Orders_Mgr {
 				Orders_Bean bean = new Orders_Bean();
 	            bean.setOrder_no(this.rs.getInt("order_no"));
 	            bean.setOrder_time(this.rs.getTimestamp("order_time"));
-<<<<<<< Updated upstream
-	            bean.setOrder_foods(this.gson.fromJson(this.rs.getString("order_foods"), new TypeToken<List<Map<String,Object>>>(){}.getType()));
-=======
 	            bean.setOrder_foods(this.rs.getString("order_foods"));
->>>>>>> Stashed changes
 	            bean.setOrder_price(this.rs.getInt("order_price"));
 	            bean.setOrder_discount(this.rs.getInt("order_discount"));
 	            bean.setOrder_coupon(this.rs.getString("order_coupon"));
@@ -150,11 +142,7 @@ public class Orders_Mgr {
 				Orders_Bean bean = new Orders_Bean();
 	            bean.setOrder_no(this.rs.getInt("order_no"));
 	            bean.setOrder_time(this.rs.getTimestamp("order_time"));
-<<<<<<< Updated upstream
-	            bean.setOrder_foods(this.gson.fromJson(this.rs.getString("order_foods"), new TypeToken<List<Map<String,Object>>>(){}.getType()));
-=======
 	            bean.setOrder_foods(this.rs.getString("order_foods"));
->>>>>>> Stashed changes
 	            bean.setOrder_price(this.rs.getInt("order_price"));
 	            bean.setOrder_discount(this.rs.getInt("order_discount"));
 	            bean.setOrder_coupon(this.rs.getString("order_coupon"));

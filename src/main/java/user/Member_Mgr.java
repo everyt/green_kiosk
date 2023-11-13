@@ -215,11 +215,7 @@ public class Member_Mgr {
 		}
 	}
 
-<<<<<<< Updated upstream
-	public boolean checkphone(String phone) {
-=======
 	public boolean checkPhone(String phone) { // 오타 교정
->>>>>>> Stashed changes
 		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -231,8 +227,6 @@ public class Member_Mgr {
 			sql = "select mem_phone from member where mem_phone = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, phone);
-<<<<<<< Updated upstream
-=======
 			flag = pstmt.executeQuery().next();	
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -254,7 +248,6 @@ public class Member_Mgr {
 			sql = "select mem_card from member where mem_card = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, card);
->>>>>>> Stashed changes
 			flag = pstmt.executeQuery().next();	
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -307,9 +300,6 @@ public class Member_Mgr {
 				bean.setMem_ac(rs.getString("mem_ac"));
 				bean.setMem_mile(rs.getInt("mem_mile"));
 				bean.setMem_coupon(rs.getString("mem_coupon"));
-<<<<<<< Updated upstream
-				bean.set_card(rs.getString("mem_card"));
-=======
 				bean.setMem_phone(rs.getString("mem_card"));
 			}
 		} catch (Exception e) {
@@ -343,7 +333,6 @@ public class Member_Mgr {
 				bean.setMem_mile(rs.getInt("mem_mile"));
 				bean.setMem_coupon(rs.getString("mem_coupon"));
 				bean.setMem_phone(rs.getString("mem_card"));
->>>>>>> Stashed changes
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
