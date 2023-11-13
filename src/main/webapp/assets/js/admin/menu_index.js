@@ -1,3 +1,5 @@
+var menuType = "all";
+
 function loadContent(url) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
@@ -12,6 +14,13 @@ function loadContent(url) {
   xhr.send();
 }
 
+ window.addEventListener('DOMContentLoaded', function() {
+    updateMenu(menuType);
+    });
+
+ window.addEventListener('DOMContentLoaded', function() {
+    updateMenu();
+    });
 
 
 function openPopup(url) {

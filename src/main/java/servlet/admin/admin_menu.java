@@ -29,12 +29,12 @@ public class admin_menu extends HttpServlet {
     	
     	if("/admin/Menu/getMenuData".equals(endPoint))
     	{
-    		String type = "all";
-    		if (request.getParameter("type") != null) {
-    			type = "all";
-    		}
+    		String type = (String)request.getParameter("type");
+    		System.out.println(type);
             Vector<Menu_menu_Bean> menu_list = null;
-            
+            if (type == null) {
+            	type = "all";
+            }
     		if (type.equals("all")) {
     		 menu_list = new Manager_Menu().getMenuList(0);
     		} else if (type.equals("single")) {

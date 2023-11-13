@@ -1,14 +1,14 @@
+var menuType = "all";
 
-
-function updateMenu() {
-	var type = "all";
+function updateMenu(menuType) {
+	console.log('Received menuType:', menuType);
     $.ajax({
         type: "POST",
-        url: "./getMenuData",
-        data: {
-        	type: type
-        },
+        url: "./getMenuData?type="+menuType,
         dataType: "json",
+        data: {
+        	type : menuType
+        },
         contentType: "application/json; charset=UTF-8", 
         success: function (response) {
             if (response && response.length > 0) {
@@ -66,7 +66,10 @@ function updateMenu() {
     });
 }
 
-updateMenu();
+
+window.addEventListener('DOMContentLoaded', function() {
+    updateMenu(menuType);
+});
 
 
 function formatNumber(number) {
@@ -76,7 +79,7 @@ function formatNumber(number) {
 }
 
 
-function loadContent(url) {
+/*function loadContent(url) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
@@ -88,7 +91,7 @@ function loadContent(url) {
   };
   xhr.open('GET', url, true);
   xhr.send();
-}
+}*/
 
 /*
 var auto_refresh = setInterval(
@@ -136,9 +139,4 @@ function openPopup(url) {
   var popup = window.open(url, 'PopupWindow', 'width=popupWidth, height=popupHeight, scrollbars=yes, left=popupX, top=popupY');
 }
 
-/*
-window.addEventListener('DOMContentLoaded', function() {
-	setInterval(function() {
-	    updateMenu();
-	}, 3000);
-})*/
+

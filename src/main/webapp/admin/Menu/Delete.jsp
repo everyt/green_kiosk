@@ -21,7 +21,9 @@
 		script.println("</script>");
 	} else {
 		script.println("<script>");
-        script.println("window.opener.updateMenu();");
+        script.println("window.opener.updateMenu('all');");
+        script.println("window.opener.updateMenu('drink');");
+        script.println("window.opener.updateMenu('single');");
  		script.println("window.close();");
 		script.println("</script>");
 	}

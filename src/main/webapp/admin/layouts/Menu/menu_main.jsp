@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/admin/layouts/BeanManager.jsp" %>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/menu_main_main.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/Menu/menu_main.js"></script>
 <main class="mainContent">
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
@@ -21,8 +21,7 @@
     
     <div class="container">
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 getMenuList">
-<div class="getMenuList"></div>
-<!-- not repeat div -->
+
       </div>
     </div>
   </div>

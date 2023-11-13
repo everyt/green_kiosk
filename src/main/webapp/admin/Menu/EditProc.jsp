@@ -63,8 +63,10 @@
 				menuBean.setMenu_isSale(menu_isSale);
 				if (fileName == null){
 					fileName = multi.getParameter("menu_imgPath");
+					menuBean.setMenu_imgPath(fileName);
+				} else {
+					menuBean.setMenu_imgPath("/downloadfile2/"+fileName);
 				}
-				menuBean.setMenu_imgPath("/downloadfile2/" + fileName);
 				menuBean.setMenu_price(menu_price);
 				menuBean.setMenu_content(menu_content); 
 				menuBean.setMenu_isUse(menu_isUse);
@@ -75,7 +77,9 @@
 				
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
-				script.println("window.opener.updateMenu();");
+		        script.println("window.opener.updateMenu('all');");
+		        script.println("window.opener.updateMenu('drink');");
+		        script.println("window.opener.updateMenu('single');");
  				script.println("window.close()");
 				script.println("</script>");
 			}
