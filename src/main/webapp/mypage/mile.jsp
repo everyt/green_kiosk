@@ -109,7 +109,6 @@ function edit() {
 				<td rowspan="4" width="80%">
 					<table border="1" style="border-top-width: 0px; border-left-width: 0px; border-right-width: 0px; border-bottom-width: 0px;" cellspacing="0" cellpadding="2" width="100%" height="100%">
 						<tr align="center" height="5%">
-							<td width="5%">번호</td>
 							<td width="10%">주문 번호</td>
 							<td width="10%">타입</td>
 							<td width="10%">변경 양</td>
@@ -131,7 +130,6 @@ function edit() {
 								
 						%>
 							<tr align="center">
-								<td><%=mile.getMile_no() %></td>
 								<td><%=mile.getMile_order_no() %></td>
 								<td><%=mile_type %></td>
 								<td><%=mile.getMile_deff() %></td>
