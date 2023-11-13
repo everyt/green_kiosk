@@ -125,7 +125,7 @@ function edit() {
 						%>
 							<tr align="center">
 								<td><%=order.getOrder_no() %></td>
-								<td><%=order.getOrder_time() %></td>
+								<td><%=String.valueOf(order.getOrder_time()).substring(0,19) %></td>
 								<td><%=order.getOrder_foods() %></td>
 								<td><%=order.getOrder_price() %></td>
 								<td><button no="<%=order.getOrder_no() %>" type="button">영수증 발급</button></td>
