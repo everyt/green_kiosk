@@ -2,6 +2,7 @@
 <%@ page import="user.Member_Mgr" %>
 <%@ page import="user.Member_Bean" %>
 <%
+
 	String cPath = request.getContextPath();
 
 	Object mem_id = session.getAttribute("mem_id");
@@ -215,7 +216,8 @@ function validatePassword() {
 		<!-- 여기부터 작업 시작 -->
 
 <div style="display:flex; justify-content: space-around;">
-					
+
+									
 								<form action="<%=cPath %>/api/user/find_pw method="POST" class="joinForm" name="regFrom" style="transform: translate(-20%, -30%)">                                                                     
 							      <div class="textForm">
 							        <input name="mem_id" id="mem_id" type="text" class="regi_name" placeholder="아이디">
