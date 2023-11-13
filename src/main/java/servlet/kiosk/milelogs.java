@@ -1,7 +1,10 @@
 package servlet.kiosk;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Vector;
 
 import javax.servlet.ServletException;
@@ -50,20 +53,42 @@ public class milelogs extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String param = request.getParameter("bean");
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		PrintWriter out = res.getWriter();
 		
-		PrintWriter out = response.getWriter();
-		if (param == null) {
-			out.write("{\"result\":\"failed\",\"reason\":\"no parameter\"}");
+		BufferedReader reader = req.getReader();
+		StringBuilder sb = new StringBuilder();
+		String line;
+		while ((line = reader.readLine()) != null) {
+			sb.append(line);
+		}
+		String mile_log = sb.toString();
+		
+		if (mile_log == null || mile_log.isEmpty()) {
+			res.sendError(400, "Parameter is null");
+			return;
+		}
+		
+		try {
+			mile_log = URLDecoder.decode(mile_log, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			res.sendError(400, "Parameter is not encode by RFC-3986");
+			e.printStackTrace();
+          return;
+		}
+		
+		Mile_log_Bean bean = new Gson().fromJson(mile_log, Mile_log_Bean.class);
+		
+		boolean flag = this.mgr.addMileLog(bean);
+		
+		if (flag) {
+			out.write("[{"
+					+ "\"result\": true"
+					+ "}]");
 		} else {
-			Mile_log_Bean bean = new Gson().fromJson(param, Mile_log_Bean.class); ;
-			boolean res = this.mgr.addMileLog(bean);
-			if (res) {
-				out.write("{\"result\":\"success\"}");
-			} else {
-				out.write("{\"result\":\"failed\"}");
-			}
+			out.write("[{"
+					+ "\"result\": false"
+					+ "}]");
 		}
 	}
 

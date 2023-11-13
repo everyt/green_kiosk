@@ -5,7 +5,13 @@ public class Coupon_VO {
 	private String name;
 	private int menuNo;
 	private int discount;
-	
+	public Coupon_VO(String code, String name, int menuNo, int discount) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.menuNo = menuNo;
+		this.discount = discount;
+	}
 	public String getCode() {
 		return code;
 	}

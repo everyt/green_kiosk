@@ -1,261 +1,375 @@
-class State {
-  constructor(foods) {
-    this.time = null;
-    this.foods = foods;
-    this.price = 0;
-    this.discount = 0;
-    this.coupon = null;
-    this.type = null;
-    this.use_mile = false;
-    this.use_mile_amount = 0;
-    this.add_mile = false;
-    this.add_mile_amount = 0;
-    this.who = null;
-  }
-}
-
-const handleClick = (who) => {
-  changeIcon(who);
-
-  if (who === 'coupon' || who === 'smile') {
-    hrefTo(who + '.jsp');
-  }
-};
-
-const selectOnlyOne = (str, se1, se2) => {
-  for (let i = 0; i < 2; i++) {
-    if (i > 0) {
-      const temp = se1;
-      se1 = se2;
-      se2 = temp;
-    }
-    if (str === se1) {
-      const secondCheck = sessionStorage.getItem(se2);
-      if (secondCheck === null || JSON.parse(secondCheck)) {
-        sessionStorage.setItem(se2, false);
-        document.getElementById(se2).src = formatSVGPath(se2);
-        isChecked = false;
-      }
-    }
-  }
-};
-
-const changeIcon = (str) => {
-  const element = document.getElementById(str);
-  let isChecked = false;
-
-  isChecked = getSessionStorageItem(str, () => {
-    sessionStorage.setItem(str, false);
-    isChecked = false;
-  });
-
-  PAIRS_ICONS.forEach((v) => {
-    selectOnlyOne(str, v[0], v[1]);
-  });
-
-  if (isChecked) {
-    element.src = formatSVGPath(str);
-  } else if (!isChecked) {
-    element.src = formatSVGPath('check');
-  }
-
-  isChecked = !isChecked;
-
-  sessionStorage.setItem(str, isChecked);
-};
-
-const getnerateBasketPageButtonHTML = (length) => {
-  let basketPageButtonHTML = '';
-
-  const pages = Math.ceil(length / 10);
-
-  for (let i = 1; i <= pages; i++) {
-    basketPageButtonHTML +=
-      `<div class='purchase-page-button-main'` + `onClick='generateBasketArrayHTML(` + i + `)'>` + i + `</div>`;
-  }
-
-  return basketPageButtonHTML;
-};
-
-const acceptCoupon = (arr1, arr2) => {
-  if (arr1 !== []) {
-    arr1.forEach((v1) => {
-      arr2.forEach((v2) => {
-        if (v1.menuNo === v2.index) {
-          const discountValue = ((v2.price * v2.count) / Math.floor(1000 / v1.discount)) * 10;
-          if (v2.hasOwnProperty('discount')) {
-            if (v2.discount < discountValue) {
-              v2.discount = discountValue;
-            }
-          } else {
-            v2.discount = discountValue;
-          }
-        }
-      });
-    });
-  }
-  return arr2;
-};
-
-const handleClickPayButton = () => {
-  let order = new Order(callPrice, discountedPrice, getOptionItem('card', 'mobile'));
-
-  order.setCoupon(
-    couponArray.map((v) => ({
-      name: v.name,
-    })),
-  );
-
-  order.setFoods(
-    basketArray.map((v) => ({
-      name: v.name,
-      amount: v.count,
-      price: v.price,
-    })),
-  );
-
-  const smile = JSON.parse(decodeURIComponent(getCookie('smile')))[0];
-
-  let add_mile = false;
-  let add_mile_amount = 0;
-  let use_mile = false;
-  let use_mile_amount = 0;
-
-  if (smile.type === 'phoneNumber' || smile.type === 'userID') {
-    add_mile = true;
-    add_mile_amount = Math.floor(discountPrice / 20);
-  }
-  if (smile.type === 'userID') {
-    use_mile = true;
-    use_mile_amount = Math.floor(discountPrice / 20);
-  }
-
-  order.smile(add_mile, add_mile_amount, use_mile, use_mile_amount);
-
-  sessionStorage.setItem('order', encodeURIComponent(JSON.stringify(order.toObject())));
-
-  if (getOptionItem('bag', 'shop') === 'null' || order.type === 'null') {
-    location.href = 'main.jsp';
-  } else if (order.type === 'card') {
-    location.href = 'card.jsp';
-  } else if (order.type === 'mobile') {
-    location.href = 'mobile.jsp';
-  } else {
-    location.href = 'error.jsp';
-  }
-};
-
-const getOptionItem = (op1, op2) => {
-  const v_op1 = getSessionStorageItem(op1);
-  const v_op2 = getSessionStorageItem(op2);
-
-  if (v_op1 === null && v_op2 === null) {
-    return 'null';
-  } else if (v_op1 === null || v_op1 === false) {
-    return op1;
-  } else if (v_op2 === null || v_op2 === false) {
-    return op2;
-  } else {
-    return 'error';
-  }
-};
-
-const generateBasketHTML = (arr) => {
-  let basketHTML = '';
-
-  const max = 10 * Math.floor(arr.length / 10); // 1페이지부터 시작
-
-  for (let i = 0 + max; i < 10 + max; i++) {
-    basketHTML +=
-      `<div class='rowbox'` +
-      `style='border: solid #ddd; border-width: 0 0 2px 0; align-self: center; padding: 3px 0;'>`;
-    if (i < basketLength) {
-      basketHTML += `<span style='width: 120px;'>` + arr[i].name + `</span>`;
-      basketHTML += `<span style='width: 40px;'>` + arr[i].count + `</span>`;
-      basketHTML += `<span style='width: 80px;'>` + arr[i].price + `</span>`;
-    } else {
-      basketHTML += `<span style='width: 120px;'>&nbsp;</span>`;
-      basketHTML += `<span style='width: 40px;'>&nbsp;</span>`;
-      basketHTML += `<span style='width: 80px;'>&nbsp;</span>`;
-    }
-    basketHTML += `</div>`;
-  }
-
-  return basketHTML;
-};
-
-(() => {
-  if (getSessionStorageArray('basketArray') !== null) {
-    drawArrayToDOM(getHTMLElement('#basketDOM'), getSessionStorageArray('basketArray'), generateBasketHTML);
-  } else {
-    throw new PurchaseException('basketArray is null');
-  }
-
-  if (getSessionStorageItem('coupons') !== null) {
-  }
-
-  axios
-    .post('/api/kiosk/purchase/coupons', JSON.parse())
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-  if (getSessionStorageItem('order') !== null) {
-    if (getOptionValue('bag', 'shop') === 'null') {
-      getHTMLElement('#1').innerHTML = '<span style="color: red;">포장 여부를 선택해주세요.</span>';
-      setTimeout(() => {
-        getHTMLElement('#1').innerHTML = '포장 선택';
-      }, 2500);
-    }
-    if (getOptionValue('card', 'mobile') === 'null') {
-      getHTMLElement('#1').innerHTML = '<span style="color: red;">결제 방법을 선택해주세요.</span>';
-      setTimeout(() => {
-        getHTMLElement('#1').innerHTML = '결제방법 선택';
-      }, 2500);
-    }
-  }
-
-  const basketArray = getSessionStorageArray('basketArray');
-  const couponArray = getSessionStorageArray('couponArray');
-
-  const callPrice = basketArray.reduce((acc, cur) => {
-    return acc + cur.count * cur.price;
-  }, 0);
-
-  const discountedPrice = acceptCoupon(couponArray, basketArray).reduce((arr, cur) => {
-    if (cur.hasOwnProperty('discount')) {
-      return arr + cur.discount;
-    } else {
-      return arr;
-    }
-  }, 0);
-
-  const discountPrice = callPrice - discountedPrice;
-
-  getHTMLElement('#basketDOM').innerHTML = generateBasketArrayHTML(basketArray, basketArray.length);
-  getHTMLElement('#basketPageButtonDOM').innerHTML = getnerateBasketPageButtonHTML(basketArray.length);
-  getHTMLElement('#callPrice').innerHTML =
-    '<div class="flex-between"">' +
-    '<span class="price-name">주문금액:</span>' +
-    '<span class="price-value">' +
-    inputDigits(callPrice) +
-    '</span>' +
-    '</div>';
-  document.getElementById('discountedPrice').innerHTML =
-    '<div class="flex-between">' +
-    '<span class="price-name">할인금액:</span>' +
-    '<span class="price-value">' +
-    inputDigits(discountedPrice) +
-    '</span>' +
-    '</div>';
-  document.getElementById('discountPrice').innerHTML =
-    '<div class="flex-between" style="background-color: #bb2649; color: white; font-weight: 500;">' +
-    '<span class="price-name">결제할금액:</span>' +
-    '<span class="price-value">' +
-    inputDigits(discountPrice) +
-    '</span>' +
-    '</div>';
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var _this = this;
+var PurchaseException = /** @class */ (function (_super) {
+    __extends(PurchaseException, _super);
+    function PurchaseException(reason) {
+        var _this = _super.call(this) || this;
+        _this.name = 'PurchaseException';
+        _this.reason = reason;
+        if (Error.captureStackTrace) {
+            // Chrome and NodeJS
+            Error.captureStackTrace(_this, PurchaseException);
+        }
+        else {
+            // FF, IE 10+ and Safari 6+. Fallback for others
+            _this.stack = new Error().stack || '';
+        }
+        return _this;
+    }
+    PurchaseException.prototype.toString = function () {
+        return this.name + ': ' + this.reason;
+    };
+    return PurchaseException;
+}(Error));
+var State = /** @class */ (function () {
+    function State() {
+        this.time = new Date();
+        this.foods = null;
+        this.price = 0;
+        this.discount = 0;
+        this.coupon = null;
+        this.type = null;
+        this.use_mile = false;
+        this.use_mile_amount = 0;
+        this.add_mile = false;
+        this.add_mile_amount = 0;
+        this.is_maked = false;
+        this.who = null;
+    }
+    State.prototype.toObject = function () {
+        return {
+            order_time: this.time,
+            order_foods: this.foods,
+            order_price: this.price,
+            order_discount: this.discount,
+            order_coupon: this.coupon,
+            order_type: this.type,
+            order_use_mile: this.use_mile,
+            order_use_mile_amount: this.use_mile_amount,
+            order_add_mile: this.add_mile,
+            order_add_mile_amount: this.add_mile_amount,
+            order_is_maked: this.is_maked,
+            order_who: this.who,
+        };
+    };
+    return State;
+}());
+var Item = /** @class */ (function () {
+    function Item(storage) {
+        this.store = storage;
+    }
+    Item.prototype.get = function (str) {
+        return this.store.getItem(str) === null ? null : this.store.getItem(str);
+    };
+    Item.prototype.set = function (str, data) {
+        this.store.setItem(str, data);
+    };
+    return Item;
+}());
+var SVG_PATH = '../../assets/svg/';
+var ARRAY_ICONS = ['bag', 'shop', 'coupon', 'smile', 'card', 'mobile'];
+var ARRAY_HREF_ICONS = ['coupon', 'smile'];
+var ARRAY_PAY_ICONS = ['card', 'mobile'];
+var PAIRS_ICONS = [
+    ['bag', 'shop'],
+    ['card', 'mobile'],
+];
+var formatSVGPath = function (str) {
+    var svg = SVG_PATH + str + '.svg';
+    return svg;
+};
+var inputDigits = function (num) {
+    var str = num.toString();
+    var length = str.length;
+    var result = [];
+    var j = 0;
+    for (var k = length - 1; k >= 0; k--) {
+        j++;
+        result.push(str[k]);
+        if (j % 3 === 0 && k !== 0)
+            result.push(',');
+    }
+    return result.reverse().join('');
+};
+var drawArrayToHTMLElement = function (element, arr, drawCallback) {
+    if (arr == null) {
+        element.innerHTML = 'Null';
+    }
+    else {
+        var html = drawCallback(arr);
+        element.innerHTML = html;
+    }
+};
+var generateBasketPageHTML = function (arr, page) {
+    if (page === void 0) { page = 0; }
+    var html = '';
+    var divCountValue = 10 * page;
+    for (var i = 0 + divCountValue; i < 10 + divCountValue; i++) {
+        html += "<div class='basket'>";
+        html += "<span style='width: 120px;'>" + (i < arr.length ? arr[i].name : '&nbsp;') + "</span>";
+        html += "<span style='width: 40px;'>" + (i < arr.length ? arr[i].amount : '&nbsp;') + "</span>";
+        html += "<span style='width: 80px;'>" + (i < arr.length ? arr[i].price : '&nbsp;') + "</span>";
+        html += "</div>";
+    }
+    return html;
+};
+var generateBasketPageButtonHTML = function (arr) {
+    var html = '';
+    var pages = Math.ceil(arr.length / 10);
+    for (var i = 1; i <= pages; i++) {
+        html +=
+            "<div class='purchase-page-button-main'" +
+                "onClick='generateBasketPageHTML(state.foods, " +
+                i +
+                ")'>" +
+                i +
+                "</div>";
+    }
+    return html;
+};
+var drawPriceToHTMLElement = function (str, text, value) {
+    document.querySelector(str).innerHTML =
+        '<div class="flex-between">' +
+            '<span class="price-name">' +
+            text +
+            ': </span>' +
+            '<span class="price-value">' +
+            inputDigits(value) +
+            '</span>' +
+            '</div>';
+};
+var handleClickCancle = function () {
+    location.href = ''; //TODO: 장바구니 url
+};
+var state = new State(); // 데이터를 저장해서 페이지를 벗어나기 전까지 DOM과 상호작용 하기 위해 페이지 스코프를 줍니다.
+var item = new Item(sessionStorage);
+(function () { return __awaiter(_this, void 0, void 0, function () {
+    var couponArray, mileage, mileAmount;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                // 즉시 실행 함수 IIFE, 스코프 제한, 메모리 관리를 위해 사용됩니다.
+                item.set('basketArray', JSON.stringify([{
+                        index: 0,
+                        name: '치즈버거',
+                        price: 3000,
+                        amount: 5,
+                    }]));
+                item.set('couponArray', JSON.stringify([{
+                        code: '1234-1234-1234-1234',
+                        name: '홍길동',
+                        menuNo: 0,
+                        discount: 30
+                    }]));
+                if (item.get('basketArray')) {
+                    // 장바구니 데이터 관리
+                    state.foods = JSON.parse(item.get('basketArray')); // 장바구니 상태관리
+                    state.price = state.foods.reduce(function (acc, cur) {
+                        // 누산기로 총 가격 계산, 머리터질거같아서 일일이 주석 달아줌
+                        return acc + cur.amount * cur.price;
+                    }, 0);
+                    drawArrayToHTMLElement(document.querySelector('#basketPageElement'), state.foods, generateBasketPageHTML);
+                    drawArrayToHTMLElement(
+                    // 미리 생성해놓은 위치의 HTMLElement들에게 html코드를 생성해서 주입
+                    document.querySelector('#basketPageButtonElement'), state.foods, generateBasketPageButtonHTML);
+                    drawPriceToHTMLElement('#priceElement', '주문금액', state.price); // 가격 보여줌, 디스플레이
+                }
+                else {
+                    throw new PurchaseException('basketArray is null');
+                }
+                if (!item.get('couponArray')) return [3 /*break*/, 2];
+                return [4 /*yield*/, detailedFetch(
+                    // 쿠폰 데이터를 세션스토리지에서 couponArray라는 이름으로 꺼내오고
+                    '/green_kiosk/api/kiosk/purchase/couponArray', // JSON문자열화 시킨다음에 api서버로 POST 요청 후 응답을 couponArray에 삽입
+                    'POST', // 이제 다 다른 서블릿을 쓰니까 coupons 이런 ㅁㅁㄴ 안해도 되고 smile도 array일 필요 X
+                    // 국제표준을 지키는 모습을 보여주기 위해서 encodeURIcomponent 사용
+                    // 내부에서 encode 처리 해줘도 되는데 그러면 너무 관리가 빡셈 보기가 어려워
+                    encodeURIComponent(item.get('couponArray')))];
+            case 1:
+                couponArray = _a.sent();
+                state.coupon = couponArray;
+                if (state.coupon) {
+                    state.coupon.forEach(function (couponValue) {
+                        state.foods.forEach(function (foodValue) {
+                            if (couponValue.menuNo === foodValue.index) {
+                                var sum = ((foodValue.price * foodValue.amount) / Math.floor(1000 / couponValue.discount)) * 10;
+                                if ((foodValue.hasOwnProperty('discount') && foodValue.discount < sum) ||
+                                    !foodValue.hasOwnProperty('discount')) {
+                                    foodValue.discount = sum;
+                                }
+                            }
+                        });
+                    });
+                    state.discount = state.foods.reduce(function (arr, cur) {
+                        if (cur.hasOwnProperty('discount')) {
+                            return arr + cur.discount;
+                        }
+                        else {
+                            return arr;
+                        }
+                    }, 0);
+                    drawPriceToHTMLElement('#discountElement', '할인금액', state.discount);
+                    drawPriceToHTMLElement('#discountedPriceElement', '결제할금액', state.price - state.discount);
+                }
+                else {
+                    throw new PurchaseException('fetch failed: /api/kiosk/purchase/coupons');
+                }
+                _a.label = 2;
+            case 2:
+                if (!item.get('mileage')) return [3 /*break*/, 4];
+                return [4 /*yield*/, detailedFetch('/green_kiosk/api/kiosk/purchase/mileage', 'POST', encodeURIComponent(JSON.stringify(item.get('mileage'))))];
+            case 3:
+                mileage = _a.sent();
+                if (mileage) {
+                    mileAmount = Math.floor((state.price - state.discount) / 10);
+                    state.add_mile = true;
+                    state.add_mile_amount = mileAmount;
+                    state.use_mile = mileage.type === 'cardNumber' ? true : false;
+                    state.use_mile_amount = mileage.type === 'cardNumber' && mileAmount;
+                    state.who = mileage.index;
+                    drawPriceToHTMLElement('#mileageElement', '적립마일리지', state.add_mile_amount);
+                }
+                else {
+                    throw new PurchaseException('fetch failed: /api/kiosk/purchase/mileage');
+                }
+                _a.label = 4;
+            case 4:
+                ARRAY_ICONS.forEach(function (value) {
+                    var element = document.querySelector('#' + value);
+                    element.src = item.get(value) === null
+                        ? formatSVGPath(value)
+                        : JSON.parse(item.get(value)) === false
+                            ? formatSVGPath(value)
+                            : formatSVGPath('check');
+                });
+                return [2 /*return*/];
+        }
+    });
+}); })();
+var swapIcon = function (str) {
+    var element = document.querySelector('#' + str);
+    var boolean = false;
+    boolean = item.get(str) === null ? false : JSON.parse(item.get(str)) === false ? false : true;
+    boolean = !boolean;
+    if (boolean) {
+        for (var _i = 0, PAIRS_ICONS_1 = PAIRS_ICONS; _i < PAIRS_ICONS_1.length; _i++) {
+            var pair = PAIRS_ICONS_1[_i];
+            if (str === pair[0] && JSON.parse(item.get(pair[1])) === true) {
+                item.set(pair[1], JSON.stringify(false));
+                var pairElement = document.querySelector('#' + pair[1]);
+                pairElement.src = formatSVGPath(pair[1]);
+            }
+            else if (str === pair[1] && JSON.parse(item.get(pair[0])) === true) {
+                item.set(pair[0], JSON.stringify(false));
+                var pairElement = document.querySelector('#' + pair[0]);
+                pairElement.src = formatSVGPath(pair[0]);
+            }
+        }
+    }
+    element.src = boolean ? formatSVGPath('check') : formatSVGPath(str);
+    item.set(str, JSON.stringify(boolean));
+};
+var handleClickIcon = function (str) {
+    swapIcon(str);
+    for (var _i = 0, ARRAY_HREF_ICONS_1 = ARRAY_HREF_ICONS; _i < ARRAY_HREF_ICONS_1.length; _i++) {
+        var icon = ARRAY_HREF_ICONS_1[_i];
+        if (str === icon)
+            location.href = icon + '.jsp';
+    }
+};
+var allOpionSelected = function () {
+    for (var _i = 0, PAIRS_ICONS_2 = PAIRS_ICONS; _i < PAIRS_ICONS_2.length; _i++) {
+        var pair = PAIRS_ICONS_2[_i];
+        if (!item.get(pair[0]) && !item.get(pair[1])) {
+            return false;
+        }
+    }
+    return true;
+};
+var changeLoreForOptionNotSelected = function () {
+    var _loop_1 = function (i) {
+        if ((!item.get(PAIRS_ICONS[i][0]) || !item.get(PAIRS_ICONS[i][1]))) {
+            var element_1 = document.querySelector('#icon-' + i.toString());
+            var originValue_1 = element_1.innerHTML;
+            element_1.innerHTML = '<span style="color: red;">둘 중 하나를 선택해 주세요.</span>';
+            setTimeout(function () {
+                element_1.innerHTML = originValue_1;
+            }, 2500);
+        }
+    };
+    for (var i = 1; i <= PAIRS_ICONS.length; i++) {
+        _loop_1(i);
+    }
+};
+var handleClickOk = function () { return __awaiter(_this, void 0, void 0, function () {
+    var orderObject;
+    return __generator(this, function (_a) {
+        if (allOpionSelected()) {
+            if (item.get(ARRAY_PAY_ICONS[0]) || item.get(ARRAY_PAY_ICONS[1])) {
+                state.type = item.get(ARRAY_PAY_ICONS[0])
+                    ? ARRAY_PAY_ICONS[0]
+                    : ARRAY_PAY_ICONS[1];
+            }
+            else {
+                throw new PurchaseException('Unexpected error: item.get(icon) has null');
+            }
+            orderObject = state.toObject();
+            item.set('order', JSON.stringify(orderObject));
+            location.href = state.type + '.jsp';
+        }
+        else {
+            changeLoreForOptionNotSelected();
+        }
+        return [2 /*return*/];
+    });
+}); };
