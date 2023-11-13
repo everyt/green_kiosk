@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 
 
@@ -156,16 +157,52 @@ public class Member_Mgr {
 		
 		boolean id_check = checkId(mem_id);
 		
+		
 		if (id_check) {
 			return "400/이미 사용중인 아이디입니다.";
 		} else {
+	    	Random random = new Random();		//랜덤 함수 선언
+			int createNum = 0;  			//1자리 난수
+			String ranNum = ""; 			//1자리 난수 형변환 변수
+		    	int letter    = 16;			//난수 자릿수:6
+			String User_member = "";  		//결과 난수
+			boolean creating = true;
+			
+			while (creating) {
+				for (int i=0; i<letter; i++) { 
+			        		
+					createNum = random.nextInt(9);		//0부터 9까지 올 수 있는 1자리 난수 생성
+					ranNum =  Integer.toString(createNum);  //1자리 난수를 String으로 형변환
+					User_member += ranNum;			//생성된 난수(문자열)을 원하는 수(letter)만큼 더하며 나열
+				}	
+				
+				
+				try {
+					con = pool.getConnection();
+					sql = "select * from member where mem_card = ?";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, User_member);
+					rs = pstmt.executeQuery();
+					if (rs.next()) {
+						User_member = "";
+					} else {
+						creating = false;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					pool.freeConnection(con);
+				}
+			}
+			
 			try {
 				con = pool.getConnection();
-				sql = "INSERT INTO member (`mem_id`, `mem_pw`, `mem_name`, `mem_phone`, `mem_ac`, `mem_coupon`) VALUES (?, SHA2('xq" + mem_pw + "q43',256), ?, ?, \"user\", \"\")";
+				sql = "INSERT INTO member (`mem_id`, `mem_pw`, `mem_name`, `mem_phone`, `mem_ac`, `mem_coupon`, `mem_card`) VALUES (?, SHA2('xq" + mem_pw + "q43',256), ?, ?, \"user\", \"\", ?)";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, mem_id);
 				pstmt.setString(2, name);
 				pstmt.setString(3, phone);
+				pstmt.setString(4, User_member);
 				pstmt.executeUpdate();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -177,7 +214,7 @@ public class Member_Mgr {
 		}
 	}
 
-	public boolean checkphoen(String phoen) {
+	public boolean checkphone(String phone) {
 		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -188,7 +225,7 @@ public class Member_Mgr {
 			con = pool.getConnection();
 			sql = "select phone from member where phone = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, phoen);
+			pstmt.setString(1, phone);
 			flag = pstmt.executeQuery().next();	
 		} catch (Exception e) {
 			e.printStackTrace();
