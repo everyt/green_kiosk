@@ -15,10 +15,12 @@
 	
 	Member_Mgr u_mgr = new Member_Mgr();
 	Member_Bean bean = u_mgr.getMember(String.valueOf(mem_id));
+	String mem_ac = "user";
 	if (bean == null) {
 		%> <script> alert("로그인 상태가 아닙니다.");location.href="<%=cPath %>/"</script> <%
+	} else {
+		mem_ac = bean.getMem_ac();
 	}
-	String mem_ac = bean.getMem_ac();
 	
 	Vector<Orders_Bean> orders = mgr.getOrdersByUser(String.valueOf(mem_id)); %>
 <html>
