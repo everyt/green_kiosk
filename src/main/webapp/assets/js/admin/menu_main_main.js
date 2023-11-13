@@ -44,28 +44,35 @@ function updateMenu() {
 			    '<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + contextPath +'admin/Menu/View.jsp?menu_no=' + menu_no + '\')">상세보기</a>' +
 			    '<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + contextPath + 'admin/Menu/Edit.jsp?menu_no=' + menu_no + '\')">수정하기</a>' +
 			    '</div>' +
-			    '<small class="text-body-secondary">' + menu_price + '원</small>' +
+			    '<small class="text-body-secondary">' + formatNumber(menu_price) + '원</small>' +
 			    '</div>' +
 			    '</div>' +
 			    '</div>' +
 			    '</div>';
 
-
                     // HTML에 추가
-                    chatListHtml += htmlTemplate;
-                    
+                    chatListHtml += htmlTemplate;                    
                    }
                 
                 // Update the content of the main element
                 $('.getMenuList').html(chatListHtml);
             } else {
-                alert("Failed to fetch chat list.");
-            }
+/*                alert("Failed to fetch chat list.");
+*/            }
         },
         error: function (xhr, status, error) {
             console.error("Ajax request failed:", status, error);
         }
     });
+}
+
+updateMenu();
+
+
+function formatNumber(number) {
+    // 숫자를 3자리마다 쉼표로 구분
+    var df = new Intl.NumberFormat('ko-KR');
+    return df.format(number);
 }
 
 
@@ -82,7 +89,6 @@ function loadContent(url) {
   xhr.open('GET', url, true);
   xhr.send();
 }
-
 
 /*
 var auto_refresh = setInterval(
@@ -130,9 +136,9 @@ function openPopup(url) {
   var popup = window.open(url, 'PopupWindow', 'width=popupWidth, height=popupHeight, scrollbars=yes, left=popupX, top=popupY');
 }
 
-
+/*
 window.addEventListener('DOMContentLoaded', function() {
 	setInterval(function() {
 	    updateMenu();
 	}, 3000);
-})
+})*/
