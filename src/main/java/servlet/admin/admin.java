@@ -11,32 +11,39 @@ import javax.servlet.http.HttpServletResponse;
 import menu.Manager_Menu;
 import menu.Menu_component_Bean;
 import menu.Menu_menu_Bean;
+
 /**
  * Servlet implementation class admin
  */
-@WebServlet({ "/admin", "/api/admin/edit_jaego", "/api/admin/edit_menu", "/api/admin/set_amount"})
+@WebServlet({ "/admin", "/api/admin/edit_jaego", "/api/admin/get_menu", "/api/admin/set_amount" })
 public class admin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public admin() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public admin() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
 		// TODO Auto-generated method stub
 		String endPoint = request.getServletPath();
 		PrintWriter out = response.getWriter();
@@ -47,45 +54,47 @@ public class admin extends HttpServlet {
 			bean.setComponent_name(request.getParameter("name"));
 			bean.setComponent_no(Integer.parseInt(request.getParameter("no")));
 			bean.setComponent_price(Integer.parseInt(request.getParameter("price")));
-			
+
 			Manager_Menu menuMgr = new Manager_Menu();
 			boolean result = menuMgr.updateComponent(bean);
-			  if(result){
-				  out.write("{\"result\":\"success\"}");
-			  } else {
-				  out.write("{\"result\":\"failed\"}");
-			  }
-		} else if (endPoint.equals("/api/admin/edit_menu")) {
-			Menu_menu_Bean bean = new Menu_menu_Bean();
-			bean.setMenu_name(request.getParameter("menu_name"));
-			bean.setMenu_gubn(request.getParameter("menu_gubn"));
-			bean.setMenu_price(Integer.parseInt(request.getParameter("menu_price")));
-			bean.setMenu_content(request.getParameter("menu_content"));
-			bean.setMenu_imgPath(request.getParameter("menu_imgPath"));
-			bean.setMenu_isUse(Integer.parseInt(request.getParameter("menu_isUse")));
-			bean.setMenu_isSale(Integer.parseInt(request.getParameter("menu_isSale")));
-			bean.setMenu_no(Integer.parseInt(request.getParameter("menu_no")));
-			
-			Manager_Menu menuMgr = new Manager_Menu();
-			
-			boolean result = menuMgr.updateMenu(bean);
-			  if(result){
-				  out.write("{\"result\":\"success\"}");
-			  } else {
-				  out.write("{\"result\":\"failed\"}");
-			  }
+			if (result) {
+				out.write("{\"result\":\"success\"}");
+			} else {
+				out.write("{\"result\":\"failed\"}");
+			}
+		} else if (endPoint.equals("/api/admin/get_menu")) {
+			int type = Integer.parseInt(request.getParameter("type"));
+			/*
+			 * Menu_menu_Bean bean = new Menu_menu_Bean();
+			 * bean.setMenu_name(request.getParameter("menu_name"));
+			 * bean.setMenu_gubn(request.getParameter("menu_gubn"));
+			 * bean.setMenu_price(Integer.parseInt(request.getParameter("menu_price")));
+			 * bean.setMenu_content(request.getParameter("menu_content"));
+			 * bean.setMenu_imgPath(request.getParameter("menu_imgPath"));
+			 * bean.setMenu_isUse(Integer.parseInt(request.getParameter("menu_isUse")));
+			 * bean.setMenu_isSale(Integer.parseInt(request.getParameter("menu_isSale")));
+			 * bean.setMenu_no(Integer.parseInt(request.getParameter("menu_no")));
+			 */
+			 Manager_Menu menuMgr = new Manager_Menu();
+			 response.getWriter().write(String.valueOf(menuMgr.getMenuList(type)));
+			 
+				/*
+				 * boolean result = menuMgr.updateMenu(bean); if (result) {
+				 * out.write("{\"result\":\"success\"}"); } else {
+				 * out.write("{\"result\":\"failed\"}"); }
+				 */
 		} else if (endPoint.equals("/api/admin/set_amount")) {
 			Manager_Menu menuMgr = new Manager_Menu();
 			Integer no = Integer.parseInt(String.valueOf(request.getParameter("no")));
 			Integer amount = Integer.parseInt(String.valueOf(request.getParameter("amount")));
-			
+
 			boolean res = menuMgr.setAmount(amount, no);
-			if(res){
-				  out.write("{\"result\":\"success\"}");
-			  } else {
-				  out.write("{\"result\":\"failed\"}");
-			  }
+			if (res) {
+				out.write("{\"result\":\"success\"}");
+			} else {
+				out.write("{\"result\":\"failed\"}");
+			}
 		}
 	}
-	
+
 }
