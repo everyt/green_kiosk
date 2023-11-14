@@ -1,7 +1,7 @@
 package orders;
 
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -9,10 +9,10 @@ import com.google.gson.Gson;
 public class Orders_VO {
 	private Integer order_no;
 	private Timestamp order_time;
-	private List<Map<String, String>> order_foods;
+	private ArrayList<Map<String, String>> order_foods;
 	private Integer	order_price;
 	private Integer order_discount;
-	private List<Map<String, String>> order_coupon;
+	private ArrayList<Map<String, String>> order_coupon;
 	private String order_type;
 	private boolean order_use_mile;
 	private Integer order_use_amount;
@@ -26,7 +26,7 @@ public class Orders_VO {
 	public Timestamp getOrder_time() {
 		return order_time;
 	}
-	public List<Map<String, String>> getOrder_foods() {
+	public ArrayList<Map<String, String>> getOrder_foods() {
 		return order_foods;
 	}
 	public Integer getOrder_price() {
@@ -35,7 +35,7 @@ public class Orders_VO {
 	public Integer getOrder_discount() {
 		return order_discount;
 	}
-	public List<Map<String, String>> getOrder_coupon() {
+	public ArrayList<Map<String, String>> getOrder_coupon() {
 		return order_coupon;
 	}
 	public String getOrder_type() {
@@ -65,7 +65,7 @@ public class Orders_VO {
 	public void setOrder_time(String order_time) {
 		this.order_time = new Gson().fromJson(order_time, Timestamp.class);
 	}
-	public void setOrder_foods(List<Map<String, String>> order_foods) {
+	public void setOrder_foods(ArrayList<Map<String, String>> order_foods) {
 		this.order_foods = order_foods;
 	}
 	public void setOrder_price(Integer order_price) {
@@ -74,7 +74,7 @@ public class Orders_VO {
 	public void setOrder_discount(Integer order_discount) {
 		this.order_discount = order_discount;
 	}
-	public void setOrder_coupon(List<Map<String, String>> order_coupon) {
+	public void setOrder_coupon(ArrayList<Map<String, String>> order_coupon) {
 		this.order_coupon = order_coupon;
 	}
 	public void setOrder_type(String order_type) {
