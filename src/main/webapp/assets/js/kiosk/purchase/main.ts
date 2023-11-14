@@ -57,6 +57,7 @@ class State {
   add_mile_amount: number;
   is_maked: boolean;
   who: string;
+  is_togo: boolean;
 
   constructor() {
     this.time = new Date();
@@ -71,6 +72,7 @@ class State {
     this.add_mile_amount = 0;
     this.is_maked = false;
     this.who = null;
+    this.is_togo = null;
   }
 
   toObject() {
@@ -87,6 +89,7 @@ class State {
       order_add_amount: this.add_mile_amount,
       order_is_maked: this.is_maked,
       order_who: this.who,
+      order_is_togo: this.is_togo,
     };
   }
 }
@@ -109,6 +112,7 @@ const SVG_PATH = '../../assets/svg/';
 const ARRAY_ICONS = ['bag', 'shop', 'coupon', 'smile', 'card', 'mobile'];
 const ARRAY_HREF_ICONS = ['coupon', 'smile'];
 const ARRAY_PAY_ICONS = ['card', 'mobile'];
+const ARRAY_TOGO_ICONS = ['bag', 'shop'];
 
 const PAIRS_ICONS = [
   ['bag', 'shop'],
@@ -140,7 +144,7 @@ const drawArrayToHTMLElement = (element: HTMLElement, arr: any[], drawCallback: 
     element.innerHTML = 'null';
   } else {
     let html = drawCallback(arr);
-  
+
     element.innerHTML = html;
   }
 };
@@ -149,7 +153,7 @@ const deleteBasketItem = (page: number, index: number) => {
   state.foods.splice(index, 1);
   item.set('basketArray', JSON.stringify(state.foods));
   generateBasketPageHTML(state.foods, page);
-}
+};
 
 const generateBasketPageHTML = (arr: any[], page: number = 0) => {
   let html: string = '';
@@ -161,9 +165,12 @@ const generateBasketPageHTML = (arr: any[], page: number = 0) => {
     html += `<span style='width: 40px;'>` + (i < arr.length ? arr[i].amount : '&nbsp;') + `</span>`;
     html += `<span style='width: 70px;'>` + (i < arr.length ? inputDigits(arr[i].price) : '&nbsp;') + `</span>`;
     if (i < arr.length) {
-      html += `<div 'width: 20px;' onClick='deleteBasketItem(`
-      + page + ',' + i
-      + `)'><div class='rowbox delete-button'><p class='delete-text'>x</p></div></div>`
+      html +=
+        `<div 'width: 20px;' onClick='deleteBasketItem(` +
+        page +
+        ',' +
+        i +
+        `)'><div class='rowbox delete-button'><p class='delete-text'>x</p></div></div>`;
     }
     html += `</div>`;
   }
@@ -210,18 +217,28 @@ const item = new Item(sessionStorage);
 
 (async () => {
   // 즉시 실행 함수 IIFE, 스코프 제한, 메모리 관리를 위해 사용됩니다.
-  item.set('basketArray', JSON.stringify([{
-    index: 0,
-    name: '치즈버거',
-    price: 3000,
-    amount: 5,
-  }]));
-  item.set('couponArray', JSON.stringify([{
-    code: '1234-1234-1234-1234',
-    name: '홍길동',
-    menuNo: 0,
-    discount: 30
-  }]));
+  item.set(
+    'basketArray',
+    JSON.stringify([
+      {
+        index: 0,
+        name: '치즈버거',
+        price: 3000,
+        amount: 5,
+      },
+    ]),
+  );
+  item.set(
+    'couponArray',
+    JSON.stringify([
+      {
+        code: '1234-1234-1234-1234',
+        name: '홍길동',
+        menuNo: 0,
+        discount: 30,
+      },
+    ]),
+  );
   if (item.get('basketArray')) {
     // 장바구니 데이터 관리
     state.foods = JSON.parse(item.get('basketArray')); // 장바구니 상태관리
@@ -254,19 +271,21 @@ const item = new Item(sessionStorage);
       encodeURIComponent(item.get('couponArray')),
     );
     state.coupon = couponArray;
-
-  } else { // 쿠폰이 없으면 가라데이터를 넣어서 출력
-    state.coupon = [{
-      code: 'x',
-      name: 'x',
-      menuNo: 0,
-      discount: 0,
-    }];
+  } else {
+    // 쿠폰이 없으면 가라데이터를 넣어서 출력
+    state.coupon = [
+      {
+        code: 'x',
+        name: 'x',
+        menuNo: 0,
+        discount: 0,
+      },
+    ];
   }
-  
+
   drawPriceToHTMLElement('#discountElement', '할인금액', state.discount);
   drawPriceToHTMLElement('#discountedPriceElement', '결제할금액', state.price - state.discount);
-    
+
   state.coupon.forEach((couponValue) => {
     state.foods.forEach((foodValue) => {
       if (couponValue.menuNo === foodValue.index) {
@@ -306,22 +325,23 @@ const item = new Item(sessionStorage);
 
   ARRAY_ICONS.forEach((value) => {
     const element = document.querySelector('#' + value) as HTMLImageElement;
-    element.src = item.get(value) === null 
-    ? formatSVGPath(value)
-    : JSON.parse(item.get(value)) === false
-    ? formatSVGPath(value)
-    : formatSVGPath('check');
+    element.src =
+      item.get(value) === null
+        ? formatSVGPath(value)
+        : JSON.parse(item.get(value)) === false
+        ? formatSVGPath(value)
+        : formatSVGPath('check');
   });
 })();
 
 const swapIcon = (str: string) => {
   const element = document.querySelector('#' + str) as HTMLImageElement;
   let boolean = false;
-  
+
   boolean = item.get(str) === null ? false : JSON.parse(item.get(str)) === false ? false : true;
-  
+
   boolean = !boolean;
-  
+
   if (boolean) {
     for (let pair of PAIRS_ICONS) {
       if (str === pair[0] && JSON.parse(item.get(pair[1])) === true) {
@@ -357,7 +377,7 @@ const allOpionSelected = () => {
 
 const changeLoreForOptionNotSelected = () => {
   for (let i = 1; i <= PAIRS_ICONS.length; i++) {
-    if ((!item.get(PAIRS_ICONS[i][0]) || !item.get(PAIRS_ICONS[i][1]))) {
+    if (!item.get(PAIRS_ICONS[i][0]) || !item.get(PAIRS_ICONS[i][1])) {
       const element = document.querySelector('#icon-' + i.toString());
       const originValue = element.innerHTML;
       element.innerHTML = '<span style="color: red;">둘 중 하나를 선택해 주세요.</span>';
@@ -371,9 +391,15 @@ const changeLoreForOptionNotSelected = () => {
 const handleClickOk = async () => {
   if (allOpionSelected()) {
     if (item.get(ARRAY_PAY_ICONS[0]) || item.get(ARRAY_PAY_ICONS[1])) {
-      state.type = item.get(ARRAY_PAY_ICONS[0]) && JSON.parse(item.get(ARRAY_PAY_ICONS[0]))
-        ? ARRAY_PAY_ICONS[0] as 'card'
-        : ARRAY_PAY_ICONS[1] as 'mobile';
+      state.type =
+        item.get(ARRAY_PAY_ICONS[0]) && JSON.parse(item.get(ARRAY_PAY_ICONS[0]))
+          ? (ARRAY_PAY_ICONS[0] as 'card')
+          : (ARRAY_PAY_ICONS[1] as 'mobile');
+    } else {
+      throw new PurchaseException('Unexpected error: item.get(icon) has null');
+    }
+    if (item.get(ARRAY_TOGO_ICONS[0]) || item.get(ARRAY_TOGO_ICONS[1])) {
+      state.is_togo = item.get(ARRAY_TOGO_ICONS[0]) && JSON.parse(item.get(ARRAY_TOGO_ICONS[0])) ? false : true;
     } else {
       throw new PurchaseException('Unexpected error: item.get(icon) has null');
     }

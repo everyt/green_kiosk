@@ -32,29 +32,29 @@ const generateCouponHTML = (arr: any[], count: number) => {
 
 (() => {
   let couponArray = [];
-  const couponItem = sessionStorage.getItem("couponArray");
-  
+  const couponItem = sessionStorage.getItem('couponArray');
+
   if (couponItem !== null || couponItem !== undefined) {
-    couponArray = JSON.parse(sessionStorage.getItem("couponArray"));
+    couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
   }
-  
+
   generateCouponHTML(couponArray, couponArray.length);
 })();
 
 const handleClickCancle2 = () => {
-  const couponItem = sessionStorage.getItem("couponArray");
-  
+  const couponItem = sessionStorage.getItem('couponArray');
+
   if (couponItem !== null || couponItem !== undefined) {
     sessionStorage.setItem('coupon', JSON.stringify(false));
   }
-  
+
   location.href = 'main.jsp';
 };
 
 const clearKeypad = () => {
-  const input = document.querySelector("#couponCode") as HTMLInputElement;
+  const input = document.querySelector('#couponCode') as HTMLInputElement;
   input.value = '';
-}
+};
 
 const handleCouponForm = async () => {
   const couponCodeElement = document.querySelector('#couponCode') as HTMLInputElement;
@@ -69,17 +69,21 @@ const handleCouponForm = async () => {
     let coupon = {
       'code': couponCode,
     };
-    coupon = await detailedFetch('/green_kiosk/api/kiosk/purchase/coupon', 'POST', encodeURIComponent(JSON.stringify(coupon)));
+    coupon = await detailedFetch(
+      '/green_kiosk/api/kiosk/purchase/coupon',
+      'POST',
+      encodeURIComponent(JSON.stringify(coupon)),
+    );
     if (coupon.code !== 'x' && coupon.code !== 't') {
-      const couponItem = sessionStorage.getItem("couponArray");
+      const couponItem = sessionStorage.getItem('couponArray');
       let couponArray = [];
       if (couponItem !== null || couponItem !== undefined) {
-        couponArray = JSON.parse(sessionStorage.getItem("couponArray"));
+        couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
         couponArray.push(coupon);
       } else {
         couponArray = [coupon];
       }
-      sessionStorage.setItem("couponArray", JSON.stringify(couponArray));
+      sessionStorage.setItem('couponArray', JSON.stringify(couponArray));
       generateCouponHTML(couponArray, couponArray.length);
     } else {
       const couponTextElement = document.getElementById('couponText');
