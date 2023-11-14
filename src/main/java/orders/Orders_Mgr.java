@@ -74,7 +74,7 @@ public class Orders_Mgr {
 	            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
 	            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
 	            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
-	            bean.set_who(this.rs.getInt("order_who"));
+	            bean.set_who(this.rs.getString("order_who"));
 	            vector.add(bean);
 	        }
 		} catch (Exception error) {
@@ -105,7 +105,7 @@ public class Orders_Mgr {
 	            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
 	            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
 	            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
-	            bean.set_who(this.rs.getInt("order_who"));
+	            bean.set_who(this.rs.getString("order_who"));
 	            vector.add(bean);
 	        }
 		} catch (Exception error) {
@@ -152,7 +152,7 @@ public class Orders_Mgr {
 	            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
 	            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
 	            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
-	            bean.set_who(this.rs.getInt("order_who"));
+	            bean.set_who(this.rs.getString("order_who"));
 	            vector.add(bean);
 	        }
 		} catch (Exception error) {
@@ -166,7 +166,7 @@ public class Orders_Mgr {
 	public boolean addOrder(Orders_Bean order) {
 		boolean flag = false;
 		try {
-			this.Initializer("INSERT INTO `orders` (`order_time`, `order_foods`, `order_price`, `order_discount`, `order_coupon`, `order_type`, `order_use_mile`, `oeder_use_mile_amount`, `order_add_mile`, `order_add_mile_amount`, `order_is_maked`, `order_who`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			this.Initializer("INSERT INTO `orders` (`order_time`, `order_foods`, `order_price`, `order_discount`, `order_coupon`, `order_type`, `order_use_mile`, `order_use_mile_amount`, `order_add_mile`, `order_add_mile_amount`, `order_is_maked`, `order_who`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			this.pst.setTimestamp(1, order.getOrder_time());
 			this.pst.setString(2, order.getOrder_foods());
 			this.pst.setInt(3, order.getOrder_price());
@@ -176,9 +176,9 @@ public class Orders_Mgr {
 			this.pst.setBoolean(7, order.isOrder_use_mile());
 			this.pst.setInt(8, order.getOrder_use_amount());
 			this.pst.setBoolean(9, order.isOrder_add_mile());
-			this.pst.setInt(9, order.getOrder_add_amount());
-			this.pst.setBoolean(10, order.isOrder_is_maked());
-			this.pst.setInt(11, order.get_who());
+			this.pst.setInt(10, order.getOrder_add_amount());
+			this.pst.setBoolean(11, order.isOrder_is_maked());
+			this.pst.setString(12, order.get_who());
 			if (this.pst.executeUpdate() == 1) {
 				flag = true;
 			};
@@ -194,7 +194,7 @@ public class Orders_Mgr {
 	public boolean updateOrder(Orders_Bean order) {
 		boolean flag = false;
 		try {
-			this.Initializer("UPDATE `orders` SET `order_time` = ?, `order_foods` = ?, `order_price` = ?, `order_discount` = ?, `order_coupon` = ?, `order_type` = ?, `order_use_mile` = ?, `oeder_use_mile_amount` = ?, `order_add_mile` = ?, `order_add_mile_amount` = ?, `order_is_maked` = ? WHERE `order_no` = ?");
+			this.Initializer("UPDATE `orders` SET `order_time` = ?, `order_foods` = ?, `order_price` = ?, `order_discount` = ?, `order_coupon` = ?, `order_type` = ?, `order_use_mile` = ?, `order_use_mile_amount` = ?, `order_add_mile` = ?, `order_add_mile_amount` = ?, `order_is_maked` = ?, `order_who` = ? WHERE `order_no` = ?");
 			this.pst.setTimestamp(1, order.getOrder_time());
 			this.pst.setString(2, order.getOrder_foods());
 			this.pst.setInt(3, order.getOrder_price());
@@ -204,9 +204,10 @@ public class Orders_Mgr {
 			this.pst.setBoolean(7, order.isOrder_use_mile());
 			this.pst.setInt(8, order.getOrder_use_amount());
 			this.pst.setBoolean(9, order.isOrder_add_mile());
-			this.pst.setInt(9, order.getOrder_add_amount());
-			this.pst.setBoolean(10, order.isOrder_is_maked());
-			this.pst.setInt(11, order.getOrder_no());
+			this.pst.setInt(10, order.getOrder_add_amount());
+			this.pst.setBoolean(11, order.isOrder_is_maked());
+			this.pst.setString(12, order.get_who());
+			this.pst.setInt(13, order.getOrder_no());
 			if (this.pst.executeUpdate() == 1) {
 				flag = true;
 			};

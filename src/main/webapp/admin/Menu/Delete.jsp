@@ -9,6 +9,19 @@
 <title>메뉴 삭제</title>
 </head>
 <body>
+<%@ page import="java.net.URLDecoder" %>
+
+	<%
+	    String menuType = "";
+	    if (request.getCookies() != null) {
+	        for (javax.servlet.http.Cookie cookie : request.getCookies()) {
+	            if (cookie.getName().equals("menuType")) {
+	                menuType = URLDecoder.decode(cookie.getValue(), "UTF-8");
+	                break;
+	            }
+	        }
+	    }
+	%>
 <%
 	int menu_no = Integer.parseInt(request.getParameter("menu_no"));
 	int result = menuMgr.deleteMenu(menu_no); 
@@ -22,8 +35,11 @@
 	} else {
 		script.println("<script>");
         script.println("window.opener.updateMenu('drink');");
-        script.println("window.opener.updateMenu('single');");
-        script.println("window.opener.updateMenu('all');");
+        %>
+       	<script>
+       		window.opener.updateMenu('<%=menuType%>');
+       	</script>
+        <%
  		script.println("window.close();");
 		script.println("</script>");
 	}

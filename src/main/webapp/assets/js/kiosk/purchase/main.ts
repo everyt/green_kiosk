@@ -56,7 +56,7 @@ class State {
   add_mile: boolean;
   add_mile_amount: number;
   is_maked: boolean;
-  who: number;
+  who: string;
 
   constructor() {
     this.time = new Date();
@@ -82,9 +82,9 @@ class State {
       order_coupon: this.coupon,
       order_type: this.type,
       order_use_mile: this.use_mile,
-      order_use_mile_amount: this.use_mile_amount,
+      order_use_amount: this.use_mile_amount,
       order_add_mile: this.add_mile,
-      order_add_mile_amount: this.add_mile_amount,
+      order_add_amount: this.add_mile_amount,
       order_is_maked: this.is_maked,
       order_who: this.who,
     };
@@ -137,7 +137,7 @@ const inputDigits = (num: number) => {
 
 const drawArrayToHTMLElement = (element: HTMLElement, arr: any[], drawCallback: (arr: any[]) => string) => {
   if (arr == null) {
-    element.innerHTML = 'Null';
+    element.innerHTML = 'null';
   } else {
     let html = drawCallback(arr);
   
@@ -145,15 +145,26 @@ const drawArrayToHTMLElement = (element: HTMLElement, arr: any[], drawCallback: 
   }
 };
 
+const deleteBasketItem = (page: number, index: number) => {
+  state.foods.splice(index, 1);
+  item.set('basketArray', JSON.stringify(state.foods));
+  generateBasketPageHTML(state.foods, page);
+}
+
 const generateBasketPageHTML = (arr: any[], page: number = 0) => {
   let html: string = '';
   const divCountValue = 10 * page;
 
   for (let i = 0 + divCountValue; i < 10 + divCountValue; i++) {
     html += `<div class='basket'>`;
-    html += `<span style='width: 120px;'>` + (i < arr.length ? arr[i].name : '&nbsp;') + `</span>`;
+    html += `<span style='width: 100px;'>` + (i < arr.length ? arr[i].name : '&nbsp;') + `</span>`;
     html += `<span style='width: 40px;'>` + (i < arr.length ? arr[i].amount : '&nbsp;') + `</span>`;
-    html += `<span style='width: 80px;'>` + (i < arr.length ? arr[i].price : '&nbsp;') + `</span>`;
+    html += `<span style='width: 70px;'>` + (i < arr.length ? inputDigits(arr[i].price) : '&nbsp;') + `</span>`;
+    if (i < arr.length) {
+      html += `<div 'width: 20px;' onClick='deleteBasketItem(`
+      + page + ',' + i
+      + `)'><div class='rowbox delete-button'><p class='delete-text'>x</p></div></div>`
+    }
     html += `</div>`;
   }
 
@@ -244,35 +255,39 @@ const item = new Item(sessionStorage);
     );
     state.coupon = couponArray;
 
-    if (state.coupon) {
-      state.coupon.forEach((couponValue) => {
-        state.foods.forEach((foodValue) => {
-          if (couponValue.menuNo === foodValue.index) {
-            const sum = ((foodValue.price * foodValue.amount) / Math.floor(1000 / couponValue.discount)) * 10;
-            if (
-              (foodValue.hasOwnProperty('discount') && foodValue.discount < sum) ||
-              !foodValue.hasOwnProperty('discount')
-            ) {
-              foodValue.discount = sum;
-            }
-          }
-        });
-      });
-
-      state.discount = state.foods.reduce((arr, cur) => {
-        if (cur.hasOwnProperty('discount')) {
-          return arr + cur.discount;
-        } else {
-          return arr;
-        }
-      }, 0);
-
-      drawPriceToHTMLElement('#discountElement', '할인금액', state.discount);
-      drawPriceToHTMLElement('#discountedPriceElement', '결제할금액', state.price - state.discount);
-    } else {
-      throw new PurchaseException('fetch failed: /api/kiosk/purchase/coupons');
-    }
+  } else { // 쿠폰이 없으면 가라데이터를 넣어서 출력
+    state.coupon = [{
+      code: 'x',
+      name: 'x',
+      menuNo: 0,
+      discount: 0,
+    }];
   }
+  
+  drawPriceToHTMLElement('#discountElement', '할인금액', state.discount);
+  drawPriceToHTMLElement('#discountedPriceElement', '결제할금액', state.price - state.discount);
+    
+  state.coupon.forEach((couponValue) => {
+    state.foods.forEach((foodValue) => {
+      if (couponValue.menuNo === foodValue.index) {
+        const sum = ((foodValue.price * foodValue.amount) / Math.floor(1000 / couponValue.discount)) * 10;
+        if (
+          (foodValue.hasOwnProperty('discount') && foodValue.discount < sum) ||
+          !foodValue.hasOwnProperty('discount')
+        ) {
+          foodValue.discount = sum;
+        }
+      }
+    });
+  });
+
+  state.discount = state.foods.reduce((arr, cur) => {
+    if (cur.hasOwnProperty('discount')) {
+      return arr + cur.discount;
+    } else {
+      return arr;
+    }
+  }, 0);
 
   if (item.get('mileage')) {
     const mileage = await detailedFetch(
@@ -280,18 +295,13 @@ const item = new Item(sessionStorage);
       'POST',
       encodeURIComponent(JSON.stringify(item.get('mileage'))),
     );
-
-    if (mileage) {
-      const mileAmount = Math.floor((state.price - state.discount) / 10);
-      state.add_mile = true;
-      state.add_mile_amount = mileAmount;
-      state.use_mile = mileage.type === 'cardNumber' ? true : false;
-      state.use_mile_amount = mileage.type === 'cardNumber' && mileAmount;
-      state.who = mileage.index;
-      drawPriceToHTMLElement('#mileageElement', '적립마일리지', state.add_mile_amount);
-    } else {
-      throw new PurchaseException('fetch failed: /api/kiosk/purchase/mileage');
-    }
+    const mileAmount = Math.floor((state.price - state.discount) / 10);
+    state.add_mile = true;
+    state.add_mile_amount = mileAmount;
+    state.use_mile = mileage.type === 'cardNumber' ? true : false;
+    state.use_mile_amount = mileage.type === 'cardNumber' && mileAmount;
+    state.who = mileage.index.toString();
+    drawPriceToHTMLElement('#mileageElement', '적립마일리지', state.add_mile_amount);
   }
 
   ARRAY_ICONS.forEach((value) => {
@@ -361,7 +371,7 @@ const changeLoreForOptionNotSelected = () => {
 const handleClickOk = async () => {
   if (allOpionSelected()) {
     if (item.get(ARRAY_PAY_ICONS[0]) || item.get(ARRAY_PAY_ICONS[1])) {
-      state.type = item.get(ARRAY_PAY_ICONS[0])
+      state.type = item.get(ARRAY_PAY_ICONS[0]) && JSON.parse(item.get(ARRAY_PAY_ICONS[0]))
         ? ARRAY_PAY_ICONS[0] as 'card'
         : ARRAY_PAY_ICONS[1] as 'mobile';
     } else {

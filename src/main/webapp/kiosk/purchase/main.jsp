@@ -10,9 +10,10 @@
     <div class="rowbox">
       <div class="colbox">
         <div class="rowbox" style="background-color: #eee; border: 2px solid #ddd; align-self: center; padding: 3px 0">
-          <span style="width: 120px">제품</span>
+          <span style="width: 100px">제품</span>
           <span style="width: 40px">수량</span>
-          <span style="width: 80px">금액</span>
+          <span style="width: 70px">금액</span>
+          <span style="width: 20px">&nbsp;</span>
         </div>
         <!-- 여기서 메뉴 리스트 JS로 표시, 정해진 줄 길이, 넘어가면 페이지로,  -->
         <div id="basketPageElement"></div>
@@ -34,7 +35,7 @@
         </div>
         <div class="rowbox">
           <div
-            class="payment-option small-font right-bottom-border"
+            class="payment-option small-font bottom-border"
             onClick="handleClickIcon('bag')"
             style="cursor: pointer">
             <img id="bag" src="../../assets/svg/bag.svg" alt="bag" width="70" />

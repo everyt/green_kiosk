@@ -35,30 +35,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
+var handleClickCancleRecipie = function () {
+    location.href = "main.jsp";
+};
+var handleClickOkRecipie = function () {
+    // element에 영수증 출력해서 보여주기
+    setTimeout(function () {
+        location.href = "main.jsp"; //TODO: 키오스크 초기화면, 영수증에 주문번호 출력해서 보여주기
+    }, 2500);
+};
 var purchase = function (type) { return __awaiter(_this, void 0, void 0, function () {
-    var orderObject, insertOrder, mile_type, mile_log, insertMileage;
+    var element, orderObject, insertOrder, mile_type, mile_log, insertMileage;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                element = document.querySelector("#modal__message");
                 orderObject = JSON.parse(sessionStorage.getItem('order'));
-                orderObject.type = type;
+                orderObject.orders_type = type;
                 return [4 /*yield*/, detailedFetch('/green_kiosk/api/kiosk/purchase/order', 'POST', encodeURIComponent(JSON.stringify(orderObject)))];
             case 1:
                 insertOrder = _a.sent();
-                if (!insertOrder.result) return [3 /*break*/, 3];
-                console.log('success');
-                mile_type = orderObject.add_mile && orderObject.use_mile
+                if (!insertOrder.result) return [3 /*break*/, 4];
+                mile_type = orderObject.orders_add_mile && orderObject.orders_use_mile
                     ? 'both'
-                    : orderObject.add_mile && !orderObject.use_mile
+                    : orderObject.orders_add_mile && !orderObject.orders_use_mile
                         ? 'add'
-                        : orderObject.use_mile && !orderObject.add_mile
+                        : orderObject.orders_use_mile && !orderObject.orders_add_mile
                             ? 'use'
                             : 'none';
+                if (!(orderObject.orders_who !== null)) return [3 /*break*/, 3];
                 mile_log = {
-                    mem_uid: orderObject.who,
+                    mem_uid: orderObject.orders_who,
                     mile_type: mile_type,
                     mile_reason: 'order',
-                    mile_deff: orderObject.add_mile_amount,
+                    mile_deff: orderObject.orders_add_amount,
                     mile_order_no: insertOrder.primaryKey,
                     mile_timestamp: new Date()
                 };
@@ -66,16 +76,25 @@ var purchase = function (type) { return __awaiter(_this, void 0, void 0, functio
             case 2:
                 insertMileage = _a.sent();
                 if (insertMileage.result) {
-                    console.log('success');
+                    element.innerHTML = "<div class=\"colbox\"><span style='color: black; margin-bottom: 8px;'>\uC601\uC218\uC99D\uC744 \uCD9C\uB825\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?</span>";
+                    element.innerHTML +=
+                        "<div class=\"rowbox\">\n          <div class=\"payment-ok\" onClick=\"handleClickOk()\">&nbsp;\uB124&nbsp;</div>\n          <div class=\"payment-cancle\" onClick=\"handleClickCancleRecipie()\">\uC544\uB2C8\uC624</div>\n        </div>\n        </div>";
                 }
                 else {
-                    console.log('failed');
+                    element.innerHTML = "<span style='color: red;'>\uB9C8\uC77C\uB9AC\uC9C0 \uC815\uC0B0\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.</span>";
+                    setTimeout(function () {
+                        handleClickCancleRecipie();
+                    }, 2500);
                 }
-                return [3 /*break*/, 4];
-            case 3:
-                console.log('failed');
-                _a.label = 4;
-            case 4: return [2 /*return*/];
+                _a.label = 3;
+            case 3: return [3 /*break*/, 5];
+            case 4:
+                element.innerHTML = "<span style='color: red;'>\uC8FC\uBB38\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.</span>";
+                setTimeout(function () {
+                    handleClickCancleRecipie();
+                }, 2500);
+                _a.label = 5;
+            case 5: return [2 /*return*/];
         }
     });
 }); };

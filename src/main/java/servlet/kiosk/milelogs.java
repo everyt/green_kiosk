@@ -82,13 +82,13 @@ public class milelogs extends HttpServlet {
 		boolean flag = this.mgr.addMileLog(bean);
 		
 		if (flag) {
-			out.write("[{"
+			out.write("{"
 					+ "\"result\": true"
-					+ "}]");
+					+ "}");
 		} else {
-			out.write("[{"
+			out.write("{"
 					+ "\"result\": false"
-					+ "}]");
+					+ "}");
 		}
 	}
 
