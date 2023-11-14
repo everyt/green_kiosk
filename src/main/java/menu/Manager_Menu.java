@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -95,6 +96,12 @@ public class Manager_Menu {
 			} else if (type == 3)
 			{
 				sql = "SELECT * FROM menu WHERE menu_gubn = '음료' ORDER BY menu_no DESC";
+			} else if (type == 4)
+			{
+				sql = "SELECT * FROM menu WHERE menu_gubn = '사이드' ORDER BY menu_no DESC";
+			} else if (type==5) 
+			{
+				sql = "SELECT * FROM menu WHERE menu_isSale = 1 ORDER BY menu_no DESC";
 			}
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -243,6 +250,7 @@ public class Manager_Menu {
 			}
 			return bean;
 		}
+	
 	
 	    // 1. 메뉴 관리 페이지 - 토핑 메뉴 추가
 		public boolean insertTopingMenu(Menu_component_Bean bean) {
@@ -989,6 +997,39 @@ public class Manager_Menu {
 						pool.freeConnection(con);
 					}
 					return bean;
+				}
+				
+				public Vector<Menu_component_Bean> getComponentList(int type){
+					Connection con = null;
+					PreparedStatement pstmt = null;
+					ResultSet rs = null;
+					String sql = null;
+					Menu_component_Bean bean = null;
+					Vector<Menu_component_Bean> list = new Vector<Menu_component_Bean>();
+					try {
+						con = pool.getConnection();
+						//전체 메뉴
+						if(type == 0)
+						{
+							sql = "select * from menu_component ORDER BY component_no DESC";
+						} 
+						pstmt = con.prepareStatement(sql);
+						rs = pstmt.executeQuery();
+						while(rs.next()) {
+							bean = new Menu_component_Bean();
+							bean.setComponent_no(rs.getInt("component_no"));
+							bean.setComponent_name(rs.getString("component_name"));
+							bean.setComponent_price(rs.getInt("component_price"));
+							bean.setComponent_amount(rs.getInt("component_amount"));
+							bean.setComponent_imgPath(rs.getString("component_imgPath"));
+							list.add(bean);
+						}
+					} catch(Exception e) {
+						e.printStackTrace();
+					} finally {
+						pool.freeConnection(con, pstmt, rs);
+					}
+					return list;
 				}
 	// 3. 회계 관리 페이지 - 갯수 적용  버튼
 				public Boolean setAmount(int amount, int no) {

@@ -95,6 +95,8 @@
 		       		window.opener.updateMenu('<%=menuType%>');
 		       	</script>
 		        <%
+				script.println("window.close();");
+				script.println("</script>");
  				script.println("window.close()");
 				script.println("</script>");
 			}
