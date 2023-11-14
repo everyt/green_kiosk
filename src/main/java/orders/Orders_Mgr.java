@@ -74,7 +74,7 @@ public class Orders_Mgr {
 	            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
 	            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
 	            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
-	            bean.set_who(this.rs.getInt("order_who"));
+	            bean.set_who(this.rs.getString("order_who"));
 	            vector.add(bean);
 	        }
 		} catch (Exception error) {
@@ -105,7 +105,7 @@ public class Orders_Mgr {
 	            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
 	            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
 	            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
-	            bean.set_who(this.rs.getInt("order_who"));
+	            bean.set_who(this.rs.getString("order_who"));
 	            vector.add(bean);
 	        }
 		} catch (Exception error) {
@@ -152,7 +152,7 @@ public class Orders_Mgr {
 	            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
 	            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
 	            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
-	            bean.set_who(this.rs.getInt("order_who"));
+	            bean.set_who(this.rs.getString("order_who"));
 	            vector.add(bean);
 	        }
 		} catch (Exception error) {
@@ -178,7 +178,7 @@ public class Orders_Mgr {
 			this.pst.setBoolean(9, order.isOrder_add_mile());
 			this.pst.setInt(9, order.getOrder_add_amount());
 			this.pst.setBoolean(10, order.isOrder_is_maked());
-			this.pst.setInt(11, order.get_who());
+			this.pst.setString(11, order.get_who());
 			if (this.pst.executeUpdate() == 1) {
 				flag = true;
 			};
