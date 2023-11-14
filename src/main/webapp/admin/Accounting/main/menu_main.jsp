@@ -201,7 +201,11 @@ function closePopup(popup) {
 		  const resultElement = document.getElementById('amount'+num);
 		  const per_price = parseInt(document.getElementById('price'+num).innerText);
 		  const totalElement = document.getElementById('total'+num);
+		
+	       
 		  let price = 0; 
+		  let AllPrice = 0;
+		 
 		  // 현재 화면에 표시된 값
 		  let number = resultElement.innerText;
 		  
@@ -221,7 +225,13 @@ function closePopup(popup) {
 			  resultElement.innerText = number;
 			  
 			   price = number * per_price;
+			   allPrice = AllPrice + price;
+			
 			   totalElement.innerText = price+"원";
+			   let alprice = 0;
+			   document.getElementsByName("total").forEach((ele) => alprice = alprice + parseInt(ele.innerText.replace("원","").replace(",","")))
+			  	document.getElementById("allprice").innerText="재고 총 금액 : "+alprice.toLocaleString()+" 원";
+			   
 				fetch("<%=request.getContextPath()%>/api/admin/set_amount?no="+num+"&amount="+number,{
 					method: "post"
 				}).then(response => {
@@ -233,6 +243,7 @@ function closePopup(popup) {
 					})
 				})
 		  }
+		 
 	}
 	
 	
