@@ -56,7 +56,7 @@ public class Orders_VO {
 	public boolean isOrder_is_maked() {
 		return order_is_maked;
 	}
-	public Integer getOrder_who() {
+	public String getOrder_who() {
 		return order_who;
 	}
 	public void setOrder_no(Integer order_no) {
@@ -95,7 +95,7 @@ public class Orders_VO {
 	public void setOrder_is_maked(boolean order_is_maked) {
 		this.order_is_maked = order_is_maked;
 	}
-	public void setOrder_who(Integer order_who) {
+	public void setOrder_who(String order_who) {
 		this.order_who = order_who;
 	}
 }
