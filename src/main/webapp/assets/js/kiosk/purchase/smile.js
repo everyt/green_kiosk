@@ -37,16 +37,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 var phoneNumberStartRegex = /^01(0|1|6|7|8|9)/;
 var handleKeypad2 = function (num) {
-    var input = document.querySelector("#smileCode");
+    var input = document.querySelector('#smileCode');
     var length = input.value.length;
     var temp = '';
     if (phoneNumberStartRegex.test(input.value) && length < 13) {
-        if ((length - 3) === 0) {
-            var element = document.querySelector("#smileType");
+        if (length - 3 === 0) {
+            var element = document.querySelector('#smileType');
             element.value = 'phoneNumber';
             temp += '-';
         }
-        else if ((length - 8) === 0) {
+        else if (length - 8 === 0) {
             temp += '-';
         }
         input.value += temp + num;
@@ -55,8 +55,8 @@ var handleKeypad2 = function (num) {
         input.value += num + '';
     }
     else if (!phoneNumberStartRegex.test(input.value) && length < 19) {
-        if ((length - 4) === 0) {
-            var element = document.querySelector("#smileType");
+        if (length - 4 === 0) {
+            var element = document.querySelector('#smileType');
             element.value = 'cardNumber';
             temp += '-';
         }
@@ -67,11 +67,11 @@ var handleKeypad2 = function (num) {
     }
 };
 var clearKeypad2 = function () {
-    var input = document.querySelector("#smileCode");
+    var input = document.querySelector('#smileCode');
     input.value = '';
 };
 var back = function () {
-    var smileItem = sessionStorage.getItem("smile");
+    var smileItem = sessionStorage.getItem('smile');
     if (smileItem !== null || smileItem !== undefined) {
         sessionStorage.setItem('smile', JSON.stringify(false));
     }
@@ -83,10 +83,9 @@ var handleSmileForm = function () { return __awaiter(_this, void 0, void 0, func
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                smileCodeElement = document.querySelector("#smileCode");
+                smileCodeElement = document.querySelector('#smileCode');
                 smileCode = smileCodeElement.value;
-                smileTypeElement = document.querySelector("#smileType");
-                ;
+                smileTypeElement = document.querySelector('#smileType');
                 smileType = smileTypeElement.value;
                 if (!!smileRegex.test(smileCode)) return [3 /*break*/, 1];
                 smileTextElement_1 = document.getElementById('smileText');
@@ -106,7 +105,7 @@ var handleSmileForm = function () { return __awaiter(_this, void 0, void 0, func
             case 2:
                 smile = _a.sent();
                 if (smile.value !== 'x') {
-                    sessionStorage.setItem("couponArray", JSON.stringify(smile));
+                    sessionStorage.setItem('couponArray', JSON.stringify(smile));
                 }
                 else {
                     smileTextElement_2 = document.getElementById('smileText');

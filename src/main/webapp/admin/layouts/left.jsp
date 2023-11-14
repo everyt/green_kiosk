@@ -46,9 +46,9 @@
 	  //Accounting page 일 경우
 	  } else { %>
 	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/login/logout.jsp')">로그아웃</a>
-	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)">Link</a>
-	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)">Link</a>
-	  <% } %>
+	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/admin/Accounting/sales/ac00.jsp')">거래내역관리</a>
+	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/admin/Accounting/inventory/iv00.jsp')">재고관리</a>
+	  <%} %>
 	</nav>
 	
 </body>
