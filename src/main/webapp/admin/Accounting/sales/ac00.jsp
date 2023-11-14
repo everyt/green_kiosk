@@ -5,8 +5,11 @@
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="com.google.gson.Gson" %>
+<%@ page import="com.google.gson.reflect.TypeToken" %>
 <jsp:useBean id="menuMgr" class="menu.Manager_Menu"/>
 <%
+	Gson gson = new Gson();
      //전체레코드수
     int listSize = 0;    //현재 읽어온 자료의 수
 	Vector<Orders_Bean> vlist = null;
@@ -18,22 +21,49 @@
 <html>
 <head>
 	<title>코드관리</title>
-	<link href="../main/style.css" rel="stylesheet" type="text/css" >
 
+<link rel="stylesheet" href="/post_inc/datatables/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
-</head>
+<style>
+table {
+  width: 500px;
+  border-collapse: collapse;
+}
+ 
+.text-over-cut {
+  display: block;
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+</style>
+
+<script type="text/javascript">
+  $(document).ready(function(){ 
+
+  });
+
+</script>
+	
+
+     </head>
 <body leftmargin="0" topmargin="0">
 
 <div align="center">
     <br/>
 		<h2>매장 관리 페이지</h2>
     <br>
-	<table align="center" width="800" border="1">
+	<table align="center" width="100%" border="1">
 		<tr>
 			<td>코드 등록 자료수 : <%=vlist.size()%></td>
 		</tr>
 	</table>
-	<table align="center" width="800" cellpadding="3" border="1">
+	<table align="center" width="100%" cellpadding="3" border="1">
 		<tr>
 			<td align="center" colspan="3">
 			 <%     
@@ -56,16 +86,13 @@
 						<td>결제 방식</td>
 						<td>마일리지</td>
 						<td>주문 현황</td>
-					
-						<td>출 력</td>
-						<td>삭 제</td>
 					</tr>
 					<%
 						  for (int i = 0;i<listSize; i++) {
 							  Orders_Bean bean  = vlist.get(i);
 							int order_no = bean.getOrder_no();
 							Timestamp order_time = bean.getOrder_time();
-							List<Map<String, Object>> order_foods = bean.getOrder_foods();
+							List<Map<String, Object>> order_foods = gson.fromJson(bean.getOrder_foods(), new TypeToken<List<Map<String, Object>>>(){}.getType());
 							int order_price = bean.getOrder_price();
 							int order_discount = bean.getOrder_discount();
 							String order_coupon = bean.getOrder_coupon();
@@ -76,14 +103,16 @@
 							
 					%>
 					<tr>
-						<td align="center">
+						<td align="center" >
  						   	   <%=order_no%>
 						</td>
 						<td align="center">
  						   <%=order_time%>
 						</td>
 						<td align="center">
+						<div class="text-over-cut">
  						   <%=order_foods%>
+ 						    </div>
 						</td>
 						<td align="center">
  						   <%=order_price%>
@@ -92,7 +121,9 @@
  						   <%=order_discount%>
 						</td>
 						<td align="center">
+						<div class="text-over-cut">
  						   <%=order_coupon%>
+ 						    </div>
 						</td>
 						<td align="center">
  						   <%=order_type%>
