@@ -49,6 +49,13 @@
 body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 .w3-bar-block .w3-bar-item {padding:20px}
 </style>
+<script>
+	const page_data = new Map();
+	
+	function save(id, html) {
+		page_data.set(id, html)
+	}
+</script>
 </head>
 <script>
 //회원가입 창 여는 함수
@@ -119,7 +126,7 @@ function edit() {
 				</td>
 				<!-- 해당 위치 고정 -->
 				<td rowspan="4" width="80%">
-					<table border="1" style="max-height: 597.27px; overflow-y: scroll; border-top-width: 0px; border-left-width: 0px; border-right-width: 0px; border-bottom-width: 0px;" cellspacing="0" cellpadding="2" width="100%" height="100%">
+					<table border="1" style="max-height: 597.27px; overflow-y: scroll; border-top-width: 0px; border-left-width: 0px; border-right-width: 0px; border-bottom-width: 0px;" cellspacing="0" cellpadding="2" width="100%" height="100%" id="inner_order">
 						<tr align="center" height="5%">
 							<td width="5%">번호</td>
 							<td width="25%">주문 일시</td>
@@ -131,8 +138,8 @@ function edit() {
 							boolean runned = false;
 							Integer count = 0;
 							Integer paging = 1;
-							Map<Integer, String> page_data = new HashMap<Integer, String>();
-							String p_html = "";
+							Map<String, String> page_data = new HashMap<String, String>();
+							String p_html = "<tr align=\"center\" height=\"5%\"><td width=\"5%\">번호</td><td width=\"25%\">주문 일시</td><td width=\"45%\">주문 음식</td><td width=\"15%\">총 금액</td><td width=\"10%\">영수증 발급</td></tr>";
 							for(Orders_Bean order : orders) {
 								if (runned == false) {
 									runned = true;
@@ -151,8 +158,9 @@ function edit() {
 								count += 1;
 								
 								if (count % 20 == 0) {
-									page_data.put(paging, p_html);
-									p_html = "";
+									page_data.put(String.valueOf(paging), p_html);
+									
+									p_html = "<tr align=\"center\" height=\"5%\"><td width=\"5%\">번호</td><td width=\"25%\">주문 일시</td><td width=\"45%\">주문 음식</td><td width=\"15%\">총 금액</td><td width=\"10%\">영수증 발급</td></tr>";
 									paging += 1;
 								} else {
 									p_html += "<tr align=\"center\"><td>"+order.getOrder_no()+"</td><td>"+String.valueOf(order.getOrder_time()).substring(0,19)+"</td><td>"+S_foods+"</td><td>"+format.format(order.getOrder_price())+" 원</td><td><button no=\""+order.getOrder_no()+"\" type=\"button\">영수증 발급</button></td></tr>";
@@ -180,17 +188,21 @@ function edit() {
 								</tr>
 								<%
 							} else {
-								page_data.put(paging, p_html);
+								page_data.put(String.valueOf(paging), p_html);
 								%>
 								<tr align="center">
 									<td colspan="5">
 								<%
+								String paginghtml = "<tr align=\"center\"><td colspan=\"5\">";
 								for (int i = 1; i<=paging; i++) {
-									System.out.println("page : "+i+" data : "+page_data.get(i));
+									System.out.println("page : "+i+" data : "+page_data.get(String.valueOf(i)));
 									%>
-										<button><%=i %></button>
+										<button onclick="view(<%=i %>)"><%=i %></button>
 									<%
+									paginghtml += "<button onclick=\"view("+i+")\">"+i+"</button>";
 								}
+								paginghtml += "</td></tr>";
+								page_data.put("paging", paginghtml);
 								%>
 									</td>
 								</tr>
@@ -231,6 +243,20 @@ function edit() {
 
 
 <script>
+
+<%
+for (int i = 1; i<=paging; i++) {
+	System.out.println("page : "+i+" data : "+page_data.get(String.valueOf(i)));
+	%>
+		page_data.set(<%=i%>, '<%=page_data.get(String.valueOf(i))+""+page_data.get("paging")%>')
+	<%
+}
+%>
+
+function view(num) {
+	console.log(num)
+	document.getElementById("inner_order").innerHTML = page_data.get(num);
+}
 // Script to open and close sidebar
 function w3_open() {
   document.getElementById("mySidebar").style.display = "block";
