@@ -81,6 +81,8 @@ function updateMenu(menuType) {
 			    '<p class="card-text" align="center" id="menu_content">' + '현재 수량 : ' + component_amount + '</p>' +
 			    '<div class="d-flex justify-content-between align-items-center">' +
 			    '<div class="btn-group">' +
+			   	'<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + contextPath +'admin/Menu/componentView.jsp?component_no=' + component_no + '\')">상세보기</a>' +
+			    '<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + contextPath + 'admin/Menu/componentEdit.jsp?component_no=' + component_no + '\')">수정하기</a>' +
 			    '</div>' +
 			    '<small class="text-body-secondary">' + formatNumber(component_price) + '원</small>' +
 			    '</div>' +

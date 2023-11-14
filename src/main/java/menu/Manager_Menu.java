@@ -903,13 +903,15 @@ public class Manager_Menu {
 			boolean flag = false;
 			try {
 				con = pool.getConnection();
-				sql = "update menu_component set component_name=?, component_price=?, component_amount=?, component_imgpath=? where component_no = ?";
+				sql = "update menu_component set component_name=?, component_price=?, component_amount=?, component_imgpath=?, component_isUse=?, component_isTopping=? where component_no = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, bean.getComponent_name());
 				pstmt.setInt(2, bean.getComponent_price());
 				pstmt.setInt(3, bean.getComponent_amount());
 				pstmt.setString(4, bean.getComponent_imgPath());
-				pstmt.setInt(5, bean.getComponent_no());
+				pstmt.setInt(5, bean.getComponent_isUse());
+				pstmt.setInt(6, bean.getComponent_isTopping());
+				pstmt.setInt(7, bean.getComponent_no());
 				int count = pstmt.executeUpdate();
 				if (count > 0)
 					flag = true;
@@ -923,7 +925,7 @@ public class Manager_Menu {
 	
 	
 		// 3. 회계 관리 페이지 - 재료 삭제
-		public void deleteComponent(int numb) {
+		public int deleteComponent(int component_no) {
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			String sql = null;
@@ -932,13 +934,15 @@ public class Manager_Menu {
 				con = pool.getConnection();
 				sql = "delete from menu_component where component_no=?";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, numb);
+				pstmt.setInt(1, component_no);
 				pstmt.executeUpdate();
+				return 1;
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				pool.freeConnection(con, pstmt, rs);
 			}
+			return -1;
 		}
 	
 	
@@ -990,6 +994,8 @@ public class Manager_Menu {
 							bean.setComponent_price(rs.getInt("component_price"));
 							bean.setComponent_amount(rs.getInt("component_amount"));
 							bean.setComponent_imgPath(rs.getString("component_imgPath"));
+							bean.setComponent_isUse(rs.getInt("component_isUse"));
+							bean.setComponent_isTopping(rs.getInt("component_isTopping"));
 						}
 					} catch (Exception e) {
 						e.printStackTrace();

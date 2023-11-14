@@ -7,6 +7,9 @@ public class Menu_component_Bean {
 	private int component_price;     //재료 가격
 	private int component_amount;    //재료 수량
 	private String component_imgPath;//재료 사진 경로
+	private int component_isUse; // 재료 사용 여부
+	private int component_isTopping; //재료 토핑으로 사용 여부 
+	
 	
 	public int getComponent_no() {
 		return component_no;
@@ -38,5 +41,19 @@ public class Menu_component_Bean {
 	public void setComponent_imgPath(String component_imgPath) {
 		this.component_imgPath = component_imgPath;
 	}
+	public int getComponent_isUse() {
+		return component_isUse;
+	}
+	public void setComponent_isUse(int component_isUse) {
+		this.component_isUse = component_isUse;
+	}
+	public int getComponent_isTopping() {
+		return component_isTopping;
+	}
+	public void setComponent_isTopping(int component_isTopping) {
+		this.component_isTopping = component_isTopping;
+	}
+	
+
 	
 }
