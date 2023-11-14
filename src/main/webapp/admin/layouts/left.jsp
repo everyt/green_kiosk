@@ -39,7 +39,7 @@
 	  <%
 	  //Event page 일 경우 
 	  } else if (menuType.equals("Event")){ %>
-	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/login/logout.jsp')">로그아웃</a>
+	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/admin/Event/calender.jsp')">calender</a>
 	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)">Link</a>
 	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)">Link</a>
 	  <% 

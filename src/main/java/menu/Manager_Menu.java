@@ -1065,10 +1065,9 @@ public class Manager_Menu {
 
 	public void downLoad(HttpServletRequest req, HttpServletResponse res,
 			JspWriter out, PageContext pageContext) {
-		String SAVEFOLDER = "/downloadfile2";
 		try {
 			String filename = req.getParameter("menu_filePath");
-			File file = new File(UtilMgr.con(SAVEFOLDER + File.separator + filename));
+			File file = new File(UtilMgr.con(filename));
 			byte b[] = new byte[(int) file.length()];
 			res.setHeader("Accept-Ranges", "bytes");
 			String strClient = req.getHeader("User-Agent");

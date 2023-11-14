@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file = "/admin/layouts/BeanManager.jsp" %>
+<%@ include file="/admin/admin_check/check.jsp" %>
+
 <title>메뉴 삭제</title>
 </head>
 <body>
