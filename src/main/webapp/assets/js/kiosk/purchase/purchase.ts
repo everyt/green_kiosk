@@ -17,7 +17,7 @@ const handleClickOkRecipie = (element: HTMLElement) => {
 };
 
 const purchase = async (type: string) => {
-  const element = document.querySelector('#modal__message') as HTMLElement;
+  const element = document.querySelector('.modal__message') as HTMLElement;
 
   const orderObject = JSON.parse(sessionStorage.getItem('order'));
   orderObject.orders_type = type;

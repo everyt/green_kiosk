@@ -51,7 +51,7 @@ public class Mile_log_Mgr {
 	public Vector<Mile_log_Bean> getAllMileLogs() {
 		Vector<Mile_log_Bean> vector = new Vector<Mile_log_Bean>();
 		try {
-			this.Initializer("SELECT * FROM orders");
+			this.Initializer("SELECT * FROM mile_log");
 			this.rs = this.pst.executeQuery();
 			while (this.rs.next()) {
 				Mile_log_Bean bean = new Mile_log_Bean();
@@ -100,7 +100,7 @@ public class Mile_log_Mgr {
 	public Vector<Mile_log_Bean> getMileLogByNo(Integer no) {
 		Vector<Mile_log_Bean> vector = new Vector<Mile_log_Bean>();
 		try {
-			this.Initializer("SELECT * FROM `orders` WHERE `mile_no` = ?");
+			this.Initializer("SELECT * FROM `mile_log` WHERE `mile_no` = ?");
 			this.pst.setInt(1, no);
 			this.rs = this.pst.executeQuery();
 			while (this.rs.next()) {
@@ -125,7 +125,7 @@ public class Mile_log_Mgr {
 	public boolean addMileLog(Mile_log_Bean bean) {
 		boolean flag = false;
 		try {
-			this.Initializer("INSERT INTO `orders` (`mile_uid`, `mine_type`, `mile_reason`, `mile_deff`, `mile_order_no`, `mile_timestamp`) VALUES (?, ?, ?, ?, ?, ?)");
+			this.Initializer("INSERT INTO `mile_log` (`mile_uid`, `mile_type`, `mile_reason`, `mile_deff`, `mile_order_no`, `mile_timestamp`) VALUES (?, ?, ?, ?, ?, ?)");
 			this.pst.setString(1, bean.getMile_uid());
 			this.pst.setString(2, bean.getMile_type());
 			this.pst.setString(3, bean.getMile_reason());
@@ -146,7 +146,7 @@ public class Mile_log_Mgr {
 	public boolean updateMileLog(Mile_log_Bean bean) {
 		boolean flag = false;
 		try {
-			this.Initializer("UPDATE `orders` SET `mile_uid` = ?, `mine_type` = ?, `mile_reason` = ?, `mile_deff` = ?, `mile_order_no` = ?, `mile_timestamp` = ? WHERE `mile_no` = ?");
+			this.Initializer("UPDATE `mile_log` SET `mile_uid` = ?, `mile_type` = ?, `mile_reason` = ?, `mile_deff` = ?, `mile_order_no` = ?, `mile_timestamp` = ? WHERE `mile_no` = ?");
 			
 			this.pst.setString(1, bean.getMile_uid());
 			this.pst.setString(2, bean.getMile_type());
@@ -169,7 +169,7 @@ public class Mile_log_Mgr {
 	public boolean deleteMileLogByNo(int no) {
 		boolean flag = false;
 		try {
-			this.Initializer("DELETE FROM `orders` WHERE `mile_no`=?");
+			this.Initializer("DELETE FROM `mile_log` WHERE `mile_no`=?");
 			this.pst.setInt(1, no);
 			if (this.pst.executeUpdate() == 1) {
 				flag = true;
