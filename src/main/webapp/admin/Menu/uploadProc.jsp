@@ -72,6 +72,7 @@
 						menuComponentBean = new Menu_component_Bean();
 						menuComponentBean.setComponent_name(menu_name);
 						menuComponentBean.setComponent_amount(0);
+						menuComponentBean.setComponent_isUse(menu_isUse);
 						menuComponentBean.setComponent_imgPath("/downloadfile2/" + fileName);
 						menuComponentBean.setComponent_price(menu_price);
 						boolean result = menuMgr.insertTopingMenu(menuComponentBean);

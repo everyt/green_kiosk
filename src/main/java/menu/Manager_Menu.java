@@ -260,12 +260,13 @@ public class Manager_Menu {
 			boolean flag = false;
 			try {
 				con = pool.getConnection();
-				sql = "INSERT INTO menu_component (component_name, component_price, component_amount, component_imgPath) values(?,?,?,?)";
+				sql = "INSERT INTO menu_component (component_name, component_price, component_amount, component_imgPath, component_isUse) values(?,?,?,?,?)";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, bean.getComponent_name());
 				pstmt.setInt(2, bean.getComponent_price());
 				pstmt.setInt(3, bean.getComponent_amount());
 				pstmt.setString(4, bean.getComponent_imgPath());
+				pstmt.setInt(5, bean.getComponent_isUse());
 				if (pstmt.executeUpdate() == 1)
 					flag = true;
 			} catch (Exception e) {
