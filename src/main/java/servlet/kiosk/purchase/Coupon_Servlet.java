@@ -38,12 +38,14 @@ public class Coupon_Servlet extends HttpServlet {
 	
     @Override
 	public void init(ServletConfig config) throws ServletException {
+        super.init(config);
 		this.gson = new Gson();
 		this.coupon_mgr = new Coupon_Mgr();
     }
     
     @Override
 	public void destroy() {
+        super.destroy();
 		this.gson = null;
 		this.coupon_mgr = null;
     }

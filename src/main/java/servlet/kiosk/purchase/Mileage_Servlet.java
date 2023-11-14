@@ -33,19 +33,21 @@ public class Mileage_Servlet extends HttpServlet {
 	
     @Override
 	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
 		this.gson = new Gson();
 		this.member_mgr = new Member_Mgr();
     }
     
     @Override
 	public void destroy() {
+		super.destroy();
 		this.gson = null;
 		this.member_mgr = null;
     }
     
     @Override
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-			super.service(req, res) ;
+			super.service(req, res);
     }
 
     @Override
@@ -79,25 +81,25 @@ public class Mileage_Servlet extends HttpServlet {
 			if (member_mgr.checkPhone(mileage_vo.getValue())) {
 				out.write(gson.toJson(mileage_vo));
 			} else {
-				out.write("[{"
+				out.write("{"
 						+ "\"index\": 0,"
 						+ "\"name\": \"x\","
 						+ "\"mileage\": 0,"
 						+ "\"value\": \"x\","
 						+ "\"type\": \"x\""
-						+ "}]");
+						+ "}");
 			}
 		} else if (mileage_vo.getType().equals("cardNumber")) {
 			if (member_mgr.checkCard(mileage_vo.getValue())) {
 				out.write(gson.toJson(mileage_vo));
 			} else {
-				out.write("[{"
+				out.write("{"
 						+ "\"index\": 0,"
 						+ "\"name\": \"x\","
 						+ "\"mileage\": 0,"
 						+ "\"value\": \"x\","
 						+ "\"type\": \"x\""
-						+ "}]");
+						+ "}");
 			}
 		}
     }

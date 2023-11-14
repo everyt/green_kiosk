@@ -36,7 +36,7 @@ public class Order_Servlet extends HttpServlet {
 	
     @Override
 	public void init(ServletConfig config) throws ServletException {
-			super.init();
+			super.init(config);
 			this.gson = new Gson();
 			this.orders_mgr = new Orders_Mgr();
     }
@@ -44,7 +44,7 @@ public class Order_Servlet extends HttpServlet {
     @Override
 	public void destroy() {
 			super.destroy();
-			this.gson = new Gson();
+			this.gson = null;
 			this.orders_mgr = null;
     }
     
@@ -85,14 +85,14 @@ public class Order_Servlet extends HttpServlet {
 		
 		if (flag) {
 			int pk = this.orders_mgr.getLastOrder();
-			out.write("[{"
-					+ "\"result\": true"
-					+ "\"primaryKey\":" + pk + ","
-					+ "}]");
+			out.write("{"
+					+ "\"result\": true,"
+					+ "\"primaryKey\":" + pk + ""
+					+ "}");
 		} else {
-			out.write("[{"
+			out.write("{"
 					+ "\"result\": false"
-					+ "}]");
+					+ "}");
 		}
 	}
 }
