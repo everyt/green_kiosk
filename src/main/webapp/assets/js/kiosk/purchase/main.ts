@@ -56,7 +56,7 @@ class State {
   add_mile: boolean;
   add_mile_amount: number;
   is_maked: boolean;
-  who: number;
+  who: string;
 
   constructor() {
     this.time = new Date();
@@ -287,7 +287,7 @@ const item = new Item(sessionStorage);
       state.add_mile_amount = mileAmount;
       state.use_mile = mileage.type === 'cardNumber' ? true : false;
       state.use_mile_amount = mileage.type === 'cardNumber' && mileAmount;
-      state.who = mileage.index;
+      state.who = mileage.index.toString();
       drawPriceToHTMLElement('#mileageElement', '적립마일리지', state.add_mile_amount);
     } else {
       throw new PurchaseException('fetch failed: /api/kiosk/purchase/mileage');
