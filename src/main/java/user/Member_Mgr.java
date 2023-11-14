@@ -396,9 +396,30 @@ public class Member_Mgr {
 			pool.freeConnection(con, pstmt, rs);
 		}
 		return res;
+	
+	}
+
+	public boolean updateMember1(Member_Bean bean) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		boolean flag = false;
+		//System.out.println("자료 : " + bean.getNumb() + bean.getName());
+		try {
+			con = pool.getConnection();
+			String sql = "update Member set pw=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, bean.getMem_pw());
+			pstmt.setInt(2, bean.getMem_no());
+			int count = pstmt.executeUpdate();
+			if (count > 0)
+				flag = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		return flag;
 	}
 	
-	
-
 }
 
