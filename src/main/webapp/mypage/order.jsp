@@ -180,11 +180,13 @@ function edit() {
 								</tr>
 								<%
 							} else {
+								page_data.put(paging, p_html);
 								%>
 								<tr align="center">
 									<td colspan="5">
 								<%
 								for (int i = 1; i<=paging; i++) {
+									System.out.println("page : "+i+" data : "+page_data.get(i));
 									%>
 										<button><%=i %></button>
 									<%
