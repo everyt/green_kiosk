@@ -81,6 +81,16 @@ function validatePassword() {
 		resultDiv.style.color = 'red';
 	}
 }
+function edit(){
+	if(document.regFrom.code.value==""){
+		alert("");
+		document.regFrom.code.focus();
+		return;
+	}
+	
+	document.regFrom.action = "change_pw_p.jsp";
+	document.regFrom.submit();
+}
 
 
 </script>
@@ -198,7 +208,6 @@ function validatePassword() {
 
 
 
-
 <!-- Top menu -->
 <div class="w3-top">
   <div class="w3-white w3-xlarge" style="max-width:1300px;margin:auto">
@@ -219,16 +228,17 @@ function validatePassword() {
 									
 								<form action="<%=cPath %>/api/user/find_pw method="POST" class="joinForm" name="regFrom" style="transform: translate(-20%, -30%)">                                                                     
 							      <div class="textForm">
-							        <input name="mem_id" id="mem_id" type="text" class="regi_name" placeholder="아이디">
-							        <label for="mem_name" style="position:absolute; transform: translateX(-481px) translateY(3px); width:140px;">아이디 : </label>
+							        <input name="mem_id" id="mem_id" type="text" class="regi_name" placeholder="비밀번호 찾기 ">
+							        <label for="mem_name" style="position:absolute; transform: translateX(-481px) translateY(3px); width:140px;">비밀번호 찾기 : </label>
 							      </div>
 							      <div class="textForm">
-							        <input name="mem_name" type="text" class="regi_name" placeholder="이름">
-							        <label for="mem_name" style="position:absolute; transform: translateX(-415px) translateY(3px); width:100px;">이름 : </label>
+							        <input name="mem_name" type="text" class="regi_name" placeholder="비밀번호 찾기 확인">
+							        <label for="mem_name" style="position:absolute; transform: translateX(-415px) translateY(3px); width:100px;">비밀번호 찾기 확인 : </label>
 							      </div>
 							      <input type="button" onclick="edit()" class="btn" style="transform: translateX(-50%) translateY(360%);" value="수 정 하 기"/>
+							 	
 							    </form>
-
+								
 </div>
   
   <hr id="about">
