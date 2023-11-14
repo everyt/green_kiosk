@@ -85,6 +85,7 @@ var State = /** @class */ (function () {
         this.add_mile_amount = 0;
         this.is_maked = false;
         this.who = null;
+        this.is_togo = null;
     }
     State.prototype.toObject = function () {
         return {
@@ -100,6 +101,7 @@ var State = /** @class */ (function () {
             order_add_amount: this.add_mile_amount,
             order_is_maked: this.is_maked,
             order_who: this.who,
+            order_is_togo: this.is_togo,
         };
     };
     return State;
@@ -120,6 +122,7 @@ var SVG_PATH = '../../assets/svg/';
 var ARRAY_ICONS = ['bag', 'shop', 'coupon', 'smile', 'card', 'mobile'];
 var ARRAY_HREF_ICONS = ['coupon', 'smile'];
 var ARRAY_PAY_ICONS = ['card', 'mobile'];
+var ARRAY_TOGO_ICONS = ['bag', 'shop'];
 var PAIRS_ICONS = [
     ['bag', 'shop'],
     ['card', 'mobile'],
@@ -143,7 +146,7 @@ var inputDigits = function (num) {
 };
 var drawArrayToHTMLElement = function (element, arr, drawCallback) {
     if (arr == null) {
-        element.innerHTML = 'Null';
+        element.innerHTML = 'null';
     }
     else {
         var html = drawCallback(arr);
@@ -163,11 +166,14 @@ var generateBasketPageHTML = function (arr, page) {
         html += "<div class='basket'>";
         html += "<span style='width: 100px;'>" + (i < arr.length ? arr[i].name : '&nbsp;') + "</span>";
         html += "<span style='width: 40px;'>" + (i < arr.length ? arr[i].amount : '&nbsp;') + "</span>";
-        html += "<span style='width: 70px;'>" + (i < arr.length ? arr[i].price : '&nbsp;') + "</span>";
+        html += "<span style='width: 70px;'>" + (i < arr.length ? inputDigits(arr[i].price) : '&nbsp;') + "</span>";
         if (i < arr.length) {
-            html += "<div 'width: 20px;' onClick='deleteBasketItem("
-                + page + ',' + i
-                + ")'><div class='rowbox delete-button'><p class='delete-text'>x</p></div></div>";
+            html +=
+                "<div 'width: 20px;' onClick='deleteBasketItem(" +
+                    page +
+                    ',' +
+                    i +
+                    ")'><div class='rowbox delete-button'><p class='delete-text'>x</p></div></div>";
         }
         html += "</div>";
     }
@@ -209,18 +215,22 @@ var item = new Item(sessionStorage);
         switch (_a.label) {
             case 0:
                 // 즉시 실행 함수 IIFE, 스코프 제한, 메모리 관리를 위해 사용됩니다.
-                item.set('basketArray', JSON.stringify([{
+                item.set('basketArray', JSON.stringify([
+                    {
                         index: 0,
                         name: '치즈버거',
                         price: 3000,
                         amount: 5,
-                    }]));
-                item.set('couponArray', JSON.stringify([{
+                    },
+                ]));
+                item.set('couponArray', JSON.stringify([
+                    {
                         code: '1234-1234-1234-1234',
                         name: '홍길동',
                         menuNo: 0,
-                        discount: 30
-                    }]));
+                        discount: 30,
+                    },
+                ]));
                 if (item.get('basketArray')) {
                     // 장바구니 데이터 관리
                     state.foods = JSON.parse(item.get('basketArray')); // 장바구니 상태관리
@@ -250,12 +260,15 @@ var item = new Item(sessionStorage);
                 state.coupon = couponArray;
                 return [3 /*break*/, 3];
             case 2:
-                state.coupon = [{
+                // 쿠폰이 없으면 가라데이터를 넣어서 출력
+                state.coupon = [
+                    {
                         code: 'x',
                         name: 'x',
                         menuNo: 0,
                         discount: 0,
-                    }];
+                    },
+                ];
                 _a.label = 3;
             case 3:
                 drawPriceToHTMLElement('#discountElement', '할인금액', state.discount);
@@ -294,11 +307,12 @@ var item = new Item(sessionStorage);
             case 5:
                 ARRAY_ICONS.forEach(function (value) {
                     var element = document.querySelector('#' + value);
-                    element.src = item.get(value) === null
-                        ? formatSVGPath(value)
-                        : JSON.parse(item.get(value)) === false
+                    element.src =
+                        item.get(value) === null
                             ? formatSVGPath(value)
-                            : formatSVGPath('check');
+                            : JSON.parse(item.get(value)) === false
+                                ? formatSVGPath(value)
+                                : formatSVGPath('check');
                 });
                 return [2 /*return*/];
         }
@@ -346,7 +360,7 @@ var allOpionSelected = function () {
 };
 var changeLoreForOptionNotSelected = function () {
     var _loop_1 = function (i) {
-        if ((!item.get(PAIRS_ICONS[i][0]) || !item.get(PAIRS_ICONS[i][1]))) {
+        if (!item.get(PAIRS_ICONS[i][0]) || !item.get(PAIRS_ICONS[i][1])) {
             var element_1 = document.querySelector('#icon-' + i.toString());
             var originValue_1 = element_1.innerHTML;
             element_1.innerHTML = '<span style="color: red;">둘 중 하나를 선택해 주세요.</span>';
@@ -364,9 +378,16 @@ var handleClickOk = function () { return __awaiter(_this, void 0, void 0, functi
     return __generator(this, function (_a) {
         if (allOpionSelected()) {
             if (item.get(ARRAY_PAY_ICONS[0]) || item.get(ARRAY_PAY_ICONS[1])) {
-                state.type = item.get(ARRAY_PAY_ICONS[0]) && JSON.parse(item.get(ARRAY_PAY_ICONS[0]))
-                    ? ARRAY_PAY_ICONS[0]
-                    : ARRAY_PAY_ICONS[1];
+                state.type =
+                    item.get(ARRAY_PAY_ICONS[0]) && JSON.parse(item.get(ARRAY_PAY_ICONS[0]))
+                        ? ARRAY_PAY_ICONS[0]
+                        : ARRAY_PAY_ICONS[1];
+            }
+            else {
+                throw new PurchaseException('Unexpected error: item.get(icon) has null');
+            }
+            if (item.get(ARRAY_TOGO_ICONS[0]) || item.get(ARRAY_TOGO_ICONS[1])) {
+                state.is_togo = item.get(ARRAY_TOGO_ICONS[0]) && JSON.parse(item.get(ARRAY_TOGO_ICONS[0])) ? false : true;
             }
             else {
                 throw new PurchaseException('Unexpected error: item.get(icon) has null');

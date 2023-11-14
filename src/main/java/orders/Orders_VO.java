@@ -20,6 +20,8 @@ public class Orders_VO {
 	private Integer order_add_amount;
 	private boolean order_is_maked;
 	private String order_who;
+	private boolean order_is_togo;
+	
 	public Integer getOrder_no() {
 		return order_no;
 	}
@@ -97,5 +99,11 @@ public class Orders_VO {
 	}
 	public void setOrder_who(String order_who) {
 		this.order_who = order_who;
+	}
+	public boolean isOrder_is_togo() {
+		return order_is_togo;
+	}
+	public void setOrder_is_togo(boolean order_is_togo) {
+		this.order_is_togo = order_is_togo;
 	}
 }
