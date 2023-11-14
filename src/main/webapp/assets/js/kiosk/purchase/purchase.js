@@ -56,7 +56,7 @@ var purchase = function (type) { return __awaiter(_this, void 0, void 0, functio
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                element = document.querySelector('#modal__message');
+                element = document.querySelector('.modal__message');
                 orderObject = JSON.parse(sessionStorage.getItem('order'));
                 orderObject.orders_type = type;
                 return [4 /*yield*/, detailedFetch('/green_kiosk/api/kiosk/purchase/order', 'POST', encodeURIComponent(JSON.stringify(orderObject)))];

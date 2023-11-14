@@ -58,6 +58,10 @@ public class Event_Mgr {
 				Event_Bean bean = new Event_Bean();
 	            bean.setEvent_no(this.rs.getInt("event_no"));
 	            bean.setEvent_name(this.rs.getString("event_name"));
+	            bean.setEvent_desc(this.rs.getString("event_desc"));
+	            bean.setEvent_image(this.rs.getString("event_image"));
+	            bean.setEvent_isAcitve(this.rs.getBoolean("event_isByDate"));
+	            bean.setEvent_isAcitve(this.rs.getBoolean("event_isAcitve"));
 	            bean.setEvent_issueDate(this.rs.getTimestamp("event_issueDate"));
 	            bean.setEvent_expireDate(this.rs.getTimestamp("event_expireDate"));
 	            bean.setEvent_limitTime1(this.rs.getTimestamp("event_limitTime1"));
@@ -98,6 +102,10 @@ public class Event_Mgr {
 	        if (this.rs.next()) {
 	            bean.setEvent_no(this.rs.getInt("event_no"));
 	            bean.setEvent_name(this.rs.getString("event_name"));
+	            bean.setEvent_desc(this.rs.getString("event_desc"));
+	            bean.setEvent_image(this.rs.getString("event_image"));
+	            bean.setEvent_isAcitve(this.rs.getBoolean("event_isByDate"));
+	            bean.setEvent_isAcitve(this.rs.getBoolean("event_isAcitve"));
 	            bean.setEvent_issueDate(this.rs.getTimestamp("event_issueDate"));
 	            bean.setEvent_expireDate(this.rs.getTimestamp("event_expireDate"));
 	            bean.setEvent_limitTime1(this.rs.getTimestamp("event_limitTime1"));
@@ -114,14 +122,19 @@ public class Event_Mgr {
 	public boolean createEvent(Event_Bean bean) {
 		boolean flag = false;
 		try {
-			this.Initializer("INSERT event(event_name, event_issueDate, event_expireDate, event_limitTime1,"
+			this.Initializer("INSERT event(event_name, event_desc, event_image, event_isByDate, event_isActive,"
+			    + "  event_issueDate, event_expireDate, event_limitTime1,"
 					+ " event_limitTime2)"
 					+ " VALUES (?,?,?,?,?)");
 			this.pst.setString(1, bean.getEvent_name());
-			this.pst.setTimestamp(2, bean.getEvent_issueDate());
-			this.pst.setTimestamp(3, bean.getEvent_expireDate());
-			this.pst.setTimestamp(4, bean.getEvent_limitTime1());
-			this.pst.setTimestamp(5, bean.getEvent_limitTime2());
+			this.pst.setString(2, bean.getEvent_desc());
+			this.pst.setString(3, bean.getEvent_image());
+			this.pst.setBoolean(4, bean.getEvent_isByDate());
+			this.pst.setBoolean(5, bean.getEvent_isActive());
+			this.pst.setTimestamp(6, bean.getEvent_issueDate());
+			this.pst.setTimestamp(7, bean.getEvent_expireDate());
+			this.pst.setTimestamp(8, bean.getEvent_limitTime1());
+			this.pst.setTimestamp(9, bean.getEvent_limitTime2());
 			if (this.pst.executeUpdate() == 1) {
 				flag = true;
 			};
@@ -136,15 +149,20 @@ public class Event_Mgr {
 	public boolean updateEvent(Event_Bean bean) {
 		boolean flag = false;
 		try {
-			this.Initializer("UPDATE event SET event_name=?, event_issueDate=?, event_expireDate=?,"
+			this.Initializer("UPDATE event SET event_name=?, event_desc=?, event_image=?, event_isByDate=?,"
+			    + " event_isActive=?, event_issueDate=?, event_expireDate=?,"
 					+ " event_limitTime1=?, event_limitTime2=?"
 					+ " WHERE event_no=?");
 			this.pst.setString(1, bean.getEvent_name());
-			this.pst.setTimestamp(2, bean.getEvent_issueDate());
-			this.pst.setTimestamp(3, bean.getEvent_expireDate());
-			this.pst.setTimestamp(4, bean.getEvent_limitTime1());
-			this.pst.setTimestamp(5, bean.getEvent_limitTime2());
-			this.pst.setInt(6, bean.getEvent_no());
+			this.pst.setString(2, bean.getEvent_desc());
+			this.pst.setString(3, bean.getEvent_image());
+			this.pst.setBoolean(4, bean.getEvent_isByDate());
+			this.pst.setBoolean(5, bean.getEvent_isActive());
+			this.pst.setTimestamp(6, bean.getEvent_issueDate());
+			this.pst.setTimestamp(7, bean.getEvent_expireDate());
+			this.pst.setTimestamp(8, bean.getEvent_limitTime1());
+			this.pst.setTimestamp(9, bean.getEvent_limitTime2());
+			this.pst.setInt(10, bean.getEvent_no());
 			if (this.pst.executeUpdate() == 1) {
 				flag = true;
 			};
