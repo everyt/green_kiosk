@@ -120,10 +120,7 @@ function formatNumber(number) {
     return df.format(number);
 }
 
-$(function() {
-    // DatePicker 초기화
-    $("#datepicker").datepicker();
-});
+
 /*function loadContent(url) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
