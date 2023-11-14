@@ -276,7 +276,7 @@ var item = new Item(sessionStorage);
                     state.add_mile_amount = mileAmount;
                     state.use_mile = mileage.type === 'cardNumber' ? true : false;
                     state.use_mile_amount = mileage.type === 'cardNumber' && mileAmount;
-                    state.who = mileage.index;
+                    state.who = mileage.index.toString();
                     drawPriceToHTMLElement('#mileageElement', '적립마일리지', state.add_mile_amount);
                 }
                 else {
