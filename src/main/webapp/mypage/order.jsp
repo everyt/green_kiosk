@@ -4,10 +4,18 @@
 <%@ page import="user.Member_Mgr" %>
 <%@ page import="user.Member_Bean" %>
 <%@ page import="java.util.Vector" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.google.gson.Gson" %>
+<%@ page import="com.google.gson.reflect.TypeToken" %>
+<%@ page import="java.text.DecimalFormat" %>
 <script> let res = "false"; </script>
 <%
 	Orders_Mgr mgr = new Orders_Mgr();
 	String cPath = request.getContextPath();
+	
+	Gson gson = new Gson();
 
 	Object mem_id = session.getAttribute("mem_id");
 	Object failed_count = session.getAttribute("failed_count");
@@ -15,6 +23,8 @@
 	
 	Member_Mgr u_mgr = new Member_Mgr();
 	Member_Bean bean = u_mgr.getMember(String.valueOf(mem_id));
+	
+	DecimalFormat format = new DecimalFormat("###,###");
 	String mem_ac = "user";
 	if (bean == null) {
 		%> <script> alert("로그인 상태가 아닙니다.");location.href="<%=cPath %>/"</script> <%
@@ -109,7 +119,7 @@ function edit() {
 				</td>
 				<!-- 해당 위치 고정 -->
 				<td rowspan="4" width="80%">
-					<table border="1" style="border-top-width: 0px; border-left-width: 0px; border-right-width: 0px; border-bottom-width: 0px;" cellspacing="0" cellpadding="2" width="100%" height="100%">
+					<table border="1" style="max-height: 597.27px; overflow-y: scroll; border-top-width: 0px; border-left-width: 0px; border-right-width: 0px; border-bottom-width: 0px;" cellspacing="0" cellpadding="2" width="100%" height="100%">
 						<tr align="center" height="5%">
 							<td width="5%">번호</td>
 							<td width="25%">주문 일시</td>
@@ -119,26 +129,68 @@ function edit() {
 						</tr>		
 						<%
 							boolean runned = false;
+							Integer count = 0;
+							Integer paging = 1;
+							Map<Integer, String> page_data = new HashMap<Integer, String>();
+							String p_html = "";
 							for(Orders_Bean order : orders) {
 								if (runned == false) {
 									runned = true;
 								}
 								
+								List<Map<String, Object>> foods = gson.fromJson(order.getOrder_foods(), new TypeToken<List<Map<String,Object>>>(){}.getType());
+								String S_foods = "";
+								
+								for (Map<String, Object> food : foods) {
+									if (S_foods.equals("")) {
+										S_foods = food.get("name")+" X "+Integer.parseInt(String.valueOf(food.get("amount")).replace(".0", ""));
+									} else {
+										S_foods = S_foods + ", " + food.get("name")+" X "+Integer.parseInt(String.valueOf(food.get("amount")).replace(".0", ""));
+									}
+								}
+								count += 1;
+								
+								if (count % 20 == 0) {
+									page_data.put(paging, p_html);
+									p_html = "";
+									paging += 1;
+								} else {
+									p_html += "<tr align=\"center\"><td>"+order.getOrder_no()+"</td><td>"+String.valueOf(order.getOrder_time()).substring(0,19)+"</td><td>"+S_foods+"</td><td>"+format.format(order.getOrder_price())+" 원</td><td><button no=\""+order.getOrder_no()+"\" type=\"button\">영수증 발급</button></td></tr>";
+								}
+								if (count < 21) {
+									
+									
+								
 						%>
 							<tr align="center">
 								<td><%=order.getOrder_no() %></td>
 								<td><%=String.valueOf(order.getOrder_time()).substring(0,19) %></td>
-								<td><%=order.getOrder_foods().toString() %></td>
-								<td><%=order.getOrder_price() %></td>
+								<td><%=S_foods %></td>
+								<td><%=format.format(order.getOrder_price()) %> 원</td>
 								<td><button no="<%=order.getOrder_no() %>" type="button">영수증 발급</button></td>
 							</tr>
 						<%	
-							}
+								} //if
+							}//for
 							
 							if (runned == false) {
 								%>
 								<tr align="center">
 									<td colspan="5"><h2>주문 내역이 존재 하지 않습니다.</h2></td>
+								</tr>
+								<%
+							} else {
+								%>
+								<tr align="center">
+									<td colspan="5">
+								<%
+								for (int i = 1; i<=paging; i++) {
+									%>
+										<button><%=i %></button>
+									<%
+								}
+								%>
+									</td>
 								</tr>
 								<%
 							}
