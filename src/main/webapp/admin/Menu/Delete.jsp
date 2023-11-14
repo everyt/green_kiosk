@@ -34,7 +34,6 @@
 		script.println("</script>");
 	} else {
 		script.println("<script>");
-        script.println("window.opener.updateMenu('drink');");
         %>
        	<script>
        		window.opener.updateMenu('<%=menuType%>');
