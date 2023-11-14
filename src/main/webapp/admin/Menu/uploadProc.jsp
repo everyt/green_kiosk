@@ -72,6 +72,7 @@
 						menuComponentBean = new Menu_component_Bean();
 						menuComponentBean.setComponent_name(menu_name);
 						menuComponentBean.setComponent_amount(0);
+						menuComponentBean.setComponent_isUse(menu_isUse);
 						menuComponentBean.setComponent_imgPath("/downloadfile2/" + fileName);
 						menuComponentBean.setComponent_price(menu_price);
 						boolean result = menuMgr.insertTopingMenu(menuComponentBean);
@@ -80,9 +81,11 @@
 						{
 							PrintWriter script = response.getWriter();
 							script.println("<script>");
-					        script.println("window.opener.updateMenu('all');");
-					        script.println("window.opener.updateMenu('drink');");
-					        script.println("window.opener.updateMenu('single');");
+					        %>
+					       	<script>
+					       		window.opener.updateMenu('<%=menuType%>');
+					       	</script>
+					        <%
 							script.println("window.close();");
  							script.println("</script>");
 							//table insert 실패 했을 경우
@@ -126,19 +129,11 @@
 					{
 						PrintWriter script = response.getWriter();
 						script.println("<script>");
-						if (menu_gubn.equals("단품")){
-						    script.println("window.opener.updateMenu('single');");
-					        script.println("window.opener.updateMenu('all');");
-						} else if (menu_gubn.equals("음료"))
-						{
-					        script.println("window.opener.updateMenu('drink');");
-					        script.println("window.opener.updateMenu('all');");
-						} else if (menu_gubn.equals("세트"))
-						{
-					        script.println("window.opener.updateMenu('all');");
-						} else {
-					        script.println("window.opener.updateMenu('all');");
-						}
+					        %>
+					       	<script>
+					       		window.opener.updateMenu('<%=menuType%>');
+					       	</script>
+					        <%
 						script.println("window.close();");
 						script.println("</script>");
 						//table insert 실패 했을 경우

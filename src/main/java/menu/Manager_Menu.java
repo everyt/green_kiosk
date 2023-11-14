@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -95,6 +96,12 @@ public class Manager_Menu {
 			} else if (type == 3)
 			{
 				sql = "SELECT * FROM menu WHERE menu_gubn = '음료' ORDER BY menu_no DESC";
+			} else if (type == 4)
+			{
+				sql = "SELECT * FROM menu WHERE menu_gubn = '사이드' ORDER BY menu_no DESC";
+			} else if (type==5) 
+			{
+				sql = "SELECT * FROM menu WHERE menu_isSale = 1 ORDER BY menu_no DESC";
 			}
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -244,6 +251,7 @@ public class Manager_Menu {
 			return bean;
 		}
 	
+	
 	    // 1. 메뉴 관리 페이지 - 토핑 메뉴 추가
 		public boolean insertTopingMenu(Menu_component_Bean bean) {
 			Connection con = null;
@@ -252,12 +260,13 @@ public class Manager_Menu {
 			boolean flag = false;
 			try {
 				con = pool.getConnection();
-				sql = "INSERT INTO menu_component (component_name, component_price, component_amount, component_imgPath) values(?,?,?,?)";
+				sql = "INSERT INTO menu_component (component_name, component_price, component_amount, component_imgPath, component_isUse) values(?,?,?,?,?)";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, bean.getComponent_name());
 				pstmt.setInt(2, bean.getComponent_price());
 				pstmt.setInt(3, bean.getComponent_amount());
 				pstmt.setString(4, bean.getComponent_imgPath());
+				pstmt.setInt(5, bean.getComponent_isUse());
 				if (pstmt.executeUpdate() == 1)
 					flag = true;
 			} catch (Exception e) {
@@ -812,7 +821,7 @@ public class Manager_Menu {
 					Orders_Bean bean = new Orders_Bean();
 					bean.setOrder_no(rs.getInt("order_no"));
 					bean.setOrder_time(rs.getTimestamp("order_time"));
-					bean.setOrder_foods(gson.fromJson(rs.getString("order_foods"), new TypeToken<List<Map<String, Object>>>() {}.getType()));
+					bean.setOrder_foods(rs.getString("order_foods"));
 					bean.setOrder_price(rs.getInt("order_price"));
 					bean.setOrder_discount(rs.getInt("order_discount"));
 					bean.setOrder_coupon(rs.getString("order_coupon"));
@@ -895,13 +904,15 @@ public class Manager_Menu {
 			boolean flag = false;
 			try {
 				con = pool.getConnection();
-				sql = "update menu_component set component_name=?, component_price=?, component_amount=?, component_imgpath=? where component_no = ?";
+				sql = "update menu_component set component_name=?, component_price=?, component_amount=?, component_imgpath=?, component_isUse=?, component_isTopping=? where component_no = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, bean.getComponent_name());
 				pstmt.setInt(2, bean.getComponent_price());
 				pstmt.setInt(3, bean.getComponent_amount());
 				pstmt.setString(4, bean.getComponent_imgPath());
-				pstmt.setInt(5, bean.getComponent_no());
+				pstmt.setInt(5, bean.getComponent_isUse());
+				pstmt.setInt(6, bean.getComponent_isTopping());
+				pstmt.setInt(7, bean.getComponent_no());
 				int count = pstmt.executeUpdate();
 				if (count > 0)
 					flag = true;
@@ -915,7 +926,7 @@ public class Manager_Menu {
 	
 	
 		// 3. 회계 관리 페이지 - 재료 삭제
-		public void deleteComponent(int numb) {
+		public int deleteComponent(int component_no) {
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			String sql = null;
@@ -924,13 +935,15 @@ public class Manager_Menu {
 				con = pool.getConnection();
 				sql = "delete from menu_component where component_no=?";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, numb);
+				pstmt.setInt(1, component_no);
 				pstmt.executeUpdate();
+				return 1;
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				pool.freeConnection(con, pstmt, rs);
 			}
+			return -1;
 		}
 	
 	
@@ -982,6 +995,8 @@ public class Manager_Menu {
 							bean.setComponent_price(rs.getInt("component_price"));
 							bean.setComponent_amount(rs.getInt("component_amount"));
 							bean.setComponent_imgPath(rs.getString("component_imgPath"));
+							bean.setComponent_isUse(rs.getInt("component_isUse"));
+							bean.setComponent_isTopping(rs.getInt("component_isTopping"));
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -989,6 +1004,39 @@ public class Manager_Menu {
 						pool.freeConnection(con);
 					}
 					return bean;
+				}
+				
+				public Vector<Menu_component_Bean> getComponentList(int type){
+					Connection con = null;
+					PreparedStatement pstmt = null;
+					ResultSet rs = null;
+					String sql = null;
+					Menu_component_Bean bean = null;
+					Vector<Menu_component_Bean> list = new Vector<Menu_component_Bean>();
+					try {
+						con = pool.getConnection();
+						//전체 메뉴
+						if(type == 0)
+						{
+							sql = "select * from menu_component ORDER BY component_no DESC";
+						} 
+						pstmt = con.prepareStatement(sql);
+						rs = pstmt.executeQuery();
+						while(rs.next()) {
+							bean = new Menu_component_Bean();
+							bean.setComponent_no(rs.getInt("component_no"));
+							bean.setComponent_name(rs.getString("component_name"));
+							bean.setComponent_price(rs.getInt("component_price"));
+							bean.setComponent_amount(rs.getInt("component_amount"));
+							bean.setComponent_imgPath(rs.getString("component_imgPath"));
+							list.add(bean);
+						}
+					} catch(Exception e) {
+						e.printStackTrace();
+					} finally {
+						pool.freeConnection(con, pstmt, rs);
+					}
+					return list;
 				}
 	// 3. 회계 관리 페이지 - 갯수 적용  버튼
 				public Boolean setAmount(int amount, int no) {

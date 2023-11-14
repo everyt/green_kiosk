@@ -18,9 +18,6 @@ function loadContent(url) {
     updateMenu(menuType);
     });
 
- window.addEventListener('DOMContentLoaded', function() {
-    updateMenu();
-    });
 
 
 function openPopup(url) {

@@ -23,8 +23,8 @@
 	    }
 	%>
 <%
-	int menu_no = Integer.parseInt(request.getParameter("menu_no"));
-	int result = menuMgr.deleteMenu(menu_no); 
+	int component_no = Integer.parseInt(request.getParameter("component_no"));
+	int result = menuMgr.deleteComponent(component_no);   
 	PrintWriter script = response.getWriter();
 	if (result != 1)
 	{
