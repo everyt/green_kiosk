@@ -14,6 +14,19 @@
 <title>menu_uploadProcess</title>
 </head>
 <body>
+<%@ page import="java.net.URLDecoder" %>
+
+	<%
+	    String menuType = "";
+	    if (request.getCookies() != null) {
+	        for (javax.servlet.http.Cookie cookie : request.getCookies()) {
+	            if (cookie.getName().equals("menuType")) {
+	                menuType = URLDecoder.decode(cookie.getValue(), "UTF-8");
+	                break;
+	            }
+	        }
+	    }
+	%>
 	<%
 		//해당 주소는 서버 주소입니다. 로컬에서 실행시 오류 발생하므로 서버에 올려서 테스트
 		String savePath= "/usr/local/tomcat/webapps/downloadfile2"; 
@@ -77,19 +90,11 @@
 				
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
-				if (menu_gubn.equals("단품")){
-				    script.println("window.opener.updateMenu('single');");
-			        script.println("window.opener.updateMenu('all');");
-				} else if (menu_gubn.equals("음료"))
-				{
-			        script.println("window.opener.updateMenu('drink');");
-			        script.println("window.opener.updateMenu('all');");
-				} else if (menu_gubn.equals("세트"))
-				{
-			        script.println("window.opener.updateMenu('all');");
-				} else {
-			        script.println("window.opener.updateMenu('all');");
-				}
+		        %>
+		       	<script>
+		       		window.opener.updateMenu('<%=menuType%>');
+		       	</script>
+		        <%
  				script.println("window.close()");
 				script.println("</script>");
 			}
