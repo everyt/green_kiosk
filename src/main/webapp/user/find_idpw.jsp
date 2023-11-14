@@ -233,7 +233,6 @@ function validatePassword() {
 			        <button onclick="q_findid()" type="button"><span>아이디찾기</span></button>
 			      </td>
 			      </tr>
-			     
 			</table>
 		 </form>
 	</div>

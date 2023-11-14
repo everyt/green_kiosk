@@ -49,6 +49,13 @@
 body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 .w3-bar-block .w3-bar-item {padding:20px}
 </style>
+<script>
+	const page_data = new Map();
+	
+	function save(id, html) {
+		page_data.set(id, html)
+	}
+</script>
 </head>
 <script>
 //회원가입 창 여는 함수
@@ -119,7 +126,7 @@ function edit() {
 				</td>
 				<!-- 해당 위치 고정 -->
 				<td rowspan="4" width="80%">
-					<table border="1" style="max-height: 597.27px; overflow-y: scroll; border-top-width: 0px; border-left-width: 0px; border-right-width: 0px; border-bottom-width: 0px;" cellspacing="0" cellpadding="2" width="100%" height="100%">
+					<table border="1" style="max-height: 597.27px; overflow-y: scroll; border-top-width: 0px; border-left-width: 0px; border-right-width: 0px; border-bottom-width: 0px; table-layout: fixed" cellspacing="0" cellpadding="2" width="100%" height="100%" id="inner_order">
 						<tr align="center" height="5%">
 							<td width="5%">번호</td>
 							<td width="25%">주문 일시</td>
@@ -131,8 +138,9 @@ function edit() {
 							boolean runned = false;
 							Integer count = 0;
 							Integer paging = 1;
-							Map<Integer, String> page_data = new HashMap<Integer, String>();
-							String p_html = "";
+							Integer rem = 20;
+							Map<String, String> page_data = new HashMap<String, String>();
+							String p_html = "<tr align=\"center\" height=\"5%\"><td width=\"5%\">번호</td><td width=\"25%\">주문 일시</td><td width=\"45%\">주문 음식</td><td width=\"15%\">총 금액</td><td width=\"10%\">영수증 발급</td></tr>";
 							for(Orders_Bean order : orders) {
 								if (runned == false) {
 									runned = true;
@@ -149,10 +157,13 @@ function edit() {
 									}
 								}
 								count += 1;
+								rem -= 1;
 								
 								if (count % 20 == 0) {
-									page_data.put(paging, p_html);
-									p_html = "";
+									page_data.put(String.valueOf(paging), p_html);
+									page_data.put(String.valueOf(paging)+"_rem", "0");
+									p_html = "<tr align=\"center\" height=\"5%\"><td width=\"5%\">번호</td><td width=\"25%\">주문 일시</td><td width=\"45%\">주문 음식</td><td width=\"15%\">총 금액</td><td width=\"10%\">영수증 발급</td></tr>";
+									rem = 20;
 									paging += 1;
 								} else {
 									p_html += "<tr align=\"center\"><td>"+order.getOrder_no()+"</td><td>"+String.valueOf(order.getOrder_time()).substring(0,19)+"</td><td>"+S_foods+"</td><td>"+format.format(order.getOrder_price())+" 원</td><td><button no=\""+order.getOrder_no()+"\" type=\"button\">영수증 발급</button></td></tr>";
@@ -162,12 +173,12 @@ function edit() {
 									
 								
 						%>
-							<tr align="center">
-								<td><%=order.getOrder_no() %></td>
-								<td><%=String.valueOf(order.getOrder_time()).substring(0,19) %></td>
-								<td><%=S_foods %></td>
-								<td><%=format.format(order.getOrder_price()) %> 원</td>
-								<td><button no="<%=order.getOrder_no() %>" type="button">영수증 발급</button></td>
+							<tr align="center" height="4.5%">
+								<td width="5%"><%=order.getOrder_no() %></td>
+								<td width="25%"><%=String.valueOf(order.getOrder_time()).substring(0,19) %></td>
+								<td width="45%" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap; padding: 0 90px; cursor: pointer"><%=S_foods %></td>
+								<td width="15%"><%=format.format(order.getOrder_price()) %> 원</td>
+								<td width="10%"><button no="<%=order.getOrder_no() %>" type="button">영수증 발급</button></td>
 							</tr>
 						<%	
 								} //if
@@ -180,17 +191,57 @@ function edit() {
 								</tr>
 								<%
 							} else {
-								page_data.put(paging, p_html);
+								if (rem > 0) {
+									if(paging == 1) {
+										for (int i=0;i<rem;i++) {
+											%>
+											<tr align="center" height="4.5%">
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											</tr>
+											<%
+										}
+									} else {
+										for (int i=0;i<rem;i++) {
+											p_html += "<tr align=\"center\" height=\"4.5%\"><td></td><td></td><td></td><td></td><td></td></tr>";
+										}
+									}
+								} 
+								page_data.put(String.valueOf(paging), p_html);
 								%>
 								<tr align="center">
 									<td colspan="5">
 								<%
+								String paginghtml = "<tr align=\"center\"><td colspan=\"5\">";
+								
 								for (int i = 1; i<=paging; i++) {
-									System.out.println("page : "+i+" data : "+page_data.get(i));
-									%>
-										<button><%=i %></button>
-									<%
+									System.out.println("page : "+i+" data : "+page_data.get(String.valueOf(i)));
+									if (i == 1) {
+										%>
+											<button style="border: 1px black solid; padding: 0 5px; border-radius: 20px; font-weight:900; background-color: black; color:white " onclick="view(<%=i %>)"><%=i %></button>
+										<%									
+									} else {
+										%>
+											<button style="border: 1px black solid; padding: 0 5px; border-radius: 20px; font-weight:900" onclick="view(<%=i %>)"><%=i %></button>
+										<%
+									}
+									for (int j = 1; j<=paging; j++) {
+										if (i == j) {
+											paginghtml += "<button style=\"border: 1px black solid; padding: 0 5px; border-radius: 20px; font-weight:900; background-color: black; color:white; margin-left:5px;\" onclick=\"view("+j+")\">"+j+"</button>";
+										} else {
+											paginghtml += "<button style=\"border: 1px black solid; padding: 0 5px; border-radius: 20px; font-weight:900; margin-left:5px;\" onclick=\"view("+j+")\">"+j+"</button>";
+										}
+									}
+									paginghtml += "</td></tr>";
+									page_data.put("paging"+i, paginghtml);
+									paginghtml = "<tr align=\"center\"><td colspan=\"5\">";
 								}
+								
+								
+								page_data.put(String.valueOf(paging)+"_rem", String.valueOf(rem));
 								%>
 									</td>
 								</tr>
@@ -231,6 +282,20 @@ function edit() {
 
 
 <script>
+
+<%
+for (int i = 1; i<=paging; i++) {
+	System.out.println("page : "+i+" data : "+page_data.get(String.valueOf(i)));
+	%>
+		page_data.set(<%=i%>, '<%=page_data.get(String.valueOf(i))+""+page_data.get("paging"+i)%>')
+	<%
+}
+%>
+
+function view(num) {
+	console.log(num)
+	document.getElementById("inner_order").innerHTML = page_data.get(num);
+}
 // Script to open and close sidebar
 function w3_open() {
   document.getElementById("mySidebar").style.display = "block";
