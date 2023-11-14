@@ -1,6 +1,7 @@
 package orders;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -110,10 +111,10 @@ public class Orders_Bean {
 		super();
 		this.order_no = orders_vo.getOrder_no();
 		this.order_time = orders_vo.getOrder_time();
-		this.order_foods = new Gson().toJson(orders_vo.getOrder_foods(), new TypeToken<Map<String, String>>(){}.getType());
+		this.order_foods = new Gson().toJson(orders_vo.getOrder_foods(), new TypeToken<ArrayList<Map<String, String>>>(){}.getType());
 		this.order_price = orders_vo.getOrder_price();
 		this.order_discount = orders_vo.getOrder_discount();
-		this.order_coupon = new Gson().toJson(orders_vo.getOrder_coupon(), new TypeToken<Map<String, String>>(){}.getType());
+		this.order_coupon = new Gson().toJson(orders_vo.getOrder_coupon(), new TypeToken<ArrayList<Map<String, String>>>(){}.getType());
 		this.order_type = orders_vo.getOrder_type();
 		this.order_use_mile = orders_vo.isOrder_use_mile();
 		this.order_use_amount = orders_vo.getOrder_use_amount();
