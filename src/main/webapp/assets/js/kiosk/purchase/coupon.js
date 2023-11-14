@@ -64,21 +64,21 @@ var generateCouponHTML = function (arr, count) {
 };
 (function () {
     var couponArray = [];
-    var couponItem = sessionStorage.getItem("couponArray");
+    var couponItem = sessionStorage.getItem('couponArray');
     if (couponItem !== null || couponItem !== undefined) {
-        couponArray = JSON.parse(sessionStorage.getItem("couponArray"));
+        couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
     }
     generateCouponHTML(couponArray, couponArray.length);
 })();
 var handleClickCancle2 = function () {
-    var couponItem = sessionStorage.getItem("couponArray");
+    var couponItem = sessionStorage.getItem('couponArray');
     if (couponItem !== null || couponItem !== undefined) {
         sessionStorage.setItem('coupon', JSON.stringify(false));
     }
     location.href = 'main.jsp';
 };
 var clearKeypad = function () {
-    var input = document.querySelector("#couponCode");
+    var input = document.querySelector('#couponCode');
     input.value = '';
 };
 var handleCouponForm = function () { return __awaiter(_this, void 0, void 0, function () {
@@ -103,16 +103,16 @@ var handleCouponForm = function () { return __awaiter(_this, void 0, void 0, fun
             case 2:
                 coupon = _a.sent();
                 if (coupon.code !== 'x' && coupon.code !== 't') {
-                    couponItem = sessionStorage.getItem("couponArray");
+                    couponItem = sessionStorage.getItem('couponArray');
                     couponArray = [];
                     if (couponItem !== null || couponItem !== undefined) {
-                        couponArray = JSON.parse(sessionStorage.getItem("couponArray"));
+                        couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
                         couponArray.push(coupon);
                     }
                     else {
                         couponArray = [coupon];
                     }
-                    sessionStorage.setItem("couponArray", JSON.stringify(couponArray));
+                    sessionStorage.setItem('couponArray', JSON.stringify(couponArray));
                     generateCouponHTML(couponArray, couponArray.length);
                 }
                 else {
