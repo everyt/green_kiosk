@@ -5,24 +5,38 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="menu.Menu_component_Bean"%>
+<%@ page import="java.text.DecimalFormat"%>
+
+
+
 <jsp:useBean id="menuMgr" class="menu.Manager_Menu"/>
 <%
 
+    int AllPrice = 0;
+    
 
 	int listSize = 0;    //현재 읽어온 자료의 수
 	Vector<Menu_component_Bean> vlist = null;
 	int numb = 0; 
     
     vlist = menuMgr.getComponenctlist();
-    
+    DecimalFormat date_format = new DecimalFormat("###,###");
+    String result = "";
+    String result1 = "";
+ 
 %>
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
 
 	<title>코드관리</title>
 	<link href="../main/style.css" rel="stylesheet" type="text/css" >
+	
 <script type="text/javascript">
+
 	function count()  {
 		  // 결과를 표시할 element
 		  const resultElement = document.getElementById('result');
@@ -73,6 +87,7 @@
 						<td>총 액</td>
 					</tr>  	   
 			          <% 
+			          
 						  for (int i = 0;i<listSize; i++) {
 							Menu_component_Bean bean  = vlist.get(i);
 							int component_no = bean.getComponent_no();
@@ -112,16 +127,18 @@
 						int price = bean.getComponent_price();
 						int amount = bean.getComponent_amount();
 						int TotalPrice;
-						   
-						   TotalPrice = (price*amount);
-						 
-						  
-						    
+						    TotalPrice = (price*amount);
 						
+						    AllPrice = AllPrice + TotalPrice;
+						    result = date_format.format((long)AllPrice);
+						    result1 = date_format.format((long)TotalPrice);
+				
+						
+					
 						
 						%>
-						<td align="center" id="total<%=component_no%>">
- 						   <%=TotalPrice%>원
+						<td align="center" name="total" id="total<%=component_no%>">
+ 						   <%=result1%>원
 						</td>
 					</tr>
 					<%}//for%>
@@ -129,19 +146,10 @@
 				}//if
 				%> 
      <table align="center" width="800" border="1">
-    <%
-        
-        int i = 0;
-		int TotalPrice=0;		    
-		int AllPrice =0;
-		int sum = 1;
-		 AllPrice = (sum);
-	   for(i=0; i<=TotalPrice; i++);
-			
-	 %>
+   
 		<tr>
-			<td align="center" >
-			 재고 총 금액 : <%=AllPrice%></td>
+			<td align="center" id="allprice">
+			 재고 총 금액 : <%=result%>원</td>
 		</tr>
 	</table>
 			 </td>

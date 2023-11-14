@@ -11,6 +11,10 @@ body {
   justify-content: center;
   width: 100vw;
   height: 100vh;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none
 }
 .colbox {
   display: flex;
@@ -182,4 +186,16 @@ body {
 }
 .right-bottom-corner {
   border-radius: 0 0 30px 0;
+}
+.delete-button {
+  position: relative;
+  width: 17px;
+  height: 17px;
+  border-radius: 20%;
+  border: 1px solid #aaa;
+  color: #555;
+}
+.delete-text {
+  position: absolute;
+  top: -20px;
 }
