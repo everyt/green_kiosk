@@ -6,6 +6,7 @@
 
 <meta charset="UTF-8">
 <title>관리자 페이지</title>
+<link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/admin/coupon.css">
 <%@ include file="/admin/layouts/indexBase.jsp" %>
 <%@ include file="/admin/layouts/header.jsp" %>
 <%@ include file="/admin/admin_check/check.jsp" %>

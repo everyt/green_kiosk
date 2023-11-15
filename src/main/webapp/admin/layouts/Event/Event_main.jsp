@@ -5,6 +5,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/Event/event_main.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/Event/calender.js"></script>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/admin/event.css">
+<link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/admin/coupon.css">
 <main class="mainContent">
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
