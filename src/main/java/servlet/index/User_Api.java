@@ -25,7 +25,7 @@ import user.Member_Mgr;
 /**
  * Servlet implementation class User_Api
  */
-@WebServlet({ "/User_Api", "/api/user/update", "/api/user/check_pw" })
+@WebServlet({ "/User_Api", "/api/user/update", "/api/user/check_pw", "/api/user/verify/smile" })
 public class User_Api extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -102,30 +102,30 @@ public class User_Api extends HttpServlet {
 			
 			if (smile_map.get("type").equals("phoneNumber") && mgr.checkPhone(smile_map.get("value"))) {
 				Member_Bean member_bean = mgr.get_user_with_phone(smile_map.get("value"));
-				out.write("[{"
+				out.write("{"
 						+ "\"index\": \"" + member_bean.getMem_no() + "\","
 					    + "\"name\": \"" + member_bean.getMem_name() + "\","
 						+ "\"mileage\": \"" + member_bean.getMem_mile() + "\","
 						+ "\"value\": \"" + smile_map.get("value") + "\","
-					    + "\"type\": \"" + smile_map.get("type") + "\","
-						+ "}]");
+					    + "\"type\": \"" + smile_map.get("type") + "\""
+						+ "}");
 			} else if (smile_map.get("type").equals("cardNumber") && mgr.checkCard(smile_map.get("value"))) {
 				Member_Bean member_bean = mgr.get_user_with_card(smile_map.get("value"));
-				out.write("[{"
+				out.write("{"
 						+ "\"index\": \"" + member_bean.getMem_no() + "\","
 					    + "\"name\": \"" + member_bean.getMem_name() + "\","
 						+ "\"mileage\": \"" + member_bean.getMem_mile() + "\","
 						+ "\"value\": \"" + smile_map.get("value") + "\","
-					    + "\"type\": \"" + smile_map.get("type") + "\","
-						+ "}]");
+					    + "\"type\": \"" + smile_map.get("type") + "\""
+						+ "}");
 			} else {
-				out.write("[{"
+				out.write("{"
 						+ "\"index\": 0,"
 					    + "\"name\": \"x\","
 						+ "\"mileage\": 0,"
 						+ "\"value\": \"x\","
-					    + "\"type\": \"x\","
-						+ "}]");
+					    + "\"type\": \"x\""
+						+ "}");
 			}
 			
 		}

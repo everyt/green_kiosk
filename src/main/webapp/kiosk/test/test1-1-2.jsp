@@ -116,19 +116,19 @@
 
 	<div class="item1-1 ">
 		<div class="rowbox">
-			<img src="../images/cola.jpg" >
+			<img src="../images/potato.jpg" >
 				<div class="colbox">
-				  <H1>데리버거</H1>
+				  <H1>포테이토</H1>
 				  <h2 style="color:blue;" >3500~</h2>
 				</div>
 		</div>
 	</div>
 	
 	<div class="item2-1">
-		<div class="rowbox">
- 			<img src="../images/cola1.jpg" >
+		<div class="rowbox" onclick="hrefTo1()">
+ 			<img src="../images/potato1.jpg" >
  				<div class="colbox">
- 				     <H1>데리버거</H1>
+ 				     <H1>양념 감자</H1>
  					  <h2 style="color:blue;" >3500~</h2>
  				</div>
 		</div>
@@ -136,9 +136,9 @@
 	
 	<div class="item3-1">
 		<div class="rowbox">
- 			<img src="../images/saida.jpg" >
+ 			<img src="../images/potato2.jpg" >
  				<div class="colbox">
- 				     <H1>데리버거</H1>
+ 				     <H1>포테이토(L)</H1>
  					  <h2 style="color:blue;" >3500~</h2>
  				</div>
 		</div>
@@ -146,9 +146,9 @@
 	
 	<div class="item4-1">
 		<div class="rowbox">
- 			<img src="../images/saida1.jpg" >
+ 			<img src="../images/cheese.jpg" >
  				<div class="colbox">
- 				     <H1>데리버거</H1>
+ 				     <H1>치즈 스틱</H1>
  				 	 <h2 style="color:blue;" >3500~</h2>
  				</div>
 		</div>
@@ -156,9 +156,9 @@
 	
 	<div class="item5-1">
 		<div class="rowbox">
- 			<img src="../images/milkiseu.jpg" >
+ 			<img src="../images/cheese2.jpg" >
  				<div class="colbox">
- 				     <H1>데리버거</H1>
+ 				     <H1>치즈 볼</H1>
  				  	<h2 style="color:blue;" >3500~</h2>
  				</div>
 		</div>	
@@ -166,9 +166,9 @@
 	
 	<div class="item6-1">
 		<div class="rowbox">
- 			<img src="../images/mauntindyu.jpg" >
+ 			<img src="../images/chicken.jpg" >
  				<div class="colbox">
- 				     <H1>데리버거</H1>
+ 				     <H1>치킨 너겟</H1>
  					  <h2 style="color:blue;" >3500~</h2>
  				</div>
 		</div>
@@ -176,9 +176,9 @@
 	
 	<div class="item7-1">
 		<div class="rowbox">
- 			<img src="../images/fanta.jpg" >
- 				<div class="colbox" onclick="hrefTo1()">
- 				     <H1>데리버거</H1>
+ 			<img src="../images/ojingeo.jpg" >
+ 				<div class="colbox">
+ 				     <H1>오징어 링</H1>
  					  <h2 style="color:blue;" >3500~</h2>
  				</div>
 		</div>	
@@ -186,9 +186,9 @@
 	
 	<div class="item8-1">
 		<div class="rowbox">
- 			<img src="../images/orange juice.jpg" >
+ 			<img src="../images/potato3.jpg" >
  				<div class="colbox">
- 				     <H1>데리버거</H1>
+ 				     <H1>웨지 포테이토</H1>
  					  <h2 style="color:blue;" >3500~</h2>
  				</div>
 		</div>	
@@ -199,11 +199,6 @@
     </div>
   </div>
 </div>
-
-
-
-
-
 
 
 
@@ -221,6 +216,11 @@
 	  </div>
 	</div>
   </div>
+
+
+
+
+
 
 
 
@@ -298,6 +298,7 @@ MicroModal.init();
 	  setTimeout(() => {
 	  }, 2500)
 }	
+	
 	
 	const hrefTo1 = (type) => {
 		  localStorage.setItem('paymentType', type);

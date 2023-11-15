@@ -23,7 +23,7 @@ import orders.Orders_Bean;
 import orders.Orders_Mgr;
 import orders.Orders_VO;
 
-@WebServlet("/api/kiosk/purchase/order")
+@WebServlet({"/api/kiosk/purchase/order", "/api/kiosk/purchase/order/primary-key"})
 public class Order_Servlet extends HttpServlet {
 	private static final long serialVersionUID = 822377164049874508L;
 
@@ -52,7 +52,22 @@ public class Order_Servlet extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 			super.service(req, res) ;
     }
-	
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		PrintWriter out = res.getWriter();
+
+		String endPoint = req.getServletPath();
+		
+		if (endPoint.equals("/api/kiosk/purchase/order/primary-key")) {
+			int pk = this.orders_mgr.getLastOrder();
+			out.write("{"
+					+ "\"result\": true,"
+					+ "\"primaryKey\":" + pk + ""
+					+ "}");
+		}
+    }
+    
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		PrintWriter out = res.getWriter();
@@ -77,22 +92,27 @@ public class Order_Servlet extends HttpServlet {
 			e.printStackTrace();
           return;
 		}
-
-		Orders_VO orders_vo = this.gson.fromJson(order, Orders_VO.class);
 		
+		String endPoint = req.getServletPath();
 		
-		boolean flag = this.orders_mgr.addOrder(new Orders_Bean(orders_vo));
-		
-		if (flag) {
-			int pk = this.orders_mgr.getLastOrder();
-			out.write("{"
-					+ "\"result\": true,"
-					+ "\"primaryKey\":" + pk + ""
-					+ "}");
-		} else {
-			out.write("{"
-					+ "\"result\": false"
-					+ "}");
+		if (endPoint.equals("/api/kiosk/purchase/order")) {
+			Orders_VO orders_vo = this.gson.fromJson(order, Orders_VO.class);
+			
+			
+			boolean flag = this.orders_mgr.addOrder(new Orders_Bean(orders_vo));
+			
+			if (flag) {
+				int pk = this.orders_mgr.getLastOrder();
+				out.write("{"
+						+ "\"result\": true,"
+						+ "\"primaryKey\":" + pk + ""
+						+ "}");
+			} else {
+				out.write("{"
+						+ "\"result\": false"
+						+ "}");
+			}
 		}
+
 	}
 }

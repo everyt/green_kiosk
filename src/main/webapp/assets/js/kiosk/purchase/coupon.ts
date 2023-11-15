@@ -12,11 +12,12 @@ const handleKeypad = (num) => {
     input.value += temp + num;
   }
 };
-const generateCouponHTML = (arr: any[], count: number) => {
+const generateCouponHTML = (arr: any[]) => {
   let couponHTML = '';
 
-  if (!arr.length) {
-    for (let i = 0; i < count; i++) {
+  if (arr.length > 0) {
+    document.getElementById('couponDOM2').style.display = 'inline-block';
+    for (let i = 0; i < arr.length; i++) {
       couponHTML += `<div class='rowbox' style='border: solid #ddd; border-width: 0 0 2px 0; align-self: center; padding: 3px 0;'>`;
       couponHTML += `<span style='width: 120px;'>` + arr[i].name + `</span>`;
       couponHTML += `</div>`;
@@ -33,12 +34,10 @@ const generateCouponHTML = (arr: any[], count: number) => {
 (() => {
   let couponArray = [];
   const couponItem = sessionStorage.getItem('couponArray');
-
   if (couponItem !== null || couponItem !== undefined) {
     couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
   }
-
-  generateCouponHTML(couponArray, couponArray.length);
+  generateCouponHTML(couponArray);
 })();
 
 const handleClickCancle2 = () => {
@@ -66,25 +65,26 @@ const handleCouponForm = async () => {
       couponTextElement.innerHTML = '할인 쿠폰 코드를 입력해 주세요.';
     }, 3000);
   } else {
-    let coupon = {
+    const coupon = {
       'code': couponCode,
     };
-    coupon = await detailedFetch(
+    const coupon2 = await detailedFetch(
       '/green_kiosk/api/kiosk/purchase/coupon',
       'POST',
       encodeURIComponent(JSON.stringify(coupon)),
     );
-    if (coupon.code !== 'x' && coupon.code !== 't') {
+    if (coupon2[0].code !== 'x' && coupon2[0].code !== 't') {
       const couponItem = sessionStorage.getItem('couponArray');
       let couponArray = [];
       if (couponItem !== null || couponItem !== undefined) {
         couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
-        couponArray.push(coupon);
+        couponArray.push(coupon2[0]);
       } else {
-        couponArray = [coupon];
+        couponArray = coupon2;
       }
       sessionStorage.setItem('couponArray', JSON.stringify(couponArray));
-      generateCouponHTML(couponArray, couponArray.length);
+      generateCouponHTML(couponArray);
+      console.log(1);
     } else {
       const couponTextElement = document.getElementById('couponText');
       if (coupon.code === 'x') {

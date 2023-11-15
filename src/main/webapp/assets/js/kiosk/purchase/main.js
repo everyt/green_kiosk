@@ -153,11 +153,6 @@ var drawArrayToHTMLElement = function (element, arr, drawCallback) {
         element.innerHTML = html;
     }
 };
-var deleteBasketItem = function (page, index) {
-    state.foods.splice(index, 1);
-    item.set('basketArray', JSON.stringify(state.foods));
-    generateBasketPageHTML(state.foods, page);
-};
 var generateBasketPageHTML = function (arr, page) {
     if (page === void 0) { page = 0; }
     var html = '';
@@ -167,14 +162,6 @@ var generateBasketPageHTML = function (arr, page) {
         html += "<span style='width: 100px;'>" + (i < arr.length ? arr[i].name : '&nbsp;') + "</span>";
         html += "<span style='width: 40px;'>" + (i < arr.length ? arr[i].amount : '&nbsp;') + "</span>";
         html += "<span style='width: 70px;'>" + (i < arr.length ? inputDigits(arr[i].price) : '&nbsp;') + "</span>";
-        if (i < arr.length) {
-            html +=
-                "<div 'width: 20px;' onClick='deleteBasketItem(" +
-                    page +
-                    ',' +
-                    i +
-                    ")'><div class='rowbox delete-button'><p class='delete-text'>x</p></div></div>";
-        }
         html += "</div>";
     }
     return html;
