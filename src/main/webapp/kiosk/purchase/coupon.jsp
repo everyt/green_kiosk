@@ -53,7 +53,7 @@
 		    </div>
 		    <div class="rowbox">
 		      <div class="numeric-keypad" onClick="handleKeypad(0)">0</div>
-		      <div class="numeric-keypad numeric-clear" onClick="clearInput('#couponCode')">Clear</div>
+		      <div class="numeric-keypad numeric-clear" onClick="clearKeypad()">Clear</div>
 		    </div>
 	    </article>
     </section>
