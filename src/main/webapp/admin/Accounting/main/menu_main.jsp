@@ -143,16 +143,10 @@ function closePopup(popup) {
 	}
 </script>
 <script>
-	function iv02(numb){
+   //---- 재고 수정.
+	function iv02(numb){        
 		document.readFrm.numb.value=numb;
 		document.readFrm.action="iv02.jsp";
-		document.readFrm.target="content";
-		document.readFrm.submit();
-	}
-
-	function iv03(numb){
-		document.readFrm.numb.value=numb;
-		document.readFrm.action="iv03.jsp";
 		document.readFrm.target="content";
 		document.readFrm.submit();
 	}

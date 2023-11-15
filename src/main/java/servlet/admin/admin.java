@@ -15,7 +15,7 @@ import menu.Menu_menu_Bean;
 /**
  * Servlet implementation class admin
  */
-@WebServlet({ "/api/admin", "/api/admin/edit_jaego", "/api/admin/get_menu", "/api/admin/set_amount" })
+@WebServlet({ "/api/admin", "/api/admin/edit_jaego", "/api/admin/get_menu", "/api/admin/set_amount", "/api/admin/view_Bn" })
 public class admin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

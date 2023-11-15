@@ -12,9 +12,26 @@
 	Gson gson = new Gson();
      //전체레코드수
     int listSize = 0;    //현재 읽어온 자료의 수
-	Vector<Orders_Bean> vlist = null;
+    int numPerPage = 10;   //페이지당 레코드 수
+    int pagePerBlock = 15;
+    
+    int totalPage=0;  //전체 페이지 수
+    int totalBlock=0; //전체 블럭수
+    int nowPage=1;    //현재 페이지
+    int nowBlock=1;  //현재 블럭
+    int start = 0;   //orders테이블의 selct시작번호
+    int end = 10;    //시작번호로 부터 가져올 selec의 개수
+ 	Vector<Orders_Bean> vlist = null;
 	int numb = 0;
 	   vlist = menuMgr.getMgrorderList();
+	   
+	   if(request.getParameter("nowPage") !=null) {
+		   nowPage = Integer.parseInt(request.getParameter("nowPage"));
+	   }
+	     start = (nowPage * numPerPage) - numPerPage;
+	     end = numPerPage;
+	nowBlock=(int)Math.ceil((double)nowPage/pagePerBlock);
+	totalBlock =(int)Math.ceil((double)nowPage/pagePerBlock);
 
 %>
 <!DOCTYPE html>
@@ -60,7 +77,7 @@ table {
     <br>
 	<table align="center" width="100%" border="1">
 		<tr>
-			<td>코드 등록 자료수 : <%=vlist.size()%></td>
+			<td>코드 등록 자료수 : <%=vlist.size()-((nowPage-1)*numPerPage)-1%></td>
 		</tr>
 	</table>
 	<table align="center" width="100%" cellpadding="3" border="1">
@@ -86,9 +103,12 @@ table {
 						<td>결제 방식</td>
 						<td>마일리지</td>
 						<td>주문 현황</td>
+						<td>수정</td>
+						<td>삭제</td>
 					</tr>
 					<%
-						  for (int i = 0;i<listSize; i++) {
+						  for (int i = 0; i<numPerPage; i++) {
+							  if (i == listSize) break;
 							  Orders_Bean bean  = vlist.get(i);
 							int order_no = bean.getOrder_no();
 							Timestamp order_time = bean.getOrder_time();
@@ -102,6 +122,7 @@ table {
 							
 							
 					%>
+                    
 					<tr>
 						<td align="center" >
  						   	   <%=order_no%>
@@ -134,6 +155,12 @@ table {
 						<td align="center">
  						   <%=order_is_maked%>
 						</td>
+						<td>
+						<input type="button" value="수정">
+						</td>
+						<td>
+						<input type="button" value="삭제" onclick ="openPopup('')">
+						</td>
 						
 					</tr>
 			<%}//for%>
@@ -142,6 +169,25 @@ table {
 				%> 
 			</td>
 		</tr>
+		<tr>
+		 <td>
+		 <%
+		    int pageStart = (nowBlock -1)*pagePerBlock + 1;//하단 페이지 시작번호
+			int pageEnd = ((pageStart + pagePerBlock)< totalPage)? (pageStart+pagePerBlock): totalPage+1;
+		         if(totalPage !=0) {
+		        	 if(nowBlock > 1) {%>
+		        	 <a href="javascript:block('<%=nowBlock-1%>')">prev...</a><%}%>&nbsp;
+		        	 <%for ( ; pageStart<pageEnd; pageStart++){%>
+		        	 <a href="javascript:pageing('<%=pageStart %>')">
+		        	 <%if(pageStart==nowPage) {%><font color="blue"> <%}%>
+		        	 [<%=pageStart %>]
+		        	 <%if(pageStart==nowPage){%></font> <%}%></a>
+		        	 <%}//for%>&nbsp;
+		        	 <%if (totalBlock > nowBlock) {%>
+		        	 <a href="javascript:block('<%=nowBlock+1%>')">.....next</a>
+		        	      <%}%>&nbsp;
+		        	      <%}%>
+		        	 </td>
 		</table>
 
 </div>
