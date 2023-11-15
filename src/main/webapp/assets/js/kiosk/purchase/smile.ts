@@ -42,16 +42,16 @@ const back = () => {
   location.href = 'main.jsp';
 };
 
-const smileRegex = /^01([1|||6|7|8|9])-\d{3,4}-\d{4}$/;
+const smileRegex = /^01(1|6|7|8|9)-\d{3,4}-\d{4}$/;
 const handleSmileForm = async () => {
   const smileCodeElement = document.querySelector('#smileCode') as HTMLInputElement;
   const smileCode = smileCodeElement.value;
   const smileTypeElement = document.querySelector('#smileType') as HTMLInputElement;
   const smileType = smileTypeElement.value;
-  if (!smileRegex.test(smileCode)) {
+  if (!smileRegex.test(smileCode) && smileType === 'phoneNumber') {
     const smileTextElement = document.getElementById('smileText');
     smileTextElement.innerHTML = '<span style="color: red;">올바르지 않은 ';
-    smileTextElement.innerHTML += smileType === 'cardNumber' ? '카드' : '휴대폰';
+    smileTextElement.innerHTML += '휴대폰';
     smileTextElement.innerHTML += ' 번호입니다.</span>';
     setTimeout(() => {
       smileTextElement.innerHTML = '&nbsp;';

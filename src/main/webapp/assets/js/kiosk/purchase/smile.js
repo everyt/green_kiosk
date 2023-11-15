@@ -77,7 +77,7 @@ var back = function () {
     }
     location.href = 'main.jsp';
 };
-var smileRegex = /^01([1|||6|7|8|9])-\d{3,4}-\d{4}$/;
+var smileRegex = /^01(1|6|7|8|9)-\d{3,4}-\d{4}$/;
 var handleSmileForm = function () { return __awaiter(_this, void 0, void 0, function () {
     var smileCodeElement, smileCode, smileTypeElement, smileType, smileTextElement_1, smile, smileTextElement_2;
     return __generator(this, function (_a) {
@@ -87,10 +87,10 @@ var handleSmileForm = function () { return __awaiter(_this, void 0, void 0, func
                 smileCode = smileCodeElement.value;
                 smileTypeElement = document.querySelector('#smileType');
                 smileType = smileTypeElement.value;
-                if (!!smileRegex.test(smileCode)) return [3 /*break*/, 1];
+                if (!(!smileRegex.test(smileCode) && smileType === 'phoneNumber')) return [3 /*break*/, 1];
                 smileTextElement_1 = document.getElementById('smileText');
                 smileTextElement_1.innerHTML = '<span style="color: red;">올바르지 않은 ';
-                smileTextElement_1.innerHTML += smileType === 'cardNumber' ? '카드' : '휴대폰';
+                smileTextElement_1.innerHTML += '휴대폰';
                 smileTextElement_1.innerHTML += ' 번호입니다.</span>';
                 setTimeout(function () {
                     smileTextElement_1.innerHTML = '&nbsp;';

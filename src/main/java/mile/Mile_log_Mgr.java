@@ -57,7 +57,7 @@ public class Mile_log_Mgr {
 				Mile_log_Bean bean = new Mile_log_Bean();
 	            bean.setMile_no(this.rs.getInt("mile_no"));
 	            bean.set_timestamp(this.rs.getTimestamp("mile_timestamp"));
-	            bean.setMile_uid(this.rs.getString("mile_uid"));
+	            bean.setMem_uid(this.rs.getString("mem_uid"));
 	            bean.setMile_type(this.rs.getString("mile_type"));
 	            bean.setMile_reason(this.rs.getString("mile_reason"));
 	            bean.setMile_deff(this.rs.getInt("mile_deff"));
@@ -75,14 +75,14 @@ public class Mile_log_Mgr {
 	public Vector<Mile_log_Bean> getMileLogsByUid(String uid) {
 		Vector<Mile_log_Bean> vector = new Vector<Mile_log_Bean>();
 		try {
-			this.Initializer("SELECT * FROM mile_log  WHERE `mile_uid` = ?");
+			this.Initializer("SELECT * FROM mile_log  WHERE `mem_uid` = ?");
 			this.pst.setString(1, uid);
 			this.rs = this.pst.executeQuery();
 			while (this.rs.next()) {
 				Mile_log_Bean bean = new Mile_log_Bean();
 	            bean.setMile_no(this.rs.getInt("mile_no"));
 	            bean.set_timestamp(this.rs.getTimestamp("mile_timestamp"));
-	            bean.setMile_uid(this.rs.getString("mile_uid"));
+	            bean.setMem_uid(this.rs.getString("mem_uid"));
 	            bean.setMile_type(this.rs.getString("mile_type"));
 	            bean.setMile_reason(this.rs.getString("mile_reason"));
 	            bean.setMile_deff(this.rs.getInt("mile_deff"));
@@ -107,7 +107,7 @@ public class Mile_log_Mgr {
 				Mile_log_Bean bean = new Mile_log_Bean();
 	            bean.setMile_no(this.rs.getInt("mile_no"));
 	            bean.set_timestamp(this.rs.getTimestamp("mile_timestamp"));
-	            bean.setMile_uid(this.rs.getString("mile_uid"));
+	            bean.setMem_uid(this.rs.getString("mem_uid"));
 	            bean.setMile_type(this.rs.getString("mile_type"));
 	            bean.setMile_reason(this.rs.getString("mile_reason"));
 	            bean.setMile_deff(this.rs.getInt("mile_deff"));
@@ -125,8 +125,8 @@ public class Mile_log_Mgr {
 	public boolean addMileLog(Mile_log_Bean bean) {
 		boolean flag = false;
 		try {
-			this.Initializer("INSERT INTO `mile_log` (`mile_uid`, `mile_type`, `mile_reason`, `mile_deff`, `mile_order_no`, `mile_timestamp`) VALUES (?, ?, ?, ?, ?, ?)");
-			this.pst.setString(1, bean.getMile_uid());
+			this.Initializer("INSERT INTO `mile_log` (`mem_uid`, `mile_type`, `mile_reason`, `mile_deff`, `mile_order_no`, `mile_timestamp`) VALUES (?, ?, ?, ?, ?, ?)");
+			this.pst.setString(1, bean.getMem_uid());
 			this.pst.setString(2, bean.getMile_type());
 			this.pst.setString(3, bean.getMile_reason());
 			this.pst.setInt(4, bean.getMile_deff());
@@ -146,9 +146,9 @@ public class Mile_log_Mgr {
 	public boolean updateMileLog(Mile_log_Bean bean) {
 		boolean flag = false;
 		try {
-			this.Initializer("UPDATE `mile_log` SET `mile_uid` = ?, `mile_type` = ?, `mile_reason` = ?, `mile_deff` = ?, `mile_order_no` = ?, `mile_timestamp` = ? WHERE `mile_no` = ?");
+			this.Initializer("UPDATE `mile_log` SET `mem_uid` = ?, `mile_type` = ?, `mile_reason` = ?, `mile_deff` = ?, `mile_order_no` = ?, `mile_timestamp` = ? WHERE `mile_no` = ?");
 			
-			this.pst.setString(1, bean.getMile_uid());
+			this.pst.setString(1, bean.getMem_uid());
 			this.pst.setString(2, bean.getMile_type());
 			this.pst.setString(3, bean.getMile_reason());
 			this.pst.setInt(4, bean.getMile_deff());
