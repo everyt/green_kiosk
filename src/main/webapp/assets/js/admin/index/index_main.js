@@ -11,75 +11,61 @@ function updateMenu(menuType) {
         	type : menuType
         },
         contentType: "application/json; charset=UTF-8", 
-        success: function (response) {
-            if (response && response.length > 0) {
-                // 받아온 채팅 목록을 활용하여 필요한 작업 수행
-                console.log(response);
-                
-                // 예시: 받아온 목록을 HTML로 만들어 어딘가에 추가
-                var foodCount  = {};
-                var chatListHtml = '';
-                for (var i = 0; i < response.length; i++) {
-                    // 각각의 값을 변수로 가져오기
-                    var order_no = response[i].order_no;
-                    var order_time = response[i].order_time;
-                    var order_foods = response[i].order_foods;
-                    for(var j = 0; j < order_foods.length; j++)
-                    {
-						var foodItem = order_foods[j];
-						var foodName = foodItem.name;
-						var foodPrice = foodItem.price;
-						var foodAmount = parseInt(foodItem.amount);
-						var foodDiscount = foodItem.discount;
-						if (foodCount[foodName]) {
-							foodCount[foodName] += foodAmount;
-						} else {
-							foodCount[foodName] = foodAmount;
-						}
-					}
-                    var order_price = response[i].order_price;
-                    var order_discount = response[i].order_discount;
-                    var order_coupon = response[i].order_coupon;
-                    var order_type = response[i].order_type;
-                    var order_use_mile = response[i].order_use_mile;
-                    var order_use_mile_amount = response[i].order_use_mile_amount;
-                    var order_add_mile = response[i].order_add_mile;
-                    var order_add_mile_amount = response[i].order_add_mile_amount;
-                    var order_is_maked = response[i].order_is_maked;
-                    var order_who = response[i].order_who;	
-                    var order_is_togo = response[i].order_is_togo;
-                 }
-	for (var foodName in foodCount) {
-		if (foodCount.hasOwnProperty(foodName)) {
-			var htmlTemplate =
-			 '<div class="col-xl-3 col-md-6 mb-4">' +
-			    '<div class="card border-left-warning shadow h-100 py-2">' +
-			        '<div class="card-body">' +
-			            '<div class="row no-gutters align-items-center">' +
-			                '<div class="col mr-2">' +
-			                    '<div class="text-xs font-weight-bold text-warning text-uppercase mb-1">' +
-			                        +foodName+'</div>' +
-			                    '<div class="h5 mb-0 font-weight-bold text-gray-800">'+ foodCount[foodName] + ': ' + foodPrice + '</div>' +
-			                '</div>' +
-			                '<div class="col-auto">' +
-			                    '<i class="fas fa-comments fa-2x text-gray-300"></i>' +
-			                '</div>' +
-			            '</div>' +
-			        '</div>' +
-			    '</div>' +
-			'</div>';
+success: function (response) {
+    if (response && response.length > 0) {
+        var foodCount = {};
+        var priceSum = 0;
+        var chatListHtml = '';
 
-                    // HTML에 추가
-                    chatListHtml += htmlTemplate;                    
-                   }
+        for (var i = 0; i < response.length; i++) {
+            var order_foods = response[i].order_foods;
+            
+            for (var j = 0; j < order_foods.length; j++) {
+                var foodItem = order_foods[j];
+
+                if (foodItem) {
+                    var foodName = foodItem.name;
+                    var foodAmount = parseInt(foodItem.amount);
+
+                    if (foodCount[foodName]) {
+                        foodCount[foodName] += foodAmount;
+                    } else {
+                        foodCount[foodName] = foodAmount;
+                    }
                 }
-                // Update the content of the main element
-                $('.getMenuList').html(chatListHtml);
-         
-            } else {
-/*                alert("Failed to fetch chat list.");
-*/            }
-        },
+            }
+
+            var order_price = response[i].order_price;
+            priceSum += order_price;
+        }
+
+        var htmlTemplate =
+            '<div class="col-xl-3 col-md-6 mb-4">' +
+            '<div class="card border-left-warning shadow h-100 py-2">' +
+            '<div class="card-body">' +
+            '<div class="row no-gutters align-items-center">' +
+            '<div class="col mr-2">' +
+            '<div class="text-xs font-weight-bold text-warning text-uppercase mb-1">' +
+            priceSum.toFixed(2) + '</div>' +
+            '<div class="h5 mb-0 font-weight-bold text-gray-800"></div>' +
+            '</div>' +
+            '<div class="col-auto">' +
+            '<i class="fas fa-comments fa-2x text-gray-300"></i>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+
+        chatListHtml += htmlTemplate;
+
+        $('.getMenuList').html(chatListHtml);
+
+    } else {
+        console.error("No data received or data is empty.");
+    }
+},
+
         error: function (xhr, status, error) {
             console.error("Ajax request failed:", status, error);
         }
