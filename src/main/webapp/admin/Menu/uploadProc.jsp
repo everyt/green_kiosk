@@ -125,7 +125,7 @@
 					menuBean.setMenu_price(menu_price);
 					menuBean.setMenu_content(menu_content); 
 					menuBean.setMenu_isUse(menu_isUse);
-					menuBean.setMenu_couponable(menu_couponable);
+					menuBean.setMenu_couponable(menu_couponable); 
 					menuBean.setMenu_component("0");
 					menuBean.setMenu_sell_amount(0);
 					menuBean.setMenu_recommend(0);

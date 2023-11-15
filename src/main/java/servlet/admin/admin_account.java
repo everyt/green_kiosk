@@ -15,9 +15,11 @@ import com.google.gson.Gson;
 import menu.Manager_Menu;
 import menu.Menu_component_Bean;
 import menu.Menu_menu_Bean;
+import orders.Orders_Bean;
+import orders.Orders_Mgr;
 
 
-@WebServlet({"/admin/account/getMenuData"})
+@WebServlet({"/admin/Accounting/sales/admin/getAccountData"})
 public class admin_account extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -29,27 +31,21 @@ public class admin_account extends HttpServlet {
     	
     	String endPoint = request.getServletPath();
     	
-    	if("/admin/Event/getMenuData".equals(endPoint))
-    	{
+
     		String type = (String)request.getParameter("type");
  
-            Vector<Menu_menu_Bean> menu_list = null;
-            Vector <Menu_component_Bean> component_list = null;
+            Vector<Orders_Bean> orders_list = null;
             if (type == null) {
-            	type = "onSale";
+            	type = "all";
             }
-            if(type.equals("onSale")) {
-    		 menu_list = new Manager_Menu().getMenuList(5);
-    		} else if (type.equals("component")) {
-    		 component_list = new Manager_Menu().getComponentList(0);  
-    		}
+            type = "all";
+            Orders_Mgr orderMgr = new Orders_Mgr();
+    		 orders_list = orderMgr.getAllOrders();
+    		 
     		String json = null;
-    		if (!type.equals("component")) {
-    		 json = new Gson().toJson(menu_list);
-    		} else {
-    		 json = new Gson().toJson(component_list);
-    		}
+    		 json = new Gson().toJson(orders_list);
+  
     		response.getWriter().write(json);
-    	} 
+    	
 	}
 }

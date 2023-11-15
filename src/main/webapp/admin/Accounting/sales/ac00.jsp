@@ -8,6 +8,7 @@
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="com.google.gson.reflect.TypeToken" %>
 <jsp:useBean id="menuMgr" class="menu.Manager_Menu"/>
+
 <%
 	Gson gson = new Gson();
      //전체레코드수
@@ -38,7 +39,7 @@
 <html>
 <head>
 	<title>코드관리</title>
-
+<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/account/account.js"></script>
 <link rel="stylesheet" href="/post_inc/datatables/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"></script>
@@ -46,8 +47,8 @@
 
 <style>
 table {
-  width: 500px;
   border-collapse: collapse;
+  width:90%;
 }
  
 .text-over-cut {
@@ -75,14 +76,6 @@ table {
     <br/>
 		<h2>매장 관리 페이지</h2>
     <br>
-	<table align="center" width="100%" border="1">
-		<tr>
-			<td>코드 등록 자료수 : <%=vlist.size()-((nowPage-1)*numPerPage)-1%></td>
-		</tr>
-	</table>
-	<table align="center" width="100%" cellpadding="3" border="1">
-		<tr>
-			<td align="center" colspan="3">
 			 <%     
 			          
 			           listSize = vlist.size();
@@ -93,6 +86,12 @@ table {
                	 %>
 		
 				  <table width="100%" cellpadding="2" cellspacing="0" border="1">
+				  <thead>
+				  <tr>
+			<th colspan="11">코드 등록 자료수 : <%=vlist.size()-((nowPage-1)*numPerPage)-1%></th>
+		</tr>
+				  </thead>
+				  <tbody class="getMenuList" id="getMenuList">
 					<tr align="center" bgcolor="#D0D0D0" height="120%">
 						<td>번호</td>
 						<td>판매 일시</td>
@@ -106,65 +105,9 @@ table {
 						<td>수정</td>
 						<td>삭제</td>
 					</tr>
-					<%
-						  for (int i = 0; i<numPerPage; i++) {
-							  if (i == listSize) break;
-							  Orders_Bean bean  = vlist.get(i);
-							int order_no = bean.getOrder_no();
-							Timestamp order_time = bean.getOrder_time();
-							List<Map<String, Object>> order_foods = gson.fromJson(bean.getOrder_foods(), new TypeToken<List<Map<String, Object>>>(){}.getType());
-							int order_price = bean.getOrder_price();
-							int order_discount = bean.getOrder_discount();
-							String order_coupon = bean.getOrder_coupon();
-							String order_type = bean.getOrder_type();
-							Boolean order_add_mile = bean.isOrder_add_mile();
-							Boolean order_is_maked = bean.isOrder_is_maked();
-							
-							
-					%>
-                    
-					<tr>
-						<td align="center" >
- 						   	   <%=order_no%>
-						</td>
-						<td align="center">
- 						   <%=order_time%>
-						</td>
-						<td align="center">
-						<div class="text-over-cut">
- 						   <%=order_foods%>
- 						    </div>
-						</td>
-						<td align="center">
- 						   <%=order_price%>
-						</td>
-						<td align="center">
- 						   <%=order_discount%>
-						</td>
-						<td align="center">
-						<div class="text-over-cut">
- 						   <%=order_coupon%>
- 						    </div>
-						</td>
-						<td align="center">
- 						   <%=order_type%>
-						</td>
-						<td align="center">
- 						   <%=order_add_mile%>
-						</td>
-						<td align="center">
- 						   <%=order_is_maked%>
-						</td>
-						<td>
-						<input type="button" value="수정">
-						</td>
-						<td>
-						<input type="button" value="삭제" onclick ="openPopup('')">
-						</td>
-						
-					</tr>
-			<%}//for%>
-				</table> <%
+				</tbody>
+
+				<%
 				}//if
 				%> 
 			</td>
@@ -191,5 +134,12 @@ table {
 		</table>
 
 </div>
+
+<script>
+	function deleteOrder(order_no)
+	{
+		location.href = "ac00Delete.jsp?order_no=" + order_no; 
+	}
+</script>
 </body>
 </html>

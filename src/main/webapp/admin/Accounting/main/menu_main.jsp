@@ -10,7 +10,7 @@
         <h1 class="fw-light">매장 관리 페이지</h1>
         <p class="lead text-body-secondary"></p>
         <p>
-          <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('sales/ac00.jsp')">거래 내역 페이지</a>
+          <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('sales/ac00.jsp');updateMenu('all')">거래 내역 페이지</a>
           <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('inventory/iv00.jsp')">재고 관리 페이지</a>
           <!-- <a href="#" class="btn btn-secondary my-2"></a> -->
         </p>
@@ -99,6 +99,10 @@
 		return df.format(number);
 	}
 %>
+window.addEventListener('DOMContentLoaded', function() {
+sleep(1)
+    updateMenu("all");
+});
 <script>
 function loadContent(url) {
   var xhr = new XMLHttpRequest();
@@ -151,6 +155,88 @@ function closePopup(popup) {
 		document.readFrm.submit();
 	}
 	
+	function updateMenu(menuType) {
+		console.log('Received menuType:', menuType);
+	    $.ajax({
+	        type: "POST",
+			url: "./sales/admin/getAccountData?type=all",
+	        dataType: "json",
+	        data: {
+	        	type : menuType
+	        },
+	        contentType: "application/json; charset=UTF-8", 
+	        success: function (response) {
+	            if (response && response.length > 0) {
+	                // 받아온 채팅 목록을 활용하여 필요한 작업 수행
+	                console.log(response);
+	                
+	                // 예시: 받아온 목록을 HTML로 만들어 어딘가에 추가
+	                var chatListHtml = '';
+	                for (var i = 0; i < response.length; i++) {
+	                    // 각각의 값을 변수로 가져오기
+	                    var order_no = response[i].order_no;
+	                    var order_time = response[i].order_time;
+	                    var order_foods = response[i].order_foods;
+			            var order_price = response[i].order_price;
+			            var order_discount = response[i].order_discount;
+			            var order_coupon = response[i].order_coupon;
+			            var order_type = response[i].order_type;
+			            var order_use_mile = response[i].order_use_mile;
+			            var order_use_mile_amount = response[i].order_use_mile_amount;
+			            var order_add_mile = response[i].order_add_mile;
+			            var order_add_mile_amount = response[i].order_add_mile_amount;
+			            var order_is_maked = response[i].order_is_maked;
+			            var order_who = response[i].order_who;
+			            var order_is_togo = response[i].order_is_togo;
+
+
+				var htmlTemplate =
+									
+								    '<tr>' +
+								        '<td align="center">' + order_no + '</td>' +
+								        '<td align="center">' + order_time + '</td>' +
+								        '<td align="center">' +
+								            '<div class="text-over-cut">' + order_foods + '</div>' +
+								        '</td>' +
+								        '<td align="center">' + order_price + '</td>' +
+								        '<td align="center">' + order_discount + '</td>' +
+								        '<td align="center">' +
+								            '<div class="text-over-cut">' + order_coupon + '</div>' +
+								        '</td>' +
+								        '<td align="center">' + order_type + '</td>' +
+								        '<td align="center">' + order_add_mile + '</td>' +
+								        '<td align="center">' + order_is_maked + '</td>' +
+								        '<td>' +
+								            '<input type="button" value="수정">' +
+								        '</td>' +
+								        '<td>' +
+								            '<input type="button" value="삭제" onclick="deleteOrder(\'' + order_no + '\')">' +
+								        '</td>' +
+								    '</tr>';
+
+	                    // HTML에 추가
+	                    chatListHtml += htmlTemplate;                    
+	                   }
+	                
+	                // Update the content of the main element
+	                //$('.getMenuList').html(chatListHtml);
+	                document.querySelector(".getMenuList").insertAdjacentHTML("beforeend", chatListHtml)
+	                
+	            } else {
+	/*                alert("Failed to fetch chat list.");
+	*/            }
+	        },
+	        error: function (xhr, status, error) {
+	            console.error("Ajax request failed:", status, error);
+	        }
+	    });
+	}
+
+	function deleteOrder(order_no)
+	{
+		location.href = "./sales/ac00Delete.jsp?order_no=" + order_no; 
+	}
+   
 	function sleep(sec) {
 		  return new Promise(resolve => setTimeout(resolve, sec * 1000));
 	}

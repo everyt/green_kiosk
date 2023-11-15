@@ -1,11 +1,10 @@
 var menuType = "all";
 
 function updateMenu(menuType) {
-	document.cookie = "menuType=" + menuType;
 	console.log('Received menuType:', menuType);
     $.ajax({
         type: "POST",
-        url: "./account/getMenuData?type="+menuType,
+		url: "./admin/getAccountData?type="+"all",
         dataType: "json",
         data: {
         	type : menuType
@@ -17,41 +16,47 @@ function updateMenu(menuType) {
                 console.log(response);
                 
                 // 예시: 받아온 목록을 HTML로 만들어 어딘가에 추가
-                if (menuType != "component"){
                 var chatListHtml = '';
                 for (var i = 0; i < response.length; i++) {
                     // 각각의 값을 변수로 가져오기
-                    var menu_no = response[i].menu_no;
-                    var menu_imgPath = response[i].menu_imgPath;
-                    var menu_name = response[i].menu_name;
-                    var menu_gubn = response[i].menu_gubn;
-                    var menu_price = response[i].menu_price;
-                    var menu_content = response[i].menu_content;
-                    var menu_isUse = response[i].menu_isUse;
-                    var menu_isSale = response[i].menu_isSale;
+                    var order_no = response[i].order_no;
+                    var order_time = response[i].order_time;
+                    var order_foods = response[i].order_foods;
+		            var order_price = response[i].order_price;
+		            var order_discount = response[i].order_discount;
+		            var order_coupon = response[i].order_coupon;
+		            var order_type = response[i].order_type;
+		            var order_use_mile = response[i].order_use_mile;
+		            var order_use_mile_amount = response[i].order_use_mile_amount;
+		            var order_add_mile = response[i].order_add_mile;
+		            var order_add_mile_amount = response[i].order_add_mile_amount;
+		            var order_is_maked = response[i].order_is_maked;
+		            var order_who = response[i].order_who;
+		            var order_is_togo = response[i].order_is_togo;
 
-					const pathname = "/" + window.location.pathname.split("/")[1] + "/";
-					const origin = window.location.origin;
-					const contextPath = origin + pathname;
-						console.log('Received menu_imgPath:', menu_imgPath);
 
 			var htmlTemplate =
-				'<div class="col">' +
-			    '<div class="card shadow-sm">' +
-			    '<img id="menu_imgPath" src="' + menu_imgPath + '" class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">' +
-			    '<title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span class="menu_name" id="menu_name">' + menu_name + '</span></text></image>' +
-			    '<div class="card-body">' +
-			    '<p class="card-text" align="center" id="menu_content">' + menu_content + '</p>' +
-			    '<div class="d-flex justify-content-between align-items-center">' +
-			    '<div class="btn-group">' +
-			    '<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + contextPath +'admin/Menu/View.jsp?menu_no=' + menu_no + '\')">상세보기</a>' +
-			    '<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + contextPath + 'admin/Menu/Edit.jsp?menu_no=' + menu_no + '\')">수정하기</a>' +
-			    '</div>' +
-			    '<small class="text-body-secondary">' + formatNumber(menu_price) + '원</small>' +
-			    '</div>' +
-			    '</div>' +
-			    '</div>' +
-			    '</div>';
+							    '<tr>' +
+							        '<td align="center">' + order_no + '</td>' +
+							        '<td align="center">' + order_time + '</td>' +
+							        '<td align="center">' +
+							            '<div class="text-over-cut">' + order_foods + '</div>' +
+							        '</td>' +
+							        '<td align="center">' + order_price + '</td>' +
+							        '<td align="center">' + order_discount + '</td>' +
+							        '<td align="center">' +
+							            '<div class="text-over-cut">' + order_coupon + '</div>' +
+							        '</td>' +
+							        '<td align="center">' + order_type + '</td>' +
+							        '<td align="center">' + order_add_mile + '</td>' +
+							        '<td align="center">' + order_is_maked + '</td>' +
+							        '<td>' +
+							            '<input type="button" value="수정">' +
+							        '</td>' +
+							        '<td>' +
+							            '<input type="button" value="삭제" onclick="deleteOrder(\'' + order_no + '\')">' +
+							        '</td>' +
+							    '</tr>';
 
                     // HTML에 추가
                     chatListHtml += htmlTemplate;                    
@@ -59,45 +64,7 @@ function updateMenu(menuType) {
                 
                 // Update the content of the main element
                 $('.getMenuList').html(chatListHtml);
-                } else {
-				var chatListHtml = '';
-                for (var i = 0; i < response.length; i++) {
-                    // 각각의 값을 변수로 가져오기
-                    var component_no = response[i].component_no;
-                    var component_imgPath = response[i].component_imgPath;
-                    var component_name = response[i].component_name;
-                    var component_price = response[i].component_price;
-                    var component_amount = response[i].component_amount;              
-
-					const pathname = "/" + window.location.pathname.split("/")[1] + "/";
-					const origin = window.location.origin;
-					const contextPath = origin + pathname;
-					
-			var htmlTemplate =
-				'<div class="col">' +
-			    '<div class="card shadow-sm">' +
-			    '<img id="menu_imgPath" src="' + component_imgPath + '" class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">' +
-			    '<title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"><span class="menu_name" id="menu_name">' + component_name + '</span></text></image>' +
-			    '<div class="card-body">' +
-			    '<p class="card-text" align="center" id="menu_content">' + '현재 수량 : ' + component_amount + '</p>' +
-			    '<div class="d-flex justify-content-between align-items-center">' +
-			    '<div class="btn-group">' +
-			   	'<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + contextPath +'admin/Menu/componentView.jsp?component_no=' + component_no + '\')">상세보기</a>' +
-			    '<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + contextPath + 'admin/Menu/componentEdit.jsp?component_no=' + component_no + '\')">수정하기</a>' +
-			    '</div>' +
-			    '<small class="text-body-secondary">' + formatNumber(component_price) + '원</small>' +
-			    '</div>' +
-			    '</div>' +
-			    '</div>' +
-			    '</div>';
-
-                    // HTML에 추가
-                    chatListHtml += htmlTemplate;                    
-                   }
                 
-                // Update the content of the main element
-                $('.getMenuList').html(chatListHtml);					
-				}
             } else {
 /*                alert("Failed to fetch chat list.");
 */            }
