@@ -33,7 +33,8 @@ function updateMenu(menuType) {
 					const pathname = "/" + window.location.pathname.split("/")[1] + "/";
 					const origin = window.location.origin;
 					const contextPath = origin + pathname;
-					
+						console.log('Received menu_imgPath:', menu_imgPath);
+
 			var htmlTemplate =
 				'<div class="col">' +
 			    '<div class="card shadow-sm">' +

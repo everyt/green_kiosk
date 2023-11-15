@@ -47,10 +47,11 @@ var handleKeypad = function (num) {
         input.value += temp + num;
     }
 };
-var generateCouponHTML = function (arr, count) {
+var generateCouponHTML = function (arr) {
     var couponHTML = '';
-    if (!arr.length) {
-        for (var i = 0; i < count; i++) {
+    if (arr.length > 0) {
+        document.getElementById('couponDOM2').style.display = 'inline-block';
+        for (var i = 0; i < arr.length; i++) {
             couponHTML += "<div class='rowbox' style='border: solid #ddd; border-width: 0 0 2px 0; align-self: center; padding: 3px 0;'>";
             couponHTML += "<span style='width: 120px;'>" + arr[i].name + "</span>";
             couponHTML += "</div>";
@@ -68,7 +69,7 @@ var generateCouponHTML = function (arr, count) {
     if (couponItem !== null || couponItem !== undefined) {
         couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
     }
-    generateCouponHTML(couponArray, couponArray.length);
+    generateCouponHTML(couponArray);
 })();
 var handleClickCancle2 = function () {
     var couponItem = sessionStorage.getItem('couponArray');
@@ -82,7 +83,7 @@ var clearKeypad = function () {
     input.value = '';
 };
 var handleCouponForm = function () { return __awaiter(_this, void 0, void 0, function () {
-    var couponCodeElement, couponCode, couponTextElement_1, coupon, couponItem, couponArray, couponTextElement_2;
+    var couponCodeElement, couponCode, couponTextElement_1, coupon, coupon2, couponItem, couponArray, couponTextElement_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -101,19 +102,20 @@ var handleCouponForm = function () { return __awaiter(_this, void 0, void 0, fun
                 };
                 return [4 /*yield*/, detailedFetch('/green_kiosk/api/kiosk/purchase/coupon', 'POST', encodeURIComponent(JSON.stringify(coupon)))];
             case 2:
-                coupon = _a.sent();
-                if (coupon.code !== 'x' && coupon.code !== 't') {
+                coupon2 = _a.sent();
+                if (coupon2[0].code !== 'x' && coupon2[0].code !== 't') {
                     couponItem = sessionStorage.getItem('couponArray');
                     couponArray = [];
                     if (couponItem !== null || couponItem !== undefined) {
                         couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
-                        couponArray.push(coupon);
+                        couponArray.push(coupon2[0]);
                     }
                     else {
-                        couponArray = [coupon];
+                        couponArray = coupon2;
                     }
                     sessionStorage.setItem('couponArray', JSON.stringify(couponArray));
-                    generateCouponHTML(couponArray, couponArray.length);
+                    generateCouponHTML(couponArray);
+                    console.log(1);
                 }
                 else {
                     couponTextElement_2 = document.getElementById('couponText');

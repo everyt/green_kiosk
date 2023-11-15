@@ -32,7 +32,7 @@
       <div class="col-md-8 col-lg-6 col-xl-4">
         <div class="card text-black">
           <i class="fab fa-apple fa-lg pt-3 pb-1 px-3"></i>
-          <img src="/downloadfile2/<%=menu_imgPath%>"
+          <img src="<%=menu_imgPath%>"
             class="card-img-top" alt="상품사진" />
           <div class="card-body">
             <div class="text-center">

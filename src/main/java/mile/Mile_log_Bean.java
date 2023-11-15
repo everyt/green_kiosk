@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class Mile_log_Bean {
 
 	private int mile_no; 			// 변동기록번호
-	private String mile_uid; 		// 변동이 생긴 유저의 고유번호
+	private String mem_uid; 		// 변동이 생긴 유저의 고유번호
 	private String mile_type; 		// 종류
 	private String mile_reason; 	// 변동이 생긴 이유
 	private int mile_deff; 		// 마일리지 변동 양
@@ -21,12 +21,12 @@ public class Mile_log_Bean {
 		this.mile_no = mile_no;
 	}
 
-	public String getMile_uid() {
-		return mile_uid;
+	public String getMem_uid() {
+		return mem_uid;
 	}
 
-	public void setMile_uid(String mile_uid) {
-		this.mile_uid = mile_uid;
+	public void setMem_uid(String mem_uid) {
+		this.mem_uid = mem_uid;
 	}
 
 	public String getMile_type() {

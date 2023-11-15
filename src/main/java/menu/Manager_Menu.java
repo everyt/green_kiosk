@@ -139,7 +139,7 @@ public class Manager_Menu {
 		try {
 			con = pool.getConnection();
 			sql = "INSERT INTO menu(menu_name, menu_gubn, menu_isSale, menu_imgPath, menu_component,"
-					+ "menu_price, menu_sell_amount, menu_recommend, menu_isUse, menu_content) VALUES (?,?,?,?,?,?,?,?,?,?)";
+					+ "menu_price, menu_sell_amount, menu_recommend, menu_isUse, menu_content, menu_couponable) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, bean.getMenu_name());
 			pstmt.setString(2, bean.getMenu_gubn());
@@ -151,6 +151,7 @@ public class Manager_Menu {
 			pstmt.setInt(8, bean.getMenu_recommend());
 			pstmt.setInt(9, bean.getMenu_isUse());
 			pstmt.setString(10, bean.getMenu_content());
+			pstmt.setInt(11, bean.getMenu_couponable());
 			if (pstmt.executeUpdate() == 1)
 				flag = true;
 		} catch (Exception e) {
@@ -171,7 +172,7 @@ public class Manager_Menu {
 			con = pool.getConnection();
 			sql = "UPDATE menu SET menu_name=?, menu_gubn=?, menu_isSale=?, menu_component=?,"
 					+ "menu_price=?, menu_sell_amount=?, menu_recommend=?, menu_isUse = ?, menu_content=?, "
-					+ "menu_imgPath=? WHERE menu_no = ?";
+					+ "menu_imgPath=?, menu_couponable = ?  WHERE menu_no = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, bean.getMenu_name());
 			pstmt.setString(2, bean.getMenu_gubn());
@@ -183,7 +184,8 @@ public class Manager_Menu {
 			pstmt.setInt(8, bean.getMenu_isUse());
 			pstmt.setString(9, bean.getMenu_content());
 			pstmt.setString(10, bean.getMenu_imgPath());
-			pstmt.setInt(11, bean.getMenu_no());
+			pstmt.setInt(11, bean.getMenu_couponable());
+			pstmt.setInt(12, bean.getMenu_no());
 			int count = pstmt.executeUpdate();
 			if (count > 0)
 				flag = true;
@@ -1065,10 +1067,9 @@ public class Manager_Menu {
 
 	public void downLoad(HttpServletRequest req, HttpServletResponse res,
 			JspWriter out, PageContext pageContext) {
-		String SAVEFOLDER = "/downloadfile2";
 		try {
 			String filename = req.getParameter("menu_filePath");
-			File file = new File(UtilMgr.con(SAVEFOLDER + File.separator + filename));
+			File file = new File(UtilMgr.con(filename));
 			byte b[] = new byte[(int) file.length()];
 			res.setHeader("Accept-Ranges", "bytes");
 			String strClient = req.getHeader("User-Agent");

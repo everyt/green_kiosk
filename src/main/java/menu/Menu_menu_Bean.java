@@ -13,19 +13,9 @@ public class Menu_menu_Bean {
 	private int menu_recommend;    //추천 메뉴 분류
 	private String menu_content;
 	private  int menu_isUse;           
+	private int menu_couponable; //메뉴 쿠폰 사용 여부 
 	
-	public String getMenu_content() {
-		return menu_content;
-	}
-	public void setMenu_content(String menu_content) {
-		this.menu_content = menu_content;
-	}
-	public int getMenu_isUse() {
-		return menu_isUse;
-	}
-	public void setMenu_isUse(int menu_isUse) {
-		this.menu_isUse = menu_isUse;
-	}
+	
 	public int getMenu_no() {
 		return menu_no;
 	}
@@ -80,5 +70,25 @@ public class Menu_menu_Bean {
 	public void setMenu_recommend(int menu_recommend) {
 		this.menu_recommend = menu_recommend;
 	}
+	public String getMenu_content() {
+		return menu_content;
+	}
+	public void setMenu_content(String menu_content) {
+		this.menu_content = menu_content;
+	}
+	public int getMenu_isUse() {
+		return menu_isUse;
+	}
+	public void setMenu_isUse(int menu_isUse) {
+		this.menu_isUse = menu_isUse;
+	}
+	public int getMenu_couponable() {
+		return menu_couponable;
+	}
+	public void setMenu_couponable(int menu_couponable) {
+		this.menu_couponable = menu_couponable;
+	}
+	
+	
 	
 }

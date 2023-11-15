@@ -60,8 +60,35 @@ public class Event_Mgr {
 	            bean.setEvent_name(this.rs.getString("event_name"));
 	            bean.setEvent_desc(this.rs.getString("event_desc"));
 	            bean.setEvent_image(this.rs.getString("event_image"));
-	            bean.setEvent_isAcitve(this.rs.getBoolean("event_isByDate"));
-	            bean.setEvent_isAcitve(this.rs.getBoolean("event_isAcitve"));
+	            bean.setEvent_isByDate(this.rs.getBoolean("event_isByDate"));
+	            bean.setEvent_isActive(this.rs.getBoolean("event_isActive"));
+	            bean.setEvent_issueDate(this.rs.getTimestamp("event_issueDate"));
+	            bean.setEvent_expireDate(this.rs.getTimestamp("event_expireDate"));
+	            bean.setEvent_limitTime1(this.rs.getTimestamp("event_limitTime1"));
+	            bean.setEvent_limitTime2(this.rs.getTimestamp("event_limitTime2"));
+	            vector.add(bean);
+	        }
+        } catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+		return vector;
+	}
+	
+	public Vector<Event_Bean> readAllActiveEvent() {
+		Vector<Event_Bean> vector = new Vector<Event_Bean>();
+		try {
+			this.Initializer("SELECT * FROM event WHERE event_isActive=1");
+			this.rs = this.pst.executeQuery();
+			while (this.rs.next()) {
+				Event_Bean bean = new Event_Bean();
+	            bean.setEvent_no(this.rs.getInt("event_no"));
+	            bean.setEvent_name(this.rs.getString("event_name"));
+	            bean.setEvent_desc(this.rs.getString("event_desc"));
+	            bean.setEvent_image(this.rs.getString("event_image"));
+	            bean.setEvent_isByDate(this.rs.getBoolean("event_isByDate"));
+	            bean.setEvent_isActive(this.rs.getBoolean("event_isActive"));
 	            bean.setEvent_issueDate(this.rs.getTimestamp("event_issueDate"));
 	            bean.setEvent_expireDate(this.rs.getTimestamp("event_expireDate"));
 	            bean.setEvent_limitTime1(this.rs.getTimestamp("event_limitTime1"));
@@ -104,8 +131,8 @@ public class Event_Mgr {
 	            bean.setEvent_name(this.rs.getString("event_name"));
 	            bean.setEvent_desc(this.rs.getString("event_desc"));
 	            bean.setEvent_image(this.rs.getString("event_image"));
-	            bean.setEvent_isAcitve(this.rs.getBoolean("event_isByDate"));
-	            bean.setEvent_isAcitve(this.rs.getBoolean("event_isAcitve"));
+	            bean.setEvent_isByDate(this.rs.getBoolean("event_isByDate"));
+	            bean.setEvent_isActive(this.rs.getBoolean("event_isActive"));
 	            bean.setEvent_issueDate(this.rs.getTimestamp("event_issueDate"));
 	            bean.setEvent_expireDate(this.rs.getTimestamp("event_expireDate"));
 	            bean.setEvent_limitTime1(this.rs.getTimestamp("event_limitTime1"));

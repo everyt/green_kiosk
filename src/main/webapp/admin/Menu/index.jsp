@@ -9,9 +9,9 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/menu_index.js"></script>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/admin/Accounting/account.css">
 <link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/admin/menu.css">
+<%@ include file="/admin/admin_check/check.jsp" %>
 <%@ include file="/admin/layouts/indexBase.jsp" %>
 <%@ include file="/admin/layouts/bootstrap.jsp"%> 
-<%@ include file="/admin/admin_check/check.jsp" %>
 <%@ include file="/admin/layouts/header.jsp" %>
 
 </head>

@@ -4,7 +4,6 @@
 <jsp:useBean id="mMgr" class="menu.Manager_Menu"  />
 <link href="style3.css" rel="stylesheet" type="text/css">
 <link href="style.css" rel="stylesheet">
-<link rel='stylesheet' href='../../assets/css/micromodal.css' />
 <script src='https://unpkg.com/micromodal/dist/micromodal.min.js'></script>
 
 <html>
@@ -111,20 +110,21 @@
     <div class="modal__overlay" tabindex="-1">
       <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
         <main class="modal__content" id="modal-1-content">
-				<div class= "chucheon color3"><h1>선택한 메뉴</h1></div>
-					<div>	ㅇㅇㅇㅇ	</div>
-				<div class= "chucheon color3"><h1>추천 메뉴</h1></div>
-						<div class="item1 ">
-							<div class="rowbox">
-					 			<img src="../images/cola.jpg" >
-					 				<div class="colbox">
-					 				  <H1>데리버거</H1>
-					 				  <h2 style="color:blue;" >3500~</h2>
-					 				</div>
-							</div>
-						</div>
+				<div class= "chucheon1 color3"><h1>선택한 메뉴</h1></div>
+					<div class="qqw">	ㅇㅇㅇㅇ	</div>
+				<div class= "chucheon2 color3"><h1>추천 메뉴</h1></div>
+
+	<div class="item1-1 ">
+		<div class="rowbox">
+			<img src="../images/cola.jpg" >
+				<div class="colbox">
+				  <H1>데리버거</H1>
+				  <h2 style="color:blue;" >3500~</h2>
+				</div>
+		</div>
+	</div>
 	
-	<div class="item2">
+	<div class="item2-1">
 		<div class="rowbox">
  			<img src="../images/cola1.jpg" >
  				<div class="colbox">
@@ -134,7 +134,7 @@
 		</div>
 	</div>
 	
-	<div class="item3">
+	<div class="item3-1">
 		<div class="rowbox">
  			<img src="../images/saida.jpg" >
  				<div class="colbox">
@@ -144,7 +144,7 @@
 		</div>
 	</div>
 	
-	<div class="item4">
+	<div class="item4-1">
 		<div class="rowbox">
  			<img src="../images/saida1.jpg" >
  				<div class="colbox">
@@ -154,7 +154,7 @@
 		</div>
 	</div>
 	
-	<div class="item5">
+	<div class="item5-1">
 		<div class="rowbox">
  			<img src="../images/milkiseu.jpg" >
  				<div class="colbox">
@@ -164,7 +164,7 @@
 		</div>	
 	</div>
 	
-	<div class="item6">
+	<div class="item6-1">
 		<div class="rowbox">
  			<img src="../images/mauntindyu.jpg" >
  				<div class="colbox">
@@ -174,17 +174,17 @@
 		</div>
 	</div>
 	
-	<div class="item7">
+	<div class="item7-1">
 		<div class="rowbox">
  			<img src="../images/fanta.jpg" >
- 				<div class="colbox">
+ 				<div class="colbox" onclick="hrefTo1()">
  				     <H1>데리버거</H1>
  					  <h2 style="color:blue;" >3500~</h2>
  				</div>
 		</div>	
 	</div>
 	
-	<div class="item8">
+	<div class="item8-1">
 		<div class="rowbox">
  			<img src="../images/orange juice.jpg" >
  				<div class="colbox">
@@ -194,16 +194,6 @@
 		</div>	
 	</div>
 
-
-
-
-
-
-
-
-
-
-          </p>
         </main>
       </div>
     </div>
@@ -211,7 +201,38 @@
 </div>
 
 
-    <button class="btn-open-popup">Modal 띄우기</button>
+
+
+
+
+
+
+
+  <div class="modal micromodal-slide" id="modal-2" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1">
+      <div class="modal__container1" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+        <main class="modal__content1" id="modal-2-content">
+				<div class="potato"><h1 style="background-color:#b4fffb">맛을 선택하세요.</h1></div>
+				<div class="potato1"><h1>어니언</h1></div>
+				<div class="potato2"><h1>치즈</h1></div>
+				<div class="potato3"><h1>칠리</h1></div>
+				
+		</main>
+	  </div>
+	</div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
 	
   <div class="header" style="width: inherit; font-weight: 400; font-size: 1.2rem; border-radius: 0; justify-content: space-between; background-color: #eee;">
     <span style="color:black;">총주문내역</span>
@@ -220,7 +241,7 @@
   </div>
 		
 
-
+</div>
 <%
 	Vector<Menu_menu_Bean> vector = mMgr.getMenuList(1);
 	
@@ -277,6 +298,17 @@ MicroModal.init();
 	  setTimeout(() => {
 	  }, 2500)
 }	
+	
+	const hrefTo1 = (type) => {
+		  localStorage.setItem('paymentType', type);
+		  MicroModal.show('modal-2');
+		  setTimeout(() => {
+		  }, 2500)
+	}	
+	
+	
+	
+	
 	
 //-------------------------------------------------------------------------------------------------------------------------------------
   const inputDigits = (num) => { // 숫자 3자리로 끊어서 쉼표(,) 넣어서 문자열로 리턴해주는 함수
@@ -378,7 +410,13 @@ if (sessionStorage.getItem('basketArray')) { // 세션스토리지에 장바구�
   + `</span>`;
 })();
 
-	
+
+
+
+
+
+
+
 </script>
 
 </body>
