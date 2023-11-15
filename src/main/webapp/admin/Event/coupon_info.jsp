@@ -16,30 +16,27 @@
 		<tbody id="coupons">
 			<tr align="center">
 				<th>쿠폰 번호</th>
-				<th>쿠폰 이름</th>
-				<th>쿠폰 코드</th>
-				<th>메뉴 번호</th>
-				<th>할인율</th>
-				<th>발급일</th>
-				<th>만료일</th>
-				<th>사용가능여부</th>
+				<th>쿠폰 이름</th>		
+				<th>쿠폰 설명</th>
+				<th>유효기간</th>
+				<th>해당 쿠폰으로 발급 가능한 메뉴</th>
+				<th>발급 가능 여부</th>
 				<th>수정</th>
 				<th>삭제</th>
 			</tr>
 			<tr align="center">
 				<td >1</td>
 				<td>신규 가입 환영 쿠폰</td>
-				<td>wq78-qw55-48q9-5q16</td>
-				<td></td>
-				<td>10%</td>
-				<td>2023/11/15</td>
-				<td>2024/02/15</td>
+				<td>신규 유저에게 발급되는 쿠폰입니다</td>
+				<td>무제한</td>
+				<td>제한 없음</td>
 				<td>O</td>
 				<td>수정</td>
-				<td>삭제</td>
+				<td>삭제 불가능</td>
 			</tr>
 		</tbody>
 	</table>
+	<a href="javascript:void(0)" class="btn btn-primary my-2" onclick="openPopup('/green_kiosk/admin/Event/coupon_make.jsp')">쿠폰 등록하기</a>
 </div>
 </body>
 </html>
