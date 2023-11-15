@@ -30,70 +30,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 .w3-bar-block .w3-bar-item {padding:20px}
 </style>
 </head>
-<script>
-//회원가입 창 여는 함수
-function open_register() {
-	let url = "<%=cPath %>/register/register.jsp"
-	window.open(url, "회원가입", "width=460, height=600")
-}
 
-function q_findid(){
-	let findfrm = document.findid;
-	let name = findfrm.name.value;
-	let phone = findfrm.phone.value;
-	
-	fetch("<%=cPath%>/api/user/find_id?name="+name+"&phone="+phone, {
-		method: "post"
-	}).then(response => {
-		response.json().then((data) => {
-			if (data.result == "") {
-				alert("검색된 아이디가 없습니다.\n다른 정보로 다시 시도해보세요.")
-			} else {
-				alert("검색된 아이디\n"+data.result)
-			}
-			
-		})
-	})
-}
-
-function open_register() {
-	let url = "<%=cPath %>/register/register.jsp"
-	window.open(url, "회원가입", "width=460, height=600")
-}
-
-function validatePassword() {
-	var newPassword = document.getElementById('newPassword').value;
-	var confirmPassword = document.getElementById('confirmPassword').value;
-	var resultDiv = document.getElementById('result');
-
-	var passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{8,16}$/;
-
-	if (passwordRegex.test(newPassword)) {
-		if (newPassword === confirmPassword) {
-			resultDiv.innerHTML = '비밀번호가 일치하며 유효합니다.';
-			resultDiv.style.color = 'green';
-		}else{
-			resultDiv.innerHTML = '비밀번호가 일치하지 않습니다.';
-			resultDiv.style.color = 'red';
-		}
-	}else{
-		resultDiv.innerHTML = '비밀번호는 최소 8자에서 16자까지, 영문자, 숫자 및 특수 문자를 포함해야 합니다.';
-		resultDiv.style.color = 'red';
-	}
-}
-function edit(){
-	if(document.regFrom.code.value==""){
-		alert("");
-		document.regFrom.code.focus();
-		return;
-	}
-	
-	document.regFrom.action = "change_pw_p.jsp";
-	document.regFrom.submit();
-}
-
-
-</script>
 <body>
 <!-- Sidebar (hidden by default) -->
 <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" id="mySidebar">
@@ -226,13 +163,13 @@ function edit(){
 <div style="display:flex; justify-content: space-around;">
 
 									
-								<form action="<%=cPath %>/api/user/find_pw method="POST" class="joinForm" name="regFrom" style="transform: translate(-20%, -30%)">                                                                     
+								<form action="change_pw_p" method="POST" class="joinForm" name="regFrm" style="transform: translate(-20%, -30%)">                                                                     
 							      <div class="textForm">
-							        <input name="mem_id" id="mem_id" type="text" class="regi_name" placeholder="비밀번호 찾기 ">
+								  <input name="mem_pw" id="mem_id" type="text" class="regi_name" placeholder="비밀번호 변경">
 							        <label for="mem_name" style="position:absolute; transform: translateX(-481px) translateY(3px); width:140px;">비밀번호 찾기 : </label>
 							      </div>
 							      <div class="textForm">
-							        <input name="mem_name" type="text" class="regi_name" placeholder="비밀번호 찾기 확인">
+							  	 <input name="mem_pw_re" id="mem_id" type="text" class="regi_name" placeholder="비밀번호 찾기 확인">
 							        <label for="mem_name" style="position:absolute; transform: translateX(-415px) translateY(3px); width:100px;">비밀번호 찾기 확인 : </label>
 							      </div>
 							      <input type="button" onclick="edit()" class="btn" style="transform: translateX(-50%) translateY(360%);" value="수 정 하 기"/>
@@ -315,6 +252,74 @@ function myAccFunc2() {
 	    x.previousElementSibling.className.replace(" w3-green", "");
 	  }
 	}
+
+
+//회원가입 창 여는 함수
+function open_register() {
+	let url = "<%=cPath %>/register/register.jsp"
+	window.open(url, "회원가입", "width=460, height=600")
+}
+
+function q_findid(){
+	let findfrm = document.findid;
+	let name = findfrm.name.value;
+	let phone = findfrm.phone.value;
+	
+	fetch("<%=cPath%>/api/user/find_id?name="+name+"&phone="+phone, {
+		method: "post"
+	}).then(response => {
+		response.json().then((data) => {
+			if (data.result == "") {
+				alert("검색된 아이디가 없습니다.\n다른 정보로 다시 시도해보세요.")
+			} else {
+				alert("검색된 아이디\n"+data.result)
+			}
+			
+		})
+	})
+}
+
+function open_register() {
+	let url = "<%=cPath %>/register/register.jsp"
+	window.open(url, "회원가입", "width=460, height=600")
+}
+
+function validatePassword() {
+	var newPassword = document.getElementById('newPassword').value;
+	var confirmPassword = document.getElementById('confirmPassword').value;
+	var resultDiv = document.getElementById('result');
+
+	var passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{8,16}$/;
+
+	if (passwordRegex.test(newPassword)) {
+		if (newPassword === confirmPassword) {
+			resultDiv.innerHTML = '비밀번호가 일치하며 유효합니다.';
+			resultDiv.style.color = 'green';
+		}else{
+			resultDiv.innerHTML = '비밀번호가 일치하지 않습니다.';
+			resultDiv.style.color = 'red';
+		}
+	}else{
+		resultDiv.innerHTML = '비밀번호는 최소 8자에서 16자까지, 영문자, 숫자 및 특수 문자를 포함해야 합니다.';
+		resultDiv.style.color = 'red';
+	}
+}
+function edit(){
+	if(document.regFrm.mem_pw.value==""){
+		alert("변경하실 비밀번호를 입력해주세요.");
+		document.regFrm.mem_pw.focus();
+		return;
+	} else if (document.regFrm.mem_pw.value != document.regFrm.mem_pw_re.value) {
+		alert("비밀번호 확인과 비밀번호가 일치하지 않습니다.");
+		document.regFrm.mem_pw.focus();
+		return;
+	} else {
+		document.regFrm.action = "<%=cPath%>/user/change_pw_p.jsp";
+		document.regFrm.submit();
+	}
+	
+	
+}
 
 </script>
 
