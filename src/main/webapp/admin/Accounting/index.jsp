@@ -13,6 +13,7 @@
     <%@ include file="/admin/admin_check/check.jsp" %>
     <%@ include file="/admin/layouts/header.jsp" %>
     <script type="text/script" src="<%=cPath%>/assets/js/admin/account/account.js"></script>
+    <script type="text/script" src="<%=cPath%>/assets/js/admin/menu_main_1.js"></script>
 </head>
 <body>
     <%@ include file="/admin/layouts/left.jsp" %>
