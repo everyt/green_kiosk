@@ -6,6 +6,7 @@
 <%@ page import="java.util.Vector" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="com.google.gson.reflect.TypeToken" %>
@@ -31,7 +32,7 @@
 	} else {
 		mem_ac = bean.getMem_ac();
 	}
-	
+	Map<String, String> a_foods = new HashMap<String, String>();
 	Vector<Orders_Bean> orders = mgr.getOrdersByUser(String.valueOf(mem_id)); %>
 <html>
 <head>
@@ -58,6 +59,8 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 </script>
 </head>
 <script>
+const foods = new Map();
+
 //회원가입 창 여는 함수
 function open_register() {
 	let url = "<%=cPath %>/register/register.jsp"
@@ -85,13 +88,70 @@ function edit() {
 		})
 	})
 }
+
+function fnModalPrint() {
+    const html = document.querySelector('html');
+    const printContents = document.querySelector('.record_add_pop').innerHTML;
+    const printDiv = document.createElement('DIV');
+    printDiv.className = 'print-div';
+    html.appendChild(printDiv);
+    printDiv.innerHTML = printContents;
+    document.body.style.display = 'none';
+    window.print();
+    document.body.style.display = 'block';
+    printDiv.style.display = 'none';
+}
+
+function see_detail(food_no) {
+	let food_data = foods.get("food_"+food_no);
+	let element = document.getElementById("post_foods");
+	element.innerHTML = "";
+	food_data.forEach((food) => {
+		let food_name = food.name
+		let amount = food.amount;
+		let price = food.price
+		let allprice = amount * price
+		let html = "<tr><td>"+food_name+"</td><td>"+amount+" 개</td><td>"+allprice+"원</td></tr>"
+		element.insertAdjacentHTML("beforeend", html)
+		
+		
+	})
+	
+	document.querySelector(".record_add_pop").style.display = "flex"
+}
 </script>
 <body>
 <!-- Sidebar (hidden by default) -->
 <%@ include file="/index/base/sidebar.jsp"%>
 <!-- Top menu -->
 <%@ include file="/index/base/head.jsp" %>
-  
+ 
+    <div class="record_add_pop">
+        <div class="inner">
+            <h2 class="title">주문 상세 내용</h2>
+            <div class="record_add_wrap">
+                <table class="record_add_box">
+                    <thead>
+                    <tr>
+                        <th>제품명</th>
+                        <th>갯수</th>
+                        <th>금액</th>
+                    </tr>
+                    </thead>
+                    <tbody id="post_foods">
+                    <tr>
+                        <td>데리버거</td>
+                        <td>5</td>
+                        <td>9000원</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="btn_box">
+                <a class="black_line_btn" onclick="document.querySelector('.record_add_pop').style.display =''" href="javascript:">뒤로가기</a>
+            </div>
+        </div>
+    </div>
 <!-- !PAGE CONTENT! -->
 <div class="w3-main w3-content w3-padding" style="max-width:1300px;margin-top:100px;height:920px;width:1300px">
 		
@@ -142,14 +202,17 @@ function edit() {
 							Map<String, String> page_data = new HashMap<String, String>();
 							String p_html = "<tr align=\"center\" height=\"5%\"><td width=\"5%\">번호</td><td width=\"25%\">주문 일시</td><td width=\"45%\">주문 음식</td><td width=\"15%\">총 금액</td><td width=\"10%\">영수증 발급</td></tr>";
 							for(Orders_Bean order : orders) {
+								Integer all_money = 0;
 								if (runned == false) {
 									runned = true;
 								}
+								
 								
 								List<Map<String, Object>> foods = gson.fromJson(order.getOrder_foods(), new TypeToken<List<Map<String,Object>>>(){}.getType());
 								String S_foods = "";
 								
 								for (Map<String, Object> food : foods) {
+									all_money += (Integer.parseInt(String.valueOf(food.get("price"))) * Integer.parseInt(String.valueOf(food.get("amount"))));
 									if (S_foods.equals("")) {
 										S_foods = food.get("name")+" X "+Integer.parseInt(String.valueOf(food.get("amount")).replace(".0", ""));
 									} else {
@@ -158,6 +221,8 @@ function edit() {
 								}
 								count += 1;
 								rem -= 1;
+								System.out.println("line 162 count : "+count);
+								a_foods.put("food_"+count, order.getOrder_foods());
 								
 								if (count % 20 == 0) {
 									page_data.put(String.valueOf(paging), p_html);
@@ -166,7 +231,7 @@ function edit() {
 									rem = 20;
 									paging += 1;
 								} else {
-									p_html += "<tr align=\"center\"><td>"+order.getOrder_no()+"</td><td>"+String.valueOf(order.getOrder_time()).substring(0,19)+"</td><td>"+S_foods+"</td><td>"+format.format(order.getOrder_price())+" 원</td><td><button no=\""+order.getOrder_no()+"\" type=\"button\">영수증 발급</button></td></tr>";
+									p_html += "<tr align=\"center\"><td>"+order.getOrder_no()+"</td><td>"+String.valueOf(order.getOrder_time()).substring(0,19)+"</td><td onclick=\"see_detail("+order.getOrder_no()+")\" style=\"text-overflow:ellipsis; overflow:hidden; white-space:nowrap; padding: 0 90px; cursor: pointer\">"+S_foods+"</td><td>"+format.format(order.getOrder_price())+" 원</td><td><button no=\""+order.getOrder_no()+"\" type=\"button\">영수증 발급</button></td></tr>";
 								}
 								if (count < 21) {
 									
@@ -176,8 +241,8 @@ function edit() {
 							<tr align="center" height="4.5%">
 								<td width="5%"><%=order.getOrder_no() %></td>
 								<td width="25%"><%=String.valueOf(order.getOrder_time()).substring(0,19) %></td>
-								<td width="45%" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap; padding: 0 90px; cursor: pointer"><%=S_foods %></td>
-								<td width="15%"><%=format.format(order.getOrder_price()) %> 원</td>
+								<td width="45%" onclick="see_detail(<%=order.getOrder_no() %>)" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap; padding: 0 90px; cursor: pointer"><%=S_foods %></td>
+								<td width="15%"><%=all_money %> 원</td>
 								<td width="10%"><button no="<%=order.getOrder_no() %>" type="button">영수증 발급</button></td>
 							</tr>
 						<%	
@@ -290,12 +355,31 @@ for (int i = 1; i<=paging; i++) {
 		page_data.set(<%=i%>, '<%=page_data.get(String.valueOf(i))+""+page_data.get("paging"+i)%>')
 	<%
 }
+List<String> list = new ArrayList<String>(a_foods.keySet());
+
+List<String> keys = new ArrayList<String>();
+
+for (String key: list) {
+	keys.add("\""+key+"\"");
+}
+%>
+page_data.set("data_value", '<%=a_foods.values()%>')
+page_data.set("data_key", '<%=keys.toString() %>')
+let keys = JSON.parse(page_data.get("data_key")).entries()
+let values = JSON.parse(page_data.get("data_value")).entries()
+
+keys.forEach((entry) => {
+	foods.set(entry[1], values.next().value[1])
+})
+<%
 %>
 
 function view(num) {
 	console.log(num)
 	document.getElementById("inner_order").innerHTML = page_data.get(num);
 }
+
+
 // Script to open and close sidebar
 function w3_open() {
   document.getElementById("mySidebar").style.display = "block";
