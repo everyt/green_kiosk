@@ -77,6 +77,16 @@
 										  &nbsp;<input role="switch" type="checkbox" name="menu_isSale" id="menu_isSale"/>
 										</label>
 								</div>
+								</td>
+								<td>
+									<div class= input-group>
+								        <div class="input-group-prepend">
+								          <div class="input-group-text">쿠폰여부</div>
+								        </div>
+										<label>
+										  &nbsp;<input role="switch" type="checkbox" name="menu_couponable" id="menu_couponable"/>
+										</label>
+								</div>
 							</td>
 						</tr>
 						<tr>

@@ -7,8 +7,8 @@
 <title>행사 등록 페이지</title>
 </head>
 <body>
-
-
+<%@ include file="/admin/admin_check/check.jsp" %>
+<%@ include file="calender.jsp" %>	
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

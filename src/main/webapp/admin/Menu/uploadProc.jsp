@@ -39,6 +39,7 @@
 		
 		int menu_isUse = 0;
 		int menu_isSale = 0;
+		int menu_couponable = 0;
 
 		String menuIsSaleParameter = multi.getParameter("menu_isSale");
 		if (menuIsSaleParameter != null && !menuIsSaleParameter.isEmpty()) {
@@ -48,6 +49,10 @@
 		String menuIsUseParameter = multi.getParameter("menu_isUse");
 		if (menuIsUseParameter != null && !menuIsUseParameter.isEmpty()) {
 		    menu_isUse = 1;
+		}
+		String menuCouponableParameter = multi.getParameter("menu_couponable");
+		if (menuCouponableParameter != null && !menuCouponableParameter.isEmpty()) {
+			menu_couponable = 1;
 		}
 		
 /***************************************************************************************************************************************************************************
@@ -120,6 +125,7 @@
 					menuBean.setMenu_price(menu_price);
 					menuBean.setMenu_content(menu_content); 
 					menuBean.setMenu_isUse(menu_isUse);
+					menuBean.setMenu_couponable(menu_couponable);
 					menuBean.setMenu_component("0");
 					menuBean.setMenu_sell_amount(0);
 					menuBean.setMenu_recommend(0);

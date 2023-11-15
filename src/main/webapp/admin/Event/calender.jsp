@@ -10,11 +10,11 @@
 </head>
 <body>
 
-    <label for="datepicker">Select Date:</label>
-    <input type="text" id="datepicker">
+    <label for="datepicker">시작 일자 : </label>
+    <input type="text" id="datepicker" name="event_issueDate">
     
-    <label for="datepicker2">end Date: </label>
-    <input type="text" id="datepicker2">
+    <label for="datepicker2">종료 일자 : </label>
+    <input type="text" id="datepicker2" name="event_expireDate">
     
 <script>
 $(function() {
@@ -37,7 +37,6 @@ $(function() {
     	monthNamesShort : ['1','2','3','4','5','6','7','8','9','10','11','12']
     });
 });
-
 </script>
 </body>
 </html>

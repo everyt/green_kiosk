@@ -5,7 +5,7 @@ function updateMenu(menuType) {
 	console.log('Received menuType:', menuType);
     $.ajax({
         type: "POST",
-        url: "./getMenuData?type="+menuType,
+        url: "./Event/getMenuData?type="+menuType,
         dataType: "json",
         data: {
         	type : menuType
