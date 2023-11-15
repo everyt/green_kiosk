@@ -399,17 +399,17 @@ public class Member_Mgr {
 	
 	}
 
-	public boolean updateMember1(Member_Bean bean) {
+	public boolean change_pw(Member_Bean bean) {
+		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		boolean flag = false;
-		//System.out.println("자료 : " + bean.getNumb() + bean.getName());
 		try {
 			con = pool.getConnection();
-			String sql = "update Member set pw=?";
+			String sql = "update member set mem_pw=SHA2('xq" + bean.getMem_pw() + "q43',256) where mem_id=?";
+			System.out.println(sql);
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, bean.getMem_pw());
-			pstmt.setInt(2, bean.getMem_no());
+			pstmt.setString(1, bean.getMem_id());
 			int count = pstmt.executeUpdate();
 			if (count > 0)
 				flag = true;
