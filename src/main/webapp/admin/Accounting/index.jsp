@@ -8,12 +8,12 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/css/admin/Accounting/account.css" />
     <title>Insert title here</title>
+    <script src="<%=request.getContextPath()%>/assets/js/admin/menu_main_1.js"></script>
     <%@ include file="/admin/layouts/indexBase.jsp" %>
     <%@ include file="/admin/layouts/bootstrap.jsp"%> 
     <%@ include file="/admin/admin_check/check.jsp" %>
     <%@ include file="/admin/layouts/header.jsp" %>
     <script type="text/script" src="<%=cPath%>/assets/js/admin/account/account.js"></script>
-    <script type="text/script" src="<%=cPath%>/assets/js/admin/menu_main_1.js"></script>
 </head>
 <body>
     <%@ include file="/admin/layouts/left.jsp" %>
