@@ -14,7 +14,6 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/index_main.js"></script>
 
-
 <script>const foods = new Map();</script>
 <%
 Orders_Mgr mgr = new Orders_Mgr();
@@ -85,6 +84,13 @@ foods_list.forEach(foods_map => {
     }
 });
 
+let totalAmountByNameObject = {};
+totalAmountByName.forEach((value , key) => {
+	totalAmountByNameObject[key] = value;
+});
+
+let totalAmountByNameJSON = JSON.stringify(totalAmountByNameObject);
+document.cookie = "totalAmountByName=" + totalAmountByNameJSON;
 // 결과 출력
 console.log("Total Amount by Name:", totalAmountByName);
 
