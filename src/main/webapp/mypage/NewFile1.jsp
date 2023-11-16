@@ -5,21 +5,21 @@
 <jsp:useBean id="memberBean" class="user.Member_Bean"/>
 <jsp:setProperty  name="memberBean" property="*"/>
 <%
-		String mem_id = String.valueOf(session.getAttribute("find_pw_id"));
+		String mem_id = String.valueOf(session.getAttribute(""));
 		System.out.println(mem_id);
 		memberBean.setMem_id(mem_id);
 	  boolean result = userMgr.change_pw(memberBean);
 	  if(result){
 %>
 <script type="text/javascript">
-		alert("회원정보 수정 하였습니다.");
+		alert("회원탈퇴 하였습니다.");
 		location.href="index.jsp?";
 </script>
 <% } else { %>
 <script type="text/javascript">
-		alert("회원정보 수정에 실패 하였습니다.");
+		alert("회원탈퇴에 실패 하였습니다.");
 		history.back();
 </script>
-<% } 
+<% }
 session.invalidate();
 %>
