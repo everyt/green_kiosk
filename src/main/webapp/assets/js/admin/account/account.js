@@ -1,4 +1,4 @@
-var menuType = "all";
+/*var menuType = "all";
 
 function updateMenu(menuType) {
 	console.log('Received menuType:', menuType);
@@ -66,8 +66,8 @@ function updateMenu(menuType) {
                 $('.getMenuList').html(chatListHtml);
                 
             } else {
-/*                alert("Failed to fetch chat list.");
-*/            }
+                alert("Failed to fetch chat list.");
+            }
         },
         error: function (xhr, status, error) {
             console.error("Ajax request failed:", status, error);
@@ -88,7 +88,7 @@ function formatNumber(number) {
 }
 
 
-/*function loadContent(url) {
+function loadContent(url) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
@@ -100,9 +100,9 @@ function formatNumber(number) {
   };
   xhr.open('GET', url, true);
   xhr.send();
-}*/
+}
 
-/*
+
 var auto_refresh = setInterval(
 function ()
 {
@@ -137,7 +137,7 @@ $('#mainContent').load('menu_main.jsp').fadeIn("slow");
 	  if (popup && !popup.closed) {
 	    popup.close();
 	  }
-	}*/
+	}
 	
 	
 function openPopup(url) {
@@ -149,3 +149,4 @@ function openPopup(url) {
 }
 
 
+*/
