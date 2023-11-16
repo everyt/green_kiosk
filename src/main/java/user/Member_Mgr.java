@@ -131,16 +131,16 @@ public class Member_Mgr {
 	
 
 	// 회원 정보 삭제
-	public void deleteMember(int numb) {
+	public void deleteMember(String mem_id) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		ResultSet rs = null;
 		try {
 			con = pool.getConnection();
-			sql = "delete from member_admin where numb=?";
+			sql = "delete from `member` where `mem_id` = ? ";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, numb);
+			pstmt.setString(1, mem_id);
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -148,7 +148,6 @@ public class Member_Mgr {
 			pool.freeConnection(con, pstmt, rs);
 		}
 	}
-
 	public String register_Member(String mem_id, String mem_pw, String name, String phone) { //함수제작 나경원
 		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;

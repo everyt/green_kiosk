@@ -110,7 +110,15 @@ function edit() {
 					<table cellspacing="0" cellpadding="2" width="100%" height="100%">
 						<tr>
 							<!-- 내용 위치 고정 이 사이에 -->
-							
+												<h1>회원탈퇴</h1>
+			<form action="NewFile1.jsp" method="post">
+					아이디: <input type="text" name="id">
+				<br>
+					패스워드: <input type="password" name="passwd">
+				<br>
+					<input type="submit" value="회원탈퇴">
+				<br>
+			</form>
 							<!-- 내용 위치 고정 이 사이에 -->
 						</tr>
 					</table>
