@@ -82,20 +82,23 @@
 	    });
 	}
 
-	function deleteOrder(order_no)
-	{
-		location.href = "./sales/ac00Delete.jsp?order_no=" + order_no; 
+function deleteOrder(order_no, callback) {
+    location.href = "./sales/ac00Delete.jsp?order_no=" + order_no;
+    if (typeof callback == 'function') {
+		callback();
 	}
-   
-	function sleep(sec) {
-		  return new Promise(resolve => setTimeout(resolve, sec * 1000));
-	}
-	
-	async function sub() {
-		window.open('', 'aaa','width=300,height=200,scrollbars=no,resizable=no,status=yes,menubar=no,toolbar=no,top=50,left=50');
-		document.regFrm.target = 'aaa'
-		document.regFrm.submit();	
-	}
+}
+
+
+function sleep(sec) {
+    return new Promise(resolve => setTimeout(resolve, sec * 1000));
+}
+
+async function sub() {
+    window.open('', 'aaa', 'width=300,height=200,scrollbars=no,resizable=no,status=yes,menubar=no,toolbar=no,top=50,left=50');
+    document.regFrm.target = 'aaa';
+    document.regFrm.submit();
+}
 	
 	function sub2() {
 		let frm = document.regFrm; 
