@@ -11,15 +11,15 @@
 
 <%
 	Gson gson = new Gson();
-     //전체레코드수
-    int listSize = 0;    //현재 읽어온 자료의 수
-    int numPerPage = 10;   //페이지당 레코드 수
-    int pagePerBlock = 15;
-    
+     //페이징을 위한 변수 선언
+    int totalRecode = 0;     //전체 글의 갯수
+    int numPerPage = 10;     //페이지당 레코드 수
+    int pagePerBlock = 15;   //한 블럭당 묶여질 페이지 수
+    int nowPage=0;    //현재 보여질 페이지
+    int nowBlock=0;   //현재 보여질 블럭
+    int listSize=0;   //현재 읽어온 게시물의 수
     int totalPage=0;  //전체 페이지 수
     int totalBlock=0; //전체 블럭수
-    int nowPage=1;    //현재 페이지
-    int nowBlock=1;  //현재 블럭
     int start = 0;   //orders테이블의 selct시작번호
     int end = 10;    //시작번호로 부터 가져올 selec의 개수
  	Vector<Orders_Bean> vlist = null;
@@ -67,6 +67,15 @@ table {
 
   });
 
+  function pageing(page){
+		document.readFrm.nowPage.value = page;
+		document.readFrm.submit();
+	}
+	
+	function block(value){
+		document.readFrm.nowPage.value = <%=pagePerBlock%>*(value-1)+1;
+		document.readFrm.submit();
+	}
 </script>
 	
 
@@ -84,12 +93,12 @@ table {
                	    	   out.println("등록된 목록이 없습니다.");
                	    	   
                	       } else {
-               	 %>
+              %>
 		
-				  <table width="100%" cellpadding="2" cellspacing="0" border="1">
+				  <table  border="1">
 				  <thead>
 				  <tr>
-			<th colspan="11">코드 등록 자료수 : <%=vlist.size()-((nowPage-1)*numPerPage)-1%></th>
+			<th colspan="11">코드 등록 자료수 : <%=listSize-((nowPage-1)*numPerPage)-1%></th>
 		</tr>
 				  </thead>
 				  <tbody class="getMenuList" id="getMenuList">
@@ -107,17 +116,44 @@ table {
 						<td>삭제</td>
 					</tr>
 				</tbody>
-
+				<%
+				    for( int i = 0; i<numPerPage; i++) {
+				    	if (i == listSize)break;
+				    	Orders_Bean bean = vlist.get(i);
+				    	int order_no = bean.getOrder_no();
+				    	Timestamp order_time = bean.getOrder_time();
+				    	String order_foods = bean.getOrder_foods();
+				    	int order_price = bean.getOrder_price();
+				    	int order_discount = bean.getOrder_discount();
+				    	String order_coupon = bean.getOrder_coupon();
+				    	String order_type = bean.getOrder_type();
+				    	boolean order_use_mile = bean.isOrder_use_mile();
+				    	int order_use_amount = bean.getOrder_use_amount();
+				    	
+				    %>
+				    <tr>
+				       <td align="center">
+				       <%=listSize-((nowPage-1)*numPerPage)-i%>
+				       </td>
+              <td>
+           
+              <a href="javascript:read(<%=order_no%>)"> </a>
+              </td>
+              </tr>
+				<%}//for%>
 				<%
 				}//if
 				%> 
-			</td>
-		</tr>
+		
 		<tr>
+		 <td colspan="2"><br /><br /></td>
+		 </tr>
+		 <tr>
 		 <td>
-		 <%
-		    int pageStart = (nowBlock -1)*pagePerBlock + 1;//하단 페이지 시작번호
-			int pageEnd = ((pageStart + pagePerBlock)< totalPage)? (pageStart+pagePerBlock): totalPage+1;
+		 <!-- 페이징 및 블럭처리 Start -->
+		 		 <%
+		          int pageStart = (nowBlock -1)*pagePerBlock + 1;//하단 페이지 시작번호
+			      int pageEnd = ((pageStart + pagePerBlock)< totalPage)? (pageStart+pagePerBlock): totalPage+1;
 		         if(totalPage !=0) {
 		        	 if(nowBlock > 1) {%>
 		        	 <a href="javascript:block('<%=nowBlock-1%>')">prev...</a><%}%>&nbsp;
