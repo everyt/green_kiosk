@@ -1,8 +1,61 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page import="java.util.Vector" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Collection" %>
+<%@ page import="com.google.gson.Gson" %>
+<%@ page import="com.google.gson.reflect.TypeToken" %>
 <%@ include file="/admin/layouts/BeanManager.jsp" %>
+<%@ page import="orders.Orders_Bean" %>
+<%@ page import="orders.Orders_Mgr" %>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/index_main.js"></script>
+<script>const foods = new Map();</script>
+<%
+Orders_Mgr mgr = new Orders_Mgr();
+Vector<Orders_Bean> orders = mgr.getAllOrders();
+Gson gson = new Gson();
+List<List<Map<String, Object>>> all_foods = new ArrayList<List<Map<String, Object>>>();
+List<String> keys = new ArrayList<String>();
+List<String> values = new ArrayList<String>();
+for (Orders_Bean order : orders) {
+	List<Map<String, Object>> foods = gson.fromJson(order.getOrder_foods(), new TypeToken<List<Map<String,Object>>>(){}.getType());
+	for(Map<String, Object> food : foods) {
+		List<String> list = new ArrayList<String>(food.keySet());
+		Collection<Object> value1 = food.values();
+
+		for (String key: list) {
+			keys.add("\""+key+"\"");
+		}
+		
+		for (Object value : value1) {
+			values.add("\""+String.valueOf(value)+"\"");
+		}
+		
+	}
+}
+
+%>
+<script>
+foods.set("data_value", '<%=values.toString()%>')
+foods.set("data_key", '<%=keys.toString() %>')
+const keys = JSON.parse(foods.get("data_key"))
+const values = JSON.parse(foods.get("data_value"))
+let foods_list = new Array();
+let foods_map = new Map();
+let i = 0
+keys.forEach((entry) => {
+	
+	if (entry === "index" && i != 0) {
+		foods_list.push(foods_map);
+	}
+	foods_map.set(entry, values[i])
+	i = i + 1
+})
+</script>
 <main class="mainContent">
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
