@@ -58,6 +58,7 @@ function upload() {
 						response.json().then((data) => {
 							if (data.result == "success") {
 								window.removeEventListener('beforeunload', unload_listener);
+								opener.loadContent('/green_kiosk/admin/Event/coupon_info.jsp')
 								alert("쿠폰이 정상적으로 등록 되었습니다. 해당 창을 닫으셔도됩니다.")
 								self.close();
 							} else {

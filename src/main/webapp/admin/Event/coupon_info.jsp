@@ -25,6 +25,7 @@ Vector<Coupon_kind_Bean> Kinds = mgr.readAllKind();
 				<th>쿠폰 번호</th>
 				<th>쿠폰 이름</th>		
 				<th>쿠폰 설명</th>
+				<th>할인률</th>
 				<th>유효기간</th>
 				<th>해당 쿠폰으로 발급 가능한 카테고리</th>
 				<th>발급 가능 여부</th>
@@ -43,6 +44,7 @@ Vector<Coupon_kind_Bean> Kinds = mgr.readAllKind();
 					<td><%=bean.getNumb() %></td>
 					<td><%=bean.getName() %></td>
 					<td><%=bean.getDesc() %></td>
+					<td><%=bean.getDiscount_per()+" %" %>
 					<td><%=vaild_date %></td>
 					<td><%=bean.getCategory().toString().replace("[", "").replace("]", "") %></td>
 					<% if (bean.isEnable()) { %>

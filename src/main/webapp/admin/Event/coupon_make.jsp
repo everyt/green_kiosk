@@ -85,7 +85,7 @@
 						</tr>
 						<tr>
 							<td colspan="5">
-								<textarea class="form-control" name="coupon_desc" maxlength="2048" style="height: 150px; width:100%" placeholder="쿠폰 설명" required></textarea>
+								<textarea class="form-control" name="coupon_desc" maxlength="20" style="height: 150px; width:100%" placeholder="쿠폰 설명" required></textarea>
 							</td>
 						</tr>
 					</tbody>
