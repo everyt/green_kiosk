@@ -3,7 +3,9 @@ package coupon;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import com.google.gson.Gson;
@@ -103,8 +105,9 @@ public class Coupon_kind_Mgr {
 		return vector;
 	}
 	
-	public boolean addKind(Coupon_kind_Bean bean) {
-		boolean flag = false;
+	public Map<String, String> addKind(Coupon_kind_Bean bean) {
+		Map<String, String> res = new HashMap<String, String>();
+		res.put("result","failed");
 		try {
 			this.Initializer("INSERT INTO coupon_type (`name`, `desc`, `discount_per`, `vaild_date`, `enable`, `category`, `default_coupon`) VALUES (?, ?, ?, ?, ?, ?, ?)");
 			this.pst.setString(1, bean.getName());
@@ -115,14 +118,15 @@ public class Coupon_kind_Mgr {
 			this.pst.setString(6, bean.getCategory().toString());
 			this.pst.setBoolean(7, bean.isDefault_coupon());
 			if (this.pst.executeUpdate() == 1) {
-				flag = true;
+				res.put("result","success");
 			}
         } catch (Exception e) {
 			e.printStackTrace();
+			res.put("reason",e.getMessage());
 		} finally {
 			this.Closer();
 		}
-		return flag;
+		return res;
 	}
 	
 	public boolean updateKind(Coupon_kind_Bean bean) {
