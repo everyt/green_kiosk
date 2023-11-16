@@ -13,6 +13,8 @@
 <%@ page import="orders.Orders_Mgr" %>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/index_main.js"></script>
+
+
 <script>const foods = new Map();</script>
 <%
 Orders_Mgr mgr = new Orders_Mgr();
@@ -50,11 +52,42 @@ let i = 0
 keys.forEach((entry) => {
 	
 	if (entry === "index" && i != 0) {
-		foods_list.push(foods_map);
+		console.log(foods_map)
+		foods_list.unshift(foods_map);
+		foods_map = new Map();
 	}
+	console.log(entry)
+	console.log(values[i])
 	foods_map.set(entry, values[i])
 	i = i + 1
 })
+console.log(foods_list)
+
+
+
+let totalAmountByName = new Map();
+
+foods_list.forEach(foods_map => {
+
+    for (const [key, value] of foods_map.entries()) {
+        if (key === "name") {
+
+            let name = value;
+
+            let amount = parseInt(foods_map.get("amount"));
+
+            if (totalAmountByName.has(name)) {
+                totalAmountByName.set(name, totalAmountByName.get(name) + amount);
+            } else {
+                totalAmountByName.set(name, amount);
+            }
+        }
+    }
+});
+
+// 결과 출력
+console.log("Total Amount by Name:", totalAmountByName);
+
 </script>
 <main class="mainContent">
   <section class="py-5 text-center container">
@@ -79,69 +112,7 @@ keys.forEach((entry) => {
                     <div class="row">
 
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Earnings (Annual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-                                            </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Pending Requests Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
@@ -243,27 +214,7 @@ keys.forEach((entry) => {
     </div>
   </div>
 </main>
-
-<footer class="text-body-secondary py-5">
-  <div class="getMenuList"></div>
-</footer>
-
-<script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-
-
-<%! 
-    public String formatNumber(double number) { 
-        // 숫자를 3자리마다 쉼표로 구분 
-        java.text.DecimalFormat df = new java.text.DecimalFormat("#,###"); 
-        return df.format(number); 
-    } 
-
-    public String formatTime(Long number) { 
-        java.text.DecimalFormat df = new java.text.DecimalFormat("#,###"); 
-        return df.format(number); 
-    } 
-%>
-
-
+<script src="/docs/5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 

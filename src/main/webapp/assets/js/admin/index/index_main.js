@@ -56,27 +56,13 @@ function processMenuData(response) {
             priceSumMonth += order_price;
         }
         
-            for (var j = 0; j < order_foods.length; j++) {
-                var foodItem = order_foods[j];
+        
+for (var j = 0; j < order_foods.length; j++) {
+    var foodItem = order_foods[j];
 
-                if (foodItem) {
-                    var foodName = foodItem.name;
-                    var foodAmount = parseInt(foodItem.amount);
-                    var foodPrice = parseFloat(foodItem.price);
+}
 
-                    if (foodCount[foodName]) {
-                        foodCount[foodName] += foodAmount;
-                    } else {
-                        foodCount[foodName] = foodAmount;
-                    }
 
-                    if (foodSales[foodName]) {
-                        foodSales[foodName] += foodAmount * foodPrice;
-                    } else {
-                        foodSales[foodName] = foodAmount * foodPrice;
-                    }
-                }
-            }
     	}
 
     return { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales };
@@ -93,7 +79,7 @@ var htmlTemplate =
     '<div class="col-xl-3 col-md-6 mb-4">' +
     createCard2('월간 매출', priceSumMonth) +
     '</div>';
-    $('.getMenuList').html(htmlTemplate);
+    $('.getMenuList').empty().html(htmlTemplate);
 }
 
 
@@ -164,6 +150,37 @@ function createCard2(title, amount) {
     );
 }
 
+/*function createMonth() {
+	return (
+		    '<div class="col-xl-3 col-md-6 mb-4">
+		    <div class="card border-left-info shadow h-100 py-2">
+		        <div class="card-body">
+		            <div class="row no-gutters align-items-center">
+		                <div class="col mr-2">
+		                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+		                    </div>
+		                    <div class="row no-gutters align-items-center">
+		                        <div class="col-auto">
+		                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+		                        </div>
+		                        <div class="col">
+		                            <div class="progress progress-sm mr-2">
+		                                <div class="progress-bar bg-info" role="progressbar"
+		                                    style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+		                                    aria-valuemax="100"></div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		                <div class="col-auto">
+		                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>'
+	);
+}*/
 	
 function openPopup(url) {
   var popupWidth = 500;
