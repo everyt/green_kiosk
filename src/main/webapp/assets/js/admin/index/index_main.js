@@ -19,9 +19,7 @@ function updateMenu(menuType) {
 				let totalAmountByNameCookieObject = JSON.parse(totalAmountByNameCookie);
 				let totalAmountByNameFromCookie =  new Map(Object.entries(totalAmountByNameCookieObject));
 				totalAmountByNameFromCookie.forEach((value, key) => {
-				    console.log(key + ": " + value);
 				});
-				console.log("1" + totalAmountByNameCookie + "2" + totalAmountByNameCookieObject + "3" +totalAmountByNameFromCookie );
                 // Update HTML
                 updateHTML(priceSumDay, priceSumWeek, priceSumMonth, totalAmountByNameFromCookie, totalAmountByNameCookie);
 
@@ -178,37 +176,6 @@ function createAmount(totalAmountByNameFromCookie) {
         </div>`
     );
 }
-/*function createMonth() {
-	return (
-		    '<div class="col-xl-3 col-md-6 mb-4">
-		    <div class="card border-left-info shadow h-100 py-2">
-		        <div class="card-body">
-		            <div class="row no-gutters align-items-center">
-		                <div class="col mr-2">
-		                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-		                    </div>
-		                    <div class="row no-gutters align-items-center">
-		                        <div class="col-auto">
-		                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-		                        </div>
-		                        <div class="col">
-		                            <div class="progress progress-sm mr-2">
-		                                <div class="progress-bar bg-info" role="progressbar"
-		                                    style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-		                                    aria-valuemax="100"></div>
-		                            </div>
-		                        </div>
-		                    </div>
-		                </div>
-		                <div class="col-auto">
-		                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-		</div>'
-	);
-}*/
 	
 function openPopup(url) {
   var popupWidth = 500;
@@ -223,7 +190,7 @@ function getCookieValue(cookieName) {
 	const name = cookieName + "=";
 	const decodedCookie = decodeURIComponent(document.cookie);
 	const cookieArray = decodedCookie.split(';');
-	
+		
 	for (let i = 0; i < cookieArray.length; i++) {
 		let cookie = cookieArray[i].trim();
 		if (cookie.indexOf(name) === 0) {
@@ -239,3 +206,8 @@ function cookieSeparate(cookieObject) {
     // Join the array into a single string
     return keyValuePairs.join("<br>");
 }
+
+
+
+
+
