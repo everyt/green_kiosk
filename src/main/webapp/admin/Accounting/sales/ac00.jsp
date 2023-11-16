@@ -33,7 +33,8 @@
 	     end = numPerPage;
 	nowBlock=(int)Math.ceil((double)nowPage/pagePerBlock);
 	totalBlock =(int)Math.ceil((double)nowPage/pagePerBlock);
-
+	
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -140,6 +141,7 @@ table {
 	{
 		location.href = "ac00Delete.jsp?order_no=" + order_no; 
 	}
+	
 </script>
 </body>
 </html>
