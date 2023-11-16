@@ -14,7 +14,7 @@
 
 	<div class="container" style="margin-top: 50px" >
 		<div class="row">
-			<form name="uploadFrm" method="post" enctype="multipart/form-data" action="<%=request.getContextPath()%>/api/admin/coupon">
+			<form name="uploadFrm" method="post" enctype="multipart/form-data" action="javascript:">
 				<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 					<thead>
 						<tr>
@@ -38,7 +38,7 @@
 							        <div class="input-group-prepend">
 							          <div class="input-group-text">할인률 ( % )</div>
 						        </div>
-							<input type="number" class="form-control" id="menu_price" name="menu_price" maxlength="3" min="0" max="100" required>
+							<input type="number" class="form-control" id="menu_price" name="coupon_discount" maxlength="3" min="0" max="100" required>
 								</div>
 							</td>
 								<td>
@@ -70,8 +70,14 @@
 							</td>
 							
 							<td>
+
+								
+								 <div class="input-group-prepend">
+							          <div class="input-group-text">쿠폰 유효 일자 (일, -1로 입력하면 무제한으로 설정됩니다.) </div>
+						        </div>
+								<input type="number" class="form-control" id="menu_price" name="coupon_vaild_date" maxlength="3" min="-1" required>
 								<div class= input-group style="display:grid;">
-								        <div class="input-group-prepend" style="align-self:center; justify-self:center; transform: translateY(115%);"> 
+								        <div class="input-group-prepend" style="align-self:center; justify-self:center;"> 
 								          <div class="input-group-text">아래쪽에 쿠폰에 대한 설명을 입력해주세요.</div>
 								        </div>
 								</div>
@@ -79,12 +85,12 @@
 						</tr>
 						<tr>
 							<td colspan="5">
-								<textarea class="form-control" name="menu_content" maxlength="2048" style="height: 150px; width:100%" placeholder="쿠폰 설명" required></textarea>
+								<textarea class="form-control" name="coupon_desc" maxlength="2048" style="height: 150px; width:100%" placeholder="쿠폰 설명" required></textarea>
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				<input type="submit" class="btn btn-success pull-right" value="등록하기">
+				<input type="submit" onclick="upload()" class="btn btn-success pull-right" value="등록하기">
 		</form>
 		</div>
 	</div>
