@@ -14,7 +14,7 @@
 
 	<div class="container" style="margin-top: 50px" >
 		<div class="row">
-			<form name="uploadFrm" method="post" enctype="multipart/form-data" action="<%=request.getContextPath()%>/admin/Menu/uploadProc.jsp" onSubmit="return validateForm()">
+			<form name="uploadFrm" method="post" enctype="multipart/form-data" action="<%=request.getContextPath()%>/api/admin/coupon">
 				<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 					<thead>
 						<tr>
@@ -59,7 +59,7 @@
 							          <div class="input-group-text" style="margin-bottom:25px">쿠폰 사용가능 카테고리</div>
 							          <div class="input-group-text">컨트롤을 누르고 여러개를 선택할수 있습니다</div>
 							        </div>
-								<select class="form-select" multiple aria-label="Default select example" name="category" id="category" style="height:23vh">
+								<select class="form-select" multiple aria-label="Default select example" name="category" id="category" style="height:20vh">
 									<option selected value="단품">단품</option>
 									<option selected value="음료">음료</option>
 									<option selected value="세트">세트</option>
@@ -79,7 +79,7 @@
 						</tr>
 						<tr>
 							<td colspan="5">
-								<textarea class="form-control" name="menu_content" maxlength="2048" style="height: 150px; width:100%" placeholder="상품설명" required></textarea>
+								<textarea class="form-control" name="menu_content" maxlength="2048" style="height: 150px; width:100%" placeholder="쿠폰 설명" required></textarea>
 							</td>
 						</tr>
 					</tbody>
@@ -90,15 +90,6 @@
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	
-	<script>
-	function validateForm() {
-	    var menuPrice = document.getElementById("menu_price").value;
-	    if (menuPrice == null || menuPrice.trim() === "" || isNaN(menuPrice)) {
-	        alert("가격은 숫자로 입력하세요.");
-	        return false;
-	    }
-	}
-	</script>
 	
 	</body>
 </html>
