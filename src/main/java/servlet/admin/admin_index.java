@@ -42,7 +42,7 @@ public class admin_index extends HttpServlet {
             }
     		if (type.equals("all")) {
     		 order_list = new Orders_Mgr().getAllOrders();
-    		}
+    		} 
     		String json = null;
     		 json = new Gson().toJson(order_list);
     		
