@@ -101,7 +101,7 @@
 %>
 window.addEventListener('DOMContentLoaded', function() {
 sleep(1)
-    updateMenu("all");
+    updateMenu("all", 1);
 });
 <script>
 function loadContent(url) {

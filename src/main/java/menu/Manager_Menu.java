@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -911,6 +912,59 @@ public class Manager_Menu {
 					pool.freeConnection(con);
 				}
 				return list;
+			}
+	
+		
+		// 3. 회계 관리 페이지 - 거래 내역 페이지 분활
+		public Map<String, Object> getSalesList2(int pageNum) {
+			List<String> list = new Vector<>();
+			Map<String, Object> res = new HashMap<String, Object>();
+			
+		        	
+		        	Connection con = null;
+					PreparedStatement pstmt = null;
+					ResultSet rs = null;
+					String sql = null;
+			
+			try {
+				con = pool.getConnection();
+				sql = "select * from orders LIMIT 10 OFFSET ?";
+			    pstmt = con.prepareStatement(sql);
+			    pstmt.setInt(1,  (pageNum - 1) * 10);
+			    rs = pstmt.executeQuery();
+				while (rs.next()) {
+					Orders_Bean vo = new Orders_Bean();
+					vo.setOrder_no(rs.getInt("order_no"));
+					vo.setOrder_time(rs.getTimestamp("order_time"));
+					vo.setOrder_foods(rs.getString("order_foods"));
+					vo.setOrder_price(rs.getInt("order_price"));
+					vo.setOrder_discount(rs.getInt("order_discount"));
+					vo.setOrder_coupon(rs.getString("order_coupon"));
+					vo.setOrder_type(rs.getString("order_type"));
+					vo.setOrder_add_mile(rs.getBoolean("order_add_mile"));
+					vo.setOrder_is_maked(rs.getBoolean("order_is_maked"));
+					  list.add(vo);
+				}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					pool.freeConnection(con);
+				}
+			
+			try {
+				con = pool.getConnection();
+				sql = "select count(\"order_no\") as count from orders";
+			    pstmt = con.prepareStatement(sql);
+			    pstmt.setInt(1,  (pageNum - 1) * 10);
+			    rs = pstmt.executeQuery();
+			    res.put("length", rs.getInt("count"));
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					pool.freeConnection(con);
+				}
+				res.put("data", list);
+				return res;
 			}
 	
 		// 3. 회계 관리 페이지 - 재료 입고
