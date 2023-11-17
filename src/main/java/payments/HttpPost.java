@@ -22,6 +22,7 @@ public class HttpPost {
 		String responseData = "";	    	   
 		BufferedReader br = null;
 		StringBuffer sb = null;
+		StringBuffer eb = null;
 	    
 		//메소드 호출 결과값을 반환하기 위한 변수
 		String returnData = "";
@@ -55,6 +56,14 @@ public class HttpPost {
 			String responseCode = String.valueOf(conn.getResponseCode());
 			System.out.println("http 응답 코드 : "+responseCode);
 			//http 요청 후 응답 받은 데이터를 버퍼에 쌓는다
+			
+			/*BufferedReader er = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "UTF-8"));	
+			eb = new StringBuffer();	       
+			while ((responseData = er.readLine()) != null) {
+				eb.append(responseData); //StringBuffer에 응답받은 데이터 순차적으로 저장 실시
+			}
+			
+			System.out.println("http 응답 데이터 : "+eb.toString());*/
 			
 			br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));	
 			sb = new StringBuffer();	       
