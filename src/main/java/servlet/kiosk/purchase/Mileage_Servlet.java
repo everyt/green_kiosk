@@ -1,11 +1,11 @@
 package servlet.kiosk.purchase;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -17,12 +17,14 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import user.Member_Mgr;
 import mile.Mileage_VO;
+import user.Member_Mgr;
 
 @WebServlet("/api/kiosk/purchase/mileage")
 public class Mileage_Servlet extends HttpServlet {
 	private static final long serialVersionUID = 822377164049874508L;
+    private static final Logger logger = Logger.getLogger(Coupon_Servlet.class.getName());
+    private static final String LOGGER_NAME = "Mileage_Servlet";
 
 	private Gson gson;
 	private Member_Mgr member_mgr;
@@ -52,31 +54,34 @@ public class Mileage_Servlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		logger.info(LOGGER_NAME + ": Processing HTTP POST request");
+		
 		PrintWriter out = res.getWriter();
-		
-		BufferedReader reader = req.getReader();
-		StringBuilder sb = new StringBuilder();
-		String line;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line);
-		}
-		String mileage = sb.toString();
-		
-		if (mileage == null || mileage.isEmpty()) {
-			res.sendError(400, "Parameter is null");
+
+    	String requestBody = ServletUtils.readRequestBody(req);
+
+		if (requestBody == null || requestBody.isEmpty()) {
+			res.sendError(400, "RequestBody is null");
+			logger.info(LOGGER_NAME + ": Catch null parameter in HTTP POST request.");
+			logger.severe("An error occurred: HTTP POST request' body is null");
 			return;
 		}
 		
 		try {
-			mileage = URLDecoder.decode(mileage, "UTF-8");
+			requestBody = URLDecoder.decode(requestBody, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			res.sendError(400, "Parameter is not encode by RFC-3986");
-			e.printStackTrace();
+			res.sendError(400, "RequestBody is not encode by RFC-3986");
+			logger.info(LOGGER_NAME + ": Catch not encoded by RFC-3986 parameter in HTTP POST request.");
+			logger.severe("An error occurred while decoding coupon: " + e.getMessage());
           return;
 		}
+		
+		String endPoint = req.getServletPath();
+		
+		logger.info(LOGGER_NAME + ": Processing HTTP POST request by \"" + endPoint + "\"");
 
 		Type type = new TypeToken<Mileage_VO>() {}.getType();
-		Mileage_VO mileage_vo = gson.fromJson(mileage, type);
+		Mileage_VO mileage_vo = gson.fromJson(requestBody, type);
 		if (mileage_vo.getType().equals("phoneNumber")) {
 			if (member_mgr.checkPhone(mileage_vo.getValue())) {
 				out.write(gson.toJson(mileage_vo));
