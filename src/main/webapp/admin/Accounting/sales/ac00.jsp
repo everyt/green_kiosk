@@ -5,11 +5,14 @@
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="com.google.gson.reflect.TypeToken" %>
 <jsp:useBean id="menuMgr" class="menu.Manager_Menu"/>
 
 <%
+	Integer curpage = Integer.parseInt(String.valueOf(request.getParameter("page")));
+	System.out.println(curpage);
 	Gson gson = new Gson();
      //페이징을 위한 변수 선언
     int totalRecode = 0;     //전체 글의 갯수
@@ -22,9 +25,12 @@
     int totalBlock=0; //전체 블럭수
     int start = 0;   //orders테이블의 selct시작번호
     int end = 10;    //시작번호로 부터 가져올 selec의 개수
- 	Vector<Orders_Bean> vlist = null;
+ 	Map<String, Object> res = new HashMap<String, Object>();
 	int numb = 0;
-	   vlist = menuMgr.getMgrorderList();
+		res = menuMgr.getSalesList2(curpage);
+		System.out.println(String.valueOf(res.get("data")));
+		List<Orders_Bean> vlist = gson.fromJson(String.valueOf(res.get("data")), new TypeToken<List<Orders_Bean>>(){}.getType());
+	   
 	   
 	   if(request.getParameter("nowPage") !=null) {
 		   nowPage = Integer.parseInt(request.getParameter("nowPage"));
@@ -88,7 +94,7 @@ table {
     <br>
 			 <%     
 			          
-			           listSize = vlist.size();
+			           listSize = Integer.parseInt(String.valueOf(res.get("length")));
                	       if (vlist.isEmpty()) {
                	    	   out.println("등록된 목록이 없습니다.");
                	    	   
@@ -103,7 +109,7 @@ table {
 				  </thead>
 				  <tbody class="getMenuList" id="getMenuList">
 					<tr align="center" bgcolor="#D0D0D0" height="120%">
-						<td>번호</td>
+						<td>번호</td> 
 						<td>판매 일시</td>
 						<td>판매 내역</td>
 						<td>판매 금액</td>
@@ -128,9 +134,46 @@ table {
 				    	String order_coupon = bean.getOrder_coupon();
 				    	String order_type = bean.getOrder_type();
 				    	boolean order_use_mile = bean.isOrder_use_mile();
-				    	int order_use_amount = bean.getOrder_use_amount();
+				        boolean order_is_maked = bean.isOrder_is_maked();
 				    	
+				        if (i < 10) {
+				        	System.out.println(i);
 				    %>
+				    <tr>
+						<td align="center">
+ 						   <%=order_no%>
+						</td>
+						<td align="center">
+ 						   <%=order_time%>
+						</td>
+						<td align="center">
+ 						   <%=order_foods%>
+						</td>
+						<td align="center">
+ 						   <%=order_price%>
+						</td>
+						<td align="center">
+ 						   <%=order_discount%>
+						</td>
+						<td align="center">
+ 						   <%=order_coupon%>
+						</td>
+						<td align="center">
+ 						   <%=order_type%>
+						</td>
+						<td align="center">
+ 						   <%=order_use_mile%>
+						</td>
+						<td align="center">
+ 						   <%=order_is_maked%>
+						</td>
+						<td align="center">
+						   <a href="javascript:code02('<%=numb%>')">수정</a>
+						</td>
+						<td align="center">
+						   <a href="javascript:code03('<%=numb%>')">삭제</a>
+						</td>
+					</tr>
 				    <tr>
 				       <td align="center">
 				       <%=listSize-((nowPage-1)*numPerPage)-i%>
@@ -140,7 +183,8 @@ table {
               <a href="javascript:read(<%=order_no%>)"> </a>
               </td>
               </tr>
-				<%}//for%>
+				<%} else {}
+				        }//for%>
 				<%
 				}//if
 				%> 
@@ -176,6 +220,11 @@ table {
 	function deleteOrder(order_no)
 	{
 		location.href = "ac00Delete.jsp?order_no=" + order_no; 
+	}
+	
+	function updateOrder1(updateOrder1Bean)
+	{
+		location.href = "ac00up.jsp?order_no=" + order_no; 
 	}
 	
 </script>

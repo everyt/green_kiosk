@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import DBconnector.DBConnectionMgr;
 import orders.Orders_Bean;
 
+
 public class Orders_Mgr {
 	private DBConnectionMgr pool;
 	private Connection conn;
@@ -238,5 +239,71 @@ public class Orders_Mgr {
 			this.Closer();
 		}
 		return flag;
+	}
+	// 3 관리자 페이지 거래 내역 수정.
+	public boolean updateOrder1(Orders_Bean order) {
+		boolean flag = false;
+		Orders_Bean bean = new Orders_Bean();
+		try {
+			this.Initializer("UPDATE `orders` SET `order_time` = ?, `order_foods` = ?, `order_price` = ?, `order_discount` = ?, `order_coupon` = ?, `order_type` = ?, `order_use_mile` = ?, `order_use_mile_amount` = ?, `order_add_mile` = ?, `order_add_mile_amount` = ?, `order_is_maked` = ?, `order_who` = ?, `order_is_togo` = ? WHERE `order_no` = ?");
+			this.pst.setTimestamp(1, order.getOrder_time());
+			this.pst.setString(2, order.getOrder_foods());
+			this.pst.setInt(3, order.getOrder_price());
+			this.pst.setInt(4, order.getOrder_discount());
+			this.pst.setString(5, order.getOrder_coupon());
+			this.pst.setString(6, order.getOrder_type());
+			this.pst.setBoolean(7, order.isOrder_use_mile());
+			this.pst.setInt(8, order.getOrder_use_amount());
+			this.pst.setBoolean(9, order.isOrder_add_mile());
+			this.pst.setInt(10, order.getOrder_add_amount());
+			this.pst.setBoolean(11, order.isOrder_is_maked());
+			this.pst.setString(12, order.get_who());
+			this.pst.setBoolean(13, order.isOrder_is_togo());
+			this.pst.setInt(14, order.getOrder_no());
+			if (this.pst.executeUpdate() == 1) {
+				flag = true;
+			};
+		} catch (Exception error) {
+			error.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+		return flag;
+	}
+	// 3 관리자 페이지 수정을 위한 목록업데이트
+	public Orders_Bean getord1(int numb) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Orders_Bean bean = null;
+		try {
+			con = pool.getConnection();
+			String sql = "select * from orders where numb = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, numb);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				bean = new Orders_Bean();
+				  bean.setOrder_no(this.rs.getInt("order_no"));
+		            bean.setOrder_time(this.rs.getTimestamp("order_time"));
+		            bean.setOrder_foods(this.rs.getString("order_foods"));
+		            bean.setOrder_price(this.rs.getInt("order_price"));
+		            bean.setOrder_discount(this.rs.getInt("order_discount"));
+		            bean.setOrder_coupon(this.rs.getString("order_coupon"));
+		            bean.setOrder_type(this.rs.getString("order_type"));
+		            bean.setOrder_use_mile(this.rs.getBoolean("order_use_mile"));
+		            bean.setOrder_use_amount(this.rs.getInt("order_use_mile_amount"));
+		            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
+		            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
+		            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
+		            bean.set_who(this.rs.getString("order_who"));
+		            bean.setOrder_is_togo(this.rs.getBoolean("order_is_togo"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con);
+		}
+		return bean;
 	}
 }
