@@ -1,53 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="java.util.Vector" %>
-<%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.Map" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Collection" %>
-<%@ page import="com.google.gson.Gson" %>
-<%@ page import="com.google.gson.reflect.TypeToken" %>
-<%@ include file="/admin/layouts/BeanManager.jsp" %>
-<%@ page import="orders.Orders_Bean" %>
-<%@ page import="orders.Orders_Mgr" %>
+
+
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/index_main.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/demo/chart-bar-demo.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/demo/chart-area-demo.js"></script>
+
 <script>
 const foods = new Map();
 </script>
-<%
-Orders_Mgr mgr = new Orders_Mgr();
-Vector<Orders_Bean> orders = mgr.getAllOrders();
-Gson gson = new Gson();
-List<List<Map<String, Object>>> all_foods = new ArrayList<List<Map<String, Object>>>();
-List<String> keys = new ArrayList<String>();
-List<String> values = new ArrayList<String>();
-for (Orders_Bean order : orders) {
-	List<Map<String, Object>> foods = gson.fromJson(order.getOrder_foods(), new TypeToken<List<Map<String,Object>>>(){}.getType());
-	for(Map<String, Object> food : foods) {
-		List<String> list = new ArrayList<String>(food.keySet());
-		Collection<Object> value1 = food.values();
-
-		for (String key: list) {
-			keys.add("\""+key+"\"");
-		}
-		
-		for (Object value : value1) {
-			values.add("\""+String.valueOf(value)+"\"");
-		}
-		
-	}
-}
-
-%>
+<%@ include file ="/admin/layouts/index/index_parsing.jsp" %>
 <script>
 foods.set("data_value", '<%=values.toString()%>')
 foods.set("data_key", '<%=keys.toString() %>')
 const keys = JSON.parse(foods.get("data_key"))
 const values = JSON.parse(foods.get("data_value"))
+
 let foods_list = new Array();
 let foods_map = new Map();
 let i = 0
@@ -60,7 +27,6 @@ keys.forEach((entry) => {
 	foods_map.set(entry, values[i])
 	i = i + 1
 })
-
 
 
 let totalAmountByName = new Map();
@@ -100,10 +66,7 @@ console.log("Total Amount by Name:", totalAmountByName);
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">차트 페이지</h1>
         <p class="lead text-body-secondary"></p>
-        <p>
-          <a href="javascript:void(0)" class="btn btn-primary my-2" onclick="openPopup('<%=request.getContextPath()%>/admin/Menu/upload.jsp')">제품 등록하기</a>
-          <!-- <a href="#" class="btn btn-secondary my-2"></a> -->
-        </p>
+
       </div>
     </div>
   </section>
@@ -114,34 +77,18 @@ console.log("Total Amount by Name:", totalAmountByName);
 
 <!-- not repeat div -->
       </div>
-		      <div class="chart-pie pt-4 pb-2">
-		    <canvas id="myPieChart"></canvas>
-		</div>
-                    <div class="row">
+      
+<script type="text/javascript" src="<%=request.getContextPath() %>/assets/js/admin/index/chart/chart bar.js"></script>      
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-                        <!-- Earnings (Monthly) Card Example -->
+<div>
+<canvas id="myChart" style="display: block; box-sizing: border-box; height: 300px; width: 1200px;" width="1200"></canvas>
+</div>
 
+<div>
+<canvas id="myChart2"  style="display: block; box-sizing: border-box; height: 232px; width: 696px;" width="696"></canvas>
+</div>
 
-                        <!-- Pending Requests Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Content Row -->
 
                     <div class="row">
 

@@ -365,11 +365,19 @@ for (String key: list) {
 %>
 page_data.set("data_value", '<%=a_foods.values()%>')
 page_data.set("data_key", '<%=keys.toString() %>')
-let keys = JSON.parse(page_data.get("data_key")).entries()
-let values = JSON.parse(page_data.get("data_value")).entries()
-
+const keys = JSON.parse(foods.get("data_key"))
+const values = JSON.parse(foods.get("data_value"))
+let foods_list = new Array();
+let foods_map = new Map();
+let i = 0
 keys.forEach((entry) => {
-	foods.set(entry[1], values.next().value[1])
+	
+	if (entry === "index" && i != 0) {
+		foods_list.unshift(foods_map);
+		foods_map = new Map();
+	}
+	foods_map.set(entry, values[i])
+	i = i + 1
 })
 <%
 %>

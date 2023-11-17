@@ -5,7 +5,7 @@
 		document.readFrm.submit();
 	}
 	
-	function updateMenu(menuType) {
+	function updateMenu(menuType, page) {
 		console.log('Received menuType:', menuType);
 	    $.ajax({
 	        type: "POST",
@@ -22,6 +22,8 @@
 	                
 	                // 예시: 받아온 목록을 HTML로 만들어 어딘가에 추가
 	                var chatListHtml = '';
+	                let maxpage = response.length / 10;
+	                console.log(Math.round(maxpage))
 	                for (var i = 0; i < response.length; i++) {
 	                    // 각각의 값을 변수로 가져오기
 	                    var order_no = response[i].order_no;
@@ -39,8 +41,20 @@
 			            var order_who = response[i].order_who;
 			            var order_is_togo = response[i].order_is_togo;
 
-
-				var htmlTemplate =
+						let pagemin = page * 9;
+						if (page == 1) {
+							pagemin = 0;
+						}
+						if (page / 10 > 1) {
+	                        startpage = Math.floor((page/10))*10
+	                        endpage = Math.floor((page/10))*10 + 1 + 10
+	                    }else{
+	                        startpage = 1
+	                        endpage = 11
+	                    }
+						let pagemax = pagemin + 9;
+						if (i >= pagemin && i < pagemax) {
+						var htmlTemplate =
 									
 								    '<tr>' +
 								        '<td align="center">' + order_no + '</td>' +
@@ -57,15 +71,16 @@
 								        '<td align="center">' + order_add_mile + '</td>' +
 								        '<td align="center">' + order_is_maked + '</td>' +
 								        '<td>' +
-								            '<input type="button" value="수정">' +
+								            '<input type="button" value="수정" onclick="update(\'' + order_no + '\')">' +
 								        '</td>' +
 								        '<td>' +
 								            '<input type="button" value="삭제" onclick="deleteOrder(\'' + order_no + '\')">' +
 								        '</td>' +
 								    '</tr>';
-
-	                    // HTML에 추가
-	                    chatListHtml += htmlTemplate;                    
+								      // HTML에 추가
+	                    chatListHtml += htmlTemplate; 
+							}
+	                                     
 	                   }
 	                
 	                // Update the content of the main element
@@ -81,9 +96,22 @@
 	        }
 	    });
 	}
+	
+window.addEventListener('DOMContentLoaded', function() {
+    updateMenu(menuType, 1);
+});
 
+
+// 3. 관리자 페이지 - 거래내역 삭제
 function deleteOrder(order_no, callback) {
     location.href = "./sales/ac00Delete.jsp?order_no=" + order_no;
+    if (typeof callback == 'function') {
+		callback();
+	}
+}
+// 3 . 관리자 페이지 - 거래내역 수정
+function deleteOrder(order_no, callback) {
+    location.href = "./sales/ac00up.jsp?order_no=" + order_no;
     if (typeof callback == 'function') {
 		callback();
 	}
