@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class index
  */
-@WebServlet({ "/index", "/setMenu", "/dessert", "/drink" })
+@WebServlet({ "/index", "/setMenu", "/dessert", "/drink", "/best", "/recommand"})
 public class Menu_Screen extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -43,6 +43,14 @@ public class Menu_Screen extends HttpServlet {
 		
 		if (endPoint.equals("/drink")) {
 			RequestDispatcher rd = request.getRequestDispatcher("/index/page/page4.jsp");
+			rd.forward(request, response);
+		}
+		if (endPoint.equals("/best")) {
+			RequestDispatcher rd = request.getRequestDispatcher("/index/page/best.jsp");
+			rd.forward(request, response);
+		}
+		if (endPoint.equals("/recommand")) {
+			RequestDispatcher rd = request.getRequestDispatcher("/index/page/recommand.jsp");
 			rd.forward(request, response);
 		}
 	}
