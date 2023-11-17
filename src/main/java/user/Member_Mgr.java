@@ -427,15 +427,15 @@ public boolean change_pw1(String mem_id) {
 	Connection con = null;
 	PreparedStatement pstmt = null;
 	boolean flag = false;
-	System.out.println("change_pw1 메서드 접근");
+	//System.out.println("change_pw1 메서드 접근");
 	try {
 		con = pool.getConnection();
 		String sql = "delete from member where mem_id = ? ";
 		System.out.println(sql);
 		pstmt = con.prepareStatement(sql);
-		System.out.println("change_pw1 쿼리 실행");
+		//System.out.println("change_pw1 쿼리 실행");
 		//String gMem_id = bean.getMem_id();
-		System.out.println("삭제 하려는 회원 아이디 = " + mem_id);
+		//System.out.println("삭제 하려는 회원 아이디 = " + mem_id);
 		pstmt.setString(1, mem_id);
 		int count = pstmt.executeUpdate();
 		if (count > 0)
