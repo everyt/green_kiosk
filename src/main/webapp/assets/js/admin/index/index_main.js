@@ -14,9 +14,14 @@ function updateMenu(menuType) {
             if (response && response.length > 0) {
                 // Separate concerns: processing data and updating HTML
                 var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales } = processMenuData(response);
-
+				
+				let totalAmountByNameCookie = getCookieValue("totalAmountByName");
+				let totalAmountByNameCookieObject = JSON.parse(totalAmountByNameCookie);
+				let totalAmountByNameFromCookie =  new Map(Object.entries(totalAmountByNameCookieObject));
+				totalAmountByNameFromCookie.forEach((value, key) => {
+				});
                 // Update HTML
-                updateHTML(priceSumDay, priceSumWeek, priceSumMonth);
+                updateHTML(priceSumDay, priceSumWeek, priceSumMonth, totalAmountByNameFromCookie, totalAmountByNameCookie);
 
             } else {
                 console.error("No data received or data is empty.");
@@ -56,33 +61,19 @@ function processMenuData(response) {
             priceSumMonth += order_price;
         }
         
-            for (var j = 0; j < order_foods.length; j++) {
-                var foodItem = order_foods[j];
+        
+for (var j = 0; j < order_foods.length; j++) {
+    var foodItem = order_foods[j];
 
-                if (foodItem) {
-                    var foodName = foodItem.name;
-                    var foodAmount = parseInt(foodItem.amount);
-                    var foodPrice = parseFloat(foodItem.price);
+}
 
-                    if (foodCount[foodName]) {
-                        foodCount[foodName] += foodAmount;
-                    } else {
-                        foodCount[foodName] = foodAmount;
-                    }
 
-                    if (foodSales[foodName]) {
-                        foodSales[foodName] += foodAmount * foodPrice;
-                    } else {
-                        foodSales[foodName] = foodAmount * foodPrice;
-                    }
-                }
-            }
     	}
 
     return { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales };
 }
 
-function updateHTML(priceSumDay, priceSumWeek, priceSumMonth) {
+function updateHTML(priceSumDay, priceSumWeek, priceSumMonth, totalAmountByNameFromCookie) {
 var htmlTemplate =
     '<div class="col-xl-3 col-md-6 mb-4">' +
     createCard2('일일 매출', priceSumDay) +
@@ -92,8 +83,11 @@ var htmlTemplate =
     '</div>' +
     '<div class="col-xl-3 col-md-6 mb-4">' +
     createCard2('월간 매출', priceSumMonth) +
+    '</div>' + 
+    '<div class="col-xl-3 col-md-6 mb-4>' +
+    createAmount(totalAmountByNameFromCookie) + 
     '</div>';
-    $('.getMenuList').html(htmlTemplate);
+    $('.getMenuList').empty().html(htmlTemplate);
 }
 
 
@@ -164,6 +158,24 @@ function createCard2(title, amount) {
     );
 }
 
+
+function createAmount(totalAmountByNameFromCookie) {
+    return (
+        `<div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">판매 수량</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">${cookieSeparate(totalAmountByNameFromCookie)} </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>`
+    );
+}
 	
 function openPopup(url) {
   var popupWidth = 500;
@@ -172,5 +184,30 @@ function openPopup(url) {
   var popupY = (window.screen.height/2) - (popupHeight/2);
   var popup = window.open(url, 'PopupWindow', 'width=popupWidth, height=popupHeight, scrollbars=yes, left=popupX, top=popupY');
 }
+
+
+function getCookieValue(cookieName) {
+	const name = cookieName + "=";
+	const decodedCookie = decodeURIComponent(document.cookie);
+	const cookieArray = decodedCookie.split(';');
+		
+	for (let i = 0; i < cookieArray.length; i++) {
+		let cookie = cookieArray[i].trim();
+		if (cookie.indexOf(name) === 0) {
+			return cookie.substring(name.length, cookie.length);
+		}
+	}
+	return "";
+}
+
+function cookieSeparate(cookieObject) {
+    const keyValuePairs = Array.from(cookieObject.entries()).map(([key, value]) => `${key}: ${value}`);
+    
+    // Join the array into a single string
+    return keyValuePairs.join("<br>");
+}
+
+
+
 
 
