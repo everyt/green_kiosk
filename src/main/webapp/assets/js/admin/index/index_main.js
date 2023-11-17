@@ -1,4 +1,6 @@
 var menuType = "all";
+var priceSumdaily = [0,0,0,0,0,0,0];
+var priceSumDate = ['','','','','','',''];
 
 function updateMenu(menuType) {
     document.cookie = "menuType=" + menuType;
@@ -13,15 +15,17 @@ function updateMenu(menuType) {
         success: function (response) {
             if (response && response.length > 0) {
                 // Separate concerns: processing data and updating HTML
-                var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales } = processMenuData(response);
+                var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily } = processMenuData(response);
+                
 				
-				let totalAmountByNameCookie = getCookieValue("totalAmountByName");
+				let	totalAmountByNameCookie = getCookieValue("totalAmountByName");
 				let totalAmountByNameCookieObject = JSON.parse(totalAmountByNameCookie);
+				
 				let totalAmountByNameFromCookie =  new Map(Object.entries(totalAmountByNameCookieObject));
 				totalAmountByNameFromCookie.forEach((value, key) => {
 				});
                 // Update HTML
-                updateHTML(priceSumDay, priceSumWeek, priceSumMonth, totalAmountByNameFromCookie, totalAmountByNameCookie);
+                updateHTML(priceSumDay, priceSumWeek, priceSumMonth, priceSumdaily);
 
             } else {
                 console.error("No data received or data is empty.");
@@ -41,20 +45,34 @@ function processMenuData(response) {
     var priceSumWeek = 0;
     var priceSumMonth = 0;
     var priceSumYear = 0;
+    var allOrderFoods = [];
+    var allTime = [];
     var currentDate = new Date().toISOString().slice(0, 10);
-
+	var currentDay = new Date(currentDate).getDay();
+	
+	var daysOfWeek = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+	var dayOfWeekString = daysOfWeek[currentDay];
+	
     for (var i = 0; i < response.length; i++) {
         var order_time = response[i].order_time;
         var orderDate = new Date(order_time).toISOString().slice(0, 10);
         var order_price = response[i].order_price;
-        var order_foods = response[i].order_foods;
-       
-        
+	    var order_foods = response[i].order_foods; // 주문 음식 정보를 JSON으로 파싱
+       allOrderFoods.push(order_foods);
+       allTime.push(order_time);   
+	    var orderDay = new Date(orderDate).getDay();
+	    
+	    
         if (orderDate == currentDate) {
             priceSumDay += order_price;
-			} 
+		} 
+		
         if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) < 7) {
             priceSumWeek += order_price;
+      		  if (!priceSumDate.includes(orderDate)) {
+        			priceSumDate[orderDay] = orderDate; 
+        			}
+            priceSumdaily[orderDay] += order_price;
         }
 		
         if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) <= 30) {
@@ -62,15 +80,8 @@ function processMenuData(response) {
         }
         
         
-for (var j = 0; j < order_foods.length; j++) {
-    var foodItem = order_foods[j];
-
-}
-
-
-    	}
-
-    return { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales };
+    }   
+    return { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily };
 }
 
 function updateHTML(priceSumDay, priceSumWeek, priceSumMonth, totalAmountByNameFromCookie) {
@@ -83,9 +94,6 @@ var htmlTemplate =
     '</div>' +
     '<div class="col-xl-3 col-md-6 mb-4">' +
     createCard2('월간 매출', priceSumMonth) +
-    '</div>' + 
-    '<div class="col-xl-3 col-md-6 mb-4>' +
-    createAmount(totalAmountByNameFromCookie) + 
     '</div>';
     $('.getMenuList').empty().html(htmlTemplate);
 }
@@ -159,23 +167,8 @@ function createCard2(title, amount) {
 }
 
 
-function createAmount(totalAmountByNameFromCookie) {
-    return (
-        `<div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">판매 수량</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">${cookieSeparate(totalAmountByNameFromCookie)} </div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>`
-    );
-}
+
+
 	
 function openPopup(url) {
   var popupWidth = 500;
@@ -206,8 +199,3 @@ function cookieSeparate(cookieObject) {
     // Join the array into a single string
     return keyValuePairs.join("<br>");
 }
-
-
-
-
-
