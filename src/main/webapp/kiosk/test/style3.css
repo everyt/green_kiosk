@@ -207,7 +207,7 @@
     }   
     
 img {
-	width: 230px;
+	width: 200px;
     height: 300px;
 }    
  .item1:hover {
@@ -497,7 +497,7 @@ img {
 
 .potato{
 		grid-column: 1 / 9;
-	    grid-row: 1/4;
+	    grid-row: 1/2;
 	
 	
 }
@@ -564,6 +564,294 @@ img {
     color: #000
 }
 
+.page1{
+	
+	background-color: #ccc;
+	grid-row : 5/6;
+	grid-column : 4/5;
+	border: 1px solid #181818;
+ 	padding : 8px 16px;
+	border: none;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    writing-mode: vertical-lr;
+	
+}
+
+.page2{
+	
+	background-color: #ccc;
+	grid-column : 1/2;
+	grid-row: 5/6;
+	border: 1px solid #181818;
+ 	padding : 8px 16px;
+	border: none;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    writing-mode: vertical-lr;
+}
+.page2-1{
+	
+	background-color: #ccc;
+	grid-column : 3/3;
+	grid-row: 7/8;
+	border: 1px solid #181818;
+ 	padding : 8px 16px;
+	border: none;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+
+
+.page3{
+	
+	background-color: #ccc;
+	grid-column : 2/2;
+	grid-row: 7/8;
+	border: 1px solid #181818;
+ 	padding : 8px 16px;
+	border: none;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.page5{
+	
+	background-color: #ccc;
+	grid-column : 3/6;
+	grid-row: 3/3;
+	border: 1px solid #181818;
+ 	padding : 8px 16px;
+	border: none;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+
+.page1:hover {
+    background-color: #ccc;
+    color: #000
+}
+.page2:hover {
+    background-color: #ccc;
+    color: #000
+}
+
+
+ .item1-2{
+	grid-column: 2 / 3;
+	border: 1px solid #181818;
+ padding : 8px 16px;
+	border: none;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;	
+
+}
+ .rowbox {
+ 	display: flex;
+ 	flex-direction: row;
+ 	justify-content: start;
+ 	items-align: center;
+}
+ .colbox {
+ 	display: flex;
+ 	flex-direction: column;
+ 	justify-content: center;
+ 	items-align: center;
+}
+ .colbox1 {
+ 	display: flex;
+ 	flex-direction: column;
+ 	justify-content: center;
+	writing-mode: vertical-lr;
+	gap: 10px;
+
+}
+
+
+ .item2-2{
+	grid-column: 3 / 4;	
+	border: 1px solid #181818;
+ padding : 8px 16px;
+	border: none;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;	
+}
+ .item3-2{
+	grid-column: 4 / 5;
+        border: 1px solid #181818;
+ padding : 8px 16px;
+	border: none;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;  
+
+}
+ .item4-2{
+	grid-column: 2 / 3;
+        border: 1px solid #181818;
+ padding : 8px 16px;
+	border: none;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+}
+ .item5-2{
+	grid-column: 3 / 4;
+        border: 1px solid #181818;
+	 padding : 8px 16px;
+	border: none;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+}
+ .item6-2{
+	grid-column: 4 / 5;
+        border: 1px solid #181818;
+	 padding : 8px 16px;
+	border: none;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+}
+ .item7-2{
+	grid-column: 2 / 3;
+        border: 1px solid #181818;
+	 padding : 8px 16px;
+	border: none;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+}
+ .item8-2{
+	grid-column: 3 / 4;
+        border: 1px solid #181818;
+	 padding : 8px 16px;
+	border: none;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+}  
+	    
+	    
+	    
+ .item1-2:hover {
+    background-color: #ccc;
+    color: #000
+}
+.item2-2:hover {
+    background-color: #ccc;
+    color: #000
+}
+.item3-2:hover {
+    background-color: #ccc;
+    color: #000
+}
+.item4-2:hover {
+    background-color: #ccc;
+    color: #000
+}
+.item5-2:hover {
+    background-color: #ccc;
+    color: #000
+}
+.item6-2:hover {
+    background-color: #ccc;
+    color: #000
+}
+.item7-2:hover {
+    background-color: #ccc;
+    color: #000
+}
+.item8-2:hover {
+    background-color: #ccc;
+    color: #000
+}
 
 
 
@@ -592,7 +880,6 @@ img {
 
 .modal__container {
   background-color: #fff;
-  padding: 30px;
   max-width: 1500px;
   max-height: 1500px;
   border-radius: 4px;
@@ -647,14 +934,25 @@ img {
   line-height: 1.5;
   color: rgba(0,0,0,.8);
   display: grid;
+  
 }
 
-.modal__content1 {  
+
+.modal__content1 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+  color: rgba(0,0,0,.8);
+  display: grid;
+  grid-template-columns: 7% 1fr 1fr 1fr;
+  
+}
+.modal__content2 {  
   line-height: 2.5;
   color: rgba(0,0,0,.8);
   display: grid;
-  grid-row : 1/4;
-}
+  grid-row : 1/5;
+ }
 
 .modal__btn {
   font-size: .875rem;
@@ -747,3 +1045,13 @@ img {
 .micromodal-slide .modal__overlay {
   will-change: transform;
 }
+
+
+
+
+
+
+
+
+
+
