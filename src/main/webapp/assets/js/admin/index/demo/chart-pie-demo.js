@@ -33,3 +33,21 @@ var myPieChart = new Chart(ctx, {
     cutoutPercentage: 80,
   },
 });
+
+
+function updateChartWithCookieData(cookieName) {
+    value
+    const cookieValue = getCookieValue(cookieName);
+
+    // Parse the cookie JSON data
+    const cookieData = JSON.parse(cookieValue);
+
+    
+    myBarChart.data.labels = Object.keys(cookieData);
+    myBarChart.data.datasets[0].data = Object.values(cookieData);
+
+    
+    myBarChart.update();
+}
+
+updateChartWithCookieData("totalAmountByName");

@@ -13,8 +13,11 @@
 <%@ page import="orders.Orders_Mgr" %>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/index_main.js"></script>
-
-<script>const foods = new Map();</script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/demo/chart-bar-demo.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/demo/chart-area-demo.js"></script>
+<script>
+const foods = new Map();
+</script>
 <%
 Orders_Mgr mgr = new Orders_Mgr();
 Vector<Orders_Bean> orders = mgr.getAllOrders();
@@ -51,16 +54,12 @@ let i = 0
 keys.forEach((entry) => {
 	
 	if (entry === "index" && i != 0) {
-		console.log(foods_map)
 		foods_list.unshift(foods_map);
 		foods_map = new Map();
 	}
-	console.log(entry)
-	console.log(values[i])
 	foods_map.set(entry, values[i])
 	i = i + 1
 })
-console.log(foods_list)
 
 
 
@@ -115,6 +114,9 @@ console.log("Total Amount by Name:", totalAmountByName);
 
 <!-- not repeat div -->
       </div>
+		      <div class="chart-pie pt-4 pb-2">
+		    <canvas id="myPieChart"></canvas>
+		</div>
                     <div class="row">
 
                         <!-- Earnings (Monthly) Card Example -->
@@ -220,7 +222,6 @@ console.log("Total Amount by Name:", totalAmountByName);
     </div>
   </div>
 </main>
-<script src="/docs/5.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+<script src="/docs/5.3/dist/js/bootstrap.bundle.min.js"></script>
+
 
