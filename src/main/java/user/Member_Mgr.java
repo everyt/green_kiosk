@@ -148,6 +148,7 @@ public class Member_Mgr {
 			pool.freeConnection(con, pstmt, rs);
 		}
 	}
+	
 	public String register_Member(String mem_id, String mem_pw, String name, String phone) { //함수제작 나경원
 		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
@@ -420,5 +421,31 @@ public class Member_Mgr {
 		return flag;
 	}
 	
+
+public boolean change_pw1(String mem_id) {
+	DBConnectionMgr pool = new DBConnectionMgr();
+	Connection con = null;
+	PreparedStatement pstmt = null;
+	boolean flag = false;
+	System.out.println("change_pw1 메서드 접근");
+	try {
+		con = pool.getConnection();
+		String sql = "delete from member where mem_id = ? ";
+		System.out.println(sql);
+		pstmt = con.prepareStatement(sql);
+		System.out.println("change_pw1 쿼리 실행");
+		//String gMem_id = bean.getMem_id();
+		System.out.println("삭제 하려는 회원 아이디 = " + mem_id);
+		pstmt.setString(1, mem_id);
+		int count = pstmt.executeUpdate();
+		if (count > 0)
+			flag = true;
+	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+		pool.freeConnection(con, pstmt);
+	}
+	return flag;
 }
 
+}
