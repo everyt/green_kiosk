@@ -1,6 +1,5 @@
 package servlet.kiosk.purchase;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -10,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -28,6 +28,8 @@ import coupon.Coupon_VO;
 @WebServlet({ "/api/kiosk/purchase/coupon", "/api/kiosk/purchase/couponArray" })
 public class Coupon_Servlet extends HttpServlet {
 	private static final long serialVersionUID = 822377164049874508L;
+    private static final Logger logger = Logger.getLogger(Coupon_Servlet.class.getName());
+    private static final String LOGGER_NAME = "Coupon_Servlet";
 
 	private Gson gson;
 	private Coupon_Mgr coupon_mgr;
@@ -57,35 +59,36 @@ public class Coupon_Servlet extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		logger.info(LOGGER_NAME + ": Processing HTTP POST request");
+		
 		PrintWriter out = res.getWriter();
-		
-		BufferedReader reader = req.getReader();
-		StringBuilder sb = new StringBuilder();
-		String line;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line);
-		}
-		String coupon = sb.toString();
-		
-		if (coupon == null || coupon.isEmpty()) {
-			res.sendError(400, "Parameter is null");
+
+    	String requestBody = ServletUtils.readRequestBody(req);
+
+		if (requestBody == null || requestBody.isEmpty()) {
+			res.sendError(400, "RequestBody is null");
+			logger.info(LOGGER_NAME + ": Catch null parameter in HTTP POST request.");
+			logger.severe("An error occurred: HTTP POST request' body is null");
 			return;
 		}
 		
 		try {
-			coupon = URLDecoder.decode(coupon, "UTF-8");
+			requestBody = URLDecoder.decode(requestBody, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			res.sendError(400, "Parameter is not encode by RFC-3986");
-			e.printStackTrace();
+			res.sendError(400, "RequestBody is not encode by RFC-3986");
+			logger.info(LOGGER_NAME + ": Catch not encoded by RFC-3986 parameter in HTTP POST request.");
+			logger.severe("An error occurred while decoding coupon: " + e.getMessage());
           return;
 		}
 
 		String endPoint = req.getServletPath();
 		
+		logger.info(LOGGER_NAME + ": Processing HTTP POST request by \"" + endPoint + "\"");
+		
 		if (endPoint.equals("/api/kiosk/purchase/couponArray")) {
 			
 			Type type = new TypeToken<ArrayList<Coupon_VO>>() {}.getType();
-			List<Coupon_VO> list_coupons_vo = this.verify(gson.fromJson(coupon, type));
+			List<Coupon_VO> list_coupons_vo = this.verify(gson.fromJson(requestBody, type));
 			
 			if (list_coupons_vo == null || list_coupons_vo.isEmpty()) {
 				out.write("[{"
@@ -100,10 +103,10 @@ public class Coupon_Servlet extends HttpServlet {
 		} else if (endPoint.equals("/api/kiosk/purchase/coupon")) {
 			
 			Type type = new TypeToken<Map<String, String>>() {}.getType();
-			Map<String, String> coupon_map = gson.fromJson(coupon, type);
+			Map<String, String> coupon_map = gson.fromJson(requestBody, type);
 			
 			if (coupon_mgr.checkCouponCode(coupon_map.get("code")) > 0) {
-				Coupon_Bean coupon_bean = coupon_mgr.readCouponByCode("code");
+				Coupon_Bean coupon_bean = coupon_mgr.readCouponByCode(coupon_map.get("code"));
 				
 				boolean isLimit = false;
 				boolean isCorrect = false;

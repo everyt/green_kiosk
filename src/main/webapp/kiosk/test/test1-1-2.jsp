@@ -33,7 +33,7 @@
 		</div>
 	</div>
 	
-	<div class="item2" onclick="jumoon()">
+	<div class="item2" onclick="hrefTo2()">
 		<div class="rowbox">
  			<img src="../images/hamburger1.jpg" >
  				<div class="colbox">
@@ -103,6 +103,7 @@
 		</div>	
 	</div>
 
+<!-- 음료수 modal -->
 
 
 <div class= "menu">
@@ -113,6 +114,9 @@
 				<div class= "chucheon1 color3"><h1>선택한 메뉴</h1></div>
 					<div class="qqw">	ㅇㅇㅇㅇ	</div>
 				<div class= "chucheon2 color3"><h1>추천 메뉴</h1></div>
+					<div class="page1" onclick="hrefTo2()"><H1 style="color:black;">다 음</H1></div>		
+					<div class="page3" onclick="back()"><H1 style="color:black;">닫 기</H1></div>		
+				
 
 	<div class="item1-1 ">
 		<div class="rowbox">
@@ -188,7 +192,7 @@
 		<div class="rowbox">
  			<img src="../images/potato3.jpg" >
  				<div class="colbox">
- 				     <H1>웨지 포테이토</H1>
+ 				     <H1>웨지 <br>포테이토</H1>
  					  <h2 style="color:blue;" >3500~</h2>
  				</div>
 		</div>	
@@ -203,14 +207,15 @@
 
 
 
-  <div class="modal micromodal-slide" id="modal-2" aria-hidden="true">
+  <div class="modal micromodal-slide" id="modal-1-1" aria-hidden="true">
     <div class="modal__overlay" tabindex="-1">
       <div class="modal__container1" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-        <main class="modal__content1" id="modal-2-content">
+        <main class="modal__content2" id="modal-2-content">
 				<div class="potato"><h1 style="background-color:#b4fffb">맛을 선택하세요.</h1></div>
 				<div class="potato1"><h1>어니언</h1></div>
 				<div class="potato2"><h1>치즈</h1></div>
 				<div class="potato3"><h1>칠리</h1></div>
+				<div class="page5" id="close_btn" onclick="back1()"><H1 style="color:black;">닫 기</H1></div>		
 				
 		</main>
 	  </div>
@@ -219,10 +224,128 @@
 
 
 
+<!-- 음료수 modal -->
+
+<div class= "menu">
+  <div class="modal micromodal-slide" id="modal-2" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1">
+      <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+        <main class="modal__content1" id="modal-1-content">
+				<div class= "chucheon1 color3"><h1>선택한 메뉴</h1></div>
+									<div class="qqw">	ㅇㅇㅇㅇ	</div>
+	        	<div class= "chucheon2 color3"><h1>추천 메뉴</h1></div>
+					<div class="page2" onclick="back2()"><H1 style="color:black;">이 전</H1></div>		
+					<div class="page2-1" onclick="back2()"><H1 style="color:black;">닫 기</H1></div>		
+					
+
+	<div class="item1-2 ">
+		<div class="rowbox">
+			<img src="../images/cola.jpg" >
+				<div class="colbox">
+				  <H1>데리버거</H1>
+				  <h2 style="color:blue;" >3500~</h2>
+				</div>
+		</div>
+	</div>
+	
+	<div class="item2-2">
+		<div class="rowbox">
+ 			<img src="../images/cola1.jpg" ><div class="item8" onclick="jumoon()">…</div>
+ 				<div class="colbox">
+ 				     <H1>데리버거</H1>
+ 					  <h2 style="color:blue;" >3500~</h2>
+ 				</div>
+		</div>
+	</div>
+	
+	<div class="item3-2">
+		<div class="rowbox">
+ 			<img src="../images/saida.jpg" >
+ 				<div class="colbox">
+ 				     <H1>데리버거</H1>
+ 					  <h2 style="color:blue;" >3500~</h2>
+ 				</div>
+		</div>
+	</div>
+	
+	<div class="item4-2">
+		<div class="rowbox">
+ 			<img src="../images/saida1.jpg" >
+ 				<div class="colbox">
+ 				     <H1>데리버거</H1>
+ 				 	 <h2 style="color:blue;" >3500~</h2>
+ 				</div>
+		</div>
+	</div>
+	
+	<div class="item5-2">
+		<div class="rowbox">
+ 			<img src="../images/milkiseu.jpg" >
+ 				<div class="colbox">
+ 				     <H1>데리버거</H1>
+ 				  	<h2 style="color:blue;" >3500~</h2>
+ 				</div>
+		</div>	
+	</div>
+	
+	<div class="item6-2">
+		<div class="rowbox">
+ 			<img src="../images/mauntindyu.jpg" >
+ 				<div class="colbox">
+ 				     <H1>데리버거</H1>
+ 					  <h2 style="color:blue;" >3500~</h2>
+ 				</div>
+		</div>
+	</div>
+	
+	<div class="item7-2">
+		<div class="rowbox">
+ 			<img src="../images/fanta.jpg" >
+ 				<div class="colbox" onclick="hrefTo3()">
+ 				     <H1>데리버거</H1>
+ 					  <h2 style="color:blue;" >3500~</h2>
+ 				</div>
+		</div>	
+	</div>
+	
+	<div class="item8-2">
+		<div class="rowbox">
+ 			<img src="../images/orange juice.jpg" >
+ 				<div class="colbox">
+ 				     <H1>데리버거</H1>
+ 					  <h2 style="color:blue;" >3500~</h2>
+ 				</div>
+		</div>	
+	</div>
+
+        </main>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
 
+
+
+
+
+
+  <div class="modal micromodal-slide" id="modal-2-1" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1">
+      <div class="modal__container1" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+        <main class="modal__content2" id="modal-2-content">
+				<div class="potato"><h1 style="background-color:#b4fffb">맛을 선택하세요.</h1></div>
+				<div class="potato1"><h1>포도</h1></div>
+				<div class="potato2"><h1>파인애플</h1></div>
+				<div class="potato3"><h1>오렌지</h1></div>
+				<div class="page5" id="close_btn" onclick="back3()"><H1 style="color:black;">닫 기</H1></div>		
+
+		</main>
+	  </div>
+	</div>
+  </div>
 
 
 
@@ -269,46 +392,52 @@
 
 
 <script>
+
 //document.querySelector(".modal micromodal-slide").style.display = 'none';
 //document.querySelector(".modal micromodal-slide").style.display = 'inline-block';
 
-	MicroModal.init();
-
-function modal() {
-	
-
-    const modal = document.querySelector('.modal');
-    const btnOpenPopup = document.querySelector('.btn-open-popup');
-
-    btnOpenPopup.addEventListener('click', () => {
-      modal.style.display = 'block';
-    });
-	
-}	
-	
 MicroModal.init();
 
-	const back = () => {
-	  localStorage.setItem('mobile', false);
-	  location.href = 'main.jsp';
-	}
+const back = (type) => {
+	  MicroModal.close('modal-1');
+
+}
+const back1 = (type) => {
+	  MicroModal.close('modal-1-1');
+
+}
+const back2 = (type) => {
+	  MicroModal.close('modal-2');
+
+}
+const back3 = (type) => {
+	  MicroModal.close('modal-2-1');
+
+}
+
+MicroModal.init();
+
+	
 	const hrefTo = (type) => {
-	  localStorage.setItem('paymentType', type);
 	  MicroModal.show('modal-1');
-	  setTimeout(() => {
-	  }, 2500)
 }	
 	
 	
 	const hrefTo1 = (type) => {
-		  localStorage.setItem('paymentType', type);
+		  MicroModal.show('modal-1-1');
+
+	}	
+	const hrefTo2 = (type) => {
 		  MicroModal.show('modal-2');
+
+	}
+	const hrefTo3 = (type) => {
+		  localStorage.setItem('paymentType', type);
+		  MicroModal.show('modal-2-1');
 		  setTimeout(() => {
 		  }, 2500)
-	}	
-	
-	
-	
+	}
+
 	
 	
 //-------------------------------------------------------------------------------------------------------------------------------------
