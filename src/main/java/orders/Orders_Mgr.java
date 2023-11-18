@@ -87,6 +87,78 @@ public class Orders_Mgr {
 		return vector;
 	}
 	
+	public Vector<Orders_Bean> getAllOrdersByType(int type) {
+		Vector<Orders_Bean> vector = new Vector<Orders_Bean>();
+		try {
+			if(type == 0) {
+			this.Initializer("SELECT * FROM orders");
+			} else if (type == 1) {
+				this.Initializer("SELECT * FROM orders WHERE DATE(order_time) = CURDATE()");
+			} else if (type == 2) {
+				this.Initializer("SELECT * FROM orders WHERE YEAR(order_time) = YEAR(CURDATE()) AND MONTH(order_time) = MONTH(CURDATE()) ");
+			} else if(type == 3) {
+				this.Initializer("SELECT * FROM orders WHERE YEAR(order_time) = YEAR(CURDATE()) AND WEEK(order_time) = WEEK(CURDATE())");
+			}
+			this.rs = this.pst.executeQuery();
+			while (this.rs.next()) {
+				Orders_Bean bean = new Orders_Bean();
+	            bean.setOrder_no(this.rs.getInt("order_no"));
+	            bean.setOrder_time(this.rs.getTimestamp("order_time"));
+	            bean.setOrder_foods(this.rs.getString("order_foods"));
+	            bean.setOrder_price(this.rs.getInt("order_price"));
+	            bean.setOrder_discount(this.rs.getInt("order_discount"));
+	            bean.setOrder_coupon(this.rs.getString("order_coupon"));
+	            bean.setOrder_type(this.rs.getString("order_type"));
+	            bean.setOrder_use_mile(this.rs.getBoolean("order_use_mile"));
+	            bean.setOrder_use_amount(this.rs.getInt("order_use_mile_amount"));
+	            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
+	            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
+	            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
+	            bean.set_who(this.rs.getString("order_who"));
+	            bean.setOrder_is_togo(this.rs.getBoolean("order_is_togo"));
+	            vector.add(bean);
+	        }
+		} catch (Exception error) {
+			error.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+		return vector;
+	}
+	
+	public Vector<Orders_Bean> getAllOrdersByTime(String startDate, String endDate) {
+		Vector<Orders_Bean> vector = new Vector<Orders_Bean>();
+		try {
+			this.Initializer("SELECT * FROM orders WHERE DATE_FORMAT(order_time, '%Y-%m-%d') BETWEEN ? AND ?");
+			this.pst.setString(1 , startDate);
+			this.pst.setString(2, endDate);
+			this.rs = this.pst.executeQuery();
+			while (this.rs.next()) {
+				Orders_Bean bean = new Orders_Bean();
+	            bean.setOrder_no(this.rs.getInt("order_no"));
+	            bean.setOrder_time(this.rs.getTimestamp("order_time"));
+	            bean.setOrder_foods(this.rs.getString("order_foods"));
+	            bean.setOrder_price(this.rs.getInt("order_price"));
+	            bean.setOrder_discount(this.rs.getInt("order_discount"));
+	            bean.setOrder_coupon(this.rs.getString("order_coupon"));
+	            bean.setOrder_type(this.rs.getString("order_type"));
+	            bean.setOrder_use_mile(this.rs.getBoolean("order_use_mile"));
+	            bean.setOrder_use_amount(this.rs.getInt("order_use_mile_amount"));
+	            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
+	            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
+	            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
+	            bean.set_who(this.rs.getString("order_who"));
+	            bean.setOrder_is_togo(this.rs.getBoolean("order_is_togo"));
+	            vector.add(bean);
+	        }
+		} catch (Exception error) {
+			error.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+		return vector;
+	}
+	
 	public Vector<Orders_Bean> getOrderByNo(int no) {
 		Vector<Orders_Bean> vector = new Vector<Orders_Bean>();
 		try {

@@ -6,14 +6,15 @@ let menu_amount = Object.values(totalAmountByNameCookieObject);
 function barChart(){
 	const menuData = menu_name.map((name, index) => ({name, amount : menu_amount[index]}));
 	menuData.sort((a, b) => b.amount - a.amount); //오름 차순 정렬
+	  const top10MenuData = menuData.slice(0, 10); // 상위 10개 아이템만 선택
   const ctx = document.getElementById('myChart');
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: menuData.map(item => item.name),
+      labels: top10MenuData.map(item => item.name),
       datasets: [{
        label:  '판매량',
-        data: menuData.map(item => item.amount),
+        data: top10MenuData.map(item => item.amount),
         borderWidth: 1
       }]
     },
@@ -27,7 +28,7 @@ function barChart(){
       plugins : {
 		  title : {
 			  display : true,
-			  text : "메뉴별 판매량",
+			  text : "당일 메뉴별 판매량(상위 10개)",
 		  }
 	  }
     }
@@ -72,9 +73,42 @@ console.log(priceSumDate);
   });
 }
 
+
+function barChart3(){
+	const menuData = menu_name.map((name, index) => ({name, amount : menu_amount[index]}));
+	menuData.sort((a, b) => b.amount - a.amount); //오름 차순 정렬
+	  const top10MenuData = menuData.slice(0, 20); // 상위 20개 아이템만 선택
+  const ctx = document.getElementById('myChart');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: top10MenuData.map(item => item.name),
+      datasets: [{
+       label:  '판매량',
+        data: top10MenuData.map(item => item.amount),
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      },
+      responsive : true,
+      plugins : {
+		  title : {
+			  display : true,
+			  text : "당월 메뉴별 판매량(상위 20개)",
+		  }
+	  }
+    }
+  });
+}  
 window.addEventListener('DOMContentLoaded', function () {
   barChart();
   barChart2();
+  
 });
 
 
