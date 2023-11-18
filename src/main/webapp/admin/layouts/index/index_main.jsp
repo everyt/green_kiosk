@@ -7,58 +7,17 @@
 
 <script>
 const foods = new Map();
+const foods2 = new Map();
+const foods3 = new Map();
 </script>
 <%@ include file ="/admin/layouts/index/index_parsing.jsp" %>
 <script>
 foods.set("data_value", '<%=values.toString()%>')
 foods.set("data_key", '<%=keys.toString() %>')
-const keys = JSON.parse(foods.get("data_key"))
-const values = JSON.parse(foods.get("data_value"))
-
-let foods_list = new Array();
-let foods_map = new Map();
-let i = 0
-keys.forEach((entry) => {
-	
-	if (entry === "index" && i != 0) {
-		foods_list.unshift(foods_map);
-		foods_map = new Map();
-	}
-	foods_map.set(entry, values[i])
-	i = i + 1
-})
-
-
-let totalAmountByName = new Map();
-
-foods_list.forEach(foods_map => {
-
-    for (const [key, value] of foods_map.entries()) {
-        if (key === "name") {
-
-            let name = value;
-
-            let amount = parseInt(foods_map.get("amount"));
-
-            if (totalAmountByName.has(name)) {
-                totalAmountByName.set(name, totalAmountByName.get(name) + amount);
-            } else {
-                totalAmountByName.set(name, amount);
-            }
-        }
-    }
-});
-
-let totalAmountByNameObject = {};
-totalAmountByName.forEach((value , key) => {
-	totalAmountByNameObject[key] = value;
-});
-
-let totalAmountByNameJSON = JSON.stringify(totalAmountByNameObject);
-document.cookie = "totalAmountByName=" + totalAmountByNameJSON;
-// 결과 출력
-console.log("Total Amount by Name:", totalAmountByName);
-
+foods2.set("data_value2", '<%=values2.toString()%>')
+foods2.set("data_key2", '<%=keys2.toString() %>')
+foods3.set("data_value3", '<%=values3.toString()%>')
+foods3.set("data_key3", '<%=keys3.toString() %>')
 </script>
 <main class="mainContent">
   <section class="py-5 text-center container">
@@ -89,82 +48,11 @@ console.log("Total Amount by Name:", totalAmountByName);
 <canvas id="myChart2"  style="display: block; box-sizing: border-box; height: 232px; width: 696px;" width="696"></canvas>
 </div>
 
+<!-- <div>
+<canvas id="myChart3"  style="display: block; box-sizing: border-box; height: 232px; width: 696px;" width="696"></canvas>
+</div> -->
 
-                    <div class="row">
-
-                        <!-- Area Chart -->
-                        <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
-                                    </div>
-                                    <div class="mt-4 text-center small">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Direct
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Social
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Referral
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                        
+  
                         
     </div>
   </div>

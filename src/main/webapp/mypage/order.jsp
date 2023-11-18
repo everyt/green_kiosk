@@ -16,6 +16,8 @@
 	Orders_Mgr mgr = new Orders_Mgr();
 	String cPath = request.getContextPath();
 	
+	String S_2_foods = "";
+	
 	Gson gson = new Gson();
 
 	Object mem_id = session.getAttribute("mem_id");
@@ -103,7 +105,7 @@ function fnModalPrint() {
 }
 
 function see_detail(food_no) {
-	let food_data = foods.get("food_"+food_no);
+	let food_data = foods_list[food_no-1];
 	let element = document.getElementById("post_foods");
 	element.innerHTML = "";
 	food_data.forEach((food) => {
@@ -111,7 +113,7 @@ function see_detail(food_no) {
 		let amount = food.amount;
 		let price = food.price
 		let allprice = amount * price
-		let html = "<tr><td>"+food_name+"</td><td>"+amount+" 개</td><td>"+allprice+"원</td></tr>"
+		let html = "<tr><td>"+food_name+"</td><td>"+amount+" 개</td><td>"+allprice.toLocaleString()+" 원</td></tr>"
 		element.insertAdjacentHTML("beforeend", html)
 		
 		
@@ -202,17 +204,17 @@ function see_detail(food_no) {
 							Map<String, String> page_data = new HashMap<String, String>();
 							String p_html = "<tr align=\"center\" height=\"5%\"><td width=\"5%\">번호</td><td width=\"25%\">주문 일시</td><td width=\"45%\">주문 음식</td><td width=\"15%\">총 금액</td><td width=\"10%\">영수증 발급</td></tr>";
 							for(Orders_Bean order : orders) {
-								Integer all_money = 0;
+								long all_money = 0;
 								if (runned == false) {
 									runned = true;
 								}
-								
+								S_2_foods += ","+order.getOrder_foods();
 								
 								List<Map<String, Object>> foods = gson.fromJson(order.getOrder_foods(), new TypeToken<List<Map<String,Object>>>(){}.getType());
 								String S_foods = "";
 								
 								for (Map<String, Object> food : foods) {
-									all_money += (Integer.parseInt(String.valueOf(food.get("price"))) * Integer.parseInt(String.valueOf(food.get("amount"))));
+									all_money += ((long) Integer.parseInt(String.valueOf(food.get("price"))) * Integer.parseInt(String.valueOf(food.get("amount"))));
 									if (S_foods.equals("")) {
 										S_foods = food.get("name")+" X "+Integer.parseInt(String.valueOf(food.get("amount")).replace(".0", ""));
 									} else {
@@ -231,7 +233,7 @@ function see_detail(food_no) {
 									rem = 20;
 									paging += 1;
 								} else {
-									p_html += "<tr align=\"center\"><td>"+order.getOrder_no()+"</td><td>"+String.valueOf(order.getOrder_time()).substring(0,19)+"</td><td onclick=\"see_detail("+order.getOrder_no()+")\" style=\"text-overflow:ellipsis; overflow:hidden; white-space:nowrap; padding: 0 90px; cursor: pointer\">"+S_foods+"</td><td>"+format.format(order.getOrder_price())+" 원</td><td><button no=\""+order.getOrder_no()+"\" type=\"button\">영수증 발급</button></td></tr>";
+									p_html += "<tr align=\"center\"><td>"+order.getOrder_no()+"</td><td>"+String.valueOf(order.getOrder_time()).substring(0,19)+"</td><td onclick=\"see_detail("+count+")\" style=\"text-overflow:ellipsis; overflow:hidden; white-space:nowrap; padding: 0 90px; cursor: pointer\">"+S_foods+"</td><td>"+format.format(order.getOrder_price())+" 원</td><td><button no=\""+order.getOrder_no()+"\" type=\"button\">영수증 발급</button></td></tr>";
 								}
 								if (count < 21) {
 									
@@ -241,8 +243,8 @@ function see_detail(food_no) {
 							<tr align="center" height="4.5%">
 								<td width="5%"><%=order.getOrder_no() %></td>
 								<td width="25%"><%=String.valueOf(order.getOrder_time()).substring(0,19) %></td>
-								<td width="45%" onclick="see_detail(<%=order.getOrder_no() %>)" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap; padding: 0 90px; cursor: pointer"><%=S_foods %></td>
-								<td width="15%"><%=all_money %> 원</td>
+								<td width="45%" onclick="see_detail(<%=count %>)" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap; padding: 0 90px; cursor: pointer"><%=S_foods %></td>
+								<td width="15%"><%=format.format(all_money) %> 원</td>
 								<td width="10%"><button no="<%=order.getOrder_no() %>" type="button">영수증 발급</button></td>
 							</tr>
 						<%	
@@ -365,12 +367,12 @@ for (String key: list) {
 %>
 page_data.set("data_value", '<%=a_foods.values()%>')
 page_data.set("data_key", '<%=keys.toString() %>')
-const keys = JSON.parse(foods.get("data_key"))
-const values = JSON.parse(foods.get("data_value"))
+//const keys = JSON.parse(foods.get("data_key"))
+//const values = JSON.parse(foods.get("data_value"))
 let foods_list = new Array();
 let foods_map = new Map();
 let i = 0
-keys.forEach((entry) => {
+/*keys.forEach((entry) => {
 	
 	if (entry === "index" && i != 0) {
 		foods_list.unshift(foods_map);
@@ -378,7 +380,9 @@ keys.forEach((entry) => {
 	}
 	foods_map.set(entry, values[i])
 	i = i + 1
-})
+})*/
+
+foods_list = JSON.parse('[<%=S_2_foods.substring(1)%>]');
 <%
 %>
 
