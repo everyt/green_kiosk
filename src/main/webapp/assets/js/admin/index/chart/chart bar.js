@@ -4,14 +4,17 @@ let menu_name = Object.keys(totalAmountByNameCookieObject);
 let menu_amount = Object.values(totalAmountByNameCookieObject);
 	
 function barChart(){
+	const menuData = menu_name.map((name, index) => ({name, amount : menu_amount[index]}));
+	menuData.sort((a, b) => b.amount - a.amount); //오름 차순 정렬
+	  const top10MenuData = menuData.slice(0, 10); // 상위 10개 아이템만 선택
   const ctx = document.getElementById('myChart');
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: menu_name,
+      labels: top10MenuData.map(item => item.name),
       datasets: [{
        label:  '판매량',
-        data: menu_amount,
+        data: top10MenuData.map(item => item.amount),
         borderWidth: 1
       }]
     },
@@ -21,11 +24,11 @@ function barChart(){
           beginAtZero: true
         }
       },
-      responsive : false,
+      responsive : true,
       plugins : {
 		  title : {
 			  display : true,
-			  text : "메뉴별 판매량",
+			  text : "당일 메뉴별 판매량(상위 10개)",
 		  }
 	  }
     }
@@ -34,6 +37,9 @@ function barChart(){
 
 
 function barChart2() {
+
+const dateValues = priceSumDate.map(date => new Date(date).getDate());
+console.log(priceSumDate);
   const ctx = document.getElementById('myChart2');
   new Chart(ctx, {
     type: 'line',
@@ -58,8 +64,8 @@ function barChart2() {
           text: '요일별 매출 (일주일)',
         },
         datalabels: {
-			formatter: function(value, context) {
-				return contet.chart.data.labels[context.dataIndex];
+			formatter: function(dateValues, ctx) {
+				 return dateValues[ctx.dataIndex];
 			}
 		},
       }
@@ -67,11 +73,42 @@ function barChart2() {
   });
 }
 
+
+function barChart3(){
+	const menuData = menu_name.map((name, index) => ({name, amount : menu_amount[index]}));
+	menuData.sort((a, b) => b.amount - a.amount); //오름 차순 정렬
+	  const top10MenuData = menuData.slice(0, 20); // 상위 20개 아이템만 선택
+  const ctx = document.getElementById('myChart');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: top10MenuData.map(item => item.name),
+      datasets: [{
+       label:  '판매량',
+        data: top10MenuData.map(item => item.amount),
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      },
+      responsive : true,
+      plugins : {
+		  title : {
+			  display : true,
+			  text : "당월 메뉴별 판매량(상위 20개)",
+		  }
+	  }
+    }
+  });
+}  
 window.addEventListener('DOMContentLoaded', function () {
   barChart();
   barChart2();
-  console.log(priceSumDate);
-
+  
 });
 
 
