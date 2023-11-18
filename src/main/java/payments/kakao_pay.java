@@ -60,18 +60,19 @@ public class kakao_pay extends HttpServlet {
 
 			
 			String name = "";
-			Integer all_money = 0;
+			long all_money = 0;
 			
 			for (Map<String, String> food : foods) {
 				if (name.equals("")) {
 					name = food.get("name") + " X " + food.get("amount") + " 외 " + (foods.size() - 1) + " 종";
 				}
-				all_money += (Integer.parseInt(String.valueOf(food.get("price"))) * Integer.parseInt(String.valueOf(food.get("amount"))));
+				all_money += ((long) Integer.parseInt(String.valueOf(food.get("price"))) * Integer.parseInt(String.valueOf(food.get("amount"))));
 			}
 			
 			if (request.getParameter("coupons") != null) {
 				String decodecoupons = URLDecoder.decode(String.valueOf(request.getParameter("coupons")), "UTF-8");
 				coupons = gson.fromJson(String.valueOf(decodecoupons), new TypeToken<List<Map<String, Object>>>() {}.getType());
+				session.setAttribute("kakaopay_coupons", String.valueOf(decodecoupons));
 				Coupon_Mgr c_mgr = new Coupon_Mgr();
 				PrintWriter out = response.getWriter();
 				for (Map<String, Object> coupon : coupons) {
@@ -116,9 +117,10 @@ public class kakao_pay extends HttpServlet {
 			Map<String, Object> returnData = gson.fromJson(HttpPost.httpPostBodyConnection(url, data), new TypeToken<HashMap<String, Object>>(){}.getType());
 			this.pay_return = returnData;
 			
+			session.setAttribute("kakao_all_money", all_money);
 			session.setAttribute("bfdatas", gson.toJson(this.bfdatas));
 			session.setAttribute("pay_return", gson.toJson(returnData));
-			//response.sendRedirect(String.valueOf(returnData.get("next_redirect_pc_url")));
+			response.sendRedirect(String.valueOf(returnData.get("next_redirect_pc_url")));
 		}
 		
 		if (endPoint.equals("/kakao_pay/success")) {
@@ -130,7 +132,24 @@ public class kakao_pay extends HttpServlet {
 			} else {
 				System.out.println(String.valueOf(session.getAttribute("bfdatas")));
 				Map<String, Object> bfdatas = gson.fromJson(String.valueOf(session.getAttribute("bfdatas")), new TypeToken<HashMap<String, Object>>(){}.getType());
-				Map<String, Object> pay_return = gson.fromJson(String.valueOf(session.getAttribute("pay_return")),new TypeToken<HashMap<String, Object>>(){}.getType());
+				Map<String, Object> pay_return = gson.fromJson(String.valueOf(session.getAttribute("pay_return")),new TypeToken<HashMap<String, Object>>(){}.getType());				
+				List<Map<String, Object>> coupons = null;
+				long coupon_money = 0;
+				if (session.getAttribute("kakaopay_coupons") != null) {
+					coupons = gson.fromJson(String.valueOf(session.getAttribute("kakaopay_coupons")), new TypeToken<List<Map<String, Object>>>() {}.getType());
+					Coupon_Mgr c_mgr = new Coupon_Mgr();
+					PrintWriter out = response.getWriter();
+					for (Map<String, Object> coupon : coupons) {
+						String code = String.valueOf(coupon.get("code"));
+						Map<String, String> result = c_mgr.useCoupon(code);
+						if (result.get("result").equals("failed")) {
+							out.write("{\"result\":\"coupon_failed\", \"reason\":\"code "+code+" | "+result.get("reason")+"\"}");
+							return;
+						} else {
+							coupon_money += Integer.parseInt(String.valueOf(coupon.get("discount")));
+						}
+					}
+				}
 				
 				this.afdatas.put("cid", "TC0ONETIME");
 				this.afdatas.put("tid", String.valueOf(pay_return.get("tid")));
@@ -148,7 +167,42 @@ public class kakao_pay extends HttpServlet {
 				data = data.substring(0, data.length() - 1) + "}";
 				
 				Map<String, Object> returnData = gson.fromJson(HttpPost.httpPostBodyConnection(url, data), new TypeToken<HashMap<String, Object>>(){}.getType());
-				this.pay_return_af = returnData;
+				
+				String order_type = "";
+				
+				if (returnData.get("payment_method_type").equals("CARD")) {
+					//카카오페이 결제수단이 카드임
+					System.out.println(String.valueOf(returnData.get("card_info")).replace("=,", "=\"\","));
+					Map<String, String> card_info = gson.fromJson(String.valueOf(returnData.get("card_info")).replace("=,", "=\"\","), new TypeToken<HashMap<String, String>>(){}.getType());
+					String Card_Corp = String.valueOf(card_info.get("kakaopay_purchase_corp")); // 카드 회사
+					String Card_Type = String.valueOf(card_info.get("card_type")); // 신용 / 체크
+					String Approved_At = String.valueOf(returnData.get("approved_at"));// 승인시간
+					order_type = "kakao_card("+Card_Corp+")";
+				} else {
+					//카카오페이머니로 결제
+					order_type = "kakao_money";
+				}
+				
+				Map<String, Integer> amount = gson.fromJson(String.valueOf(returnData.get("amount")), new TypeToken<Map<String, Integer>>(){}.getType());				
+				String s_coupon = null;
+				if (coupons == null) {
+					s_coupon = "[]";
+				} else {
+					s_coupon = String.valueOf(session.getAttribute("kakaopay_coupons"));
+				}
+				
+				long all_money = Integer.parseInt(String.valueOf(session.getAttribute("all_money")));
+				
+				long real_money = (long) Integer.parseInt(String.valueOf(amount.get("total")));
+				
+				long discount = (all_money - real_money) + coupon_money;
+				
+				Object mem_id = session.getAttribute("mem_id");
+				if (mem_id == null) {
+					//비회원 결제0
+				} else {
+					//회원 결제
+				}
 			}
 		}
 	}
