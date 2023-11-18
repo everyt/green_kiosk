@@ -1,6 +1,7 @@
 package payments;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import coupon.Coupon_Mgr;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -69,10 +72,18 @@ public class kakao_pay extends HttpServlet {
 			if (request.getParameter("coupons") != null) {
 				String decodecoupons = URLDecoder.decode(String.valueOf(request.getParameter("coupons")), "UTF-8");
 				coupons = gson.fromJson(String.valueOf(decodecoupons), new TypeToken<List<Map<String, Object>>>() {}.getType());
-				
+				Coupon_Mgr c_mgr = new Coupon_Mgr();
+				PrintWriter out = response.getWriter();
 				for (Map<String, Object> coupon : coupons) {
-					System.out.println(coupon.get("code"));
-					all_money -= Integer.parseInt(String.valueOf(coupon.get("discount")).substring(0, String.valueOf(coupon.get("discount")).length() - 2));
+					String code = String.valueOf(coupon.get("code"));
+					Map<String, String> result = c_mgr.checkCouponVaild(code);
+					if (result.get("result").equals("failed")) {
+						out.write("{\"result\":\"coupon_failed\", \"reason\":\"code "+code+" | "+result.get("reason")+"\"}");
+						return;
+					} else {
+						all_money -= Integer.parseInt(String.valueOf(coupon.get("discount")).substring(0, String.valueOf(coupon.get("discount")).length() - 2));
+					}
+					
 				}
 				
 			}
