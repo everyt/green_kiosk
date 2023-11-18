@@ -167,11 +167,12 @@ table {
 						<td align="center">
  						   <%=order_is_maked%>
 						</td>
-						<td align="center">
-						   <a href="javascript:code02('<%=numb%>')">수정</a>
+							<td align="center">
+						   <a onClick="loadContent('inventory/ac00up.jsp?numb=<%=order_no%>')" href="javascript:">수정</a>
 						</td>
-						<td align="center">
-						   <a href="javascript:code03('<%=numb%>')">삭제</a>
+						</td>
+							<td align="center">
+						   <a onClick="loadContent('inventory/ac00Delete.jsp?numb=<%=order_no%>')" href="javascript:">수정</a>
 						</td>
 					</tr>
 				    <tr>
