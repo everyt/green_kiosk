@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import menu.Menu_menu_Bean;
 import orders.Orders_Bean;
 import orders.Orders_Mgr;
 
@@ -51,6 +52,9 @@ public class admin_index extends HttpServlet {
     	} else if ("/admin/index/getChartData".equals(endPoint))
     	{
     		String type = "all";
+    		Vector <Menu_menu_Bean> menu_list = null;
+    	
+    		
     	}
 	}
 }
