@@ -71,8 +71,10 @@ public class kakao_pay extends HttpServlet {
 				coupons = gson.fromJson(String.valueOf(decodecoupons), new TypeToken<List<Map<String, Object>>>() {}.getType());
 				
 				for (Map<String, Object> coupon : coupons) {
+					System.out.println(coupon.get("code"));
 					all_money -= Integer.parseInt(String.valueOf(coupon.get("discount")).substring(0, String.valueOf(coupon.get("discount")).length() - 2));
 				}
+				
 			}
 			
 			if (request.getParameter("mile_map") != null) {
@@ -105,7 +107,7 @@ public class kakao_pay extends HttpServlet {
 			
 			session.setAttribute("bfdatas", gson.toJson(this.bfdatas));
 			session.setAttribute("pay_return", gson.toJson(returnData));
-			response.sendRedirect(String.valueOf(returnData.get("next_redirect_pc_url")));
+			//response.sendRedirect(String.valueOf(returnData.get("next_redirect_pc_url")));
 		}
 		
 		if (endPoint.equals("/kakao_pay/success")) {

@@ -2,9 +2,14 @@ package coupon;
 
 import all.DBConnectionMgr;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.Vector;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Wrote by GwakTaeWoong
@@ -126,6 +131,72 @@ public class Coupon_Mgr {
 			this.rs = this.pst.executeQuery();
 	        if (this.rs.next()) {
 	            result = this.rs.getInt("coupon_no");
+	        }
+        } catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+		return result;
+	}
+	
+	public Map<String, String> checkCouponVaild(String code) {
+		java.util.Date date = null;
+		Integer vaild_date = 0;
+		boolean used = false;
+		Map<String, String> result = new HashMap<String, String>();
+		result.put("result", "failed");
+		result.put("reason", "unknown");
+		try {
+			this.Initializer("SELECT * FROM coupon WHERE coupon_code=?");
+			this.pst.setString(1, code);
+			this.rs = this.pst.executeQuery();
+	        if (this.rs.next()) {
+	            date = this.rs.getDate("coupon_issueDate");
+	            used = this.rs.getBoolean("coupon_used");
+	            if (used) {
+	            	result.put("reason", "already_used");
+		        	return result;
+	            }
+	        } else {
+	        	result.put("reason", "not_found");
+	        	return result;
+	        }
+        } catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+		boolean enable = false;
+		try {
+			this.Initializer("SELECT * FROM coupon_type WHERE coupon_code=?");
+			this.pst.setString(1, code);
+			this.rs = this.pst.executeQuery();
+	        if (this.rs.next()) {
+	            vaild_date = this.rs.getInt("vaild_date");
+	            enable = this.rs.getBoolean("enable");
+	            if (enable) {
+	            	Calendar date_c = Calendar.getInstance();
+	            	java.util.Date now = Calendar.getInstance().getTime();
+	            	
+	            	
+	            	date_c.add(Calendar.DATE, vaild_date);
+	            	date = date_c.getTime();
+	            	
+	            	if (date.before(now)) {
+	            		result.put("result", "success");
+	            		result.put("reason", "none");
+	            		
+	            		return result;
+	            	} else {
+	            		result.put("reason", "coupon_expired");
+	            		
+	            		return result;
+	            	}
+	            } else {
+	            	result.put("reason", "disabled_coupon");
+		        	return result;
+	            }
 	        }
         } catch (Exception e) {
 			e.printStackTrace();
