@@ -7,6 +7,8 @@
 
 <script>
 const foods = new Map();
+const foods2 = new Map();
+const foods3 = new Map();
 </script>
 <%@ include file ="/admin/layouts/index/index_parsing.jsp" %>
 <script>
