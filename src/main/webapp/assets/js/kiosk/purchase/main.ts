@@ -2,7 +2,7 @@ interface ErrorConstructor {
   captureStackTrace(error: Object, constructor?: Function): void;
 }
 
-type food = {
+type foodType = {
   index: number;
   name: string;
   price: number;
@@ -10,20 +10,33 @@ type food = {
   discount?: number;
 };
 
-type coupon = {
+type couponType = {
   code: string;
   name: string;
   menuNo: number;
   discount: number;
 };
 
-type mileage = {
+type mileageType = {
   index: number;
   name: string;
   mileage: number;
   value: string;
   type: 'phoneNumber' | 'cardNumber' | 'x';
 };
+
+type eventType = {
+  no: number;
+  name: string;
+  desc: string;
+  image: string;
+}
+
+type eventMenuType = {
+  eventNo: number;
+  menuNo: number;
+  discount: number;
+}
 
 class PurchaseException extends Error {
   reason: string;
@@ -46,10 +59,10 @@ class PurchaseException extends Error {
 
 class State {
   time: Date;
-  foods: food[];
+  foods: foodType[];
   price: number;
   discount: number;
-  coupon: coupon[];
+  coupon: couponType[];
   type: 'card' | 'mobile';
   use_mile: boolean;
   use_mile_amount: number;
@@ -149,12 +162,6 @@ const drawArrayToHTMLElement = (element: HTMLElement, arr: any[], drawCallback: 
   }
 };
 
-const deleteBasketItem = (page: number, index: number) => {
-  state.foods.splice(index, 1);
-  item.set('basketArray', JSON.stringify(state.foods));
-  generateBasketPageHTML(state.foods, page);
-};
-
 const generateBasketPageHTML = (arr: any[], page: number = 0) => {
   let html: string = '';
   const divCountValue = 10 * page;
@@ -164,14 +171,6 @@ const generateBasketPageHTML = (arr: any[], page: number = 0) => {
     html += `<span style='width: 100px;'>` + (i < arr.length ? arr[i].name : '&nbsp;') + `</span>`;
     html += `<span style='width: 40px;'>` + (i < arr.length ? arr[i].amount : '&nbsp;') + `</span>`;
     html += `<span style='width: 70px;'>` + (i < arr.length ? inputDigits(arr[i].price) : '&nbsp;') + `</span>`;
-    if (i < arr.length) {
-      html +=
-        `<div 'width: 20px;' onClick='deleteBasketItem(` +
-        page +
-        ',' +
-        i +
-        `)'><div class='rowbox delete-button'><p class='delete-text'>x</p></div></div>`;
-    }
     html += `</div>`;
   }
 
@@ -265,7 +264,7 @@ const item = new Item(sessionStorage);
     const couponArray = await detailedFetch(
       // 쿠폰 데이터를 세션스토리지에서 couponArray라는 이름으로 꺼내오고
       '/green_kiosk/api/kiosk/purchase/couponArray', // JSON문자열화 시킨다음에 api서버로 POST 요청 후 응답을 couponArray에 삽입
-      'POST', // 이제 다 다른 서블릿을 쓰니까 coupons 이런 ㅁㅁㄴ 안해도 되고 smile도 array일 필요 X
+      'POST', // 이제 다 다른 서블릿을 쓰니까 coupons 이런 작명 안해도 되고 smile도 array일 필요 X
       // 국제표준을 지키는 모습을 보여주기 위해서 encodeURIcomponent 사용
       // 내부에서 encode 처리 해줘도 되는데 그러면 너무 관리가 빡셈 보기가 어려워
       encodeURIComponent(item.get('couponArray')),
@@ -281,10 +280,32 @@ const item = new Item(sessionStorage);
         discount: 0,
       },
     ];
-  }
-
-  drawPriceToHTMLElement('#discountElement', '할인금액', state.discount);
-  drawPriceToHTMLElement('#discountedPriceElement', '결제할금액', state.price - state.discount);
+  };
+  const eventArray: eventType[] = await detailedFetch(
+    '/green_kiosk/api/kiosk/purchase/event',
+    'GET'
+  );
+  const eventMenuArray: eventMenuType[] = await detailedFetch(
+    '/green_kiosk/api/kiosk/purchase/eventMenu',
+    'POST',
+    encodeURIComponent(JSON.stringify(eventArray.map((v) => {
+      return v.no
+    })))
+  );
+  
+  eventMenuArray.forEach((eventValue) =>{
+    state.foods.forEach((foodValue) => {
+      if (eventValue.menuNo === foodValue.index) {
+        const sum = ((foodValue.price * foodValue.amount) / Math.floor(1000 / eventValue.discount)) * 10;
+        if (
+          (foodValue.hasOwnProperty('discount') && foodValue.discount < sum) ||
+          !foodValue.hasOwnProperty('discount')
+        ) {
+          foodValue.discount = sum;
+        }
+      }
+    });
+  });
 
   state.coupon.forEach((couponValue) => {
     state.foods.forEach((foodValue) => {
@@ -308,8 +329,11 @@ const item = new Item(sessionStorage);
     }
   }, 0);
 
+  drawPriceToHTMLElement('#discountElement', '할인금액', state.discount);
+  drawPriceToHTMLElement('#discountedPriceElement', '결제할금액', state.price - state.discount);
+
   if (item.get('mileage')) {
-    const mileage = await detailedFetch(
+    const mileage: mileageType = await detailedFetch(
       '/green_kiosk/api/kiosk/purchase/mileage',
       'POST',
       encodeURIComponent(JSON.stringify(item.get('mileage'))),

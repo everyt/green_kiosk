@@ -1,6 +1,6 @@
-const detailedFetch = async (url: string, type: string, body: string) => {
+const detailedFetch = async (url: string, type: string, body = '') => {
   try {
-    const response = await fetch(url, {
+    let responseData: RequestInit = {
       method: type,
       mode: 'cors',
       cache: 'no-cache',
@@ -10,8 +10,11 @@ const detailedFetch = async (url: string, type: string, body: string) => {
       },
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
-      body: body,
-    });
+    };
+    if (body != '') {
+      responseData.body = body;
+    }
+    const response = await fetch(url, responseData);
 
     if (!response.ok) {
       throw new Error(`Network response was not ok: ${response.statusText}`);

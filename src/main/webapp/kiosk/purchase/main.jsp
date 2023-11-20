@@ -13,7 +13,6 @@
           <span style="width: 100px">제품</span>
           <span style="width: 40px">수량</span>
           <span style="width: 70px">금액</span>
-          <span style="width: 20px">&nbsp;</span>
         </div>
         <!-- 여기서 메뉴 리스트 JS로 표시, 정해진 줄 길이, 넘어가면 페이지로,  -->
         <div id="basketPageElement"></div>

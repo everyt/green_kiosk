@@ -10,7 +10,7 @@
         <h1 class="fw-light">매장 관리 페이지</h1>
         <p class="lead text-body-secondary"></p>
         <p>
-          <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('sales/ac00.jsp')">거래 내역 페이지</a>
+          <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('sales/ac00.jsp');updateMenu('all')">거래 내역 페이지</a>
           <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('inventory/iv00.jsp')">재고 관리 페이지</a>
           <!-- <a href="#" class="btn btn-secondary my-2"></a> -->
         </p>
@@ -99,6 +99,10 @@
 		return df.format(number);
 	}
 %>
+window.addEventListener('DOMContentLoaded', function() {
+sleep(1)
+    updateMenu("all", 1);
+});
 <script>
 function loadContent(url) {
   var xhr = new XMLHttpRequest();
@@ -141,113 +145,6 @@ function closePopup(popup) {
 	    popup.close();
 	  }
 	}
-</script>
-<script>
-	function iv02(numb){
-		document.readFrm.numb.value=numb;
-		document.readFrm.action="iv02.jsp";
-		document.readFrm.target="content";
-		document.readFrm.submit();
-	}
-
-	function iv03(numb){
-		document.readFrm.numb.value=numb;
-		document.readFrm.action="iv03.jsp";
-		document.readFrm.target="content";
-		document.readFrm.submit();
-	}
-	
-	function sleep(sec) {
-		  return new Promise(resolve => setTimeout(resolve, sec * 1000));
-	}
-	
-	async function sub() {
-		window.open('', 'aaa','width=300,height=200,scrollbars=no,resizable=no,status=yes,menubar=no,toolbar=no,top=50,left=50');
-		document.regFrm.target = 'aaa'
-		document.regFrm.submit();	
-	}
-	
-	function sub2() {
-		let frm = document.regFrm; 
-		let no = frm.component_no.value;
-		let name = frm.component_name.value;
-		let price = frm.component_price.value;
-		let amount = frm.component_amount.value;
-		let component_imgPath = frm.component_imgPath.value;
-		fetch("<%=request.getContextPath()%>/api/admin/edit_jaego?no="+no+"&name="+name+"&price="+price+"&amount="+amount+"&imgpath="+component_imgPath, {
-			method: "post"
-		}).then(response => {
-			response.json().then((res) => {
-				if (res.result == "success") {
-					alert("수정에 성공했습니다")
-					loadContent('inventory/iv00.jsp');
-				} else {
-					alert("변경에 실패했습니다")
-				}
-			})
-		})
-	}
-	function check() {
-		if (document.delFrm.pass.value == "") {
-			alert("재고를 삭제합니다.");
-			document.delFrm.pass.focus();
-			return false;
-		}
-		document.delFrm.submit();
-	}
-	//--재고 관리 페이지 수량 조절
-	function count(type, num)  {   
-		  // 결과를 표시할 element
-		  const resultElement = document.getElementById('amount'+num);
-		  const per_price = parseInt(document.getElementById('price'+num).innerText);
-		  const totalElement = document.getElementById('total'+num);
-		
-	       
-		  let price = 0; 
-		  let AllPrice = 0;
-		 
-		  // 현재 화면에 표시된 값
-		  let number = resultElement.innerText;
-		  
-		  
-		  // 더하기/빼기
-		  if(type === 'plus') {
-		    number = parseInt(number) + 1;
-		  }else if(type === 'minus')  {
-			  number = parseInt(number) - 1;
-			  
-		   
-		  }
-		  if (number < 0) {
-			  alert("갯수는 0미만일수 없습니다.")
-		  } else {
-			  // 결과 출력
-			  resultElement.innerText = number;
-			  
-			   price = number * per_price;
-			   allPrice = AllPrice + price;
-			
-			   totalElement.innerText = price+"원";
-			   let alprice = 0;
-			   document.getElementsByName("total").forEach((ele) => alprice = alprice + parseInt(ele.innerText.replace("원","").replace(",","")))
-			  	document.getElementById("allprice").innerText="재고 총 금액 : "+alprice.toLocaleString()+" 원";
-			   
-				fetch("<%=request.getContextPath()%>/api/admin/set_amount?no="+num+"&amount="+number,{
-					method: "post"
-				}).then(response => {
-					response.json().then((res) => {
-						if (res.result == "success") {
-						} else {
-							alert("갯수 변경중 오류가 발생하였습니다.\n"+res);
-						}
-					})
-				})
-		  }
-		 
-	}
-	
-	
-	
 </script>
 	
 

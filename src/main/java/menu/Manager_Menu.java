@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -139,7 +140,7 @@ public class Manager_Menu {
 		try {
 			con = pool.getConnection();
 			sql = "INSERT INTO menu(menu_name, menu_gubn, menu_isSale, menu_imgPath, menu_component,"
-					+ "menu_price, menu_sell_amount, menu_recommend, menu_isUse, menu_content) VALUES (?,?,?,?,?,?,?,?,?,?)";
+					+ "menu_price, menu_sell_amount, menu_recommend, menu_isUse, menu_content, menu_couponable) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, bean.getMenu_name());
 			pstmt.setString(2, bean.getMenu_gubn());
@@ -151,6 +152,7 @@ public class Manager_Menu {
 			pstmt.setInt(8, bean.getMenu_recommend());
 			pstmt.setInt(9, bean.getMenu_isUse());
 			pstmt.setString(10, bean.getMenu_content());
+			pstmt.setInt(11, bean.getMenu_couponable());
 			if (pstmt.executeUpdate() == 1)
 				flag = true;
 		} catch (Exception e) {
@@ -171,7 +173,7 @@ public class Manager_Menu {
 			con = pool.getConnection();
 			sql = "UPDATE menu SET menu_name=?, menu_gubn=?, menu_isSale=?, menu_component=?,"
 					+ "menu_price=?, menu_sell_amount=?, menu_recommend=?, menu_isUse = ?, menu_content=?, "
-					+ "menu_imgPath=? WHERE menu_no = ?";
+					+ "menu_imgPath=?, menu_couponable = ?  WHERE menu_no = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, bean.getMenu_name());
 			pstmt.setString(2, bean.getMenu_gubn());
@@ -183,7 +185,8 @@ public class Manager_Menu {
 			pstmt.setInt(8, bean.getMenu_isUse());
 			pstmt.setString(9, bean.getMenu_content());
 			pstmt.setString(10, bean.getMenu_imgPath());
-			pstmt.setInt(11, bean.getMenu_no());
+			pstmt.setInt(11, bean.getMenu_couponable());
+			pstmt.setInt(12, bean.getMenu_no());
 			int count = pstmt.executeUpdate();
 			if (count > 0)
 				flag = true;
@@ -868,6 +871,101 @@ public class Manager_Menu {
 			}
 			return flag;
 		}		
+		
+		// 3. 회계 관리 페이지 - 거래 내역 페이지 분활
+		public List<Orders_Bean> getSalesList(int pageNum, int amount) {
+		        	List <Orders_Bean> list = new ArrayList<>();
+		        	
+		        	Connection con = null;
+					PreparedStatement pstmt = null;
+					ResultSet rs = null;
+					String sql = null;
+			
+			try {
+				con = pool.getConnection();
+				sql = "select *"
+						+"from orders rn,"
+						+        " a.* "
+						+"from (select *"
+						+         "from board order by bno desc) a ) "
+						+     "where rn > 0 and rn <= 10";
+			    pstmt = con.prepareStatement(sql);
+			    pstmt.setInt(1,  (pageNum - 1) * amount);
+			    pstmt.setInt(2,  pageNum * amount);
+			    rs = pstmt.executeQuery();
+				while (rs.next()) {
+					Orders_Bean vo = new Orders_Bean();
+					vo.setOrder_no(rs.getInt("order_no"));
+					vo.setOrder_time(rs.getTimestamp("order_time"));
+					vo.setOrder_foods(rs.getString("order_foods"));
+					vo.setOrder_price(rs.getInt("order_price"));
+					vo.setOrder_discount(rs.getInt("order_discount"));
+					vo.setOrder_coupon(rs.getString("order_coupon"));
+					vo.setOrder_type(rs.getString("order_type"));
+					vo.setOrder_add_mile(rs.getBoolean("order_add_mile"));
+					vo.setOrder_is_maked(rs.getBoolean("order_is_maked"));
+					  list.add(vo);
+				}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					pool.freeConnection(con);
+				}
+				return list;
+			}
+	
+		
+		// 3. 회계 관리 페이지 - 거래 내역 페이지 분활
+		public Map<String, Object> getSalesList2(int pageNum) {
+			List<String> list = new Vector<>();
+			Map<String, Object> res = new HashMap<String, Object>();
+			
+		        	
+		        	Connection con = null;
+					PreparedStatement pstmt = null;
+					ResultSet rs = null;
+					String sql = null;
+			
+			try {
+				con = pool.getConnection();
+				sql = "select * from orders LIMIT 10 OFFSET ?";
+			    pstmt = con.prepareStatement(sql);
+			    pstmt.setInt(1,  (pageNum - 1) * 10);
+			    rs = pstmt.executeQuery();
+				while (rs.next()) {
+					Orders_Bean vo = new Orders_Bean();
+					vo.setOrder_no(rs.getInt("order_no"));
+					vo.setOrder_time(rs.getTimestamp("order_time"));
+					vo.setOrder_foods(rs.getString("order_foods"));
+					vo.setOrder_price(rs.getInt("order_price"));
+					vo.setOrder_discount(rs.getInt("order_discount"));
+					vo.setOrder_coupon(rs.getString("order_coupon"));
+					vo.setOrder_type(rs.getString("order_type"));
+					vo.setOrder_add_mile(rs.getBoolean("order_add_mile"));
+					vo.setOrder_is_maked(rs.getBoolean("order_is_maked"));
+					  list.add(vo);
+				}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					pool.freeConnection(con);
+				}
+			
+			try {
+				con = pool.getConnection();
+				sql = "select count(\"order_no\") as count from orders";
+			    pstmt = con.prepareStatement(sql);
+			    pstmt.setInt(1,  (pageNum - 1) * 10);
+			    rs = pstmt.executeQuery();
+			    res.put("length", rs.getInt("count"));
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					pool.freeConnection(con);
+				}
+				res.put("data", list);
+				return res;
+			}
 	
 		// 3. 회계 관리 페이지 - 재료 입고
 		public boolean insertComponent(Menu_component_Bean bean) {
@@ -1065,10 +1163,9 @@ public class Manager_Menu {
 
 	public void downLoad(HttpServletRequest req, HttpServletResponse res,
 			JspWriter out, PageContext pageContext) {
-		String SAVEFOLDER = "/downloadfile2";
 		try {
 			String filename = req.getParameter("menu_filePath");
-			File file = new File(UtilMgr.con(SAVEFOLDER + File.separator + filename));
+			File file = new File(UtilMgr.con(filename));
 			byte b[] = new byte[(int) file.length()];
 			res.setHeader("Accept-Ranges", "bytes");
 			String strClient = req.getHeader("User-Agent");

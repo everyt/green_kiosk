@@ -131,16 +131,16 @@ public class Member_Mgr {
 	
 
 	// 회원 정보 삭제
-	public void deleteMember(int numb) {
+	public void deleteMember(String mem_id) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		ResultSet rs = null;
 		try {
 			con = pool.getConnection();
-			sql = "delete from member_admin where numb=?";
+			sql = "delete from `member` where `mem_id` = ? ";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, numb);
+			pstmt.setString(1, mem_id);
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -148,7 +148,7 @@ public class Member_Mgr {
 			pool.freeConnection(con, pstmt, rs);
 		}
 	}
-
+	
 	public String register_Member(String mem_id, String mem_pw, String name, String phone) { //함수제작 나경원
 		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
@@ -399,17 +399,17 @@ public class Member_Mgr {
 	
 	}
 
-	public boolean updateMember1(Member_Bean bean) {
+	public boolean change_pw(Member_Bean bean) {
+		DBConnectionMgr pool = new DBConnectionMgr();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		boolean flag = false;
-		//System.out.println("자료 : " + bean.getNumb() + bean.getName());
 		try {
 			con = pool.getConnection();
-			String sql = "update Member set pw=?";
+			String sql = "update member set mem_pw=SHA2('xq" + bean.getMem_pw() + "q43',256) where mem_id=?";
+			System.out.println(sql);
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, bean.getMem_pw());
-			pstmt.setInt(2, bean.getMem_no());
+			pstmt.setString(1, bean.getMem_id());
 			int count = pstmt.executeUpdate();
 			if (count > 0)
 				flag = true;
@@ -421,5 +421,31 @@ public class Member_Mgr {
 		return flag;
 	}
 	
+
+public boolean change_pw1(String mem_id) {
+	DBConnectionMgr pool = new DBConnectionMgr();
+	Connection con = null;
+	PreparedStatement pstmt = null;
+	boolean flag = false;
+	//System.out.println("change_pw1 메서드 접근");
+	try {
+		con = pool.getConnection();
+		String sql = "delete from member where mem_id = ? ";
+		System.out.println(sql);
+		pstmt = con.prepareStatement(sql);
+		//System.out.println("change_pw1 쿼리 실행");
+		//String gMem_id = bean.getMem_id();
+		//System.out.println("삭제 하려는 회원 아이디 = " + mem_id);
+		pstmt.setString(1, mem_id);
+		int count = pstmt.executeUpdate();
+		if (count > 0)
+			flag = true;
+	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+		pool.freeConnection(con, pstmt);
+	}
+	return flag;
 }
 
+}

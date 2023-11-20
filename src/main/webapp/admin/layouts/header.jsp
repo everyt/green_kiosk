@@ -3,7 +3,8 @@
 
 <% request.setCharacterEncoding("UTF-8"); %>
 <% response.setContentType("text/html; charset=UTF-8"); %>
-
+<%@ include file="bootstrap.jsp" %>
+<%@ include file="header/user.html" %>
 <div id="wrapper">
 	<div id="header">
 	<a href="'<%=request.getContextPath()%>/admin/index.jsp')"></a>
