@@ -11,16 +11,35 @@
 <jsp:useBean id="menuMgr" class="menu.Manager_Menu"/>
 
 <%
+	Integer curpage = Integer.parseInt(String.valueOf(request.getParameter("page")));
+	System.out.println(curpage);
+	Gson gson = new Gson();
+     //페이징을 위한 변수 선언
+    int totalRecode = 0;     //전체 글의 갯수
+    int numPerPage = 10;     //페이지당 레코드 수
+    int pagePerBlock = 15;   //한 블럭당 묶여질 페이지 수
+    int nowPage=0;    //현재 보여질 페이지
+    int nowBlock=0;   //현재 보여질 블럭
+    int listSize=0;   //현재 읽어온 게시물의 수
+    int totalPage=0;  //전체 페이지 수
+    int totalBlock=0; //전체 블럭수
+    int start = 0;   //orders테이블의 selct시작번호
+    int end = 10;    //시작번호로 부터 가져올 selec의 개수
+ 	Map<String, Object> res = new HashMap<String, Object>();
+	int numb = 0;
+		res = menuMgr.getSalesList2(curpage);
+		System.out.println(String.valueOf(res.get("data")));
+		List<Orders_Bean> vlist = gson.fromJson(String.valueOf(res.get("data")), new TypeToken<List<Orders_Bean>>(){}.getType());
+	   
+	   
+	   if(request.getParameter("nowPage") !=null) {
+		   nowPage = Integer.parseInt(request.getParameter("nowPage"));
+	   }
+	     start = (nowPage * numPerPage) - numPerPage;
+	     end = numPerPage;
+	nowBlock=(int)Math.ceil((double)nowPage/pagePerBlock);
+	totalBlock =(int)Math.ceil((double)nowPage/pagePerBlock);
 	
-int AllPrice = 0;
-
-
-	int listSize = 0;    //현재 읽어온 자료의 수
-	Vector<Orders_Bean> vlist = null;
-	int numb = 0; 
-   
-   vlist = menuMgr.getMgrorderList();
-  
 	
 %>
 <!DOCTYPE html>
@@ -59,7 +78,7 @@ table {
     <br>
 			 <%     
 			          
-			           listSize = vlist.size();
+			           listSize = Integer.parseInt(String.valueOf(res.get("length")));
                	       if (vlist.isEmpty()) {
                	    	   out.println("등록된 목록이 없습니다.");
                	    	   
@@ -69,7 +88,7 @@ table {
 				  <table  border="1">
 				  <thead>
 				  <tr>
-			<th colspan="11">코드 등록 자료수 : <%=listSize%></th>
+			<th colspan="11">코드 등록 자료수 : <%=listSize-((nowPage-1)*numPerPage)-1%></th>
 		</tr>
 				  </thead>
 				  <tbody class="getMenuList" id="getMenuList">
@@ -88,7 +107,7 @@ table {
 					</tr>
 				</tbody>
 				<%
-				    for( int i = 0; i<listSize; i++) {
+				    for( int i = 0; i<numPerPage; i++) {
 				    	if (i == listSize)break;
 				    	Orders_Bean bean = vlist.get(i);
 				    	int order_no = bean.getOrder_no();
@@ -133,15 +152,21 @@ table {
  						   <%=order_is_maked%>
 						</td>
 							<td align="center">
-						   <input type="button" value="수정" onClick="loadContent('sales/ac00up.jsp?numb=<%=order_no%>')" ></a>
+						   <a onClick="loadContent('inventory/ac00up.jsp?numb=<%=order_no%>')" href="javascript:">수정</a>
 						</td>
 						</td>
 							<td align="center">
-						   <a onClick="loadContent('sales/ac00Delete.jsp?numb=<%=order_no%>')" href="javascript:">삭제</a>
+						   <a onClick="loadContent('inventory/ac00Delete.jsp?numb=<%=order_no%>')" href="javascript:">수정</a>
 						</td>
 					</tr>
 				    <tr>
-				    
+				       <td align="center">
+				       <%=listSize-((nowPage-1)*numPerPage)-i%>
+				       </td>
+              <td>
+           
+              <a href="javascript:read(<%=order_no%>)"> </a>
+              </td>
               </tr>
 				<%} else {}
 				        }//for%>
@@ -153,7 +178,25 @@ table {
 		 <td colspan="2"><br /><br /></td>
 		 </tr>
 		 <tr>
-	
+		 <td>
+		 <!-- 페이징 및 블럭처리 Start -->
+		 		 <%
+		          int pageStart = (nowBlock -1)*pagePerBlock + 1;//하단 페이지 시작번호
+			      int pageEnd = ((pageStart + pagePerBlock)< totalPage)? (pageStart+pagePerBlock): totalPage+1;
+		         if(totalPage !=0) {
+		        	 if(nowBlock > 1) {%>
+		        	 <a href="javascript:block('<%=nowBlock-1%>')">prev...</a><%}%>&nbsp;
+		        	 <%for ( ; pageStart<pageEnd; pageStart++){%>
+		        	 <a href="javascript:pageing('<%=pageStart %>')">
+		        	 <%if(pageStart==nowPage) {%><font color="blue"> <%}%>
+		        	 [<%=pageStart %>]
+		        	 <%if(pageStart==nowPage){%></font> <%}%></a>
+		        	 <%}//for%>&nbsp;
+		        	 <%if (totalBlock > nowBlock) {%>
+		        	 <a href="javascript:block('<%=nowBlock+1%>')">.....next</a>
+		        	      <%}%>&nbsp;
+		        	      <%}%>
+		        	 </td>
 		</table>
 
 </div>
