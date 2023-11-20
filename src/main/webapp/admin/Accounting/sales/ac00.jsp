@@ -97,7 +97,7 @@ table {
 				    	int order_no = bean.getOrder_no();
 				    	Timestamp order_time = bean.getOrder_time();
 				    	String order_foods = bean.getOrder_foods();
-				    	long order_price = bean.getOrder_price();
+				    	int order_price = bean.getOrder_price();
 				    	long order_discount = bean.getOrder_discount();
 				    	String order_coupon = bean.getOrder_coupon();
 				    	String order_type = bean.getOrder_type();

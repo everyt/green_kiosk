@@ -41,10 +41,10 @@
 									value='<%=codeBean.getOrder_foods()%>' readonly ></td>
 							</tr>
 							<tr>
-								<td>판매 금액</td>
-								<td><input name="order_price" size="15"
-									value="<%=codeBean.getOrder_price()%>"></td>
-							</tr>
+                                <td>판매 금액</td>
+                                <td><input name="order_price" size="15"
+                                    value='<%=codeBean.getOrder_price()%>'></td>
+                            </tr>
 							<tr>
 							     <td>할인</td>
 							     <td><input name="order_discount" size="15"
