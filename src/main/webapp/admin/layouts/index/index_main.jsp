@@ -5,7 +5,7 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/index_main.js"></script>
 
-<script>
+<%-- <script>
 const foods = new Map();
 const foods2 = new Map();
 const foods3 = new Map();
@@ -18,7 +18,7 @@ foods2.set("data_value2", '<%=values2.toString()%>')
 foods2.set("data_key2", '<%=keys2.toString() %>')
 foods3.set("data_value3", '<%=values3.toString()%>')
 foods3.set("data_key3", '<%=keys3.toString() %>')
-</script>
+</script> --%>
 <main class="mainContent">
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
@@ -45,12 +45,12 @@ foods3.set("data_key3", '<%=keys3.toString() %>')
 </div>
 
 <div>
-<canvas id="myChart2"  style="display: block; box-sizing: border-box; height: 232px; width: 696px;" width="696"></canvas>
+<canvas id="myChart3"  style="display: block; box-sizing: border-box; height: 232px; width: 696px;" width="696"></canvas>
 </div>
 
-<!-- <div>
-<canvas id="myChart3"  style="display: block; box-sizing: border-box; height: 232px; width: 696px;" width="696"></canvas>
-</div> -->
+<div>
+<canvas id="myChart2"  style="display: block; box-sizing: border-box; height: 232px; width: 696px;" width="696"></canvas>
+</div> 
 
   
                         
