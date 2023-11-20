@@ -215,7 +215,7 @@ public class kakao_pay extends HttpServlet {
 				if (coupons == null) {
 					s_coupon = "[]";
 				} else {
-					s_coupon = String.valueOf(session.getAttribute("kakaopay_coupons"));
+					s_coupon = String.valueOf(session.getAttribute("kakaopay_coupons")).replace("\'","\"");
 				}
 				
 				long all_money = Integer.parseInt(String.valueOf(session.getAttribute("kakao_all_money")));
@@ -234,7 +234,7 @@ public class kakao_pay extends HttpServlet {
 					bean.setOrder_add_mile(false);
 					bean.setOrder_coupon(s_coupon);
 					bean.setOrder_discount(discount);
-					bean.setOrder_foods(s_foods);
+					bean.setOrder_foods(s_foods.replace("\'","\""));
 					bean.setOrder_is_maked(false);
 					bean.setOrder_is_togo(true);
 					bean.setOrder_price(real_money);
@@ -250,7 +250,7 @@ public class kakao_pay extends HttpServlet {
 					bean.setOrder_add_mile(false);
 					bean.setOrder_coupon(s_coupon);
 					bean.setOrder_discount(discount);
-					bean.setOrder_foods(s_foods);
+					bean.setOrder_foods(s_foods.replace("\'","\""));
 					bean.setOrder_is_maked(false);
 					bean.setOrder_is_togo(true);
 					bean.setOrder_price(real_money);
