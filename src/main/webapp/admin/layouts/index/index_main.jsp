@@ -3,6 +3,7 @@
 
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/index_sub.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/index_main.js"></script>
 
 <%-- <script>
