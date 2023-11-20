@@ -27,6 +27,8 @@ Timestamp timestamp = new Timestamp(date.getTime());
 updateOrder1Bean.setOrder_time(timestamp);
 updateOrder1Bean.setOrder_no(Integer.parseInt(order_no));
 updateOrder1Bean.setOrder_foods(request.getParameter("order_foods"));
+String order_price = request.getParameter("order_price");
+System.out.println("sdsd" + request.getParameter("order_price"));
 updateOrder1Bean.setOrder_coupon(request.getParameter("order_coupon"));
 updateOrder1Bean.setOrder_type(request.getParameter("order_type"));
 

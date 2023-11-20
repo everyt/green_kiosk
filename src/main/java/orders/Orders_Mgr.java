@@ -354,6 +354,7 @@ public class Orders_Mgr {
 					pstmt.setString(2, bean.getOrder_foods());
 					System.out.println("sdsd" + bean.getOrder_foods());
 					pstmt.setLong(3, bean.getOrder_price());
+					System.out.println("sdsd" + bean.getOrder_price());
 					pstmt.setLong(4, bean.getOrder_discount());
 					pstmt.setString(5, bean.getOrder_coupon());
 					pstmt.setString(6, bean.getOrder_type());

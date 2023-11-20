@@ -8,7 +8,7 @@
 	Orders_Bean codeBean = ordersMgr.getord1(numb);   //입력자료 가져오기
 %>
 <html>
-<head>
+<head><meta charset="UTF-8">
 	<title>코드관리</title>
 	<link href="../main/style.css" rel="stylesheet" type="text/css" >
 </head>
@@ -38,7 +38,7 @@
 							<tr>
 								<td>판매 내역</td>
 								<td><input name="order_foods" size="30"
-									value='<%=codeBean.getOrder_foods()%>'></td>
+									value='<%=codeBean.getOrder_foods()%>' readonly ></td>
 							</tr>
 							<tr>
 								<td>판매 금액</td>
