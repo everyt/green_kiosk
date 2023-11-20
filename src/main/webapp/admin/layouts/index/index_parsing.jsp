@@ -1,4 +1,4 @@
-<%@ include file="/admin/layouts/BeanManager.jsp" %>
+<%-- <%@ include file="/admin/layouts/BeanManager.jsp" %>
 <%@ page import="orders.Orders_Bean" %>
 <%@ page import="orders.Orders_Mgr" %>
 <%@ page import="java.util.Vector" %>
@@ -105,4 +105,4 @@ for (int month = 1; month <= 12; month++) {
    
 } 
 */	
-%>
+%> --%>

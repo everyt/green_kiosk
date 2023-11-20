@@ -39,7 +39,7 @@ function barChart(){
 function barChart2() {
 
 const dateValues = priceSumDate.map(date => new Date(date).getDate());
-console.log(priceSumDate);
+console.log("priceSumDate : " + priceSumDate);
   const ctx = document.getElementById('myChart2');
   new Chart(ctx, {
     type: 'line',
@@ -138,3 +138,7 @@ function cookieSeparate(cookieObject) {
   };
 }
 
+
+window.addEventListener('DOMContentLoaded', function() {
+     barChart();
+});
