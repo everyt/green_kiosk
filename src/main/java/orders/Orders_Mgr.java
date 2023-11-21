@@ -67,7 +67,7 @@ public class Orders_Mgr {
 	            bean.setOrder_no(this.rs.getInt("order_no"));
 	            bean.setOrder_time(this.rs.getTimestamp("order_time"));
 	            bean.setOrder_foods(this.rs.getString("order_foods"));
-	            bean.setOrder_price(this.rs.getInt("order_price"));
+	            bean.setOrder_price(this.rs.getLong("order_price"));
 	            bean.setOrder_discount(this.rs.getLong("order_discount"));
 	            bean.setOrder_coupon(this.rs.getString("order_coupon"));
 	            bean.setOrder_type(this.rs.getString("order_type"));
@@ -106,7 +106,7 @@ public class Orders_Mgr {
 	            bean.setOrder_no(this.rs.getInt("order_no"));
 	            bean.setOrder_time(this.rs.getTimestamp("order_time"));
 	            bean.setOrder_foods(this.rs.getString("order_foods"));
-	            bean.setOrder_price(this.rs.getInt("order_price"));
+	            bean.setOrder_price(this.rs.getLong("order_price"));
 	            bean.setOrder_discount(this.rs.getLong("order_discount"));
 	            bean.setOrder_coupon(this.rs.getString("order_coupon"));
 	            bean.setOrder_type(this.rs.getString("order_type"));
@@ -139,7 +139,7 @@ public class Orders_Mgr {
 	            bean.setOrder_no(this.rs.getInt("order_no"));
 	            bean.setOrder_time(this.rs.getTimestamp("order_time"));
 	            bean.setOrder_foods(this.rs.getString("order_foods"));
-	            bean.setOrder_price(this.rs.getInt("order_price"));
+	            bean.setOrder_price(this.rs.getLong("order_price"));
 	            bean.setOrder_discount(this.rs.getLong("order_discount"));
 	            bean.setOrder_coupon(this.rs.getString("order_coupon"));
 	            bean.setOrder_type(this.rs.getString("order_type"));
@@ -171,7 +171,7 @@ public class Orders_Mgr {
 	            bean.setOrder_no(this.rs.getInt("order_no"));
 	            bean.setOrder_time(this.rs.getTimestamp("order_time"));
 	            bean.setOrder_foods(this.rs.getString("order_foods"));
-	            bean.setOrder_price(this.rs.getInt("order_price"));
+	            bean.setOrder_price(this.rs.getLong("order_price"));
 	            bean.setOrder_discount(this.rs.getLong("order_discount"));
 	            bean.setOrder_coupon(this.rs.getString("order_coupon"));
 	            bean.setOrder_type(this.rs.getString("order_type"));
@@ -219,7 +219,7 @@ public class Orders_Mgr {
 	            bean.setOrder_no(this.rs.getInt("order_no"));
 	            bean.setOrder_time(this.rs.getTimestamp("order_time"));
 	            bean.setOrder_foods(this.rs.getString("order_foods"));
-	            bean.setOrder_price(this.rs.getInt("order_price"));
+	            bean.setOrder_price(this.rs.getLong("order_price"));
 	            bean.setOrder_discount(this.rs.getLong("order_discount"));
 	            bean.setOrder_coupon(this.rs.getString("order_coupon"));
 	            bean.setOrder_type(this.rs.getString("order_type"));
@@ -353,8 +353,7 @@ public class Orders_Mgr {
 					pstmt.setTimestamp(1, bean.getOrder_time());
 					pstmt.setString(2, bean.getOrder_foods());
 					System.out.println("sdsd" + bean.getOrder_foods());
-					pstmt.setInt(3, bean.getOrder_price());
-					System.out.println("sdsd" + bean.getOrder_price());
+					pstmt.setLong(3, bean.getOrder_price());
 					pstmt.setLong(4, bean.getOrder_discount());
 					pstmt.setString(5, bean.getOrder_coupon());
 					pstmt.setString(6, bean.getOrder_type());
@@ -390,7 +389,7 @@ public class Orders_Mgr {
 				  	bean.setOrder_no(rs.getInt("order_no"));
 		            bean.setOrder_time(rs.getTimestamp("order_time"));
 		            bean.setOrder_foods(rs.getString("order_foods"));
-		            bean.setOrder_price(rs.getInt("order_price"));
+		            bean.setOrder_price(rs.getLong("order_price"));
 		            bean.setOrder_discount(rs.getLong("order_discount"));
 		            bean.setOrder_coupon(rs.getString("order_coupon"));
 		            bean.setOrder_type(rs.getString("order_type"));
