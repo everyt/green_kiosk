@@ -117,6 +117,7 @@ function loadContent(url) {
       if (url.includes("sales/ac00up.jsp?numb=")) {
     	  getFoodList(orderFoodsValue);
       }
+      sessionStorage.setItem("context", "<%=request.getContextPath()%>")
       // 맨 상단으로 가도록
       window.scrollTo(0, 0);
     }

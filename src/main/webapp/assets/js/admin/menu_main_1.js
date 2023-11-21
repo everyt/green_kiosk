@@ -141,7 +141,8 @@ async function sub() {
 		let price = frm.component_price.value;
 		let amount = frm.component_amount.value;
 		let component_imgPath = frm.component_imgPath.value;
-		fetch("<%=request.getContextPath()%>/api/admin/edit_jaego?no="+no+"&name="+name+"&price="+price+"&amount="+amount+"&imgpath="+component_imgPath, {
+		let contextpath = sessionStorage.getItem("context");
+		fetch(contextpath+"/api/admin/edit_jaego?no="+no+"&name="+name+"&price="+price+"&amount="+amount+"&imgpath="+component_imgPath, {
 			method: "post"
 		}).then(response => {
 			response.json().then((res) => {
