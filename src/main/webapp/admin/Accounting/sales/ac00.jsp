@@ -8,6 +8,8 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="com.google.gson.reflect.TypeToken" %>
+
+
 <jsp:useBean id="menuMgr" class="menu.Manager_Menu"/>
 
 <%
@@ -20,12 +22,13 @@ int AllPrice = 0;
 	int numb = 0; 
    
    vlist = menuMgr.getMgrorderList();
+   
   
 	
 %>
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta charset="UTF-8">
 	<title>코드관리</title>
 <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/account/account.js"></script>
 <link rel="stylesheet" href="/post_inc/datatables/jquery.dataTables.min.css">
@@ -94,7 +97,7 @@ table {
 				    	int order_no = bean.getOrder_no();
 				    	Timestamp order_time = bean.getOrder_time();
 				    	String order_foods = bean.getOrder_foods();
-				    	long order_price = bean.getOrder_price();
+				    	int order_price = bean.getOrder_price();
 				    	long order_discount = bean.getOrder_discount();
 				    	String order_coupon = bean.getOrder_coupon();
 				    	String order_type = bean.getOrder_type();
@@ -102,7 +105,7 @@ table {
 				        boolean order_is_maked = bean.isOrder_is_maked();
 				    	
 				        if (i < 10) {
-				        	System.out.println(i);
+				        
 				    %>
 				    <tr>
 						<td align="center">
@@ -112,7 +115,9 @@ table {
  						   <%=order_time%>
 						</td>
 						<td align="center">
- 						   <%=order_foods%>
+						<div class="text-over-cut">
+						 <%=order_foods%>
+						</div>
 						</td>
 						<td align="center">
  						   <%=order_price%>
@@ -137,7 +142,7 @@ table {
 						</td>
 						</td>
 							<td align="center">
-						   <a onClick="loadContent('sales/ac00Delete.jsp?numb=<%=order_no%>')" href="javascript:">삭제</a>
+						   <input type="button" value="삭제" onClick="loadContent('sales/ac00Delete.jsp?numb=<%=order_no%>')"></a>
 						</td>
 					</tr>
 				    <tr>

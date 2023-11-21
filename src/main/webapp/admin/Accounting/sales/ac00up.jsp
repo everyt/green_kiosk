@@ -8,15 +8,19 @@
 	Orders_Bean codeBean = ordersMgr.getord1(numb);   //입력자료 가져오기
 %>
 <html>
-<head>
+<head><meta charset="UTF-8">
 	<title>코드관리</title>
 	<link href="../main/style.css" rel="stylesheet" type="text/css" >
 </head>
+<script>
+	const menuMap = new Map();
+</script>
+
 
 <body bgcolor="#FFFFCC" onLoad="regFrm.code.focus()">
 	<div align="center">
 		<br /> <br />
-		<form name="regFrm" method="post" target="_blank" action="sales/ac00up_p.jsp" >
+		<form name="regFrm" method="get" target="_blank" action="sales/ac00up_p.jsp" >
 			<table align="center" cellpadding="5" >
 				<tr>
 					<td align="center" valign="middle" >
@@ -38,13 +42,13 @@
 							<tr>
 								<td>판매 내역</td>
 								<td><input name="order_foods" size="30"
-									value='<%=codeBean.getOrder_foods()%>'></td>
+									 readonly ></td>
 							</tr>
 							<tr>
-								<td>판매 금액</td>
-								<td><input name="order_price" size="15"
-									value="<%=codeBean.getOrder_price()%>"></td>
-							</tr>
+                                <td>판매 금액</td>
+                                <td><input name="order_price" size="15"
+                                    value='<%=codeBean.getOrder_price()%>'></td>
+                            </tr>
 							<tr>
 							     <td>할인</td>
 							     <td><input name="order_discount" size="15"
@@ -85,5 +89,37 @@
 			</table>
 		</form>
 	</div>
+	<script>
+	function getFoodList(value)
+	{
+	console.log("value = " + value)
+    var parsedData = JSON.parse("["+ value +"]");
+    parsedData.forEach(function(order) {
+    	order.forEach(function(item) {
+    		//menu name
+    		var menuName = item.name;
+    		//menu amount
+    		var amount = parseInt(item.amount);
+    		
+    		if(menuMap.has(menuName)) { 
+    			menuMap.set(menuName, menuMap.get(menuName) + amount);
+    		} else {
+    			menuMap.set(menuName, amount);
+    		}
+    	});
+    });
+    console.log("parsedData = " + parsedData);
+    
+    const menuArray = Array.from(menuMap.entries());
+    const menuData = menuArray.map(([menuName, amount]) => ({menuName, amount}));
+    console.log("menuArray = " + menuArray);
+    console.log("menuData = " +menuData);
+	}
+	
+	window.addEventListener('DOMContentLoaded', function() {
+		getFoodList(<%=codeBean.getOrder_foods()%>);
+		console.log(<%=codeBean.getOrder_foods()%>)
+	});
+	</script>
 </body>
 </html>

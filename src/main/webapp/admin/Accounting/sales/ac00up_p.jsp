@@ -16,26 +16,24 @@
 </head>
 <body>
 <%
-
 String order_no = request.getParameter("order_no");
-System.out.println("sdsd" + request.getParameter("order_no"));
-System.out.println("sdsd" + request.getParameter("order_foods"));
+String req_order_price = request.getParameter("order_price");
 String dateString = request.getParameter("order_time");
 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 Date date = sdf.parse(dateString);
 Timestamp timestamp = new Timestamp(date.getTime());
+updateOrder1Bean.setOrder_price(Integer.parseInt(req_order_price));
 updateOrder1Bean.setOrder_time(timestamp);
 updateOrder1Bean.setOrder_no(Integer.parseInt(order_no));
 updateOrder1Bean.setOrder_foods(request.getParameter("order_foods"));
 updateOrder1Bean.setOrder_coupon(request.getParameter("order_coupon"));
 updateOrder1Bean.setOrder_type(request.getParameter("order_type"));
-
 	  boolean result = ordersMgr.updateOrder1(updateOrder1Bean);
 	  if(result){
 %>
 <script type="text/javascript">
 		alert("코드정보 수정 하였습니다.");
-		location.href="ac00.jsp";
+		loadContent('sales/ac00.jsp');
 </script>
 <% } else {%>
 <script type="text/javascript">

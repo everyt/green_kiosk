@@ -3,7 +3,6 @@
 
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/index_sub.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/index_main.js"></script>
 
 <%-- <script>
@@ -40,24 +39,25 @@ foods3.set("data_key3", '<%=keys3.toString() %>')
       
 <script type="text/javascript" src="<%=request.getContextPath() %>/assets/js/admin/index/chart/chart bar.js"></script>      
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<div>
-<canvas id="myChart" style="display: block; box-sizing: border-box; height: 300px; width: 1200px;" width="1200"></canvas>
-</div>
-
-<div>
-<canvas id="myChart3"  style="display: block; box-sizing: border-box; height: 232px; width: 696px;" width="696"></canvas>
-</div>
-
-<div>
-<canvas id="myChart2"  style="display: block; box-sizing: border-box; height: 232px; width: 696px;" width="696"></canvas>
-</div> 
-
-  
+<div class="chartBox">
+	<div>
+		<canvas id="myChart" style="display: block; box-sizing: border-box; height: 300px; width: 1200px;" width="1200"></canvas>
+	</div>
+	
+	<div>
+		<canvas id="myChart3"  style="display: block; box-sizing: border-box; height: 232px; width: 696px;" width="696"></canvas>
+	</div>
+	
+	<div>
+		<canvas id="myChart2"  style="display: block; box-sizing: border-box; height: 232px; width: 696px;" width="696"></canvas>
+	</div> 
+	
+	<div>
+		<canvas id="myChart4" style="display: block; box-sizing: border-box; height: 232px; width: 696px;" width="696"></canvas>
+	</div>
+</div>  
                         
     </div>
   </div>
 </main>
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js"></script>
-
-
