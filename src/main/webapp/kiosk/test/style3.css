@@ -1048,9 +1048,32 @@ img {
 
 
 
+/*
+----------------------------------------------------------------------------------------------------------------------
+*/
 
 
+.order{
+	display: grid;
+	grid-column: 1/6;
+    grid-row: 7/12;
+}
 
+.Ordermenu{
+	display: grid;
+	
+}
+.count{
+    display: grid;
+    grid-column: 2/3;
+    grid-row: 1/1;
+    
+}
+.price{
+display: grid;
+    grid-column: 3/4;
+    grid-row: 1/1;
+}
 
 
 

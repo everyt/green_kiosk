@@ -149,59 +149,25 @@ const openModal = (burgerName, burgerPrice) => {
     document.getElementById('modalBurgerName').innerText = selectedBurger.name;
     document.getElementById('modalBurgerPrice').innerText = selectedBurger.price;
     
-    addToBasket(selectedBurger.name, selectedBurger.price);
-
+    const modal1Items = document.querySelectorAll('.modal-1-item');
+    modal1Items.forEach((item) => {
+      item.addEventListener('click', () => {
+        selectedAdditionalItem = {
+          name: item.querySelector('.item-name').innerText,
+          price: parseInt(item.querySelector('.item-price').innerText),
+        };
+        addToBasket(selectedAdditionalItem.name, selectedAdditionalItem.price);
+        MicroModal.close('modal-1');
+        MicroModal.show('modal-2');
+        MicroModal.init(); // 모달 초기화
+      });
+    });
 
     MicroModal.close('modal-1-1');
     MicroModal.show('modal-2');
-};
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------
+    MicroModal.init(); // 모달 초기화
+  };
 
-	const addToBasket1 = (subName, subPrice) => {
-	  const subItem = {
-	    name: subName,
-	    price: subPrice,
-	    amount: 1,
-	  };
-    
-    // 이미 장바구니에 있는지 확인
-    const existingItem = basketArray.find(item => item.name === item.name);
-
-    if (existingItem) {
-      existingItem.amount++;
-    } else {
-      basketArray.push(subItem);
-    }
-
-    const updateBasket = () => {
-
-        console.log(basketArray);
-      };
-  
-  	document.addEventListener('DOMContentLoaded', function () {
-
-
-  	let selectedSub = {};
-
-	const openModal = (subName, subPrice) => {
-		   selectedSub = {
-		      name: subName,
-		      price: subPrice,
-		      
-		    };
-
-		   
-    // 모달 창에 햄버거 정보 표시
-    document.getElementById('modalSubName').innerText = selectedSub.name;
-    document.getElementById('modalSubPrice').innerText = selectedSub.price;
-
-		   
-		   
-    MicroModal.close('modal-1');
-    MicroModal.show('modal-2');
-	};
-  });
-};
 </script>
 
 
@@ -315,25 +281,26 @@ const openModal = (burgerName, burgerPrice) => {
 					<div class="page3" onclick="back()"><H1 style="color:black;">닫 기</H1></div>		
 				
 
-	<div class="item1-1" onclick="hrefTo2('item1-1')">
-		<div class="rowbox">
-			<img src="../images/potato.jpg" >
-				<div class="colbox">
-				  <H1>포테이토</H1>
-				  <h2 style="color:blue;" >3500~</h2>
-				</div>
-		</div>
-	</div>
-	
-	<div class="item2-1" onclick="hrefTo1('item2-1')">
-		<div class="rowbox">
- 			<img src="../images/potato1.jpg" >
- 				<div class="colbox">
- 				     <H1>양념 감자</H1>
- 					  <h2 style="color:blue;" >3500~</h2>
- 				</div>
-		</div>
-	</div>
+ <!-- 포테이토 메뉴 아이템 -->
+	<div class="item1-1 modal-1-item" onclick="hrefTo1('item1-1')">
+      <div class="rowbox">
+        <img src="../images/potato.jpg" >
+        <div class="colbox">
+          <h1>포테이토</h1>
+          <h2 style="color:blue;" >3500~</h2>
+        </div>
+      </div>
+    </div>
+
+	<div class="item2-1 modal-1-item" onclick="hrefTo1('item2-1')">
+      <div class="rowbox">
+        <img src="../images/potato1.jpg" >
+        <div class="colbox">
+          <h1>양념 감자</h1>
+          <h2 style="color:blue;" >3500~</h2>
+        </div>
+      </div>
+    </div>
 	
 	<div class="item3-1">
 		<div class="rowbox">
