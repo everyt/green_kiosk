@@ -15,7 +15,7 @@ const handleKeypad = (num) => {
 const generateCouponHTML = (arr: any[]) => {
   let couponHTML = '';
 
-  if (arr.length > 0) {
+  if (arr && arr.length > 0) {
     document.getElementById('couponDOM2').style.display = 'inline-block';
     for (let i = 0; i < arr.length; i++) {
       couponHTML += `<div class='rowbox' style='border: solid #ddd; border-width: 0 0 2px 0; align-self: center; padding: 3px 0;'>`;
@@ -68,28 +68,27 @@ const handleCouponForm = async () => {
     const coupon = {
       'code': couponCode,
     };
-    const coupon2 = await detailedFetch(
+    const fetchCoupon: fetchCouponType = await detailedFetch(
       '/green_kiosk/api/kiosk/purchase/coupon',
       'POST',
       encodeURIComponent(JSON.stringify(coupon)),
     );
-    if (coupon2[0].code !== 'x' && coupon2[0].code !== 't') {
+    if (fetchCoupon.result) {
       const couponItem = sessionStorage.getItem('couponArray');
-      let couponArray = [];
+      let couponArray: couponType[] = [];
       if (couponItem !== null || couponItem !== undefined) {
         couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
-        couponArray.push(coupon2[0]);
+        couponArray.push(fetchCoupon.body as couponType);
       } else {
-        couponArray = coupon2;
+        couponArray = [fetchCoupon.body as couponType];
       }
       sessionStorage.setItem('couponArray', JSON.stringify(couponArray));
       generateCouponHTML(couponArray);
-      console.log(1);
     } else {
       const couponTextElement = document.getElementById('couponText');
-      if (coupon.code === 'x') {
+      if (fetchCoupon.body === 'invalid') {
         couponTextElement.innerHTML = '<span style="color: red;">유효하지 않은 쿠폰입니다.</span>';
-      } else {
+      } else if (fetchCoupon.body === 'over-time') {
         couponTextElement.innerHTML = '<span style="color: red;">현재 사용 불가능한 쿠폰입니다.</span>';
       }
       setTimeout(() => {

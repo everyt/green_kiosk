@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <title>결제 시스템</title>
     <link rel="stylesheet" href="../../assets/css/purchase.css" />
-    <link rel="stylesheet" href="../../assets/css/micromodal.css" />
+    <link rel="stylesheet" href="./micromodal.css" />
   </head>
   <body style="overflow: hidden">
     <div class="header"><span>신용/체크카드</span></div>

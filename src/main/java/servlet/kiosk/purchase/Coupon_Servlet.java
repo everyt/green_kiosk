@@ -91,14 +91,13 @@ public class Coupon_Servlet extends HttpServlet {
 			List<Coupon_VO> list_coupons_vo = this.verify(gson.fromJson(requestBody, type));
 			
 			if (list_coupons_vo == null || list_coupons_vo.isEmpty()) {
-				out.write("[{"
-						+ "\"code\": \"x\","
-						+ "\"name\": \"x\","
-						+ "\"menuNo\": 0,"
-						+ "\"discount\": 0"
-						+ "}]");
+					out.write("{"
+							+ "\"result\": false}");
 			} else {
-				out.write(gson.toJson(list_coupons_vo));
+				out.write("{"
+						+ "\"result\": true, \"body\":"
+						+ gson.toJson(list_coupons_vo)
+						+ "}");
 			}
 		} else if (endPoint.equals("/api/kiosk/purchase/coupon")) {
 			
@@ -135,27 +134,20 @@ public class Coupon_Servlet extends HttpServlet {
 					}
 				}
 				if (isCorrect) {
-					out.write("[{"
-							+ "\"code\": \"" + coupon_map.get("code") + "\","
+					out.write("{"
+						  + "\"result\": true, \"body\":"
+							+ "{\"code\": \"" + coupon_map.get("code") + "\","
 						    + "\"name\": \"" + coupon_bean.getCoupon_name() + "\","
 							+ "\"menuNo\": \"" + coupon_bean.getCoupon_menuNo() + "\","
 							+ "\"discount\": \"" + coupon_bean.getCoupon_discount() + "\","
-							+ "}]");
+							+ "}}");
 				} else {
-					out.write("[{"
-							+ "\"code\": \"t\","
-							+ "\"name\": \"x\","
-							+ "\"menuNo\": 0,"
-							+ "\"discount\": 0"
-							+ "}]");
+					out.write("{"
+							+ "\"result\": false, \"body\": \"invalid\"}");
 				}
 			} else {
-				out.write("[{"
-						+ "\"code\": \"x\","
-						+ "\"name\": \"x\","
-						+ "\"menuNo\": 0,"
-						+ "\"discount\": 0"
-						+ "}]");
+					out.write("{"
+							+ "\"result\": false, \"body\": \"over-time\"}");
 			}
 		}
 		

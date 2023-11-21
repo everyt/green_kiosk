@@ -66,33 +66,38 @@ public class Event_Servlet extends HttpServlet {
     	
     	PrintWriter out = res.getWriter();
 
-		String endPoint = req.getServletPath();
-		
-		logger.info(LOGGER_NAME + ": Processing HTTP GET request by \"" + endPoint + "\"");
-		
-		if (endPoint.equals("/api/kiosk/purchase/event")) {
-			Vector<Event_Bean> vector = event_mgr.readAllActiveEvent();
+			String endPoint = req.getServletPath();
 			
-			String result = "[";
+			logger.info(LOGGER_NAME + ": Processing HTTP GET request by \"" + endPoint + "\"");
 			
-			for (int i = 0; i < vector.size(); i++) {
-				Event_Bean event_bean = vector.get(i);
-				
-				result += "{\"no\":" + event_bean.getEvent_no() + "";
-				result += "\"name\":\"" + event_bean.getEvent_name() + "\"";
-				result += "\"desc\":\"" + event_bean.getEvent_desc() + "\"";
-				result += "\"image\":\"" + event_bean.getEvent_image() + "\"}";
-				
-				if (i != vector.size() - 1) {
-					result += ",";
+			if (endPoint.equals("/api/kiosk/purchase/event")) {
+				Vector<Event_Bean> vector = event_mgr.readAllActiveEvent();
+				String result = "{";
+
+				if (vector.size() > 0) {
+					result += "\"result\": true, \"body\":[";
+					
+					for (int i = 0; i < vector.size(); i++) {
+						Event_Bean event_bean = vector.get(i);
+						
+						result += "{\"no\":" + event_bean.getEvent_no() + ",";
+						result += "\"name\":\"" + event_bean.getEvent_name() + "\",";
+						result += "\"desc\":\"" + event_bean.getEvent_desc() + "\",";
+						result += "\"image\":\"" + event_bean.getEvent_image() + "\"}";
+						
+						if (i != vector.size() - 1) {
+							result += ",";
+						}
+					}
+					
+					result += "]}";
+				} else {
+					result += "\"result\": false}";
 				}
+				
+				out.write(result);
+				
 			}
-			
-			result += "]";
-			
-			out.write(result);
-			
-		}
     }
     
     @Override
@@ -126,25 +131,30 @@ public class Event_Servlet extends HttpServlet {
 	    if (endPoint.equals("/api/kiosk/purchase/eventMenu")) {
 	    	List<Map<String, Integer>> list = this.gson.fromJson(
 	    			requestBody, new TypeToken<ArrayList<Map<String, Integer>>>() {}.getType());
-	    	
-			String result = "[";
-	    	
-	    	for (Map<String, Integer> map: list) {
-				Vector<Eventmenu_Bean> vector = eventmenu_mgr.readAllEventmenuByEventNo(map.get("no"));
-				for (int i = 0; i < vector.size(); i++) {
-					Eventmenu_Bean eventmenu_bean = vector.get(i);
+		
+				String result = "{";
+
+				if (list.size() > 0) {
+					result += "\"result\": true, \"body\":[";
+
+					for (Map<String, Integer> map: list) {
+						Vector<Eventmenu_Bean> vector = eventmenu_mgr.readAllEventmenuByEventNo(map.get("no"));
+						for (int i = 0; i < vector.size(); i++) {
+							Eventmenu_Bean eventmenu_bean = vector.get(i);
+							
+							result += "{\"eventNo\":" + map.get("no") + "";
+							result += "\"menuNo\":" + eventmenu_bean.getEventMenu_menuNo() + "";
+							result += "\"discount\":" + eventmenu_bean.getEventMenu_discount() + "}";
+							result += ",";
+						}
+					}
+					result = result.substring(0, result.length() - 1);
 					
-					result += "{\"eventNo\":" + map.get("no") + "";
-					result += "\"menuNo\":" + eventmenu_bean.getEventMenu_menuNo() + "";
-					result += "\"discount\":" + eventmenu_bean.getEventMenu_discount() + "}";
-				    result += ",";
+					result += "]}";
+				} else {
+					result += "\"result\": false}";
 				}
-	    	}
-	    	
-	    	result.substring(0, result.length() - 1);
-	    	
-			result += "]";
-			
+
 			out.write(result);
 	    }
 	}
