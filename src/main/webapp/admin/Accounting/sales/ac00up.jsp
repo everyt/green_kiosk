@@ -13,7 +13,7 @@
 	<link href="../main/style.css" rel="stylesheet" type="text/css" >
 </head>
 <script>
-const foods = new Map();
+	const menuMap = new Map();
 </script>
 
 
@@ -90,8 +90,10 @@ const foods = new Map();
 		</form>
 	</div>
 	<script>
-	var menuMap = new Map();
-    var parsedData = JSON.parse("["+'<%=codeBean.getOrder_foods()%>'+"]");
+	function getFoodList(value)
+	{
+	console.log("value = " + value)
+    var parsedData = JSON.parse("["+ value +"]");
     parsedData.forEach(function(order) {
     	order.forEach(function(item) {
     		//menu name
@@ -99,7 +101,7 @@ const foods = new Map();
     		//menu amount
     		var amount = parseInt(item.amount);
     		
-    		if(menuMap.has(menuName)) {
+    		if(menuMap.has(menuName)) { 
     			menuMap.set(menuName, menuMap.get(menuName) + amount);
     		} else {
     			menuMap.set(menuName, amount);
@@ -112,6 +114,12 @@ const foods = new Map();
     const menuData = menuArray.map(([menuName, amount]) => ({menuName, amount}));
     console.log("menuArray = " + menuArray);
     console.log("menuData = " +menuData);
+	}
+	
+	window.addEventListener('DOMContentLoaded', function() {
+		getFoodList(<%=codeBean.getOrder_foods()%>);
+		console.log(<%=codeBean.getOrder_foods()%>)
+	});
 	</script>
 </body>
 </html>
