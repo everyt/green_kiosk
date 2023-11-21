@@ -42,7 +42,7 @@
 		  const resultElement = document.getElementById('result');
 		  
 		  // 현재 화면에 표시된 값
-		  let number = resultElement.innerText;
+		  let number = resultElement.inne1r2r3rrText;
 		  
 		  // 더하기/빼기
 		  if(type === 'plus') {

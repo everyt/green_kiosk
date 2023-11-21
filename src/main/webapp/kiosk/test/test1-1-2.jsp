@@ -23,12 +23,12 @@
 	 	<div class="page "onclick="jumoon3()" ><h2>사 이 드</h2></div>
 	 </div>
 
-	<div class="item1 "onclick="hrefTo()">
+	<div class="item1" onclick="hrefTo()">
 		<div class="rowbox">
- 			<img src="../images/hamburger0.jpg" >
+ 			<img src="../images/hamburger0.jpg" id="check" >
  				<div class="colbox">
- 				  <H1>데리버거</H1>
- 				  <h2 style="color:blue;" >3500~</h2>
+ 				  <span id="menu" style="font-size:36px; margin :10px" >데리버거</span>
+ 				  <span id="don" style="font-size:30px; margin :10px; color:blue;" >3500~</span>
  				 </div>
 		</div>
 	</div>
@@ -43,7 +43,7 @@
 		</div>
 	</div>
 	
-	<div class="item3 " onclick="jumoon()">
+	<div class="item3 " onclick="hrefTo3()">
 		<div class="rowbox">
  			<img src="../images/hamburger2.jpg" >
  				<div class="colbox">
@@ -118,7 +118,7 @@
 					<div class="page3" onclick="back()"><H1 style="color:black;">닫 기</H1></div>		
 				
 
-	<div class="item1-1 ">
+	<div class="item1-1 " onclick="setSubMenu()">
 		<div class="rowbox">
 			<img src="../images/potato.jpg" >
 				<div class="colbox">
@@ -238,7 +238,7 @@
 					<div class="page2-1" onclick="back2()"><H1 style="color:black;">닫 기</H1></div>		
 					
 
-	<div class="item1-2 ">
+	<div class="item1-2 " onClick="setDrink()">
 		<div class="rowbox">
 			<img src="../images/cola.jpg" >
 				<div class="colbox">
@@ -349,10 +349,7 @@
 
 
 
-
-
-
-
+</div>
 
 
 
@@ -363,40 +360,74 @@
     <span id="price" style="font-size:1.2rem; font-weight: 600; color:red;"></span>
   </div>
 		
-
-</div>
 <%
-	Vector<Menu_menu_Bean> vector = mMgr.getMenuList(1);
+//	Vector<Menu_menu_Bean> vector = mMgr.getMenuList(type);
 	
-	int menuLength = vector.size();
+//	int menuLength = vector.size();
 
-	if (vector.isEmpty()){
-		out.println("등록된 메뉴가 없습니다.");
+//	if (vector.isEmpty()){
+/*		out.println("등록된 메뉴가 없습니다.");
 	} else {
 		for (int i = 0; i < menuLength; i++) {
 			Menu_menu_Bean bean = vector.get(i);
-			
+*/			
 %>
 
-<%
+<%/*
 		}
 	}
-
+*/
 %>
-
-
-
-
-
 
 
 
 <script>
 
-//document.querySelector(".modal micromodal-slide").style.display = 'none';
-//document.querySelector(".modal micromodal-slide").style.display = 'inline-block';
 
 MicroModal.init();
+
+let basket = {
+
+
+
+
+};
+
+
+const basket = {
+	
+	no: '0',
+	submenu : '튀김',
+	drink: '사이다'
+	
+	};
+
+const captainAmerica = {
+		  name: '스티븐 로저스',
+		  actor: '크리스 에반스',
+		  alias: '캡틴 아메리카'
+		};
+
+const hrefTo = (type) => {
+	basket.push({no: 0});
+	  MicroModal.show('modal-1');
+}	
+
+
+const saveSessionStorage = (basket) => {
+	sessionStorage.setItem("basketArray", basket)
+}
+
+MicroModal.init();
+
+const setSubMenu = (type) => {
+	basket[basket.length-1].submenu = '감자튀김';
+}
+
+const setDrink = (type) => {
+	basket[basket.length-1].drink = '콜라';
+
+}
 
 const back = (type) => {
 	  MicroModal.close('modal-1');
@@ -414,13 +445,7 @@ const back3 = (type) => {
 	  MicroModal.close('modal-2-1');
 
 }
-
-MicroModal.init();
-
 	
-	const hrefTo = (type) => {
-	  MicroModal.show('modal-1');
-}	
 	
 	
 	const hrefTo1 = (type) => {
@@ -432,12 +457,13 @@ MicroModal.init();
 
 	}
 	const hrefTo3 = (type) => {
-		  localStorage.setItem('paymentType', type);
+		  localStorage.setItem('basketArray', type);
 		  MicroModal.show('modal-2-1');
-		  setTimeout(() => {
-		  }, 2500)
+
 	}
 
+	localStorage.setItem("test", "123");
+	
 	
 	
 //-------------------------------------------------------------------------------------------------------------------------------------

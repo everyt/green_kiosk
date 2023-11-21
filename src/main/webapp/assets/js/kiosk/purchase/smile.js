@@ -79,7 +79,7 @@ var back = function () {
 };
 var smileRegex = /^01(1|6|7|8|9)-\d{3,4}-\d{4}$/;
 var handleSmileForm = function () { return __awaiter(_this, void 0, void 0, function () {
-    var smileCodeElement, smileCode, smileTypeElement, smileType, smileTextElement_1, smile, smileTextElement_2;
+    var smileCodeElement, smileCode, smileTypeElement, smileType, smileTextElement_1, smile, mileage, smileTextElement_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -103,9 +103,9 @@ var handleSmileForm = function () { return __awaiter(_this, void 0, void 0, func
                 };
                 return [4 /*yield*/, detailedFetch('/green_kiosk/api/user/verify/smile', 'POST', encodeURIComponent(JSON.stringify(smile)))];
             case 2:
-                smile = _a.sent();
-                if (smile.value !== 'x') {
-                    sessionStorage.setItem('couponArray', JSON.stringify(smile));
+                mileage = _a.sent();
+                if (mileage.result) {
+                    sessionStorage.setItem('mileage', JSON.stringify(mileage.body));
                 }
                 else {
                     smileTextElement_2 = document.getElementById('smileText');

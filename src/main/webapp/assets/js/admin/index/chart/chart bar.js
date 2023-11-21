@@ -1,12 +1,5 @@
-let totalAmountByNameCookie = getCookieValue("totalAmountByName");
-let totalAmountByNameCookieObject = JSON.parse(totalAmountByNameCookie);
-let menu_name = Object.keys(totalAmountByNameCookieObject);
-let menu_amount = Object.values(totalAmountByNameCookieObject);
-	
-function barChart(){
-	const menuData = menu_name.map((name, index) => ({name, amount : menu_amount[index]}));
-	menuData.sort((a, b) => b.amount - a.amount); //오름 차순 정렬
-	  const top10MenuData = menuData.slice(0, 10); // 상위 10개 아이템만 선택
+
+/*function barChart(){
   const ctx = document.getElementById('myChart');
   new Chart(ctx, {
     type: 'bar',
@@ -35,11 +28,11 @@ function barChart(){
   });
 }  
 
-
+*/
 function barChart2() {
 
 const dateValues = priceSumDate.map(date => new Date(date).getDate());
-console.log(priceSumDate);
+console.log("priceSumDate : " + priceSumDate);
   const ctx = document.getElementById('myChart2');
   new Chart(ctx, {
     type: 'line',
@@ -74,18 +67,26 @@ console.log(priceSumDate);
 }
 
 
-function barChart3(){
-	const menuData = menu_name.map((name, index) => ({name, amount : menu_amount[index]}));
-	menuData.sort((a, b) => b.amount - a.amount); //오름 차순 정렬
-	  const top10MenuData = menuData.slice(0, 20); // 상위 20개 아이템만 선택
-  const ctx = document.getElementById('myChart');
+function barChart3() {
+	
+	 const existingChart = Chart.getChart('myChart3');
+    if (existingChart) {
+        existingChart.destroy();
+    }
+    
+  const entriesArray = Array.from(menuAmountMap.entries());
+  const menuData2 = entriesArray.map(([name, amount]) => ({ name, amount }));
+  menuData2.sort((a, b) => b.amount - a.amount);
+  const top20MenuData = menuData2.slice(0, 20);
+
+  const ctx = document.getElementById('myChart3').getContext('2d');
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: top10MenuData.map(item => item.name),
+      labels: top20MenuData.map(item => item.name),
       datasets: [{
-       label:  '판매량',
-        data: top10MenuData.map(item => item.amount),
+        label: '판매량',
+        data: top20MenuData.map(item => item.amount),
         borderWidth: 1
       }]
     },
@@ -95,21 +96,16 @@ function barChart3(){
           beginAtZero: true
         }
       },
-      responsive : true,
-      plugins : {
-		  title : {
-			  display : true,
-			  text : "당월 메뉴별 판매량(상위 20개)",
-		  }
-	  }
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: "당월 메뉴별 판매량(상위 20개)"
+        }
+      }
     }
   });
-}  
-window.addEventListener('DOMContentLoaded', function () {
-  barChart();
-  barChart2();
-  
-});
+}
 
 
 function getCookieValue(cookieName) {
@@ -138,3 +134,7 @@ function cookieSeparate(cookieObject) {
   };
 }
 
+
+window.addEventListener('DOMContentLoaded', function() {
+     barChart();
+});

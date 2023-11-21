@@ -167,7 +167,7 @@
 
 
 <%
-	Vector<Menu_menu_Bean> vector = mMgr.getMenuList();
+	Vector<Menu_menu_Bean> vector = mMgr.getMenuList(type);
 	
 	int menuLength = vector.size();
 

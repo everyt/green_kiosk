@@ -8,102 +8,118 @@
 	Orders_Bean codeBean = ordersMgr.getord1(numb);   //입력자료 가져오기
 %>
 <html>
-<head>
+<head><meta charset="UTF-8">
 	<title>코드관리</title>
 	<link href="../main/style.css" rel="stylesheet" type="text/css" >
 </head>
+<script>
+	const menuMap = new Map();
+</script>
+
 
 <body bgcolor="#FFFFCC" onLoad="regFrm.code.focus()">
 	<div align="center">
 		<br /> <br />
-		<form name="regFrm" method="post" action="code02_p.jsp" >
+		<form name="regFrm" method="get" target="_blank" action="sales/ac00up_p.jsp" >
 			<table align="center" cellpadding="5" >
 				<tr>
-					<td align="center" valign="middle" bgcolor="#FFFFCC">
+					<td align="center" valign="middle" >
 						<table border="1" cellpadding="2" align="center" width="600">
-							<tr align="center" bgcolor="#996600">
-								<td colspan="3"><font color="#FFFFFF"><b>코드 자료 수정</b></font></td>
+							<tr align="center" >
+								<td colspan="3"><font><b>거래 내역 수정</b></font></td>
 							</tr>
 							<tr>
-								<td width="20%">순서</td>
+								<td width="20%">번호</td>
 								<td width="50%">
-									<input name="numb" size="15" 
+									<input name="order_no" size="15" 
 									value="<%=codeBean.getOrder_no()%>" readonly></td>
 							</tr>
 							<tr>
-								<td>사용자 아이디</td>
-								<td><input name="id" size="15"
+								<td>판매 일시</td>
+								<td><input name="order_time" size="15"
 									value="<%=codeBean.getOrder_time()%>" readonly ></td>
 							</tr>
 							<tr>
-								<td>코드</td>
-								<td><input name="code" size="30"
-									value="<%=codeBean.getOrder_foods()%>"></td>
+								<td>판매 내역</td>
+								<td><input name="order_foods" size="30"
+									 readonly ></td>
 							</tr>
 							<tr>
-								<td>차 크기</td>
-								<td><input name="size" size="15"
-									value="<%=codeBean.getOrder_price()%>"></td>
-							</tr>
+                                <td>판매 금액</td>
+                                <td><input name="order_price" size="15"
+                                    value='<%=codeBean.getOrder_price()%>'></td>
+                            </tr>
 							<tr>
-							     <td>기본 시간</td>
-							     <td><input name="g_time" size="15"
+							     <td>할인</td>
+							     <td><input name="order_discount" size="15"
 							        value="<%=codeBean.getOrder_discount()%>"></td>
 							 </tr>       
 							<tr>
-							     <td>기본 요금</td>
-							     <td><input name="g_gum" size="15"
-							        value="<%=codeBean.getOrder_coupon()%>"></td>
+							     <td>쿠폰</td>
+							     <td><input name="order_coupon" size="15"
+							        value='<%=codeBean.getOrder_coupon()%>'></td>
 							</tr>
 							<tr>
-							     <td>이용 시간</td>
-							     <td><input name="b_time" size="15"
+							     <td>결제 방식</td>
+							     <td><input name="order_type" size="15"
 							        value="<%=codeBean.getOrder_type()%>"></td>
 							</tr>
 							<tr>
-							     <td>이용 요금</td>
-							     <td><input name="b_gum" size="15"
-							        value="<%=codeBean.getOrder_use_mile()%>"></td>
+							     <td>마일리지</td>
+							     <td><input name="order_use_mile" size="15"
+							        value="<%=codeBean.isOrder_use_mile()%>"></td>
 							</tr>
 							<tr>
-							     <td>정액제</td>
-							     <td><input name="jung" size="15"
-							        value="<%=codeBean.getOrder_use_amount()%>"></td>
+							     <td>주문현황</td>
+							     <td><input name="order_is_maked" size="15"
+							        value="<%=codeBean.isOrder_is_maked()%>"></td>
 							</tr>
-							<tr>
-							     <td>정액제</td>
-							     <td><input name="jung" size="15"
-							        value="<%=codeBean.getOrder_add_mile()%>"></td>
-							</tr>
-							<tr>
-							     <td>정액제</td>
-							     <td><input name="jung" size="15"
-							        value="<%=codeBean.getOrder_is_maked()%>"></td>
-							</tr>
-							<tr>
-							     <td>정액제</td>
-							     <td><input name="jung" size="15"
-							        value="<%=codeBean.get_who()%>"></td>
-							</tr>
-							<tr>
-							     <td>정액제</td>
-							     <td><input name="jung" size="15"
-							        value="<%=codeBean.getOrder_is_togo()%>"></td>
-							</tr>
-							
 							<tr>
 								<td colspan="3" align="center">
 								<input type="submit" value="수정완료"> &nbsp; &nbsp; 
 								<input type="reset" value="다시쓰기"> &nbsp; &nbsp; 
-								<input type="button" value="자료삭제" onClick="location.href='code03.jsp?numb=<%=numb%>'"> &nbsp; &nbsp;
-								<input type="button" value="신규코드" onClick="location.href='code01.jsp'"> &nbsp; &nbsp;
-								<input type="button" value="코드목록" onClick="history.go(-1)"></td>						
+								<input type="button" value="코드목록" onClick="history.go(-1)">
+								<input style="display:none" name="order_no" value="<%=numb %>"/></td>						
+							
 							</tr>
+							
 						</table>
 					</td>
 				</tr>
 			</table>
 		</form>
 	</div>
+	<script>
+	function getFoodList(value)
+	{
+	console.log("value = " + value)
+    var parsedData = JSON.parse("["+ value +"]");
+    parsedData.forEach(function(order) {
+    	order.forEach(function(item) {
+    		//menu name
+    		var menuName = item.name;
+    		//menu amount
+    		var amount = parseInt(item.amount);
+    		
+    		if(menuMap.has(menuName)) { 
+    			menuMap.set(menuName, menuMap.get(menuName) + amount);
+    		} else {
+    			menuMap.set(menuName, amount);
+    		}
+    	});
+    });
+    console.log("parsedData = " + parsedData);
+    
+    const menuArray = Array.from(menuMap.entries());
+    const menuData = menuArray.map(([menuName, amount]) => ({menuName, amount}));
+    console.log("menuArray = " + menuArray);
+    console.log("menuData = " +menuData);
+	}
+	
+	window.addEventListener('DOMContentLoaded', function() {
+		getFoodList(<%=codeBean.getOrder_foods()%>);
+		console.log(<%=codeBean.getOrder_foods()%>)
+	});
+	</script>
 </body>
 </html>

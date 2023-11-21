@@ -35,6 +35,59 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
+var BARCODE_DICTIONARY = {
+    0: [false, false, true, true, false, true],
+    1: [false, true, true, false, false, true],
+    2: [false, true, false, false, true, true],
+    3: [true, true, true, true, false, true],
+    4: [true, false, false, false, true, true],
+    5: [true, true, false, false, false, true],
+    6: [true, false, true, true, true, true],
+    7: [true, true, true, false, true, true],
+    8: [true, true, false, true, true, true],
+    9: [false, false, true, false, true, true],
+};
+var Barcode = /** @class */ (function () {
+    function Barcode(code, ctx, x, y) {
+        this.ctx = ctx;
+        this.ctx.canvas.width = x;
+        this.ctx.canvas.height = y;
+        this.code = typeof code === 'number' ? code.toString() : code;
+        this.destructCode();
+        this.size = { x: x, y: y };
+        this.draw();
+    }
+    Barcode.prototype.destructCode = function () {
+        this.lines = [];
+        for (var i = 0; i < this.code.length; i++) {
+            var digit = parseInt(this.code[i]);
+            if (BARCODE_DICTIONARY[digit]) {
+                this.lines.push(BARCODE_DICTIONARY[digit]);
+            }
+        }
+    };
+    Barcode.prototype.draw = function () {
+        for (var i = 0; i < this.lines.length; i++) {
+            for (var j = 0; j < 6; j++) {
+                var lineCount = this.size.x / (this.code.length * 6);
+                var x = lineCount * (i * 6 + j);
+                var y = 0;
+                var width = lineCount;
+                var height = this.size.y - Math.round(this.size.y / 4);
+                if (this.lines[i][j]) {
+                    this.ctx.fillRect(x, y, width, height);
+                }
+                if (j === 2) {
+                    var textX = x + width / 2;
+                    var textY = this.size.y - Math.round(this.size.y / 7);
+                    this.ctx.font = "".concat(Math.round(this.size.y / 8.5), "px SUIT Variable");
+                    this.ctx.fillText(this.code[i], textX, textY);
+                }
+            }
+        }
+    };
+    return Barcode;
+}());
 var Recipie = /** @class */ (function () {
     function Recipie(orderObject, mileage, pk) {
         this.no = 0;
@@ -56,7 +109,7 @@ var Recipie = /** @class */ (function () {
             this.mileage_value = mileage.mileage;
         }
         this.payment_type = orderObject.order_type;
-        this.barcode = Math.floor(Math.random() * Math.pow(10, 17));
+        this.barcode = Math.floor(Math.random() * Math.pow(10, 16));
         this.waitCount = pk;
     }
     return Recipie;
@@ -69,7 +122,7 @@ var handleClickOkRecipie = function (orderObject, element, pk) {
     var recipie = new Recipie(orderObject, mileage, pk);
     // element에 영수증 출력해서 보여주기
     var html = '';
-    html += "<div class='colbox' style='width:400px'>";
+    html += "<div class='colbox' style='width:400px;'>";
     html += "<span style='font-size: 0.8rem'>[ \uBB34&nbsp;&nbsp;&nbsp;&nbsp;\uC778 ]</span>";
     html += "<span style='font-size: 1.2rem'>\uB300\uAE30\uBC88\uD638</span>";
     html += "<span style='font-size: 1.2rem'>".concat(recipie.waitCount, "</span>");
@@ -144,9 +197,13 @@ var handleClickOkRecipie = function (orderObject, element, pk) {
     }
     html += "<span>".concat(recipie.payment_type, "</span>");
     html += "<span>---------------------------------------------------------------------------</span>";
+    html += "<canvas class=\"canvas\"></canvas>";
     html += "<div class=\"payment-cancle\" onClick=\"handleClickCancleRecipie()\">\uB2EB\uAE30</div>";
     html += "</div>";
     element.innerHTML = html;
+    var canvas = document.querySelector('.canvas');
+    var canvasCtx = canvas.getContext('2d');
+    var barcode = new Barcode(recipie.barcode, canvasCtx, 400, 140);
 };
 var purchase = function (type) { return __awaiter(_this, void 0, void 0, function () {
     var element, orderObject, insertOrder, mile_type, mile_log, insertMileage;
@@ -173,7 +230,7 @@ var purchase = function (type) { return __awaiter(_this, void 0, void 0, functio
                     mile_type: mile_type,
                     mile_reason: 'order',
                     mile_deff: orderObject.order_add_amount,
-                    mile_order_no: insertOrder.primaryKey,
+                    mile_order_no: insertOrder.body.primaryKey,
                     mile_timestamp: new Date(),
                 };
                 return [4 /*yield*/, detailedFetch('/green_kiosk/api/kiosk/milelogs', 'POST', encodeURIComponent(JSON.stringify(mile_log)))];
@@ -203,14 +260,15 @@ var purchase = function (type) { return __awaiter(_this, void 0, void 0, functio
         }
     });
 }); };
-var detailedFetch2 = function (url, type, body) { return __awaiter(_this, void 0, void 0, function () {
+var insertOrder_g = null;
+var getPk = function () { return __awaiter(_this, void 0, void 0, function () {
     var response, json, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 3, , 4]);
-                return [4 /*yield*/, fetch(url, {
-                        method: type,
+                return [4 /*yield*/, fetch('/green_kiosk/api/kiosk/purchase/order/primary-key', {
+                        method: 'GET',
                         mode: 'cors',
                         cache: 'no-cache',
                         credentials: 'same-origin',
@@ -219,7 +277,6 @@ var detailedFetch2 = function (url, type, body) { return __awaiter(_this, void 0
                         },
                         redirect: 'follow',
                         referrerPolicy: 'no-referrer',
-                        body: body,
                     })];
             case 1:
                 response = _a.sent();
@@ -229,7 +286,8 @@ var detailedFetch2 = function (url, type, body) { return __awaiter(_this, void 0
                 return [4 /*yield*/, response.json()];
             case 2:
                 json = _a.sent();
-                return [2 /*return*/, json];
+                insertOrder_g = json.body.primaryKey + 1;
+                return [3 /*break*/, 4];
             case 3:
                 error_1 = _a.sent();
                 // 네트워크 오류 및 JSON 파싱 오류에 대한 예외 처리
@@ -239,21 +297,10 @@ var detailedFetch2 = function (url, type, body) { return __awaiter(_this, void 0
         }
     });
 }); };
-var insertOrder_g = null;
-var getPk = function () { return __awaiter(_this, void 0, void 0, function () {
-    var pk;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, detailedFetch2('/green_kiosk/api/kiosk/purchase/order/primary-key', 'POST', encodeURIComponent(JSON.stringify({})))];
-            case 1:
-                pk = _a.sent();
-                insertOrder_g = pk.primaryKey + 1;
-                return [2 /*return*/];
-        }
-    });
-}); };
 var element_g = document.querySelector('.modal__message');
 var orderObject_g = JSON.parse(sessionStorage.getItem('order'));
 (function () {
-    setTimeout(function () { getPk(); }, 100);
+    setTimeout(function () {
+        getPk();
+    }, 100);
 })();
