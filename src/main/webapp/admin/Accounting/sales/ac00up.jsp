@@ -44,7 +44,7 @@ getFoodList(orderFoodsValue);
 </script>
 	<div align="center">
 		<br /> <br />
-		<form name="regFrm" method="get" target="_blank" action="sales/ac00up_p.jsp" >
+		<form name="regFrm" method="post" target="_blank" action="sales/ac00up_p.jsp" >
 			<table align="center" cellpadding="5" >
 				<tr>
 					<td align="center" valign="middle" >
@@ -101,7 +101,7 @@ getFoodList(orderFoodsValue);
 							</tr>
 							<tr>
 								<td colspan="3" align="center">
-								<input type="submit" value="수정완료"> &nbsp; &nbsp; 
+								<input type="button" onclick="sub()" value="수정완료"> &nbsp; &nbsp; 
 								<input type="reset" value="다시쓰기"> &nbsp; &nbsp; 
 								<input type="button" value="코드목록" onClick="history.go(-1)">
 								<input style="display:none" name="order_no" value="<%=numb %>"/></td>						
