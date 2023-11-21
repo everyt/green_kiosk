@@ -42,10 +42,6 @@ const foods = new Map();
 							<tr>
 								<td>판매 내역</td>
 								<td><input name="order_foods" size="30"
-									<%
-									
-									%>
-									value = <%= %>
 									 readonly ></td>
 							</tr>
 							<tr>
@@ -94,7 +90,28 @@ const foods = new Map();
 		</form>
 	</div>
 	<script>
+	var menuMap = new Map();
     var parsedData = JSON.parse("["+'<%=codeBean.getOrder_foods()%>'+"]");
+    parsedData.forEach(function(order) {
+    	order.forEach(function(item) {
+    		//menu name
+    		var menuName = item.name;
+    		//menu amount
+    		var amount = parseInt(item.amount);
+    		
+    		if(menuMap.has(menuName)) {
+    			menuMap.set(menuName, menuMap.get(menuName) + amount);
+    		} else {
+    			menuMap.set(menuName, amount);
+    		}
+    	});
+    });
+    console.log("parsedData = " + parsedData);
+    
+    const menuArray = Array.from(menuMap.entries());
+    const menuData = menuArray.map(([menuName, amount]) => ({menuName, amount}));
+    console.log("menuArray = " + menuArray);
+    console.log("menuData = " +menuData);
 	</script>
 </body>
 </html>
