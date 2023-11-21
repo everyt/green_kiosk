@@ -4,10 +4,10 @@ var priceSumDate = ['','','','','','',''];
 var menuAmountMap = new Map();
 var keyValuePairs  = [];
 
-function updateMenu(type, time) {
+function updateMenu(menuType) {
     $.ajax({
         type: "POST",
-        url: "./index/getMenuData?type=" + type + "&time=" + time,
+        url: "./index/getMenuData?type=all",
         dataType: "json",
         data: {
             type: menuType
@@ -15,16 +15,16 @@ function updateMenu(type, time) {
         contentType: "application/json; charset=UTF-8",
         success: function (response) {
             if (response && response.length > 0) {
-                if (type == "all"){
+                // Separate concerns: processing data and updating HTML
                 var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily } = processMenuData(response);
-
+					console.log("all time :  " + allTime);
 					var orderInfoArray = JSON.parse("[" + allOrderFoods + "]");
-										
+					console.log(allOrderFoods);
 					orderInfoArray.forEach(function(order) {
 				    order.forEach(function(item) {
 				        var menuName = item.name;
 				        var amount = parseInt(item.amount);
-										        
+				
 				        if (menuAmountMap.has(menuName)) {
 				            menuAmountMap.set(menuName, menuAmountMap.get(menuName) + amount);
 				        } else {
@@ -32,47 +32,11 @@ function updateMenu(type, time) {
 				        }
 				    });
 				});
-				
-				console.log (orderInfoArray);
-                				     
-				 barChart3();
-				barChart2();
-				}
-				//response if's else 
-            } else {
-                console.error("No data received or data is empty.");
-            }
-        },
-
-        error: function (xhr, status, error) {
-            console.error("Ajax request failed:", status, error);
-        }
-    });
-}
-
-
-
-//이번 달 고정 매출 계산 
-
-function getindexinfo(type) {
-    $.ajax({
-        type: "POST",
-        url: "./index/getIndexInfo?type=" + type,
-        dataType: "json",
-        data: {
-            type: menuType
-        },
-        contentType: "application/json; charset=UTF-8",
-        success: function (response) {
-            if (response && response.length > 0) {
-                if (type == "all"){
-                var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily } = processMenuData(response);
-				
                 // Update HTML
                 updateHTML(priceSumDay, priceSumWeek, priceSumMonth, priceSumdaily);
 				     
-				}
-				//response if's else 
+				 barChart3();
+
             } else {
                 console.error("No data received or data is empty.");
             }
@@ -83,10 +47,6 @@ function getindexinfo(type) {
         }
     });
 }
-
-
-
-
 
 function processMenuData(response) {
     var foodSales = {};
@@ -116,7 +76,7 @@ function processMenuData(response) {
         if (orderDate == currentDate) {
             priceSumDay += order_price;
 		} 
-		//orderDate == startDate, currentDate == endDate //
+		
         if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) < 7) {
             priceSumWeek += order_price;
       		  if (!priceSumDate.includes(orderDate)) {
@@ -134,28 +94,25 @@ function processMenuData(response) {
     return { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily };
 }
 
-function updateHTML(priceSumDay, priceSumWeek, priceSumMonth) {
-	const pathname = "/" + window.location.pathname.split("/")[1] + "/";
-	const origin = window.location.origin;
-	const contextPath = origin + pathname;
+function updateHTML(priceSumDay, priceSumWeek, priceSumMonth, totalAmountByNameFromCookie) {
 var htmlTemplate =
-    '<div class="col-xl-3 col-md-6 mb-4"  onclick="openPopup(\'' + contextPath + '/admin/index/sales_list.jsp?term=day' + '\')">' +
+    '<div class="col-xl-3 col-md-6 mb-4">' +
     createCard2('일일 매출', priceSumDay) +
     '</div>' +
-    '<div class="col-xl-3 col-md-6 mb-4"  onclick="openPopup(\'' + contextPath + '/admin/index/sales_list.jsp?term=week' + '\')">' +
+    '<div class="col-xl-3 col-md-6 mb-4">' +
     createCard2('이번 주 매출', priceSumWeek) +
     '</div>' +
-    '<div class="col-xl-3 col-md-6 mb-4" onclick="openPopup(\'' + contextPath + '/admin/index/sales_list.jsp?term=month' + '\')">' +
+    '<div class="col-xl-3 col-md-6 mb-4">' +
     createCard2('이번 달 매출', priceSumMonth) +
     '</div>';
     $('.getMenuList').empty().html(htmlTemplate);
 }
 
 
+
 window.addEventListener('DOMContentLoaded', function() {
-    updateMenu('all', 'month');
-/*updateMenu('all', 'week');*/
-getindexinfo('all');
+    updateMenu(menuType);
+
 });
 
 
@@ -230,4 +187,7 @@ function openPopup(url) {
 }
 
 
-
+window.addEventListener('DOMContentLoaded', function() {
+     barChart();
+	  barChart2();
+});
