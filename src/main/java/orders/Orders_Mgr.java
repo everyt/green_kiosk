@@ -348,18 +348,16 @@ public class Orders_Mgr {
 				boolean flag = false;
 				try {
 					con = pool.getConnection();
-					sql = "update orders set order_time=?, order_foods=?, order_price=?, order_discount=?, order_coupon=?, order_type=?, order_is_maked = ? where order_no = ?";
+					sql = "update orders set order_time=?, order_price=?, order_discount=?, order_coupon=?, order_type=?, order_is_maked = ? where order_no = ?";
 					pstmt = con.prepareStatement(sql);
 					pstmt.setTimestamp(1, bean.getOrder_time());
-					pstmt.setString(2, bean.getOrder_foods());
-					System.out.println("sdsd" + bean.getOrder_foods());
-					pstmt.setLong(3, bean.getOrder_price());
-					pstmt.setLong(4, bean.getOrder_discount());
-					pstmt.setString(5, bean.getOrder_coupon());
-					pstmt.setString(6, bean.getOrder_type());
-					pstmt.setBoolean(7, bean.isOrder_is_maked());
+					pstmt.setLong(2, bean.getOrder_price());
+					pstmt.setLong(3, bean.getOrder_discount());
+					pstmt.setString(4, bean.getOrder_coupon());
+					pstmt.setString(5, bean.getOrder_type());
+					pstmt.setBoolean(6, bean.isOrder_is_maked());
 					System.out.println("sdsd" + bean.getOrder_no());
-					pstmt.setInt(8, bean.getOrder_no());
+					pstmt.setInt(7, bean.getOrder_no());
 					if (pstmt.executeUpdate() == 1) {
 						flag = true;
 					};
