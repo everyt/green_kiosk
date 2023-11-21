@@ -4,10 +4,10 @@ var priceSumDate = ['','','','','','',''];
 var menuAmountMap = new Map();
 var keyValuePairs  = [];
 
-function updateMenu(menuType) {
+function updateMenu(type, time) {
     $.ajax({
         type: "POST",
-        url: "./index/getMenuData?type=all",
+        url: "./index/getMenuData?type=" + type + "&time=" + time,
         dataType: "json",
         data: {
             type: menuType
@@ -15,16 +15,16 @@ function updateMenu(menuType) {
         contentType: "application/json; charset=UTF-8",
         success: function (response) {
             if (response && response.length > 0) {
-                // Separate concerns: processing data and updating HTML
+                if (type == "all"){
                 var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily } = processMenuData(response);
-					console.log("all time :  " + allTime);
+
 					var orderInfoArray = JSON.parse("[" + allOrderFoods + "]");
-					console.log(allOrderFoods);
+										
 					orderInfoArray.forEach(function(order) {
 				    order.forEach(function(item) {
 				        var menuName = item.name;
 				        var amount = parseInt(item.amount);
-				
+										        
 				        if (menuAmountMap.has(menuName)) {
 				            menuAmountMap.set(menuName, menuAmountMap.get(menuName) + amount);
 				        } else {
@@ -32,11 +32,13 @@ function updateMenu(menuType) {
 				        }
 				    });
 				});
-                // Update HTML
-                updateHTML(priceSumDay, priceSumWeek, priceSumMonth, priceSumdaily);
-				     
+				
+				console.log (orderInfoArray);
+                				     
 				 barChart3();
-
+				barChart2();
+				}
+				//response if's else 
             } else {
                 console.error("No data received or data is empty.");
             }
@@ -47,6 +49,44 @@ function updateMenu(menuType) {
         }
     });
 }
+
+
+
+//이번 달 고정 매출 계산 
+
+function getindexinfo(type) {
+    $.ajax({
+        type: "POST",
+        url: "./index/getIndexInfo?type=" + type,
+        dataType: "json",
+        data: {
+            type: menuType
+        },
+        contentType: "application/json; charset=UTF-8",
+        success: function (response) {
+            if (response && response.length > 0) {
+                if (type == "all"){
+                var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily } = processMenuData(response);
+				
+                // Update HTML
+                updateHTML(priceSumDay, priceSumWeek, priceSumMonth, priceSumdaily);
+				     
+				}
+				//response if's else 
+            } else {
+                console.error("No data received or data is empty.");
+            }
+        },
+
+        error: function (xhr, status, error) {
+            console.error("Ajax request failed:", status, error);
+        }
+    });
+}
+
+
+
+
 
 function processMenuData(response) {
     var foodSales = {};
@@ -76,7 +116,7 @@ function processMenuData(response) {
         if (orderDate == currentDate) {
             priceSumDay += order_price;
 		} 
-		
+		//orderDate == startDate, currentDate == endDate //
         if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) < 7) {
             priceSumWeek += order_price;
       		  if (!priceSumDate.includes(orderDate)) {
@@ -94,7 +134,7 @@ function processMenuData(response) {
     return { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily };
 }
 
-function updateHTML(priceSumDay, priceSumWeek, priceSumMonth, totalAmountByNameFromCookie) {
+function updateHTML(priceSumDay, priceSumWeek, priceSumMonth) {
 var htmlTemplate =
     '<div class="col-xl-3 col-md-6 mb-4">' +
     createCard2('일일 매출', priceSumDay) +
@@ -109,10 +149,10 @@ var htmlTemplate =
 }
 
 
-
 window.addEventListener('DOMContentLoaded', function() {
-    updateMenu(menuType);
-
+    updateMenu('all', 'month');
+/*updateMenu('all', 'week');*/
+getindexinfo('all');
 });
 
 
@@ -187,7 +227,4 @@ function openPopup(url) {
 }
 
 
-window.addEventListener('DOMContentLoaded', function() {
-     barChart();
-	  barChart2();
-});
+

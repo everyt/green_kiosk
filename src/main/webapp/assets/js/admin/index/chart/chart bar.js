@@ -32,7 +32,7 @@
 function barChart2() {
 
 const dateValues = priceSumDate.map(date => new Date(date).getDate());
-console.log(priceSumDate);
+console.log("priceSumDate : " + priceSumDate);
   const ctx = document.getElementById('myChart2');
   new Chart(ctx, {
     type: 'line',
@@ -107,3 +107,34 @@ function barChart3() {
   });
 }
 
+
+function getCookieValue(cookieName) {
+	const name = cookieName + "=";
+	const decodedCookie = decodeURIComponent(document.cookie);
+	const cookieArray = decodedCookie.split(';');
+		
+	for (let i = 0; i < cookieArray.length; i++) {
+		let cookie = cookieArray[i].trim();
+		if (cookie.indexOf(name) === 0) {
+			return cookie.substring(name.length, cookie.length);
+		}
+	}
+	return "";
+}
+
+function cookieSeparate(cookieObject) {
+  const labels = Array.from(cookieObject.keys());
+  const data = Array.from(cookieObject.values());
+
+
+  return {
+    labels: labels,
+    data: data,
+    label: '# of Votes'
+  };
+}
+
+
+window.addEventListener('DOMContentLoaded', function() {
+     barChart();
+});
