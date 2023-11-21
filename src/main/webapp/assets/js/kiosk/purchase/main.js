@@ -87,10 +87,63 @@ var State = /** @class */ (function () {
         this.who = null;
         this.is_togo = null;
     }
+    State.prototype.calcurPrice = function () {
+        if (this.foods) {
+            this.price = this.foods.reduce(function (acc, cur) {
+                return acc + cur.amount * cur.price;
+            }, 0);
+        }
+    };
+    State.prototype.calcurDiscount = function () {
+        if (this.foods) {
+            state.foods.reduce(function (arr, cur) {
+                if (cur.hasOwnProperty('discount')) {
+                    return arr + cur.discount;
+                }
+                else {
+                    return arr;
+                }
+            }, 0);
+        }
+    };
+    State.prototype.calcurCouponDiscount = function () {
+        if (this.foods) {
+            state.coupon.forEach(function (couponValue) {
+                state.foods.forEach(function (foodValue) {
+                    if (couponValue.menuNo === foodValue.index) {
+                        var sum = ((foodValue.price * foodValue.amount) / Math.floor(1000 / couponValue.discount)) * 10;
+                        if ((foodValue.hasOwnProperty('discount') && foodValue.discount < sum) ||
+                            !foodValue.hasOwnProperty('discount')) {
+                            foodValue.discount = sum;
+                        }
+                    }
+                });
+            });
+        }
+    };
+    State.prototype.calcurEventDiscount = function (eventMenuArray) {
+        if (this.foods) {
+            eventMenuArray.forEach(function (eventValue) {
+                state.foods.forEach(function (foodValue) {
+                    if (eventValue.menuNo === foodValue.index) {
+                        var sum = ((foodValue.price * foodValue.amount) / Math.floor(1000 / eventValue.discount)) * 10;
+                        if ((foodValue.hasOwnProperty('discount') && foodValue.discount < sum) ||
+                            !foodValue.hasOwnProperty('discount')) {
+                            foodValue.discount = sum;
+                        }
+                    }
+                });
+            });
+        }
+    };
     State.prototype.toObject = function () {
+        var foods = this.foods;
+        if (foods === null) {
+            foods = '';
+        }
         return {
             order_time: this.time,
-            order_foods: this.foods,
+            order_foods: foods,
             order_price: this.price,
             order_discount: this.discount,
             order_coupon: this.coupon,
@@ -127,6 +180,8 @@ var PAIRS_ICONS = [
     ['bag', 'shop'],
     ['card', 'mobile'],
 ];
+var state = new State(); // 데이터를 저장해서 페이지를 벗어나기 전까지 DOM과 상호작용 하기 위해 페이지 스코프를 줍니다.
+var item = new Item(sessionStorage);
 var formatSVGPath = function (str) {
     var svg = SVG_PATH + str + '.svg';
     return svg;
@@ -194,104 +249,73 @@ var drawPriceToHTMLElement = function (str, text, value) {
 var handleClickCancle = function () {
     location.href = ''; //TODO: 장바구니 url
 };
-var state = new State(); // 데이터를 저장해서 페이지를 벗어나기 전까지 DOM과 상호작용 하기 위해 페이지 스코프를 줍니다.
-var item = new Item(sessionStorage);
+var isExistSessionStorage = function (str) {
+    return item.get(str);
+};
+var parseJsonSessionStorage = function (str) {
+    return JSON.parse(item.get(str));
+};
+var InitializeBasketHTML = function (str, foods) {
+    drawArrayToHTMLElement(document.querySelector("".concat(str, "Element")), foods, generateBasketPageHTML);
+    drawArrayToHTMLElement(document.querySelector("".concat(str, "ButtonElement")), foods, generateBasketPageButtonHTML);
+};
 (function () { return __awaiter(_this, void 0, void 0, function () {
-    var couponArray, mileage, mileAmount;
+    var couponArray, eventArray, eventMenuArray, mileage, mileAmount;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                // 즉시 실행 함수 IIFE, 스코프 제한, 메모리 관리를 위해 사용됩니다.
-                item.set('basketArray', JSON.stringify([
+                state.foods = parseJsonSessionStorage('basketArray');
+                state.foods = [
                     {
                         index: 0,
-                        name: '치즈버거',
-                        price: 3000,
-                        amount: 5,
-                    },
-                ]));
-                item.set('couponArray', JSON.stringify([
-                    {
-                        code: '1234-1234-1234-1234',
-                        name: '홍길동',
-                        menuNo: 0,
-                        discount: 30,
-                    },
-                ]));
-                if (item.get('basketArray')) {
-                    // 장바구니 데이터 관리
-                    state.foods = JSON.parse(item.get('basketArray')); // 장바구니 상태관리
-                    state.price = state.foods.reduce(function (acc, cur) {
-                        // 누산기로 총 가격 계산, 머리터질거같아서 일일이 주석 달아줌
-                        return acc + cur.amount * cur.price;
-                    }, 0);
-                    drawArrayToHTMLElement(document.querySelector('#basketPageElement'), state.foods, generateBasketPageHTML);
-                    drawArrayToHTMLElement(
-                    // 미리 생성해놓은 위치의 HTMLElement들에게 html코드를 생성해서 주입
-                    document.querySelector('#basketPageButtonElement'), state.foods, generateBasketPageButtonHTML);
-                    drawPriceToHTMLElement('#priceElement', '주문금액', state.price); // 가격 보여줌, 디스플레이
-                }
-                else {
-                    throw new PurchaseException('basketArray is null');
-                }
-                if (!item.get('couponArray')) return [3 /*break*/, 2];
-                return [4 /*yield*/, detailedFetch(
-                    // 쿠폰 데이터를 세션스토리지에서 couponArray라는 이름으로 꺼내오고
-                    '/green_kiosk/api/kiosk/purchase/couponArray', // JSON문자열화 시킨다음에 api서버로 POST 요청 후 응답을 couponArray에 삽입
-                    'POST', // 이제 다 다른 서블릿을 쓰니까 coupons 이런 ㅁㅁㄴ 안해도 되고 smile도 array일 필요 X
-                    // 국제표준을 지키는 모습을 보여주기 위해서 encodeURIcomponent 사용
-                    // 내부에서 encode 처리 해줘도 되는데 그러면 너무 관리가 빡셈 보기가 어려워
-                    encodeURIComponent(item.get('couponArray')))];
-            case 1:
-                couponArray = _a.sent();
-                state.coupon = couponArray;
-                return [3 /*break*/, 3];
-            case 2:
-                // 쿠폰이 없으면 가라데이터를 넣어서 출력
-                state.coupon = [
-                    {
-                        code: 'x',
-                        name: 'x',
-                        menuNo: 0,
-                        discount: 0,
+                        name: '양상추오이버거',
+                        price: 3500,
+                        amount: 3,
                     },
                 ];
-                _a.label = 3;
+                InitializeBasketHTML('#basketPage', state.foods);
+                if (!isExistSessionStorage('couponArray')) return [3 /*break*/, 2];
+                return [4 /*yield*/, detailedFetch('/green_kiosk/api/kiosk/purchase/couponArray', 'POST', encodeURIComponent(item.get('couponArray')))];
+            case 1:
+                couponArray = _a.sent();
+                state.coupon = couponArray.result ? couponArray.body : null;
+                state.calcurCouponDiscount();
+                _a.label = 2;
+            case 2: return [4 /*yield*/, detailedFetch('/green_kiosk/api/kiosk/purchase/event', 'GET')];
             case 3:
-                drawPriceToHTMLElement('#discountElement', '할인금액', state.discount);
-                drawPriceToHTMLElement('#discountedPriceElement', '결제할금액', state.price - state.discount);
-                state.coupon.forEach(function (couponValue) {
-                    state.foods.forEach(function (foodValue) {
-                        if (couponValue.menuNo === foodValue.index) {
-                            var sum = ((foodValue.price * foodValue.amount) / Math.floor(1000 / couponValue.discount)) * 10;
-                            if ((foodValue.hasOwnProperty('discount') && foodValue.discount < sum) ||
-                                !foodValue.hasOwnProperty('discount')) {
-                                foodValue.discount = sum;
-                            }
-                        }
-                    });
-                });
-                state.discount = state.foods.reduce(function (arr, cur) {
-                    if (cur.hasOwnProperty('discount')) {
-                        return arr + cur.discount;
-                    }
-                    else {
-                        return arr;
-                    }
-                }, 0);
-                if (!item.get('mileage')) return [3 /*break*/, 5];
-                return [4 /*yield*/, detailedFetch('/green_kiosk/api/kiosk/purchase/mileage', 'POST', encodeURIComponent(JSON.stringify(item.get('mileage'))))];
+                eventArray = _a.sent();
+                if (!eventArray.result) return [3 /*break*/, 5];
+                return [4 /*yield*/, detailedFetch('/green_kiosk/api/kiosk/purchase/eventMenu', 'POST', encodeURIComponent(JSON.stringify(eventArray.body.map(function (v) {
+                        return v.no;
+                    }))))];
             case 4:
-                mileage = _a.sent();
-                mileAmount = Math.floor((state.price - state.discount) / 10);
-                state.add_mile = true;
-                state.add_mile_amount = mileAmount;
-                state.use_mile = mileage.type === 'cardNumber' ? true : false;
-                state.use_mile_amount = mileage.type === 'cardNumber' && mileAmount;
-                state.who = mileage.index.toString();
-                drawPriceToHTMLElement('#mileageElement', '적립마일리지', state.add_mile_amount);
+                eventMenuArray = _a.sent();
+                state.calcurEventDiscount(eventMenuArray);
                 _a.label = 5;
             case 5:
+                state.calcurPrice();
+                drawPriceToHTMLElement('#priceElement', '주문금액', state.price);
+                state.calcurDiscount();
+                if (!isExistSessionStorage('mileage')) return [3 /*break*/, 7];
+                return [4 /*yield*/, detailedFetch('/green_kiosk/api/kiosk/purchase/mileage', 'POST', encodeURIComponent(JSON.stringify(item.get('mileage'))))];
+            case 6:
+                mileage = _a.sent();
+                if (mileage.result) {
+                    mileAmount = Math.floor((state.price - state.discount) / 10);
+                    state.add_mile = true;
+                    state.add_mile_amount = mileAmount;
+                    drawPriceToHTMLElement('#mileageElement', '적립마일리지', state.add_mile_amount);
+                    if (mileage.body.type === 'cardNumber') {
+                        state.use_mile = mileage.body.type === 'cardNumber' ? true : false;
+                        state.use_mile_amount = mileAmount;
+                        state.discount = state.discount + mileAmount;
+                    }
+                    state.who = mileage.body.index.toString();
+                }
+                _a.label = 7;
+            case 7:
+                drawPriceToHTMLElement('#discountElement', '할인금액', state.discount);
+                drawPriceToHTMLElement('#discountedPriceElement', '결제할금액', state.price - state.discount);
                 ARRAY_ICONS.forEach(function (value) {
                     var element = document.querySelector('#' + value);
                     element.src =
@@ -310,19 +334,18 @@ var swapIcon = function (str) {
     var boolean = false;
     boolean = item.get(str) === null ? false : JSON.parse(item.get(str)) === false ? false : true;
     boolean = !boolean;
+    var togglePairIcon = function (icon1, icon2) {
+        if (str === icon1 && JSON.parse(item.get(icon2)) === true) {
+            item.set(icon2, JSON.stringify(false));
+            var pairElement = document.querySelector('#' + icon2);
+            pairElement.src = formatSVGPath(icon2);
+        }
+    };
     if (boolean) {
         for (var _i = 0, PAIRS_ICONS_1 = PAIRS_ICONS; _i < PAIRS_ICONS_1.length; _i++) {
             var pair = PAIRS_ICONS_1[_i];
-            if (str === pair[0] && JSON.parse(item.get(pair[1])) === true) {
-                item.set(pair[1], JSON.stringify(false));
-                var pairElement = document.querySelector('#' + pair[1]);
-                pairElement.src = formatSVGPath(pair[1]);
-            }
-            else if (str === pair[1] && JSON.parse(item.get(pair[0])) === true) {
-                item.set(pair[0], JSON.stringify(false));
-                var pairElement = document.querySelector('#' + pair[0]);
-                pairElement.src = formatSVGPath(pair[0]);
-            }
+            togglePairIcon(pair[0], pair[1]);
+            togglePairIcon(pair[1], pair[0]);
         }
     }
     element.src = boolean ? formatSVGPath('check') : formatSVGPath(str);
