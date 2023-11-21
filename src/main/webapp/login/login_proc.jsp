@@ -20,7 +20,7 @@
 	if (result) {
 		session.setAttribute("mem_id", usid);
 		script.write("<script>");
-		script.write("location.href = "+cPath+"/");
+		script.write("location.href = \""+cPath+"/\"");
 		script.write("</script>");
 	} else {
 		script.write("<script>");
