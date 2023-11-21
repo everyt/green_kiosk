@@ -54,6 +54,14 @@ foods3.set("data_key3", '<%=keys3.toString() %>')
 	
 	<div>
 		<canvas id="myChart4" style="display: block; box-sizing: border-box; height: 232px; width: 696px;" width="696"></canvas>
+		
+	 <label for="startDate">Start Date:</label>
+    	<input type="date" id="startDate">
+
+    <label for="endDate">End Date:</label>
+    	<input type="date" id="endDate">
+		
+		<button onclick="updateChart()">날짜 등록 </button>
 	</div>
 </div>  
                         

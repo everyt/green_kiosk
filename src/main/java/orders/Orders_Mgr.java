@@ -3,6 +3,7 @@ package orders;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -159,6 +160,41 @@ public class Orders_Mgr {
 		}
 		return vector;
 	}
+	
+	
+	public Vector<Orders_Bean> getAllOrdersByDate(Date startDate, Date endDate) {
+		Vector<Orders_Bean> vector = new Vector<Orders_Bean>();
+		try {
+			this.Initializer("SELECT * FROM orders WHERE order_time BETWEEN date(?) AND date(?)");
+			this.pst.setDate(1, new java.sql.Date(startDate.getTime()));
+			this.pst.setDate(2, new java.sql.Date(endDate.getTime()));
+			this.rs = this.pst.executeQuery();
+			while (this.rs.next()) {
+				Orders_Bean bean = new Orders_Bean();
+	            bean.setOrder_no(this.rs.getInt("order_no"));
+	            bean.setOrder_time(this.rs.getTimestamp("order_time"));
+	            bean.setOrder_foods(this.rs.getString("order_foods"));
+	            bean.setOrder_price(this.rs.getLong("order_price"));
+	            bean.setOrder_discount(this.rs.getLong("order_discount"));
+	            bean.setOrder_coupon(this.rs.getString("order_coupon"));
+	            bean.setOrder_type(this.rs.getString("order_type"));
+	            bean.setOrder_use_mile(this.rs.getBoolean("order_use_mile"));
+	            bean.setOrder_use_amount(this.rs.getInt("order_use_mile_amount"));
+	            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
+	            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
+	            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
+	            bean.set_who(this.rs.getString("order_who"));
+	            bean.setOrder_is_togo(this.rs.getBoolean("order_is_togo"));
+	            vector.add(bean);
+	        }
+		} catch (Exception error) {
+			error.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+		return vector;
+	}
+
 	
 	public Vector<Orders_Bean> getOrderByNo(int no) {
 		Vector<Orders_Bean> vector = new Vector<Orders_Bean>();

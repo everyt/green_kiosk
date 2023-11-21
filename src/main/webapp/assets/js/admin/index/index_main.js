@@ -34,9 +34,7 @@ function updateMenu(type, time) {
 				        }
 				    });
 				});
-				
-				console.log (orderInfoArray);
-                				     
+				                				     
 				 barChart3();
 				barChart2();
 				}
@@ -123,7 +121,7 @@ function getWeekinfo() {
 
 
 function processMenuData(response, type) {
-	console.log(response)
+
     var foodSales = {};
     var foodCount = {};
     var priceSumDay = 0;
@@ -294,3 +292,87 @@ function openPopup(url) {
 
 
 
+
+function updateChartInterval(startDate, endDate) {
+    $.ajax({
+        type: "POST",
+        url: "./index/getChartWithDate?startDate=" + startDate + "&endDate=" + endDate,
+        dataType: "json",
+        data: {
+            type: menuType
+        },
+        contentType: "application/json; charset=UTF-8",
+        success: function (response) {
+            if (response && response.length > 0) {
+                var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily } = processMenuData(response);
+
+					var orderInfoArray = JSON.parse("[" + allOrderFoods + "]");
+										
+					orderInfoArray.forEach(function(order) {
+				    order.forEach(function(item) {
+				        var menuName = item.name;
+				        var amount = parseInt(item.amount);
+										        
+				        if (menuAmountMap.has(menuName)) {
+				            menuAmountMap.set(menuName, menuAmountMap.get(menuName) + amount);
+				        } else {
+				            menuAmountMap.set(menuName, amount);
+				        }
+				    });
+				});
+				
+				console.log (orderInfoArray);
+                				     
+				barChart4(startDate, endDate);
+				
+            } else {
+                console.error("No data received or data is empty.");
+            }
+        },
+
+        error: function (xhr, status, error) {
+            console.error("Ajax request failed:", status, error);
+        }
+    });
+}
+
+
+function updateChart() {
+    const startDate = new Date(document.getElementById('startDate').value);
+    const endDate = new Date(document.getElementById('endDate').value);
+    
+      document.addEventListener("DOMContentLoaded", function() {
+    // Start Date 입력란
+    var startDateInput = document.getElementById("startDate");
+    console.log(endDateInput);
+    // End Date 입력란
+    var endDateInput = document.getElementById("endDate");
+
+    // Start Date 값 변경 이벤트 처리
+    startDateInput.addEventListener("change", function() {
+      // 선택된 날짜를 yyyy-MM-dd 형식으로 변경하여 다시 설정
+      startDateInput.value = new Date(startDateInput.value).toISOString().split('T')[0];
+    });
+
+    // End Date 값 변경 이벤트 처리
+    endDateInput.addEventListener("change", function() {
+      // 선택된 날짜를 yyyy-MM-dd 형식으로 변경하여 다시 설정
+      endDateInput.value = new Date(endDateInput.value).toISOString().split('T')[0];
+      console.log(endDateInput.value);
+    });
+  });
+
+    console.log("startDate : " + startDate + ", " + "endDate : " + endDate);
+    updateChartInterval(startDate, endDate);
+}
+        
+function getMenuDataWithinRange(startDate, endDate) {
+
+    const entriesArray = Array.from(menuAmountMap.entries());
+    const menuData = entriesArray.map(([name, amount]) => ({ name, amount }));
+    return menuData.filter(item => {
+
+        const itemDate = new Date(item.date);
+        return itemDate >= startDate && itemDate <= endDate;
+    });
+}

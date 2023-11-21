@@ -67,6 +67,7 @@ const dateValues = priceSumDate.map(date => new Date(date).getDate());
 }
 
 
+
 function barChart3() {
 	
 	 const existingChart = Chart.getChart('myChart3');
@@ -106,6 +107,53 @@ function barChart3() {
     }
   });
 }
+
+
+
+
+
+function barChart4() {
+    const existingChart = Chart.getChart('myChart3');
+    if (existingChart) {
+        existingChart.destroy();
+    }
+
+    const filteredMenuData = getMenuDataWithinRange(startDate, endDate);
+
+    const ctx = document.getElementById('myChart4').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: filteredMenuData.map(item => item.name),
+            datasets: [{
+                label: '판매량',
+                data: filteredMenuData.map(item => item.amount),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: `선택한 기간의 메뉴별 판매량`
+                }
+            }
+        }
+    });
+}
+
+
+
+
+
+
+
 
 
 function getCookieValue(cookieName) {

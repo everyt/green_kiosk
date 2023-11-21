@@ -1,9 +1,12 @@
 package servlet.admin;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 
@@ -24,7 +27,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@WebServlet({"/admin/index/getMenuData", "/admin/index/getIndexInfo"})
+
+@WebServlet({"/admin/index/getMenuData", "/admin/index/getIndexInfo", "/admin/index/getChartWithDate"})
 public class admin_index extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -115,6 +119,37 @@ public class admin_index extends HttpServlet {
     		json = new Gson().toJson(order_list);
     		
     		response.getWriter().write(json); 
+    	} 
+    	else if ("/admin/index/getChartWithDate".equals(endPoint))
+    	{
+    		String startDate1 = request.getParameter("startDate");
+    		String endDate1 = request.getParameter("endDate");
+    		try {
+    			System.out.println("startDate1 : " + startDate1);
+    			System.out.println("endDate1 : " + endDate1);
+    	        SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss 'GMT' Z (zzzz)", Locale.US);
+    	        Date startDate2 = inputFormat.parse(startDate1);
+    	        Date endDate2 = inputFormat.parse(endDate1);
+
+    	        
+    	        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	        String formattedStartDate = outputFormat.format(startDate2);
+    	        String formattedEndDate = outputFormat.format(endDate2);
+
+    		    
+                Vector<Orders_Bean> order_list = null;
+                String json = null;
+                
+                order_list = new Orders_Mgr().getAllOrdersByTime(formattedStartDate, formattedEndDate);
+
+                json = new Gson().toJson(order_list);
+
+                response.getWriter().write(json);
+
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+
     	}
 	}
 }
