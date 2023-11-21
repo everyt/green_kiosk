@@ -33,7 +33,7 @@ updateOrder1Bean.setOrder_type(request.getParameter("order_type"));
 %>
 <script type="text/javascript">
 		alert("코드정보 수정 하였습니다.");
-		location.href="ac00.jsp";
+		loadContent('sales/ac00.jsp');
 </script>
 <% } else {%>
 <script type="text/javascript">

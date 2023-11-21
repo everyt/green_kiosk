@@ -12,11 +12,15 @@
 	<title>코드관리</title>
 	<link href="../main/style.css" rel="stylesheet" type="text/css" >
 </head>
+<script>
+const foods = new Map();
+</script>
+
 
 <body bgcolor="#FFFFCC" onLoad="regFrm.code.focus()">
 	<div align="center">
 		<br /> <br />
-		<form name="regFrm" method="post" target="_blank" action="sales/ac00up_p.jsp" >
+		<form name="regFrm" method="get" target="_blank" action="sales/ac00up_p.jsp" >
 			<table align="center" cellpadding="5" >
 				<tr>
 					<td align="center" valign="middle" >
@@ -38,7 +42,11 @@
 							<tr>
 								<td>판매 내역</td>
 								<td><input name="order_foods" size="30"
-									value='<%=codeBean.getOrder_foods()%>' readonly ></td>
+									<%
+									
+									%>
+									value = <%= %>
+									 readonly ></td>
 							</tr>
 							<tr>
                                 <td>판매 금액</td>
@@ -85,5 +93,8 @@
 			</table>
 		</form>
 	</div>
+	<script>
+    var parsedData = JSON.parse("["+'<%=codeBean.getOrder_foods()%>'+"]");
+	</script>
 </body>
 </html>
