@@ -25,9 +25,6 @@ function upload() {
 		console.log(event);
 		event.returnValue = "정말 이창을 닫으시겠습니까?\n내용이 저장되지 않습니다.";
 	}
-	const pathname = "/" + window.location.pathname.split("/")[1] + "/";
-	const origin = window.location.origin;
-	const contextPath = origin + pathname;
 	
 	let categorys = new Array();
 	let name = document.uploadFrm.coupon_name.value;
@@ -83,9 +80,6 @@ function update(numb) {
 		console.log(event);
 		event.returnValue = "정말 이창을 닫으시겠습니까?\n내용이 저장되지 않습니다.";
 	}
-	const pathname = "/" + window.location.pathname.split("/")[1] + "/";
-	const origin = window.location.origin;
-	const contextPath = origin + pathname;
 	
 	let categorys = new Array();
 	let name = document.uploadFrm.coupon_name.value;

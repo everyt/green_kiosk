@@ -8,6 +8,7 @@
 <script src="<%=request.getContextPath()%>/assets/js/admin/Event/coupon.js"></script>
 <%@ include file="/admin/layouts/bootstrap.jsp"%>
 <%@ include file="/admin/admin_check/check.jsp" %>  
+<script>var contextpath="<%=request.getContextPath()%>"</script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/admin/Menu_upload.css">
 </head>
 <body>

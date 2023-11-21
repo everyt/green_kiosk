@@ -69,7 +69,7 @@ function delete_coupon_type(numb) {
 			<%} %>
 		</tbody>
 	</table>
-	<a href="javascript:void(0)" class="btn btn-primary my-2" onclick="openPopup('/green_kiosk/admin/Event/coupon_make.jsp')">쿠폰 등록하기</a>
+	<a href="javascript:void(0)" class="btn btn-primary my-2" onclick="openPopup('<%=request.getContextPath()%>/admin/Event/coupon_make.jsp')">쿠폰 등록하기</a>
 </div>
 </body>
 </html>
