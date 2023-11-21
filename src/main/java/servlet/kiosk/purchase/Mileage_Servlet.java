@@ -84,27 +84,23 @@ public class Mileage_Servlet extends HttpServlet {
 		Mileage_VO mileage_vo = gson.fromJson(requestBody, type);
 		if (mileage_vo.getType().equals("phoneNumber")) {
 			if (member_mgr.checkPhone(mileage_vo.getValue())) {
-				out.write(gson.toJson(mileage_vo));
-			} else {
 				out.write("{"
-						+ "\"index\": 0,"
-						+ "\"name\": \"x\","
-						+ "\"mileage\": 0,"
-						+ "\"value\": \"x\","
-						+ "\"type\": \"x\""
+						+ "\"result\": true, \"body\":"
+						+ gson.toJson(mileage_vo)
 						+ "}");
+			} else {
+					out.write("{"
+							+ "\"result\": false}");
 			}
 		} else if (mileage_vo.getType().equals("cardNumber")) {
 			if (member_mgr.checkCard(mileage_vo.getValue())) {
-				out.write(gson.toJson(mileage_vo));
-			} else {
 				out.write("{"
-						+ "\"index\": 0,"
-						+ "\"name\": \"x\","
-						+ "\"mileage\": 0,"
-						+ "\"value\": \"x\","
-						+ "\"type\": \"x\""
+						+ "\"result\":"
+						+ gson.toJson(mileage_vo)
 						+ "}");
+			} else {
+					out.write("{"
+							+ "\"result\": false}");
 			}
 		}
     }

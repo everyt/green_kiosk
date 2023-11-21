@@ -35,13 +35,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-var detailedFetch = function (url, type, body) { return __awaiter(_this, void 0, void 0, function () {
-    var response, json, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 3, , 4]);
-                return [4 /*yield*/, fetch(url, {
+var detailedFetch = function (url, type, body) {
+    if (body === void 0) { body = ''; }
+    return __awaiter(_this, void 0, void 0, function () {
+        var responseData, response, json, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    responseData = {
                         method: type,
                         mode: 'cors',
                         cache: 'no-cache',
@@ -51,23 +53,27 @@ var detailedFetch = function (url, type, body) { return __awaiter(_this, void 0,
                         },
                         redirect: 'follow',
                         referrerPolicy: 'no-referrer',
-                        body: body,
-                    })];
-            case 1:
-                response = _a.sent();
-                if (!response.ok) {
-                    throw new Error("Network response was not ok: ".concat(response.statusText));
-                }
-                return [4 /*yield*/, response.json()];
-            case 2:
-                json = _a.sent();
-                return [2 /*return*/, json];
-            case 3:
-                error_1 = _a.sent();
-                // 네트워크 오류 및 JSON 파싱 오류에 대한 예외 처리
-                console.error('Fetch error:', error_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
-        }
+                    };
+                    if (body != '') {
+                        responseData.body = body;
+                    }
+                    return [4 /*yield*/, fetch(url, responseData)];
+                case 1:
+                    response = _a.sent();
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok: ".concat(response.statusText));
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    json = _a.sent();
+                    return [2 /*return*/, json];
+                case 3:
+                    error_1 = _a.sent();
+                    // 네트워크 오류 및 JSON 파싱 오류에 대한 예외 처리
+                    console.error('Fetch error:', error_1);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
     });
-}); };
+};

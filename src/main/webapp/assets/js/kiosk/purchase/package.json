@@ -1,14 +1,14 @@
 {
-  "name": "purchase",
+  "name": "purchase-module",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "키오스크에서 결제를 담당하는 모듈입니다.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "watch": "tsc -w"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "everyt",
+  "license": "MIT",
   "dependencies": {
     "typescript": "^5.2.2"
   }

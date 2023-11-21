@@ -49,7 +49,7 @@ var handleKeypad = function (num) {
 };
 var generateCouponHTML = function (arr) {
     var couponHTML = '';
-    if (arr.length > 0) {
+    if (arr && arr.length > 0) {
         document.getElementById('couponDOM2').style.display = 'inline-block';
         for (var i = 0; i < arr.length; i++) {
             couponHTML += "<div class='rowbox' style='border: solid #ddd; border-width: 0 0 2px 0; align-self: center; padding: 3px 0;'>";
@@ -83,7 +83,7 @@ var clearKeypad = function () {
     input.value = '';
 };
 var handleCouponForm = function () { return __awaiter(_this, void 0, void 0, function () {
-    var couponCodeElement, couponCode, couponTextElement_1, coupon, coupon2, couponItem, couponArray, couponTextElement_2;
+    var couponCodeElement, couponCode, couponTextElement_1, coupon, fetchCoupon, couponItem, couponArray, couponTextElement_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -102,27 +102,26 @@ var handleCouponForm = function () { return __awaiter(_this, void 0, void 0, fun
                 };
                 return [4 /*yield*/, detailedFetch('/green_kiosk/api/kiosk/purchase/coupon', 'POST', encodeURIComponent(JSON.stringify(coupon)))];
             case 2:
-                coupon2 = _a.sent();
-                if (coupon2[0].code !== 'x' && coupon2[0].code !== 't') {
+                fetchCoupon = _a.sent();
+                if (fetchCoupon.result) {
                     couponItem = sessionStorage.getItem('couponArray');
                     couponArray = [];
                     if (couponItem !== null || couponItem !== undefined) {
                         couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
-                        couponArray.push(coupon2[0]);
+                        couponArray.push(fetchCoupon.body);
                     }
                     else {
-                        couponArray = coupon2;
+                        couponArray = [fetchCoupon.body];
                     }
                     sessionStorage.setItem('couponArray', JSON.stringify(couponArray));
                     generateCouponHTML(couponArray);
-                    console.log(1);
                 }
                 else {
                     couponTextElement_2 = document.getElementById('couponText');
-                    if (coupon.code === 'x') {
+                    if (fetchCoupon.body === 'invalid') {
                         couponTextElement_2.innerHTML = '<span style="color: red;">유효하지 않은 쿠폰입니다.</span>';
                     }
-                    else {
+                    else if (fetchCoupon.body === 'over-time') {
                         couponTextElement_2.innerHTML = '<span style="color: red;">현재 사용 불가능한 쿠폰입니다.</span>';
                     }
                     setTimeout(function () {

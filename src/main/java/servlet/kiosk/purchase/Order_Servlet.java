@@ -61,13 +61,13 @@ public class Order_Servlet extends HttpServlet {
 		
 		logger.info(LOGGER_NAME + ": Processing HTTP GET request by \"" + endPoint + "\"");
 		
-		if (endPoint.equals("/api/kiosk/purchase/order/primary-key")) {
-			int pk = this.orders_mgr.getLastOrder();
-			out.write("{"
-					+ "\"result\": true,"
-					+ "\"primaryKey\":" + pk + ""
-					+ "}");
-		}
+			if (endPoint.equals("/api/kiosk/purchase/order/primary-key")) {
+				int pk = this.orders_mgr.getLastOrder();
+				out.write("{"
+						+ "\"result\": true,"
+						+ "\"body\": {\"primaryKey\":" + pk + "}"
+						+ "}");
+			}
     }
     
 	@Override
@@ -108,7 +108,7 @@ public class Order_Servlet extends HttpServlet {
 				int pk = this.orders_mgr.getLastOrder();
 				out.write("{"
 						+ "\"result\": true,"
-						+ "\"primaryKey\":" + pk + ""
+						+ "\"body\": {\"primaryKey\":" + pk + "}"
 						+ "}");
 			} else {
 				out.write("{"

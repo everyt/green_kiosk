@@ -62,13 +62,13 @@ const handleSmileForm = async () => {
       type: smileType,
       value: smileCode,
     };
-    smile = await detailedFetch(
+    const mileage: fetchMileageType = await detailedFetch(
       '/green_kiosk/api/user/verify/smile',
       'POST',
       encodeURIComponent(JSON.stringify(smile)),
     );
-    if (smile.value !== 'x') {
-      sessionStorage.setItem('couponArray', JSON.stringify(smile));
+    if (mileage.result) {
+      sessionStorage.setItem('mileage', JSON.stringify(mileage.body));
     } else {
       const smileTextElement = document.getElementById('smileText');
       smileTextElement.innerHTML = '<span style="color: red;">등록되어 있지 않은 ';
