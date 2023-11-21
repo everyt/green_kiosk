@@ -105,6 +105,9 @@ sleep(1)
     updateMenu("all", 1);
 });
 <script>
+window.addEventListener('DOMContentLoaded', function() {
+	
+});
 function loadContent(url) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {

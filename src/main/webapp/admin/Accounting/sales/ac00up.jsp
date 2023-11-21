@@ -6,7 +6,14 @@
 	String usid = (String) session.getAttribute("idKey");
 	int numb = Integer.parseInt(request.getParameter("numb"));
 	Orders_Bean codeBean = ordersMgr.getord1(numb);   //입력자료 가져오기
+	System.out.println(codeBean.getOrder_foods());
 %>
+<script>
+    var orderFoodsValue = '<%=codeBean.getOrder_foods()%>';
+    console.log("Order Foods Value: " + orderFoodsValue);
+    getFoodList(orderFoodsValue);
+</script>
+
 <html>
 <head><meta charset="UTF-8">
 	<title>코드관리</title>
@@ -14,9 +21,13 @@
 </head>
 <script>
 	const menuMap = new Map();
+
+window.addEventListener('DOMContentLoaded', function() {
+    var orderFoodsValue = '<%=codeBean.getOrder_foods()%>';
+    console.log("Order Foods Value: " + orderFoodsValue);
+    getFoodList(orderFoodsValue);
+});
 </script>
-
-
 <body bgcolor="#FFFFCC" onLoad="regFrm.code.focus()">
 	<div align="center">
 		<br /> <br />
@@ -89,37 +100,6 @@
 			</table>
 		</form>
 	</div>
-	<script>
-	function getFoodList(value)
-	{
-	console.log("value = " + value)
-    var parsedData = JSON.parse("["+ value +"]");
-    parsedData.forEach(function(order) {
-    	order.forEach(function(item) {
-    		//menu name
-    		var menuName = item.name;
-    		//menu amount
-    		var amount = parseInt(item.amount);
-    		
-    		if(menuMap.has(menuName)) { 
-    			menuMap.set(menuName, menuMap.get(menuName) + amount);
-    		} else {
-    			menuMap.set(menuName, amount);
-    		}
-    	});
-    });
-    console.log("parsedData = " + parsedData);
-    
-    const menuArray = Array.from(menuMap.entries());
-    const menuData = menuArray.map(([menuName, amount]) => ({menuName, amount}));
-    console.log("menuArray = " + menuArray);
-    console.log("menuData = " +menuData);
-	}
-	
-	window.addEventListener('DOMContentLoaded', function() {
-		getFoodList(<%=codeBean.getOrder_foods()%>);
-		console.log(<%=codeBean.getOrder_foods()%>)
-	});
-	</script>
+
 </body>
 </html>
