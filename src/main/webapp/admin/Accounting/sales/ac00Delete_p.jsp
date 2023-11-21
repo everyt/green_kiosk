@@ -20,11 +20,12 @@
 		%>
 		<script type="text/javascript">
 				alert("코드정보 수정 하였습니다.");
-				location.href="ac00.jsp";
+				opener.loadContent('sales/ac00.jsp');opener.updateMenu('all')
+				self.close();
 		</script>
 		<% } else {%>
 		<script type="text/javascript">
 				alert("코드정보 수정에 실패 하였습니다.");
-				history.back();
+				self.close();
 		</script>
 		<% } %>

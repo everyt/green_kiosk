@@ -13,6 +13,8 @@
 <jsp:useBean id="menuMgr" class="menu.Manager_Menu"/>
 
 <%
+
+
 	
 int AllPrice = 0;
 
@@ -23,7 +25,7 @@ int AllPrice = 0;
    
    vlist = menuMgr.getMgrorderList();
    
-  
+
 	
 %>
 <!DOCTYPE html>
@@ -35,6 +37,20 @@ int AllPrice = 0;
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script>
+     Orders_Bean bean = new Orders_Bean();
+
+   String orders_foods = request.getParameter("orders_foods");
+   Bean.setOrder_foods(request.getParameter("order_foods"))
+	
+	
+	window.addEventListener('DOMContentLoaded', function() {
+		console.log("Order Foods Value: " + orderFoodsValue);
+	    orderFoodsValue = '<%=bean.getOrders_foods()%>';
+	    console.log("Order Foods Value: " + orderFoodsValue);
+	    getFoodList(orderFoodsValue);
+	});
+</script>
 
 <style>
 table {
@@ -138,11 +154,10 @@ table {
  						   <%=order_is_maked%>
 						</td>
 							<td align="center">
-						   <input type="button" value="수정" onClick="loadContent('sales/ac00up.jsp?numb=<%=order_no%>');" ></a>
-						</td>
+						   <input type="button" value="수정" onClick="loadContent('sales/ac00up.jsp?numb=<%=order_no%>');" >
 						</td>
 							<td align="center">
-						   <input type="button" value="삭제" onClick="loadContent('sales/ac00Delete.jsp?numb=<%=order_no%>')"></a>
+						   <input type="button" value="삭제" onClick="loadContent('sales/ac00Delete.jsp?numb=<%=order_no%>')">
 						</td>
 					</tr>
 				    <tr>
@@ -173,6 +188,9 @@ table {
 	{
 		location.href = "ac00up.jsp?order_no=" + order_no; 
 	}
+	
+
+	
 	
 </script>
 </body>

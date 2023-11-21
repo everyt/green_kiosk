@@ -103,7 +103,6 @@ getFoodList(orderFoodsValue);
 								<td colspan="3" align="center">
 								<input type="button" onclick="sub()" value="수정완료"> &nbsp; &nbsp; 
 								<input type="reset" value="다시쓰기"> &nbsp; &nbsp; 
-								<input type="button" value="코드목록" onClick="history.go(-1)">
 								<input style="display:none" name="order_no" value="<%=numb %>"/></td>						
 							
 							</tr>
