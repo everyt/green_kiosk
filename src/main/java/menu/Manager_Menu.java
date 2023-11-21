@@ -825,7 +825,7 @@ public class Manager_Menu {
 					bean.setOrder_no(rs.getInt("order_no"));
 					bean.setOrder_time(rs.getTimestamp("order_time"));
 					bean.setOrder_foods(rs.getString("order_foods"));
-					bean.setOrder_price(rs.getInt("order_price"));
+					bean.setOrder_price(rs.getLong("order_price"));
 					bean.setOrder_discount(rs.getInt("order_discount"));
 					bean.setOrder_coupon(rs.getString("order_coupon"));
 					bean.setOrder_type(rs.getString("order_type"));

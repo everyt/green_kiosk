@@ -135,14 +135,17 @@ function processMenuData(response) {
 }
 
 function updateHTML(priceSumDay, priceSumWeek, priceSumMonth) {
+	const pathname = "/" + window.location.pathname.split("/")[1] + "/";
+	const origin = window.location.origin;
+	const contextPath = origin + pathname;
 var htmlTemplate =
-    '<div class="col-xl-3 col-md-6 mb-4">' +
+    '<div class="col-xl-3 col-md-6 mb-4"  onclick="openPopup(\'' + contextPath + '/admin/index/sales_list.jsp?term=day' + '\')">' +
     createCard2('일일 매출', priceSumDay) +
     '</div>' +
-    '<div class="col-xl-3 col-md-6 mb-4">' +
+    '<div class="col-xl-3 col-md-6 mb-4"  onclick="openPopup(\'' + contextPath + '/admin/index/sales_list.jsp?term=week' + '\')">' +
     createCard2('이번 주 매출', priceSumWeek) +
     '</div>' +
-    '<div class="col-xl-3 col-md-6 mb-4">' +
+    '<div class="col-xl-3 col-md-6 mb-4" onclick="openPopup(\'' + contextPath + '/admin/index/sales_list.jsp?term=month' + '\')">' +
     createCard2('이번 달 매출', priceSumMonth) +
     '</div>';
     $('.getMenuList').empty().html(htmlTemplate);
