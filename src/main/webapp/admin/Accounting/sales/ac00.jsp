@@ -44,12 +44,7 @@ int AllPrice = 0;
    Bean.setOrder_foods(request.getParameter("order_foods"))
 	
 	
-	window.addEventListener('DOMContentLoaded', function() {
-		console.log("Order Foods Value: " + orderFoodsValue);
-	    orderFoodsValue = '<%=bean.getOrders_foods()%>';
-	    console.log("Order Foods Value: " + orderFoodsValue);
-	    getFoodList(orderFoodsValue);
-	});
+
 </script>
 
 <style>
