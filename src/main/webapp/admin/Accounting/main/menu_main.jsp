@@ -114,6 +114,9 @@ function loadContent(url) {
     if (xhr.readyState === 4 && xhr.status === 200) {
       // Ajax 요청이 완료되고 페이지를 가져온 경우 메인 페이지를 업데이트
       document.getElementById('mainContent').innerHTML = xhr.responseText;
+      if (url.includes("sales/ac00up.jsp?numb=")) {
+    	  getFoodList(orderFoodsValue);
+      }
       // 맨 상단으로 가도록
       window.scrollTo(0, 0);
     }

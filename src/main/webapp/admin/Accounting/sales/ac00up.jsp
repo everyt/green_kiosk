@@ -9,26 +9,39 @@
 	System.out.println(codeBean.getOrder_foods());
 %>
 <script>
-    var orderFoodsValue = '<%=codeBean.getOrder_foods()%>';
+orderFoodsValue = '<%=codeBean.getOrder_foods()%>';
+window.addEventListener('load', function() {
+	console.log("Order Foods Value: " + orderFoodsValue);
+    orderFoodsValue = '<%=codeBean.getOrder_foods()%>';
     console.log("Order Foods Value: " + orderFoodsValue);
     getFoodList(orderFoodsValue);
+}
 </script>
 
 <html>
 <head><meta charset="UTF-8">
 	<title>코드관리</title>
 	<link href="../main/style.css" rel="stylesheet" type="text/css" >
-</head>
-<script>
-	const menuMap = new Map();
 
-window.addEventListener('DOMContentLoaded', function() {
-    var orderFoodsValue = '<%=codeBean.getOrder_foods()%>';
-    console.log("Order Foods Value: " + orderFoodsValue);
-    getFoodList(orderFoodsValue);
-});
+<script>
+	
+
+	
+	
+	
+	window.addEventListener('DOMContentLoaded', function() {
+		console.log("Order Foods Value: " + orderFoodsValue);
+	    orderFoodsValue = '<%=codeBean.getOrder_foods()%>';
+	    console.log("Order Foods Value: " + orderFoodsValue);
+	    getFoodList(orderFoodsValue);
+	});
 </script>
+</head>
 <body bgcolor="#FFFFCC" onLoad="regFrm.code.focus()">
+<script>
+orderFoodsValue = '<%=codeBean.getOrder_foods()%>';
+getFoodList(orderFoodsValue);
+</script>
 	<div align="center">
 		<br /> <br />
 		<form name="regFrm" method="get" target="_blank" action="sales/ac00up_p.jsp" >
@@ -42,7 +55,7 @@ window.addEventListener('DOMContentLoaded', function() {
 							<tr>
 								<td width="20%">번호</td>
 								<td width="50%">
-									<input name="order_no" size="15" 
+									<input name="order_numb" size="15" 
 									value="<%=codeBean.getOrder_no()%>" readonly></td>
 							</tr>
 							<tr>
@@ -54,6 +67,7 @@ window.addEventListener('DOMContentLoaded', function() {
 								<td>판매 내역</td>
 								<td><input name="order_foods" size="30"
 									 readonly ></td>
+								<td style="display:hidden"><input id="foods" style="display:none" value='<%=codeBean.getOrder_foods()%>'></td>
 							</tr>
 							<tr>
                                 <td>판매 금액</td>

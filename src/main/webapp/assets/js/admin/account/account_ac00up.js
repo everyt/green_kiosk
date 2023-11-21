@@ -1,4 +1,4 @@
-	function getFoodList(value)
+/*	function getFoodList(value)
 	{
 	console.log("value = " + value)
     var parsedData = JSON.parse("["+ value +"]");
@@ -24,3 +24,4 @@
     console.log("menuData = " +menuData);
 	}
 	
+*/

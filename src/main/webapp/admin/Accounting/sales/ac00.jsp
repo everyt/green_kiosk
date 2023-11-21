@@ -138,7 +138,7 @@ table {
  						   <%=order_is_maked%>
 						</td>
 							<td align="center">
-						   <input type="button" value="수정" onClick="loadContent('sales/ac00up.jsp?numb=<%=order_no%>')" ></a>
+						   <input type="button" value="수정" onClick="loadContent('sales/ac00up.jsp?numb=<%=order_no%>'); getFoodList(orderFoodsValue);" ></a>
 						</td>
 						</td>
 							<td align="center">
