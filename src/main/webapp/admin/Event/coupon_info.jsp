@@ -17,6 +17,11 @@ Vector<Coupon_kind_Bean> Kinds = mgr.readAllKind();
 		}
 	</style>
 </head>
+<script>
+function delete_coupon_type(numb) {
+	
+}
+</script>
 <body>
 <div style="display: grid; justify-content: center; width: 100%;">
 	<table width="100%" border=1  cellpadding=2 cellspacing=10 style="display: grid;border-collapse: collapse; margin-top: 4%;">
@@ -53,12 +58,12 @@ Vector<Coupon_kind_Bean> Kinds = mgr.readAllKind();
 						<td>발급 불가능</td>
 					<%} %>
 					
-					<td>수정</td>
+					<td onclick="openPopup('/green_kiosk/admin/Event/coupon_edit.jsp?numb='+<%=bean.getNumb() %>)" style="cursor:pointer">수정</td>
 					
 					<% if (bean.isDefault_coupon()) {%>
-						<td>삭제 불가능</td>
+						<td style="cursor:no-drop" title="기본 쿠폰은 삭제할 수 없습니다.">삭제 불가능</td>
 					<%} else { %>
-						<td>삭제</td>
+						<td style="cursor:pointer" onclick="delete_coupon_type(<%=bean.getNumb() %>)">삭제</td>
 					<%} %>
 				</tr>
 			<%} %>
