@@ -29,7 +29,7 @@ public class admin_index extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
     // 현재 날짜 가져오기
-    LocalDate currentDate = LocalDate.now();
+    private LocalDate currentDate = LocalDate.now();
 
     // 이번 달의 시작일 계산
     LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
@@ -42,7 +42,7 @@ public class admin_index extends HttpServlet {
     LocalDate lastDayOfWeek = currentDate.with(DayOfWeek.SUNDAY);
 
     // 날짜를 원하는 형식으로 출력 (예: "2023-11-01")
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     //이번 달
     String formattedFirstDay = firstDayOfMonth.format(formatter);
     String formattedLastDay = lastDayOfMonth.format(formatter);
@@ -60,6 +60,23 @@ public class admin_index extends HttpServlet {
     	
     	if("/admin/index/getMenuData".equals(endPoint))
     	{
+    		int date = this.currentDate.getDayOfMonth();
+    		int yoil = this.currentDate.getDayOfWeek().getValue();
+    		int deff = 0;
+    		LocalDate sunday = null;
+    		LocalDate monday = null;
+    		
+    		String format_sun = null;
+    		String format_mon = null;
+    		if (yoil < 7) {
+    			deff = 7 - yoil;
+    			sunday = currentDate.plusDays(deff);
+    			format_sun = this.formatter.format(sunday);
+    			monday = sunday.minusDays(6);
+    			format_mon = this.formatter.format(monday);
+    		}
+    		System.out.println(format_sun);
+    		System.out.println(format_mon);
     		String type = (String)request.getParameter("type");
     		String time = (String)request.getParameter("time");
     		System.out.println(type + time);
@@ -74,7 +91,7 @@ public class admin_index extends HttpServlet {
     		}
     		// 이번 주 주문
     		else if (type.equals("all")&&time.equals("week")) {
-    		 order_list = new Orders_Mgr().getAllOrdersByTime(formattedFirstDayOfWeek, formattedLastDayOfWeek);
+    		 order_list = new Orders_Mgr().getAllOrdersByTime(format_mon, format_sun);
     		}
     		String json = null;
     		 json = new Gson().toJson(order_list);

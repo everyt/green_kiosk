@@ -32,7 +32,7 @@
 function barChart2() {
 
 const dateValues = priceSumDate.map(date => new Date(date).getDate());
-console.log("priceSumDate : " + priceSumDate);
+
   const ctx = document.getElementById('myChart2');
   new Chart(ctx, {
     type: 'line',
@@ -40,7 +40,7 @@ console.log("priceSumDate : " + priceSumDate);
       labels: ['일요일' ,'월요일' , '화요일', '수요일', '목요일' , '금요일' , '토요일'],
       datasets: [{
         label: '요일별 매출 (단위 : 원)',
-        data: priceSumdaily,
+        data: priceweekily,
         borderWidth: 1
       }]
     },
@@ -136,5 +136,5 @@ function cookieSeparate(cookieObject) {
 
 
 window.addEventListener('DOMContentLoaded', function() {
-     barChart();
+     //barChart();
 });

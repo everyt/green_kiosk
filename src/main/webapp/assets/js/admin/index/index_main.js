@@ -1,8 +1,10 @@
 var menuType = "all";
 var priceSumdaily = [0,0,0,0,0,0,0];
+var priceweekily = [0,0,0,0,0,0,0];
 var priceSumDate = ['','','','','','',''];
 var menuAmountMap = new Map();
 var keyValuePairs  = [];
+var week_total = 0;
 
 function updateMenu(type, time) {
     $.ajax({
@@ -71,6 +73,40 @@ function getindexinfo(type) {
                 // Update HTML
                 updateHTML(priceSumDay, priceSumWeek, priceSumMonth, priceSumdaily);
 				     
+				} else {
+					getWeekinfo()
+				}
+				//response if's else 
+            } else {
+                console.error("No data received or data is empty.");
+            }
+        },
+
+        error: function (xhr, status, error) {
+            console.error("Ajax request failed:", status, error);
+        }
+    });
+}
+
+
+function getWeekinfo() {
+	let type = "all"
+    $.ajax({
+        type: "POST",
+        url: "./index/getMenuData?time=week&type=" + type,
+        dataType: "json",
+        data: {
+            type: menuType
+        },
+        contentType: "application/json; charset=UTF-8",
+        success: function (response) {
+            if (response && response.length > 0) {
+                if (type == "all"){
+                var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily } = processMenuData(response, "week");
+				
+                // Update HTML
+                updateHTML(priceSumDay, priceSumWeek, priceSumMonth, priceSumdaily);
+				     
 				}
 				//response if's else 
             } else {
@@ -86,9 +122,8 @@ function getindexinfo(type) {
 
 
 
-
-
-function processMenuData(response) {
+function processMenuData(response, type) {
+	console.log(response)
     var foodSales = {};
     var foodCount = {};
     var priceSumDay = 0;
@@ -113,24 +148,50 @@ function processMenuData(response) {
 	    var orderDay = new Date(orderDate).getDay();
 	    
 	    
-        if (orderDate == currentDate) {
-            priceSumDay += order_price;
-		} 
-		//orderDate == startDate, currentDate == endDate //
-        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) < 7) {
-            priceSumWeek += order_price;
-      		  if (!priceSumDate.includes(orderDate)) {
-        			priceSumDate[orderDay] = orderDate; 
-        			}
-            priceSumdaily[orderDay] += order_price;
-        }
+
 		
-        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) <= 30) {
-            priceSumMonth += order_price;
-        }
+		 if (type == "week") {
+			 if (orderDate == currentDate) {
+           		 priceSumDay += order_price;
+			} 
+			 
+					//orderDate == startDate, currentDate == endDate //
+	        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) < 7) {
+	            priceSumWeek += order_price;
+	      		  if (!priceSumDate.includes(orderDate)) {
+	        			priceSumDate[orderDay] = orderDate; 
+	        			}
+	            priceweekily[orderDay] += order_price;
+	        }
+	        
+	        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) <= 30) {
+	            week_total += order_price;
+	        }
+		} else {
+			 if (orderDate == currentDate) {
+           		 priceSumDay += order_price;
+			} 
+			
+			//orderDate == startDate, currentDate == endDate //
+	        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) < 7) {
+	            priceSumWeek += order_price;
+	      		  if (!priceSumDate.includes(orderDate)) {
+	        			priceSumDate[orderDay] = orderDate; 
+	        			}
+	            priceSumdaily[orderDay] += order_price;
+	        }
+	        
+	         if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) <= 30) {
+	            priceSumMonth += order_price;
+	        }
+		}
+
+       
         
         
     }   
+		 
+	
     return { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily };
 }
 
@@ -143,7 +204,7 @@ var htmlTemplate =
     createCard2('일일 매출', priceSumDay) +
     '</div>' +
     '<div class="col-xl-3 col-md-6 mb-4"  onclick="openPopup(\'' + contextPath + '/admin/index/sales_list.jsp?term=week' + '\')">' +
-    createCard2('이번 주 매출', priceSumWeek) +
+    createCard2('이번 주 매출', week_total) +
     '</div>' +
     '<div class="col-xl-3 col-md-6 mb-4" onclick="openPopup(\'' + contextPath + '/admin/index/sales_list.jsp?term=month' + '\')">' +
     createCard2('이번 달 매출', priceSumMonth) +
@@ -155,7 +216,9 @@ var htmlTemplate =
 window.addEventListener('DOMContentLoaded', function() {
     updateMenu('all', 'month');
 /*updateMenu('all', 'week');*/
+getWeekinfo("week");
 getindexinfo('all');
+
 });
 
 
