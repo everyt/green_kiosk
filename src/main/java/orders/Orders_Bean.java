@@ -13,7 +13,7 @@ public class Orders_Bean {
 	private Integer order_no;
 	private Timestamp order_time;
 	private String order_foods;
-	private Integer order_price;
+	private long order_price;
 	private long order_discount;
 	private String order_coupon;
 	private String order_type;
@@ -44,10 +44,10 @@ public class Orders_Bean {
 	public void setOrder_foods(String order_foods) {
 		this.order_foods = order_foods;
 	}
-	public Integer getOrder_price() {
+	public long getOrder_price() {
 		return order_price;
 	}
-	public void setOrder_price(Integer order_price) {
+	public void setOrder_price(long order_price) {
 		this.order_price = order_price;
 	}
 	public long getOrder_discount() {
