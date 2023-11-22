@@ -25,3 +25,26 @@
 	}
 	
 */
+
+//쿠폰
+function delete_coupon_type(numb) {
+	let context = sessionStorage.getItem("context");
+	let del_confrim = confirm(numb+"번 쿠폰을 삭제하시겠습니까?");
+	if (del_confrim) {
+		fetch (context+"/api/admin/coupon/delete", {
+			method: "POST",
+			body: JSON.stringify({
+				"numb": numb
+			})
+		}).then((response) => {
+			response.json().then((data) => {
+				if (data.result == "success") {
+					alert("쿠폰이 정상적으로 삭제 되었습니다.")
+					loadContent('/green_kiosk/admin/Event/coupon_info.jsp');
+				} else {
+					alert("삭제중 오류가 발생하였습니다.\n사유 : 알수 없는 오류입니다");
+				}
+			})			
+		})
+	}
+}
