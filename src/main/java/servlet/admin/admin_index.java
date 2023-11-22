@@ -1,9 +1,12 @@
 package servlet.admin;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 
@@ -24,7 +27,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-@WebServlet({"/admin/index/getMenuData", "/admin/index/getIndexInfo"})
+
+@WebServlet({"/admin/index/getMenuData", "/admin/index/getIndexInfo", "/admin/index/getChartWithDate"})
 public class admin_index extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -75,11 +79,10 @@ public class admin_index extends HttpServlet {
     			monday = sunday.minusDays(6);
     			format_mon = this.formatter.format(monday);
     		}
-    		System.out.println(format_sun);
-    		System.out.println(format_mon);
+
     		String type = (String)request.getParameter("type");
     		String time = (String)request.getParameter("time");
-    		System.out.println(type + time);
+
             Vector<Orders_Bean> order_list = null;
             
             if (type == null) {
@@ -115,6 +118,25 @@ public class admin_index extends HttpServlet {
     		json = new Gson().toJson(order_list);
     		
     		response.getWriter().write(json); 
+    	} 
+    	else if ("/admin/index/getChartWithDate".equals(endPoint))
+    	{
+    		String startDate = request.getParameter("startDate");
+    		String endDate = request.getParameter("endDate");
+    		try {
+                Vector<Orders_Bean> order_list = null;
+                String json = null;
+               
+                order_list = new Orders_Mgr().getAllOrdersByTime(startDate, endDate);
+
+                json = new Gson().toJson(order_list);
+
+                response.getWriter().write(json);
+
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+
     	}
 	}
 }

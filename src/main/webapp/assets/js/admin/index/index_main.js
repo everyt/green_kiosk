@@ -3,7 +3,7 @@ var priceSumdaily = [0,0,0,0,0,0,0];
 var priceweekily = [0,0,0,0,0,0,0];
 var priceSumDate = ['','','','','','',''];
 var menuAmountMap = new Map();
-var keyValuePairs  = [];
+var menuAmountTermMap = new Map();
 var week_total = 0;
 
 function updateMenu(type, time) {
@@ -34,9 +34,7 @@ function updateMenu(type, time) {
 				        }
 				    });
 				});
-				
-				console.log (orderInfoArray);
-                				     
+				                				     
 				 barChart3();
 				barChart2();
 				}
@@ -123,7 +121,7 @@ function getWeekinfo() {
 
 
 function processMenuData(response, type) {
-	console.log(response)
+
     var foodSales = {};
     var foodCount = {};
     var priceSumDay = 0;
@@ -167,7 +165,9 @@ function processMenuData(response, type) {
 	        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) <= 30) {
 	            week_total += order_price;
 	        }
-		} else {
+		} else if (type == "term") {
+			
+			} else {
 			 if (orderDate == currentDate) {
            		 priceSumDay += order_price;
 			} 
@@ -294,3 +294,67 @@ function openPopup(url) {
 
 
 
+
+function updateChartInterval(startDate, endDate) {
+    $.ajax({
+        type: "POST",
+        url: "./index/getChartWithDate?startDate=" + startDate + "&endDate=" + endDate,
+        dataType: "json",
+        data: {
+            type: menuType
+        },
+        contentType: "application/json; charset=UTF-8",
+        success: function (response) {
+            if (response && response.length > 0) {
+                var {allOrderFoods, allTime} = processMenuData(response, "term");
+
+					let orderInfoArray1 = JSON.parse("[" + allOrderFoods + "]");
+					menuAmountTermMap = new Map()
+										
+					orderInfoArray1.forEach(function(order) {
+				    order.forEach(function(item) {
+				        var menuName = item.name;
+				        var amount = parseInt(item.amount);
+						
+				        if (menuAmountTermMap.has(menuName)) {
+				            menuAmountTermMap.set(menuName, menuAmountTermMap.get(menuName) + amount);
+				        } else {
+				            menuAmountTermMap.set(menuName, amount);
+				        }
+				    });
+				});
+				
+				console.log("barChart4 parsing menuAmountTermMap : " + menuAmountTermMap);
+				barChart4();
+				
+            } else {
+                console.error("No data received or data is empty.");
+            }
+        },
+
+        error: function (xhr, status, error) {
+            console.error("Ajax request failed:", status, error);
+        }
+    });
+}
+
+
+function updateChart() {
+    const startDate1 = new Date(document.getElementById('startDate').value);
+    const endDate1 = new Date(document.getElementById('endDate').value);
+    
+    const startDate = changeDateFormat(startDate1);
+    const endDate = changeDateFormat(endDate1);
+    
+    updateChartInterval(startDate, endDate);
+}
+// datePicker로 받은 date 형식 변경하기
+function changeDateFormat(value) {
+	const year = value.getFullYear();
+	const month = (value.getMonth() + 1).toString().padStart(2, '0');
+	const day = value.getDate().toString().padStart(2, '0');
+	
+	const dateString = year + '-' + month + '-' + day;
+	
+	return dateString;
+}

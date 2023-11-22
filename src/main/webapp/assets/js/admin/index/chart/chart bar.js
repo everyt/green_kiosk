@@ -67,6 +67,7 @@ const dateValues = priceSumDate.map(date => new Date(date).getDate());
 }
 
 
+
 function barChart3() {
 	
 	 const existingChart = Chart.getChart('myChart3');
@@ -106,6 +107,59 @@ function barChart3() {
     }
   });
 }
+
+
+
+
+
+function barChart4() {
+    const existingChart = Chart.getChart('myChart4');
+    if (existingChart) {
+        existingChart.destroy();
+    }
+
+  const entriesTermArray = Array.from(menuAmountTermMap.entries());
+  const menuTermData = entriesTermArray.map(([name, amount]) => ({ name, amount }));
+  menuTermData.sort((a, b) => b.amount - a.amount);
+  const top20MenuTermData = menuTermData.slice(0, 20);
+  console.log("entriesTermArray : " + entriesTermArray);
+	console.log(top20MenuTermData.map(item => item.name));
+		console.log(top20MenuTermData.map(item => item.amount));
+
+    const ctx = document.getElementById('myChart4').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: top20MenuTermData.map(item => item.name),
+            datasets: [{
+                label: '판매량',
+                data: top20MenuTermData.map(item => item.amount),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: `선택한 기간의 메뉴별 판매량`
+                }
+            }
+        }
+    });
+}
+
+
+
+
+
+
+
 
 
 function getCookieValue(cookieName) {
