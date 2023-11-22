@@ -24,6 +24,8 @@ import com.google.gson.reflect.TypeToken;
 import all.DBConnectionMgr;
 import orders.Orders_Bean;
 
+
+
 public class Manager_Menu {
 	
 	private DBConnectionMgr pool;
@@ -1163,11 +1165,11 @@ public class Manager_Menu {
 					Connection con = null;
 					PreparedStatement pstmt = null;
 					ResultSet rs = null;
-					Menu_menu_Bean bean = null;
+					Menu_menu_Bean bean = null;		
 					
 					try {
 						con = pool.getConnection();
-						String sql = "select * from menu where menu_no = ?";
+						String sql = "select * from menu where menu_no = ?,menu_name = ? , menu_gubn = ?, menu_isSale = ? ";
 						pstmt = con.prepareStatement(sql);
 						pstmt.setInt(1, numb);
 						rs = pstmt.executeQuery();
@@ -1189,12 +1191,15 @@ public class Manager_Menu {
 					} catch (Exception e) {
 						e.printStackTrace();
 					} finally {
+				
 						pool.freeConnection(con);
 					}
+					
 					return bean;
 				}
+			
 				
-				
+
 //--------------------------------------------------------------------------------
 	//menu_file download
 
