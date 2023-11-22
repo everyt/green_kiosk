@@ -1158,6 +1158,43 @@ public class Manager_Menu {
 					}
 					return true;
 				}
+				
+				public Menu_menu_Bean getMenuwithname(int numb) {
+					Connection con = null;
+					PreparedStatement pstmt = null;
+					ResultSet rs = null;
+					Menu_menu_Bean bean = null;
+					
+					try {
+						con = pool.getConnection();
+						String sql = "select * from menu where menu_no = ?";
+						pstmt = con.prepareStatement(sql);
+						pstmt.setInt(1, numb);
+						rs = pstmt.executeQuery();
+						if (rs.next()) {
+							bean = new Menu_menu_Bean();
+							bean = new Menu_menu_Bean();
+							bean.setMenu_no(rs.getInt("menu_no"));
+							bean.setMenu_name(rs.getString("menu_name"));
+							bean.setMenu_gubn(rs.getString("menu_gubn"));
+							bean.setMenu_isSale(rs.getInt("menu_isSale"));
+							bean.setMenu_isUse(rs.getInt("menu_isUse"));
+							bean.setMenu_imgPath(rs.getString("menu_imgPath"));
+							bean.setMenu_component(rs.getString("menu_component"));
+							bean.setMenu_content(rs.getString("menu_content")); 
+							bean.setMenu_price(rs.getInt("menu_price"));
+							bean.setMenu_sell_amount(rs.getInt("menu_sell_amount"));
+							bean.setMenu_recommend(rs.getInt("menu_recommend"));
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						pool.freeConnection(con);
+					}
+					return bean;
+				}
+				
+				
 //--------------------------------------------------------------------------------
 	//menu_file download
 

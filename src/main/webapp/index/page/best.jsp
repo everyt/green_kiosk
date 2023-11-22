@@ -42,9 +42,6 @@ function open_register() {
 	window.open(url, "회원가입", "width=460, height=600")
 }
 </script>
-<script src="myApp.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
-<script src="myApp.js"></script>
 <body>
 <!-- Sidebar (hidden by default) -->
 <%@ include file="/index/base/sidebar.jsp"%>
@@ -192,7 +189,184 @@ function myAccFunc2() {
 	    x.previousElementSibling.className.replace(" w3-green", "");
 	  }
 	}
+	
+function barChart3() {		
+	
+	 const existingChart = Chart.getChart('myChart3');
+   if (existingChart) {
+       existingChart.destroy();
+   }
+   
+ const entriesArray = Array.from(menuAmountMap.entries());
+ const menuData2 = entriesArray.map(([name, amount]) => ({ name, amount }));
+ menuData2.sort((a, b) => b.amount - a.amount);
+ const top20MenuData = menuData2.slice(0, 20);
 
+ const ctx = document.getElementById('myChart3').getContext('2d');
+ new Chart(ctx, {
+   type: 'bar',
+   data: {
+     labels: top20MenuData.map(item => item.name),
+     datasets: [{
+       label: '판매량',
+       data: top20MenuData.map(item => item.amount),
+       borderWidth: 1
+     }]
+   },
+   options: {
+     scales: {
+       y: {
+         beginAtZero: true
+       }
+     },
+     responsive: true,
+     plugins: {
+       title: {
+         display: true,
+         text: "당월 메뉴별 판매량(상위 20개)"
+       }
+     }
+   }
+ });
+}
+
+function formatNumber(number) {
+    // 숫자를 3자리마다 쉼표로 구분
+    var df = new Intl.NumberFormat('ko-KR');
+    return df.format(number);
+}
+
+function dateDiff(start_date, end_date) {
+    let startDate = new Date(start_date);
+    let endDate = new Date(end_date);
+
+    let diffInMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12 + endDate.getMonth() - startDate.getMonth();
+
+    // Adjust for day differences
+    let startDateCopy = new Date(startDate.getTime());
+    startDateCopy.setMonth(startDateCopy.getMonth() + diffInMonths);
+
+    if (startDateCopy > endDate) {
+        diffInMonths--;
+    }
+
+    // Calculate the remaining days
+    let daysInMonth = new Date(endDate.getFullYear(), endDate.getMonth() + 1, 0).getDate();
+    let remainingDays = (endDate - startDateCopy) / (1000 * 60 * 60 * 24);
+
+    return diffInMonths * daysInMonth + remainingDays;
+}
+
+function processMenuData(response) {
+    var foodSales = {};
+    var foodCount = {};
+    var priceSumDay = 0;
+    var priceSumWeek = 0;
+    var priceSumMonth = 0;
+    var priceSumYear = 0;
+    var allOrderFoods = [];
+    var allTime = [];
+    var currentDate = new Date().toISOString().slice(0, 10);
+	var currentDay = new Date(currentDate).getDay();
+	
+	var daysOfWeek = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+	var dayOfWeekString = daysOfWeek[currentDay];
+	
+    for (var i = 0; i < response.length; i++) {
+        var order_time = response[i].order_time;
+        var orderDate = new Date(order_time).toISOString().slice(0, 10);
+        var order_price = response[i].order_price;
+	    var order_foods = response[i].order_foods; // 주문 음식 정보를 JSON으로 파싱
+       allOrderFoods.push(order_foods);
+       allTime.push(order_time);   
+	    var orderDay = new Date(orderDate).getDay();
+	    
+	    
+        if (orderDate == currentDate) {
+            priceSumDay += order_price;
+		} 
+		
+        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) < 7) {
+            priceSumWeek += order_price;
+      		  if (!priceSumDate.includes(orderDate)) {
+        			priceSumDate[orderDay] = orderDate; 
+        			}
+            priceSumdaily[orderDay] += order_price;
+        }
+		
+        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) <= 30) {
+            priceSumMonth += order_price;
+        }
+        
+        
+    }   
+    return { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily };
+}
+
+function updateHTML(priceSumDay, priceSumWeek, priceSumMonth, totalAmountByNameFromCookie) {
+	mapSort1 = new Map([...menuAmountMap.entries()].sort((a, b) => b[1] - a[1]));
+	var htmlTemplate =
+	    '<div class="col-xl-3 col-md-6 mb-4">' +
+	    createCard2('일일 매출', priceSumDay) +
+	    '</div>' +
+	    '<div class="col-xl-3 col-md-6 mb-4">' +
+	    createCard2('이번 주 매출', priceSumWeek) +
+	    '</div>' +
+	    '<div class="col-xl-3 col-md-6 mb-4">' +
+	    createCard2('이번 달 매출', priceSumMonth) +
+	    '</div>';
+	    //$('.getMenuList').empty().html(htmlTemplate);
+	}
+
+
+function updateMenu(menuType) {
+    $.ajax({
+        type: "POST",
+        url: "<%=cPath %>/admin/index/getMenuData?type=all&time=month",
+        dataType: "json",
+        data: {
+            type: menuType
+        },
+        contentType: "application/json; charset=UTF-8",
+        success: function (response) {
+            if (response && response.length > 0) {
+                // Separate concerns: processing data and updating HTML
+                var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily } = processMenuData(response);
+					console.log("all time :  " + allTime);
+					var orderInfoArray = JSON.parse("[" + allOrderFoods + "]");
+					console.log(allOrderFoods);
+					orderInfoArray.forEach(function(order) {
+				    order.forEach(function(item) {
+				        var menuName = item.name;
+				        var amount = parseInt(item.amount);
+				
+				        if (menuAmountMap.has(menuName)) {
+				            menuAmountMap.set(menuName, menuAmountMap.get(menuName) + amount);
+				        } else {
+				            menuAmountMap.set(menuName, amount);
+				        }
+				    });
+				});
+                // Update HTML
+                updateHTML(priceSumDay, priceSumWeek, priceSumMonth, priceSumdaily);
+				     
+				 barChart3();
+
+            } else {
+                console.error("No data received or data is empty.");
+            }
+        },
+
+        error: function (xhr, status, error) {
+            console.error("Ajax request failed:", status, error);
+        }
+    });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+	updateMenu("all");
+  
+});
 </script>
 
 
