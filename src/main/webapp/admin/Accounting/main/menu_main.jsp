@@ -11,7 +11,7 @@
         <h1 class="fw-light">매장 관리 페이지</h1>
         <p class="lead text-body-secondary"></p>
         <p>
-          <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('sales/ac00.jsp');updateMenu('all')">거래 내역 페이지</a>
+          <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('sales/ac00.jsp')">거래 내역 페이지</a>
           <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('inventory/iv00.jsp')">재고 관리 페이지</a>
           <!-- <a href="#" class="btn btn-secondary my-2"></a> -->
         </p>

@@ -125,7 +125,7 @@ function barChart4() {
   console.log("entriesTermArray : " + entriesTermArray);
 	console.log(top20MenuTermData.map(item => item.name));
 		console.log(top20MenuTermData.map(item => item.amount));
-
+	
     const ctx = document.getElementById('myChart4').getContext('2d');
     new Chart(ctx, {
         type: 'bar',
@@ -134,7 +134,8 @@ function barChart4() {
             datasets: [{
                 label: '판매량',
                 data: top20MenuTermData.map(item => item.amount),
-                borderWidth: 1
+                backgroundColor: colors,
+                	borderWidth: 1
             }]
         },
         options: {

@@ -222,9 +222,9 @@ async function sub() {
 	{
 		const menuMap = new Map();
 		value = document.getElementById("foods").value;
-	console.log("value = " + value)
-    var parsedData = JSON.parse("["+ value +"]");
-    parsedData.forEach(function(order) {
+			console.log("value = " + value)
+		    var parsedData = JSON.parse("["+ value +"]");
+		    parsedData.forEach(function(order) {
     	order.forEach(function(item) {
     		//menu name
     		var menuName = item.name;

@@ -150,12 +150,13 @@ function openPopup(url) {
 
 
 */
-
-	function getFoodList(value)
+    
+    
+    //ac00.jsp
+  function getFoodList2(value)
 	{
 		const menuMap = new Map();
-		value = document.getElementById("foods").value;
-	console.log("value = " + value)
+		
     var parsedData = JSON.parse("["+ value +"]");
     parsedData.forEach(function(order) {
     	order.forEach(function(item) {
@@ -171,8 +172,8 @@ function openPopup(url) {
     		}
     	});
     });
-    console.log("parsedData = " + parsedData);
-    
+
+
     const menuArray = Array.from(menuMap.entries());
     const menuData = menuArray.map(([menuName, amount]) => ({menuName, amount}));
     let res = "";
@@ -182,7 +183,13 @@ function openPopup(url) {
 	})
 	
 	document.regFrm.order_foods.value = res.substring(0, res.length-2)
-    console.log("menuArray = " + menuArray);
-    console.log("menuData = " +menuData);
+
 	}
 	
+	
+
+window.addEventListener('DOMContentLoaded', function() {
+	value = document.getElementById("ac00foods").value;
+	console.log("ac00foods : " + value);
+    getFoodList2(value);
+});

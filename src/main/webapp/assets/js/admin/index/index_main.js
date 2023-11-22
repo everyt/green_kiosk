@@ -141,6 +141,7 @@ function processMenuData(response, type) {
         var orderDate = new Date(order_time).toISOString().slice(0, 10);
         var order_price = response[i].order_price;
 	    var order_foods = response[i].order_foods; // 주문 음식 정보를 JSON으로 파싱
+	    var order_type = response[i].order_type;
        allOrderFoods.push(order_foods);
        allTime.push(order_time);   
 	    var orderDay = new Date(orderDate).getDay();
@@ -218,7 +219,7 @@ window.addEventListener('DOMContentLoaded', function() {
 /*updateMenu('all', 'week');*/
 getWeekinfo("week");
 getindexinfo('all');
-
+barChart4();
 });
 
 
@@ -358,3 +359,50 @@ function changeDateFormat(value) {
 	
 	return dateString;
 }
+
+
+
+
+
+
+    //ac00.jsp
+  function getFoodList2(value)
+	{
+		const menuMap = new Map();
+		
+    var parsedData = JSON.parse("["+ value +"]");
+    parsedData.forEach(function(order) {
+    	order.forEach(function(item) {
+    		//menu name
+    		var menuName = item.name;
+    		//menu amount
+    		var amount = parseInt(item.amount);
+    		
+    		if(menuMap.has(menuName)) { 
+    			menuMap.set(menuName, menuMap.get(menuName) + amount);
+    		} else {
+    			menuMap.set(menuName, amount);
+    		}
+    	});
+    });
+
+
+    const menuArray = Array.from(menuMap.entries());
+    const menuData = menuArray.map(([menuName, amount]) => ({menuName, amount}));
+    let res = "";
+    let i = 0;
+    menuArray.forEach((ele) => {
+			res += ele[0] + " X " + ele[1] + ", "	
+	})
+	
+	document.regFrm.order_foods.value = res.substring(0, res.length-2)
+
+	}
+	
+	
+
+window.addEventListener('DOMContentLoaded', function() {
+	value = document.getElementById("ac00foods").value;
+	console.log("ac00foods : " + value);
+    getFoodList2(value);
+});
