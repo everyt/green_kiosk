@@ -125,10 +125,11 @@ table {
 						<td align="center">
  						   <%=order_time%>
 						</td>
-						<td align="center">
+						<td align="center" >
 						<div class="text-over-cut">
 						 <%=order_foods%>
 						</div>
+						<input class="foods" type="hidden" value="<%=order_foods%>" id="foods">
 						</td>
 						<td align="center">
  						   <%=order_price%>
