@@ -34,6 +34,12 @@ function barChart2() {
 const dateValues = priceSumDate.map(date => new Date(date).getDate());
 
   const ctx = document.getElementById('myChart2');
+  const colors = priceweekily.map((value, index, array ) => {
+	  if (index > 0) {
+		  return value > array[index - 1] ? 'blue' : 'red';
+	  }
+	  return 'blue';
+  });
   new Chart(ctx, {
     type: 'line',
     data: {
@@ -41,7 +47,8 @@ const dateValues = priceSumDate.map(date => new Date(date).getDate());
       datasets: [{
         label: '요일별 매출 (단위 : 원)',
         data: priceweekily,
-        borderWidth: 1
+        borderWidth: 1,
+        borderColor: colors,
       }]
     },
     options: {
@@ -113,22 +120,28 @@ function barChart3() {
 
 
 function barChart4() {
-    const existingChart = Chart.getChart('myChart3');
+    const existingChart = Chart.getChart('myChart4');
     if (existingChart) {
         existingChart.destroy();
     }
 
-    const filteredMenuData = getMenuDataWithinRange(startDate, endDate);
-
+  const entriesTermArray = Array.from(menuAmountTermMap.entries());
+  const menuTermData = entriesTermArray.map(([name, amount]) => ({ name, amount }));
+  menuTermData.sort((a, b) => b.amount - a.amount);
+  const top20MenuTermData = menuTermData.slice(0, 20);
+  console.log("entriesTermArray : " + entriesTermArray);
+	console.log(top20MenuTermData.map(item => item.name));
+		console.log(top20MenuTermData.map(item => item.amount));
+	
     const ctx = document.getElementById('myChart4').getContext('2d');
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: filteredMenuData.map(item => item.name),
+            labels: top20MenuTermData.map(item => item.name),
             datasets: [{
                 label: '판매량',
-                data: filteredMenuData.map(item => item.amount),
-                borderWidth: 1
+                data: top20MenuTermData.map(item => item.amount),
+                	borderWidth: 1
             }]
         },
         options: {
@@ -147,41 +160,6 @@ function barChart4() {
         }
     });
 }
-
-
-
-
-
-
-
-
-
-function getCookieValue(cookieName) {
-	const name = cookieName + "=";
-	const decodedCookie = decodeURIComponent(document.cookie);
-	const cookieArray = decodedCookie.split(';');
-		
-	for (let i = 0; i < cookieArray.length; i++) {
-		let cookie = cookieArray[i].trim();
-		if (cookie.indexOf(name) === 0) {
-			return cookie.substring(name.length, cookie.length);
-		}
-	}
-	return "";
-}
-
-function cookieSeparate(cookieObject) {
-  const labels = Array.from(cookieObject.keys());
-  const data = Array.from(cookieObject.values());
-
-
-  return {
-    labels: labels,
-    data: data,
-    label: '# of Votes'
-  };
-}
-
 
 window.addEventListener('DOMContentLoaded', function() {
      //barChart();

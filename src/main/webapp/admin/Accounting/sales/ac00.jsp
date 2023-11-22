@@ -6,8 +6,10 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
+<%@ page import= "java.util.ArrayList" %>
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="com.google.gson.reflect.TypeToken" %>
+
 
 
 <jsp:useBean id="menuMgr" class="menu.Manager_Menu"/>
@@ -32,7 +34,7 @@ int AllPrice = 0;
 <html>
 <head><meta charset="UTF-8">
 	<title>코드관리</title>
-<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/account/account.js"></script>
+
 <link rel="stylesheet" href="/post_inc/datatables/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"></script>
@@ -114,21 +116,46 @@ table {
 				    	String order_type = bean.getOrder_type();
 				    	boolean order_use_mile = bean.isOrder_use_mile();
 				        boolean order_is_maked = bean.isOrder_is_maked();
-				    	
+				    	int count = 0;
 				        if (i < 10) {
 				        
 				    %>
+
 				    <tr>
 						<td align="center">
  						   <%=order_no%>
 						</td>
 						<td align="center">
- 						   <%=order_time%>
+ 						   <%=String.valueOf(order_time).substring(0, String.valueOf(order_time).length()-2)%>
 						</td>
-						<td align="center">
-						<div class="text-over-cut">
-						 <%=order_foods%>
-						</div>
+
+						<% 
+						
+						Gson gson = new Gson();
+						
+							List<Map<String, Object>> parsedData = gson.fromJson(order_foods, new TypeToken<List<Map<String, Object>>>() {}.getType());
+							
+							Map<String, Integer> menuMap = new HashMap<>();
+							String productInfo = "";
+							
+							for (Map<String, Object> order : parsedData ) {
+								for (Map.Entry<String, Object> entry : order.entrySet()){
+									String menuName = entry.getKey();
+							        Object value = entry.getValue();
+							        if ("name".equals(menuName)) {
+										productInfo += value + " X ";
+							        } else if ("amount".equals(menuName)) {
+										productInfo += value + "개, ";
+							        }
+									
+								}
+							}
+						
+							productInfo = productInfo.replaceAll(", $", "");
+
+ 						%>
+ 						<td align="center" >
+							<input class="ac00foods" id="ac00foods" value='<%=productInfo%>'>
 						</td>
 						<td align="center">
  						   <%=order_price%>
@@ -159,7 +186,12 @@ table {
 				    
               </tr>
 				<%} else {}
-				        }//for%>
+				        }//for
+				        
+				        
+				        
+				       %>
+				 
 				<%
 				}//if
 				%> 
@@ -183,10 +215,7 @@ table {
 	{
 		location.href = "ac00up.jsp?order_no=" + order_no; 
 	}
-	
-
-	
-	
-</script>
+		
+</script>  
 </body>
 </html>

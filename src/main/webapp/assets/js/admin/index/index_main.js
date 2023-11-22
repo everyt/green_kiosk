@@ -3,7 +3,7 @@ var priceSumdaily = [0,0,0,0,0,0,0];
 var priceweekily = [0,0,0,0,0,0,0];
 var priceSumDate = ['','','','','','',''];
 var menuAmountMap = new Map();
-var keyValuePairs  = [];
+var menuAmountTermMap = new Map();
 var week_total = 0;
 
 function updateMenu(type, time) {
@@ -141,6 +141,7 @@ function processMenuData(response, type) {
         var orderDate = new Date(order_time).toISOString().slice(0, 10);
         var order_price = response[i].order_price;
 	    var order_foods = response[i].order_foods; // 주문 음식 정보를 JSON으로 파싱
+	    var order_type = response[i].order_type;
        allOrderFoods.push(order_foods);
        allTime.push(order_time);   
 	    var orderDay = new Date(orderDate).getDay();
@@ -165,7 +166,9 @@ function processMenuData(response, type) {
 	        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) <= 30) {
 	            week_total += order_price;
 	        }
-		} else {
+		} else if (type == "term") {
+			
+			} else {
 			 if (orderDate == currentDate) {
            		 priceSumDay += order_price;
 			} 
@@ -216,7 +219,7 @@ window.addEventListener('DOMContentLoaded', function() {
 /*updateMenu('all', 'week');*/
 getWeekinfo("week");
 getindexinfo('all');
-
+barChart4();
 });
 
 
@@ -304,26 +307,26 @@ function updateChartInterval(startDate, endDate) {
         contentType: "application/json; charset=UTF-8",
         success: function (response) {
             if (response && response.length > 0) {
-                var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily } = processMenuData(response);
+                var {allOrderFoods, allTime} = processMenuData(response, "term");
 
-					var orderInfoArray = JSON.parse("[" + allOrderFoods + "]");
+					let orderInfoArray1 = JSON.parse("[" + allOrderFoods + "]");
+					menuAmountTermMap = new Map()
 										
-					orderInfoArray.forEach(function(order) {
+					orderInfoArray1.forEach(function(order) {
 				    order.forEach(function(item) {
 				        var menuName = item.name;
 				        var amount = parseInt(item.amount);
-										        
-				        if (menuAmountMap.has(menuName)) {
-				            menuAmountMap.set(menuName, menuAmountMap.get(menuName) + amount);
+						
+				        if (menuAmountTermMap.has(menuName)) {
+				            menuAmountTermMap.set(menuName, menuAmountTermMap.get(menuName) + amount);
 				        } else {
-				            menuAmountMap.set(menuName, amount);
+				            menuAmountTermMap.set(menuName, amount);
 				        }
 				    });
 				});
 				
-				console.log (orderInfoArray);
-                				     
-				barChart4(startDate, endDate);
+				console.log("barChart4 parsing menuAmountTermMap : " + menuAmountTermMap);
+				barChart4();
 				
             } else {
                 console.error("No data received or data is empty.");
@@ -338,41 +341,68 @@ function updateChartInterval(startDate, endDate) {
 
 
 function updateChart() {
-    const startDate = new Date(document.getElementById('startDate').value);
-    const endDate = new Date(document.getElementById('endDate').value);
+    const startDate1 = new Date(document.getElementById('startDate').value);
+    const endDate1 = new Date(document.getElementById('endDate').value);
     
-      document.addEventListener("DOMContentLoaded", function() {
-    // Start Date 입력란
-    var startDateInput = document.getElementById("startDate");
-    console.log(endDateInput);
-    // End Date 입력란
-    var endDateInput = document.getElementById("endDate");
-
-    // Start Date 값 변경 이벤트 처리
-    startDateInput.addEventListener("change", function() {
-      // 선택된 날짜를 yyyy-MM-dd 형식으로 변경하여 다시 설정
-      startDateInput.value = new Date(startDateInput.value).toISOString().split('T')[0];
-    });
-
-    // End Date 값 변경 이벤트 처리
-    endDateInput.addEventListener("change", function() {
-      // 선택된 날짜를 yyyy-MM-dd 형식으로 변경하여 다시 설정
-      endDateInput.value = new Date(endDateInput.value).toISOString().split('T')[0];
-      console.log(endDateInput.value);
-    });
-  });
-
-    console.log("startDate : " + startDate + ", " + "endDate : " + endDate);
+    const startDate = changeDateFormat(startDate1);
+    const endDate = changeDateFormat(endDate1);
+    
     updateChartInterval(startDate, endDate);
 }
-        
-function getMenuDataWithinRange(startDate, endDate) {
-
-    const entriesArray = Array.from(menuAmountMap.entries());
-    const menuData = entriesArray.map(([name, amount]) => ({ name, amount }));
-    return menuData.filter(item => {
-
-        const itemDate = new Date(item.date);
-        return itemDate >= startDate && itemDate <= endDate;
-    });
+// datePicker로 받은 date 형식 변경하기
+function changeDateFormat(value) {
+	const year = value.getFullYear();
+	const month = (value.getMonth() + 1).toString().padStart(2, '0');
+	const day = value.getDate().toString().padStart(2, '0');
+	
+	const dateString = year + '-' + month + '-' + day;
+	
+	return dateString;
 }
+
+
+
+
+
+
+    //ac00.jsp
+  function getFoodList2(value)
+	{
+		const menuMap = new Map();
+		
+    var parsedData = JSON.parse("["+ value +"]");
+    parsedData.forEach(function(order) {
+    	order.forEach(function(item) {
+    		//menu name
+    		var menuName = item.name;
+    		//menu amount
+    		var amount = parseInt(item.amount);
+    		
+    		if(menuMap.has(menuName)) { 
+    			menuMap.set(menuName, menuMap.get(menuName) + amount);
+    		} else {
+    			menuMap.set(menuName, amount);
+    		}
+    	});
+    });
+
+
+    const menuArray = Array.from(menuMap.entries());
+    const menuData = menuArray.map(([menuName, amount]) => ({menuName, amount}));
+    let res = "";
+    let i = 0;
+    menuArray.forEach((ele) => {
+			res += ele[0] + " X " + ele[1] + ", "	
+	})
+	
+	document.regFrm.order_foods.value = res.substring(0, res.length-2)
+
+	}
+	
+	
+
+window.addEventListener('DOMContentLoaded', function() {
+	value = document.getElementById("ac00foods").value;
+	console.log("ac00foods : " + value);
+    getFoodList2(value);
+});

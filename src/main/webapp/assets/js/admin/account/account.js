@@ -150,3 +150,46 @@ function openPopup(url) {
 
 
 */
+    
+    
+    //ac00.jsp
+  function getFoodList2(value)
+	{
+		const menuMap = new Map();
+		
+    var parsedData = JSON.parse("["+ value +"]");
+    parsedData.forEach(function(order) {
+    	order.forEach(function(item) {
+    		//menu name
+    		var menuName = item.name;
+    		//menu amount
+    		var amount = parseInt(item.amount);
+    		
+    		if(menuMap.has(menuName)) { 
+    			menuMap.set(menuName, menuMap.get(menuName) + amount);
+    		} else {
+    			menuMap.set(menuName, amount);
+    		}
+    	});
+    });
+
+
+    const menuArray = Array.from(menuMap.entries());
+    const menuData = menuArray.map(([menuName, amount]) => ({menuName, amount}));
+    let res = "";
+    let i = 0;
+    menuArray.forEach((ele) => {
+			res += ele[0] + " X " + ele[1] + ", "	
+	})
+	
+	document.regFrm.order_foods.value = res.substring(0, res.length-2)
+
+	}
+	
+	
+
+window.addEventListener('DOMContentLoaded', function() {
+	value = document.getElementById("ac00foods").value;
+	console.log("ac00foods : " + value);
+    getFoodList2(value);
+});

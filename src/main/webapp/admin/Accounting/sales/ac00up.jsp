@@ -24,11 +24,7 @@ window.addEventListener('load', function() {
 	<link href="../main/style.css" rel="stylesheet" type="text/css" >
 
 <script>
-	
 
-	
-	
-	
 	window.addEventListener('DOMContentLoaded', function() {
 		console.log("Order Foods Value: " + orderFoodsValue);
 	    orderFoodsValue = '<%=codeBean.getOrder_foods()%>';
