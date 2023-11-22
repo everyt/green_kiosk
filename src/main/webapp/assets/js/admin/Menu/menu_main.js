@@ -34,7 +34,7 @@ function updateMenu(menuType) {
 					const origin = window.location.origin;
 					const contextPath = origin + pathname;
 						console.log('Received menu_imgPath:', menu_imgPath);
-
+			let context = sessionStorage.getItem("context")
 			var htmlTemplate =
 				'<div class="col">' +
 			    '<div class="card shadow-sm">' +
@@ -44,8 +44,8 @@ function updateMenu(menuType) {
 			    '<p class="card-text" align="center" id="menu_content">' + menu_content + '</p>' +
 			    '<div class="d-flex justify-content-between align-items-center">' +
 			    '<div class="btn-group">' +
-			    '<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + contextPath +'/Menu/View.jsp?menu_no=' + menu_no + '\')">상세보기</a>' +
-			    '<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + contextPath + '/Menu/Edit.jsp?menu_no=' + menu_no + '\')">수정하기</a>' +
+			    '<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + context +'/admin/Menu/View.jsp?menu_no=' + menu_no + '\')">상세보기</a>' +
+			    '<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + context + '/admin/Menu/Edit.jsp?menu_no=' + menu_no + '\')">수정하기</a>' +
 			    '</div>' +
 			    '<small class="text-body-secondary">' + formatNumber(menu_price) + '원</small>' +
 			    '</div>' +
@@ -72,7 +72,7 @@ function updateMenu(menuType) {
 					const pathname = "/" + window.location.pathname.split("/")[1] + "/";
 					const origin = window.location.origin;
 					const contextPath = origin + pathname;
-					
+			let context = sessionStorage.getItem("context")		
 			var htmlTemplate =
 				'<div class="col">' +
 			    '<div class="card shadow-sm">' +
@@ -82,8 +82,8 @@ function updateMenu(menuType) {
 			    '<p class="card-text" align="center" id="menu_content">' + '현재 수량 : ' + component_amount + '</p>' +
 			    '<div class="d-flex justify-content-between align-items-center">' +
 			    '<div class="btn-group">' +
-			   	'<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + contextPath +'/Menu/componentView.jsp?component_no=' + component_no + '\')">상세보기</a>' +
-			    '<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + contextPath + '/Menu/componentEdit.jsp?component_no=' + component_no + '\')">수정하기</a>' +
+			   	'<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + context +'/admin/Menu/componentView.jsp?component_no=' + component_no + '\')">상세보기</a>' +
+			    '<a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="openPopup(\'' + context + '/admin/Menu/componentEdit.jsp?component_no=' + component_no + '\')">수정하기</a>' +
 			    '</div>' +
 			    '<small class="text-body-secondary">' + formatNumber(component_price) + '원</small>' +
 			    '</div>' +

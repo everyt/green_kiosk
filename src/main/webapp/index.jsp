@@ -63,7 +63,7 @@ function open_register() {
 	for( Menu_menu_Bean menu : Menu ) {
 	%>
 			<div class="w3-quarter">
-        <img src="<%=menu.getMenu_imgPath() %>"  width="300" height="300" alt="hamburger0" style="width:100%">
+        <img src="<%=menu.getMenu_imgPath() %>" alt="hamburger0" style="width:100%; height:300px">
       <h3><%=menu.getMenu_name() %></h3>
 	  <p><%=menu.getMenu_content() %></p>
    </div>	

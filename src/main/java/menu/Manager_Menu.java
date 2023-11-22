@@ -829,8 +829,7 @@ public class Manager_Menu {
 					bean.setOrder_discount(rs.getInt("order_discount"));
 					bean.setOrder_coupon(rs.getString("order_coupon"));
 					bean.setOrder_type(rs.getString("order_type"));
-					bean.setOrder_add_mile(rs.getBoolean("order_add_mile"));
-					bean.setOrder_is_maked(rs.getBoolean("order_is_maked"));
+					bean.setOrder_use_amount(rs.getInt("order_use_mile_amount"));
 					vlist.add(bean);
 				}
 			} catch (Exception e) {

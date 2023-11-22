@@ -97,8 +97,7 @@ table {
 						<td>할인</td>
 						<td>쿠폰</td>
 						<td>결제 방식</td>
-						<td>마일리지</td>
-						<td>주문 현황</td>
+						<td>사용된 마일리지</td>
 						<td>수정</td>
 						<td>삭제</td>
 					</tr>
@@ -114,8 +113,8 @@ table {
 				    	long order_discount = bean.getOrder_discount();
 				    	String order_coupon = bean.getOrder_coupon();
 				    	String order_type = bean.getOrder_type();
-				    	boolean order_use_mile = bean.isOrder_use_mile();
-				        boolean order_is_maked = bean.isOrder_is_maked();
+				    	int order_use_amount = bean.getOrder_use_amount();
+				   
 				    	int count = 0;
 				        if (i < 10) {
 				        
@@ -172,10 +171,7 @@ table {
  						   <%=order_type%>
 						</td>
 						<td align="center">
- 						   <%=order_use_mile%>
-						</td>
-						<td align="center">
- 						   <%=order_is_maked%>
+ 						   <%=order_use_amount%>
 						</td>
 							<td align="center">
 						   <input type="button" value="수정" onClick="loadContent('sales/ac00up.jsp?numb=<%=order_no%>');" >
