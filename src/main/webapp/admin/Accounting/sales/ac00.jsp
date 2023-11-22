@@ -152,7 +152,7 @@ table {
 							}
 						
 							productInfo = productInfo.replaceAll(", $", "");
-							System.out.println(productInfo);
+
  						%>
  						
  						<td align="center" class="text-over-cut">
