@@ -3,7 +3,7 @@ var priceSumdaily = [0,0,0,0,0,0,0];
 var priceweekily = [0,0,0,0,0,0,0];
 var priceSumDate = ['','','','','','',''];
 var menuAmountMap = new Map();
-var keyValuePairs  = [];
+var menuAmountTermMap = new Map();
 var week_total = 0;
 
 function updateMenu(type, time) {
@@ -165,7 +165,9 @@ function processMenuData(response, type) {
 	        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) <= 30) {
 	            week_total += order_price;
 	        }
-		} else {
+		} else if (type == "term") {
+			
+			} else {
 			 if (orderDate == currentDate) {
            		 priceSumDay += order_price;
 			} 
@@ -304,26 +306,26 @@ function updateChartInterval(startDate, endDate) {
         contentType: "application/json; charset=UTF-8",
         success: function (response) {
             if (response && response.length > 0) {
-                var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily } = processMenuData(response);
+                var {allOrderFoods, allTime} = processMenuData(response, "term");
 
-					var orderInfoArray = JSON.parse("[" + allOrderFoods + "]");
+					let orderInfoArray1 = JSON.parse("[" + allOrderFoods + "]");
+					menuAmountTermMap = new Map()
 										
-					orderInfoArray.forEach(function(order) {
+					orderInfoArray1.forEach(function(order) {
 				    order.forEach(function(item) {
 				        var menuName = item.name;
 				        var amount = parseInt(item.amount);
-										        
-				        if (menuAmountMap.has(menuName)) {
-				            menuAmountMap.set(menuName, menuAmountMap.get(menuName) + amount);
+						
+				        if (menuAmountTermMap.has(menuName)) {
+				            menuAmountTermMap.set(menuName, menuAmountTermMap.get(menuName) + amount);
 				        } else {
-				            menuAmountMap.set(menuName, amount);
+				            menuAmountTermMap.set(menuName, amount);
 				        }
 				    });
 				});
 				
-				console.log (orderInfoArray);
-                				     
-				barChart4(startDate, endDate);
+				console.log("barChart4 parsing menuAmountTermMap : " + menuAmountTermMap);
+				barChart4();
 				
             } else {
                 console.error("No data received or data is empty.");
@@ -338,41 +340,21 @@ function updateChartInterval(startDate, endDate) {
 
 
 function updateChart() {
-    const startDate = new Date(document.getElementById('startDate').value);
-    const endDate = new Date(document.getElementById('endDate').value);
+    const startDate1 = new Date(document.getElementById('startDate').value);
+    const endDate1 = new Date(document.getElementById('endDate').value);
     
-      document.addEventListener("DOMContentLoaded", function() {
-    // Start Date 입력란
-    var startDateInput = document.getElementById("startDate");
-    console.log(endDateInput);
-    // End Date 입력란
-    var endDateInput = document.getElementById("endDate");
-
-    // Start Date 값 변경 이벤트 처리
-    startDateInput.addEventListener("change", function() {
-      // 선택된 날짜를 yyyy-MM-dd 형식으로 변경하여 다시 설정
-      startDateInput.value = new Date(startDateInput.value).toISOString().split('T')[0];
-    });
-
-    // End Date 값 변경 이벤트 처리
-    endDateInput.addEventListener("change", function() {
-      // 선택된 날짜를 yyyy-MM-dd 형식으로 변경하여 다시 설정
-      endDateInput.value = new Date(endDateInput.value).toISOString().split('T')[0];
-      console.log(endDateInput.value);
-    });
-  });
-
-    console.log("startDate : " + startDate + ", " + "endDate : " + endDate);
+    const startDate = changeDateFormat(startDate1);
+    const endDate = changeDateFormat(endDate1);
+    
     updateChartInterval(startDate, endDate);
 }
-        
-function getMenuDataWithinRange(startDate, endDate) {
-
-    const entriesArray = Array.from(menuAmountMap.entries());
-    const menuData = entriesArray.map(([name, amount]) => ({ name, amount }));
-    return menuData.filter(item => {
-
-        const itemDate = new Date(item.date);
-        return itemDate >= startDate && itemDate <= endDate;
-    });
+// datePicker로 받은 date 형식 변경하기
+function changeDateFormat(value) {
+	const year = value.getFullYear();
+	const month = (value.getMonth() + 1).toString().padStart(2, '0');
+	const day = value.getDate().toString().padStart(2, '0');
+	
+	const dateString = year + '-' + month + '-' + day;
+	
+	return dateString;
 }

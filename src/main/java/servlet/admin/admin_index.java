@@ -79,11 +79,10 @@ public class admin_index extends HttpServlet {
     			monday = sunday.minusDays(6);
     			format_mon = this.formatter.format(monday);
     		}
-    		System.out.println(format_sun);
-    		System.out.println(format_mon);
+
     		String type = (String)request.getParameter("type");
     		String time = (String)request.getParameter("time");
-    		System.out.println(type + time);
+
             Vector<Orders_Bean> order_list = null;
             
             if (type == null) {
@@ -122,25 +121,13 @@ public class admin_index extends HttpServlet {
     	} 
     	else if ("/admin/index/getChartWithDate".equals(endPoint))
     	{
-    		String startDate1 = request.getParameter("startDate");
-    		String endDate1 = request.getParameter("endDate");
+    		String startDate = request.getParameter("startDate");
+    		String endDate = request.getParameter("endDate");
     		try {
-    			System.out.println("startDate1 : " + startDate1);
-    			System.out.println("endDate1 : " + endDate1);
-    	        SimpleDateFormat inputFormat = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss 'GMT' Z (zzzz)", Locale.US);
-    	        Date startDate2 = inputFormat.parse(startDate1);
-    	        Date endDate2 = inputFormat.parse(endDate1);
-
-    	        
-    	        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-    	        String formattedStartDate = outputFormat.format(startDate2);
-    	        String formattedEndDate = outputFormat.format(endDate2);
-
-    		    
                 Vector<Orders_Bean> order_list = null;
                 String json = null;
-                
-                order_list = new Orders_Mgr().getAllOrdersByTime(formattedStartDate, formattedEndDate);
+               
+                order_list = new Orders_Mgr().getAllOrdersByTime(startDate, endDate);
 
                 json = new Gson().toJson(order_list);
 

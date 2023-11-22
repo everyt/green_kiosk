@@ -113,21 +113,27 @@ function barChart3() {
 
 
 function barChart4() {
-    const existingChart = Chart.getChart('myChart3');
+    const existingChart = Chart.getChart('myChart4');
     if (existingChart) {
         existingChart.destroy();
     }
 
-    const filteredMenuData = getMenuDataWithinRange(startDate, endDate);
+  const entriesTermArray = Array.from(menuAmountTermMap.entries());
+  const menuTermData = entriesTermArray.map(([name, amount]) => ({ name, amount }));
+  menuTermData.sort((a, b) => b.amount - a.amount);
+  const top20MenuTermData = menuTermData.slice(0, 20);
+  console.log("entriesTermArray : " + entriesTermArray);
+	console.log(top20MenuTermData.map(item => item.name));
+		console.log(top20MenuTermData.map(item => item.amount));
 
     const ctx = document.getElementById('myChart4').getContext('2d');
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: filteredMenuData.map(item => item.name),
+            labels: top20MenuTermData.map(item => item.name),
             datasets: [{
                 label: '판매량',
-                data: filteredMenuData.map(item => item.amount),
+                data: top20MenuTermData.map(item => item.amount),
                 borderWidth: 1
             }]
         },
