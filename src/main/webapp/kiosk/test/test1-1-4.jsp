@@ -90,93 +90,38 @@
       
 
   };
-  document.addEventListener("DOMContentLoaded", function() {
-	    // 스크립트 코드 여기에 작성
-	    const changeButton = document.querySelector('.change');
-	    const deleteButton = document.querySelector('.delete');
-	    
 
-  const updateButtonsVisibility = (showButtons) => {
 
-	    if (changeButton && deleteButton) {
-	        if (showButtons) {
-	            // 주문 내역이 있는 경우 버튼을 보이게 설정
-	            changeButton.style.display = 'block';
-	            deleteButton.style.display = 'block';
-	        } else {
-	            // 주문 내역이 없는 경우 버튼을 숨김
-	            changeButton.style.display = 'none';
-	            deleteButton.style.display = 'none';
-	        }
-	    } else {
-	        console.error('Change button or delete button not found.');
-	    }
-	};
 
   
-	const updateBasket = () => {
-	    console.log(basketArray);
+  
+//장바구니 표시 업데이트
+  const updateBasket = () => {
+    console.log(basketArray);
 
-	    // 총 가격과 항목 수를 계산합니다
-	    let totalPrice = 0;
-	    let itemCount = 0;
-	    let menuNames = [];
-
-	    basketArray.forEach(item => {
-	        menuNames.push(item.name); // 메뉴 이름을 배열에 추가
-	        totalPrice += item.price * item.amount;
-	        itemCount += item.amount;
-	    });
-
-	    document.getElementById('menu').innerText = menuNames.join(', ');
-	    document.getElementById('count').innerText = '총 수량: ' + itemCount + '개';
-	    document.getElementById('price').innerText = '총 금액: ' + totalPrice + '원';
-
-	    const orderDetailsDiv = document.getElementById('orderDetails');
-
-	    if (orderDetailsDiv) {
-	        orderDetailsDiv.innerHTML = ''; // 이전 내용 초기화
-	    }
-
-	    // 주문 내역이 있을 때만 버튼 상태 업데이트
-	    updateButtonsVisibility(basketArray.length > 0);
-	    updateOrderGrid();
-	};
-
-  }); 	
+    // 총 가격과 항목 수를 계산합니다
+    let totalPrice = 0;
+    let itemCount = 0;
+	let menuNames = [];
 	
-	// 변경 버튼 클릭 시 호출되는 함수
-	const onChangeButtonClick = () => {
-	    // 변경 로직 추가
-	    console.log('Change button clicked');
-	};
+    basketArray.forEach(item => {
+        menuNames.push(item.name); // 메뉴 이름을 배열에 추가
+      totalPrice += item.price * item.amount;
+      itemCount += item.amount;
+    
+    });
 
-	// 삭제 버튼 클릭 시 호출되는 함수
-	const onDeleteButtonClick = () => {
-	    // 삭제 로직 추가
-	    console.log('Delete button clicked');
-	};
+    document.getElementById('menu').innerText = menuNames.join(', ');
+    document.getElementById('count').innerText = '총 수량: ' + itemCount + '개';
+    document.getElementById('price').innerText = '총 금액: ' + totalPrice + '원';
 
-	// 초기화 시 버튼 상태 업데이트
-	updateButtonsVisibility();
+    const orderDetailsDiv = document.getElementById('orderDetails');
 
-	// 주문 내역이 없을 때 버튼을 숨기기 위해 아래 함수를 추가합니다.
-	const updateOrderGrid = () => {
-	    const orderGrid = document.querySelector('.buttons-grid');
-
-	    if (orderGrid) {
-	        // 주문 내역이 있을 때만 그리드를 보이게 설정
-	        if (basketArray.length > 0) {
-	            orderGrid.style.display = 'grid';
-	        } else {
-	            orderGrid.style.display = 'none';
-	        }
-	    }
-	};
-
-	// 초기화 시 주문 내역 그리드 업데이트
-	updateOrderGrid();	
-	
+    if (orderDetailsDiv) {
+      orderDetailsDiv.innerHTML = ''; // 이전 내용 초기화
+  	
+    }
+  };
 
 
   // 예제에서는 각 메뉴의 클릭 이벤트에 addToBasket 함수를 추가하였습니다.
@@ -280,12 +225,50 @@
 
 				        });
 				      });
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	  
+
+		 
+		 
+		});
 
 
-});		  
-  
+
+
+		  
+		  
 	  
+	  
+	  
+
+	  
+	  
+/*	
+    // 모달 창에 햄버거 정보 표시
+    document.getElementById('modalBurgerName').innerText = selectedBurger.name;
+    document.getElementById('modalBurgerPrice').innerText = selectedBurger.price
+    
+    
+    const modal1Items = document.querySelectorAll('.modal-1-item');
+    modal1Items.forEach((item) => {
+      item.addEventListener('click', () => {
+        selectedAdditionalItem = {
+          name: item.querySelector('.item-name').innerText,
+          price: parseInt(item.querySelector('.item-price').innerText),
+        };
+        addToBasket(selectedAdditionalItem.name, selectedAdditionalItem.price);
+        MicroModal.close('modal-1');
+        MicroModal.show('modal-2');
+        MicroModal.init(); // 모달 초기화
+      });
+    });
+
+    MicroModal.close('modal-1-1');
+    MicroModal.show('modal-2');
+    MicroModal.init(); // 모달 초기화
+  };
+  
+  
+ */ 
+  
   
 </script>
 
@@ -619,11 +602,12 @@
 
 
 
+</div>
 
 
 
 
-		<div class="order" id="totalOrder">
+	<div class="order" id="totalOrder" style="width: inherit; font-weight: 400; font-size: 1.2rem; border-radius: 0; justify-content: space-between; background-color: #eee;">
 			 	<div >
 	  			<span style="font-size:36px; font-weight: 600; color:black;margin :10px">총주문내역</span>
 			 	</div>
@@ -638,16 +622,8 @@
 			  	<div class="price" >
 			  	<span id="price" style="font-size:36px; font-weight: 600; color:black;margin :10px"></span>
 				</div>
-				    <div class="change">
-				      <h2>변경</h2>
-				    </div>
-				    <div class="delete">
-				      <h2>삭제</h2>
-				  	</div>
-		</div>
-</div>
-	
-
+	</div>
+</div>		
 <%
 	Vector<Menu_menu_Bean> vector = mMgr.getMenuList(1);
 	
@@ -667,5 +643,10 @@
 
 %>
 
+
+<script>
+
+    
+</script>
 </body>
 </html>
