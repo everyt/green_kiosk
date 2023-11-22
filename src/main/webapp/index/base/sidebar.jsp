@@ -5,7 +5,7 @@
 		  <a class="close" href="javascript:void(0)" onclick="w3_close()"
 		  class="w3-bar-item w3-button">X</a>
 		</div>
-		<%if (mem_id == null) {%>
+		<%if (mem_id == null) {%> 
 	  <form class="login" name="loginFrm" method="post" action="<%= cPath%>/login/login_proc.jsp">
 	  	<div class="inside">
 		  	<div class="idpw_warp">

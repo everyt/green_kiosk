@@ -154,9 +154,11 @@ table {
 							productInfo = productInfo.replaceAll(", $", "");
 							System.out.println(productInfo);
  						%>
- 						<td align="center" >
-							<input class="ac00foods" id="ac00foods" value='<%=productInfo%>'>
+ 						
+ 						<td align="center" class="text-over-cut">
+							<%=productInfo%>
 						</td>
+						
 						<td align="center">
  						   <%=order_price%>
 						</td>

@@ -61,7 +61,7 @@ getFoodList(orderFoodsValue);
 							</tr>
 							<tr>
 								<td>판매 내역</td>
-								<td><input name="order_foods" size="30"
+								<td><input name="order_foods" size="40"
 									 readonly ></td>
 								<td style="display:hidden"><input id="foods" style="display:none" value='<%=codeBean.getOrder_foods()%>'></td>
 							</tr>
