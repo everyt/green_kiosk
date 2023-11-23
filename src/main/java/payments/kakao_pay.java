@@ -150,6 +150,7 @@ public class kakao_pay extends HttpServlet {
 			if (pg_token == null || pg_token.trim().equals("")) {
 				response.sendError(403);
 			} else {
+				session = request.getSession();
 				String s_foods = String.valueOf(session.getAttribute("kakao_foods"));
 				List<Map<String, String>> foods = gson.fromJson(s_foods, new TypeToken<List<Map<String, String>>>() {}.getType());
 				Map<String, Object> bfdatas = gson.fromJson(String.valueOf(session.getAttribute("bfdatas")), new TypeToken<HashMap<String, Object>>(){}.getType());
