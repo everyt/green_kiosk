@@ -252,7 +252,12 @@ entryList.sort(new Comparator<Map.Entry<String, Integer>>() {
         for (Map.Entry<String, Integer> entry : entryList) {
             sortedMap.put(entry.getKey(), entry.getValue());
         }
-		System.out.println(sortedMap);
+		Object[] names = sortedMap.keySet().toArray();
+		
+		for (Object name : names) {
+			System.out.println(name);
+		}
+				
 		productInfo = productInfo.replaceAll(", $", "");
 
 		%>
