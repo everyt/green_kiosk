@@ -44,7 +44,7 @@
       <div class="modal__overlay" tabindex="-1" data-micromodal-close>
         <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
           <main class="modal__content" id="modal-1-content">
-            <p class="modal__message"> 결제 처리중입니다. 잠시만 기다려주세요... </p>-
+            <p class="modal__message"> 결제 처리중입니다. 잠시만 기다려주세요... </p>
           </main>
         </div>
       </div>
