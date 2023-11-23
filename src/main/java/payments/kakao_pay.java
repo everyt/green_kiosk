@@ -62,6 +62,12 @@ public class kakao_pay extends HttpServlet {
 		if (endPoint.equals("/kakao_pay")) {
 			String url = "https://open-api.kakaopay.com/online/v1/payment/ready";
 			HttpSession session = request.getSession();
+			session.setAttribute("kakao_foods", null);
+			session.setAttribute("kakao_all_money", null);
+			session.setAttribute("bfdatas", null);
+			session.setAttribute("pay_return", null);
+			session.setAttribute("kakaopay_coupons", null);
+			session.setAttribute("kakao_all_money", null);
 			String decodefoods = URLDecoder.decode(String.valueOf(request.getParameter("foods")), "UTF-8");
 			System.out.println(decodefoods);
 			

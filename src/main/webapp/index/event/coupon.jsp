@@ -69,6 +69,10 @@ function open_register() {
   
 <!-- !PAGE CONTENT! -->
 <div class="w3-main w3-content w3-padding" style="max-width:1300px;margin-top:100px">
+	<div class="coupon_title">
+		<span style="transform: translate(120%, -110%); position: absolute; font-weight: 900">발급 가능한 쿠폰 ( <%=printable_count %> 개 )</span>
+		<span style="transform: translate(525%, -110%); position: absolute; font-weight: 900">사용 가능한 쿠폰 ( <%=user_coupon_count %> 개 )</span>
+	</div>
 	<div class="coupon_tables" style="display:flex">
 		<table border="1" style="width:40%">
 			<tr style="background-color: powderblue">
@@ -125,6 +129,8 @@ function open_register() {
 		}
 				%>
 		</table>
+		
+			
 		<table border="1" style="width:60%; margin-left: 2%">
 			<tr style="background-color:bisque">
 				<th>쿠폰명</th>
