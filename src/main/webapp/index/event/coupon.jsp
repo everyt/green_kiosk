@@ -84,7 +84,7 @@ function open_register() {
 <div class="w3-main w3-content w3-padding" style="max-width:1300px;margin-top:100px">
     <div class="kiosk_pop">
         <div class="inner">
-        	<h5 style="text-align:center; font-size: 14px">해당 쿠폰은 단품, 세트, 사이드, 음료 카테고리 에서만 사용가능합니다.</h5>
+        	<h5 style="text-align:center; font-size: 14px">해당 쿠폰은 <span id="pop_ava_cate">단품, 세트, 사이드, 음료</span> 카테고리 에서만 사용가능합니다.</h5>
             <h2 class="title" style="text-align:center">쿠폰을 적용할 메뉴를 선택해주세요.</h2>
             <div class="kiosk_wrap">
             	<ul class="cate_pops">
@@ -148,7 +148,7 @@ function open_register() {
 						if (vaild_date == -1) {
 							%>
 								<td align="center">무제한</td>
-								<td align="center" style="cursor:pointer" onclick="document.querySelector('.kiosk_pop').style.display = 'flex';cate_pop('one',`<%=cates%>`)">발급하기</td>
+								<td align="center" style="cursor:pointer" onclick="document.querySelector('.kiosk_pop').style.display = 'flex';cate_pop('one',`<%=cates%>`, '<%=printable_coupon.getName() %>')">발급하기</td>
 							<%
 						} else {
 							s_vaild = vaild_date + " 일";
@@ -163,7 +163,7 @@ function open_register() {
 						if (vaild_date > 0) {
 							%>
 								<td align="center"><%=s_vaild %></td>
-								<td align="center" style="cursor:pointer" onclick="document.querySelector('.kiosk_pop').style.display = 'flex';cate_pop('one',`<%=cates%>`)">발급하기</td>
+								<td align="center" style="cursor:pointer" onclick="document.querySelector('.kiosk_pop').style.display = 'flex';cate_pop('one',`<%=cates%>`, '<%=printable_coupon.getName() %>')">발급하기</td>
 							<%
 						} //if
 					%>
@@ -270,9 +270,11 @@ function open_register() {
 		String cate = food.getMenu_gubn();
 		String name = food.getMenu_name();
 		String imgpath = food.getMenu_imgPath();
+		String scate = food.getMenu_gubn();
 		Map<String, String> menu = new HashMap<String, String>();
 		menu.put("name", name);
 		menu.put("img", imgpath);
+		menu.put("cate", scate);
 		if (cate.equals("단품")) {
 			one.add(menu);
 		}
