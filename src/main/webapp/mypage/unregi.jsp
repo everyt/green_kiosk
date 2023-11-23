@@ -111,10 +111,10 @@ function edit() {
 						<tr>
 							<!-- 내용 위치 고정 이 사이에 -->
 												<h1>회원탈퇴</h1>
-			<form action="NewFile1.jsp" method="post">
+			<form action="NewFile1.jsp" method="post">			
 					아이디: <input type="text" name="mem_id">
 				<br>
-					패스워드: <input type="password" name="passwd">
+					패스워드: <input type="password" name="mem_pw">
 				<br>
 					<input type="submit" value="회원탈퇴">
 				<br>
