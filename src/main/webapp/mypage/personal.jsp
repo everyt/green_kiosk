@@ -205,6 +205,7 @@ function edit() {
 							        <input name="mem_phone" type="text" maxlength="11" class="cellphoneNo" oninput="maxLengthCheck(this)" placeholder="전화번호" value=<%=bean.getMem_phone() %>>
 							      	<label for="mem_name" style="position:absolute; transform: translateX(-427px) translateY(3px); width:100px;">전화번호 : </label>
 							      </div>
+							      
 							      <input type="button" onclick="edit()" class="btn" style="transform: translateX(-50%) translateY(100%);" value="수 정 하 기"/>
 							    </form>
 							</td>
