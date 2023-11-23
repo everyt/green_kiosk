@@ -16,14 +16,15 @@
 	  if(result){
 %>
 <script type="text/javascript">
-		alert("회원탈퇴 하였습니다.");
+		alert("회원탈퇴가 완료되었습니다.");
 		location.href="/green_kiosk/index.jsp?";
 </script>
 <% } else { %>
 <script type="text/javascript">
-		alert("회원탈퇴에 실패 하였습니다.");
+		alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
 		history.back();
 </script>
+			
 <% }
 session.invalidate();
 %>
