@@ -133,6 +133,8 @@
 		</div>
 		    <button class="w3-bar-item w3-button" onclick="myAccFunc()">메뉴</button>
   <div id="demoAcc" class="w3-bar-block w3-hide w3-white w3-card-4">
+  	<a href="<%=cPath %>/best" class="w3-bar-item w3-button w3-bar-child">인기메뉴</a>
+	<a href="<%=cPath %>/recommand" class="w3-bar-item w3-button w3-bar-child">추천메뉴</a>
   	<a href="<%=cPath %>/" class="w3-bar-item w3-button w3-bar-child">햄버거 단품</a>
     <a href="<%=cPath %>/setMenu" class="w3-bar-item w3-button w3-bar-child">햄버거 세트</a>
     <a href="<%=cPath %>/dessert" class="w3-bar-item w3-button w3-bar-child">디저트</a>
