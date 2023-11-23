@@ -1160,7 +1160,7 @@ public class Manager_Menu {
 					return true;
 				}
 				
-				public Menu_menu_Bean getMenuwithname(int numb) {
+				public Menu_menu_Bean getMenuwithName(String name) {
 					Connection con = null;
 					PreparedStatement pstmt = null;
 					ResultSet rs = null;
@@ -1168,12 +1168,11 @@ public class Manager_Menu {
 					
 					try {
 						con = pool.getConnection();
-						String sql = "select * from menu where menu_no = ?,menu_name = ? AND menu_gubn = ? AND menu_isSale = ? ";
+						String sql = "select * from menu where menu_name = ?";
 						pstmt = con.prepareStatement(sql);
-						pstmt.setInt(1, numb);
+						pstmt.setString(1, name);
 						rs = pstmt.executeQuery();
 						if (rs.next()) {
-							bean = new Menu_menu_Bean();
 							bean = new Menu_menu_Bean();
 							bean.setMenu_no(rs.getInt("menu_no"));
 							bean.setMenu_name(rs.getString("menu_name"));

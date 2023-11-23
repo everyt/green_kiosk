@@ -3,6 +3,8 @@
 <%@ page import="user.Member_Bean" %>
 <%@ page import="orders.Orders_Mgr" %>
 <%@ page import="orders.Orders_Bean" %>
+<%@ page import="menu.Manager_Menu" %>
+<%@ page import="menu.Menu_menu_Bean" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
@@ -15,6 +17,7 @@
 
 <%
 Orders_Mgr o_mgr = new Orders_Mgr();
+Manager_Menu m_mgr = new Manager_Menu();
 Vector<Orders_Bean> orders = o_mgr.getAllOrders();
 String order_foods = "";
 for (Orders_Bean order : orders) {
@@ -73,60 +76,79 @@ function open_register() {
 <div class="w3-container w3-teal">
   <h1>인기 메뉴</h1>
 </div>
-    <div class="w3-row-padding w3-padding-16 w3-center" id="food">
-   <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger0.jpg"  width="300" height="300" alt="hamburger0" style="width:100%">
-      <h3>데리버거</h3>
-	  <p>쇠고기패티에 달콤 짭짤한 데리소스를 더한 가성비 버거</p>
-   </div>
+   <div class="w3-row-padding w3-padding-16 w3-center w3-tooltip" id="food">
+    <br/>
+	
+	<br>
+	
+			    <% 
+	
+	Gson gson = new Gson();
 
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger1.jpg" width="300" height="300"  alt="hamburger" style="width:100%">
-      <h3>더블 데리버거</h3>
-      <p>두 장의 패티가 이루는 조화로운 맛에 <br>든든함까지 추가된 더블버거 시리즈</p>
-    </div>
+		order_foods += "]";
+		order_foods = "[" +order_foods;
+		System.out.println(order_foods);
+		List<List<Map<String, Object>>> parsedList = gson.fromJson(order_foods, new TypeToken<List<List<Map<String, Object>>>>() {}.getType());
+		
+		Map<String, Integer> menuMap = new HashMap<>();
+		String productInfo = "";
+		
+		for (List<Map<String, Object>> parsedData : parsedList) {
+			for (Map<String, Object> order : parsedData ) {
+				String menuName = String.valueOf(order.get("name"));
+			    Object value = order.get("amount");
+			    if (menuMap.containsKey(menuName)) {
+			       menuMap.put(menuName, (menuMap.get(menuName)+Integer.parseInt(String.valueOf(value))));
+			    } else {
+			       menuMap.put(menuName, Integer.parseInt(String.valueOf(value)));
+			    }	
+			}
+		}
+		List<Map.Entry<String, Integer>> entryList = new ArrayList<>(menuMap.entrySet());
+		 Comparator<Map.Entry<String, Integer>> valueComparator = Map.Entry.comparingByValue();
 
+	        // Sort the entryList using the custom comparator
+entryList.sort(new Comparator<Map.Entry<String, Integer>>() {
+    @Override
+    public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
+        // Implement your comparison logic here
+        // For example, compare entry1.getValue() and entry2.getValue()
+        return entry2.getValue().compareTo(entry1.getValue());
+    }
+});
 
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger2.jpg" width="300" height="300"  alt="hamburger2" style="width:100%">
-      <h3>불고기버거</h3>
-      <p>두툼한 쇠고기패티와 한국적인 맛의 소스가 잘 조화된 ???매장의 대표 버거</p>
+	        // Create a new LinkedHashMap to preserve the order
+	        Map<String, Integer> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : entryList) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+		Object[] names = sortedMap.keySet().toArray();
+		
+		for (Object name : names) {
+			System.out.println(name);
+			Menu_menu_Bean food = m_mgr.getMenuwithName(String.valueOf(name));
 
-    </div>
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger3.jpg" width="300"  height="300" alt="hamburger3" style="width:100%">
-      <h3>더블 불고기버거</h3>
-	  <p>불고기 특유의 소스와 쇠고기의 진함을 배로 느끼는 제품</p>
-  </div>
-  </div>
+			if (food != null) {
+				%>
+			
+						  <div class="w3-quarter" style="max-width: 300px;">
+           <img src="<%=food.getMenu_imgPath() %>" alt="<%=food.getMenu_imgPath()%>" style="width:100%; height:300px">
+           <h3><%= name %></h3>
+           <p><%= food.getMenu_content() %></p>
+       </div>
+			
+			<%
+			}}
+				
+		productInfo = productInfo.replaceAll(", $", "");
+
+		%>    
+         
   
-  <!-- Second Photo Grid-->
+		
 
-  <div class="w3-row-padding w3-padding-16 w3-center">
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger4.jpg" width="300" height="300"  alt="hamburger4" style="width:100%">
-      <h3>치킨버거</h3>
-	  <p>닭고기패티와 데리야끼 소스로 만든 담백하고 달콤한 맛의 치킨버거</p>
+        </div>
     </div>
-
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger5.jpg" width="300" height="300"  alt="hamburger5" style="width:100%">
-      <h3>더블 치킨버거</h3>
-      <p>두 장의 패티가 이루는 조화로운 맛에 든든함까지 추가된 더블버거 시리즈</p>
-    </div>
-
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger6.jpg" width="300" height="300"  alt="hamburger1" style="width:100%">
-		<h3>치즈버거</h3>    
-  		<p>부드러운 치즈와 호주산 쇠고기패티의 본연의 맛을 느낄수 있는 치즈버거</p>
-    </div>
- 
-    <div class="w3-quarter">
-      <img src="<%=cPath %>/assets/images/hamburger7.jpg"  width="300" height="300"  style="width:100%">
-      <h3>더블 클래식치즈버거</h3>
-      <p>두 장의 패티가 이루는 조화로운 맛에 든든함까지 추가된 더블 클래식치즈버거</p>
-    </div>
-  </div>
 
   <!-- Pagination -->
   <div class="w3-center w3-padding-32">
@@ -211,56 +233,7 @@ function myAccFunc2() {
 	
 </script>
 
-<% 
-	
-	Gson gson = new Gson();
 
-		order_foods += "]";
-		order_foods = "[" +order_foods;
-		System.out.println(order_foods);
-		List<List<Map<String, Object>>> parsedList = gson.fromJson(order_foods, new TypeToken<List<List<Map<String, Object>>>>() {}.getType());
-		
-		Map<String, Integer> menuMap = new HashMap<>();
-		String productInfo = "";
-		
-		for (List<Map<String, Object>> parsedData : parsedList) {
-			for (Map<String, Object> order : parsedData ) {
-				String menuName = String.valueOf(order.get("name"));
-			    Object value = order.get("amount");
-			    if (menuMap.containsKey(menuName)) {
-			       menuMap.put(menuName, (menuMap.get(menuName)+Integer.parseInt(String.valueOf(value))));
-			    } else {
-			       menuMap.put(menuName, Integer.parseInt(String.valueOf(value)));
-			    }	
-			}
-		}
-		List<Map.Entry<String, Integer>> entryList = new ArrayList<>(menuMap.entrySet());
-		 Comparator<Map.Entry<String, Integer>> valueComparator = Map.Entry.comparingByValue();
-
-	        // Sort the entryList using the custom comparator
-entryList.sort(new Comparator<Map.Entry<String, Integer>>() {
-    @Override
-    public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
-        // Implement your comparison logic here
-        // For example, compare entry1.getValue() and entry2.getValue()
-        return entry2.getValue().compareTo(entry1.getValue());
-    }
-});
-
-	        // Create a new LinkedHashMap to preserve the order
-	        Map<String, Integer> sortedMap = new LinkedHashMap<>();
-        for (Map.Entry<String, Integer> entry : entryList) {
-            sortedMap.put(entry.getKey(), entry.getValue());
-        }
-		Object[] names = sortedMap.keySet().toArray();
-		
-		for (Object name : names) {
-			System.out.println(name);
-		}
-				
-		productInfo = productInfo.replaceAll(", $", "");
-
-		%>
 
 </body>
 </html>
