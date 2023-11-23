@@ -104,6 +104,8 @@ public class kakao_pay extends HttpServlet {
 					
 				}
 				
+			} else {
+				session.setAttribute("kakaopay_coupons", null);
 			}
 			
 			if (request.getParameter("mile_map") != null) {
@@ -168,6 +170,8 @@ public class kakao_pay extends HttpServlet {
 							coupon_money += Integer.parseInt(String.valueOf(coupon.get("discount")));
 						}
 					}
+				} else {
+					session.setAttribute("kakaopay_coupons", null);
 				}
 				
 				this.afdatas.put("cid", "TC0ONETIME");
