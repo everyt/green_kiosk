@@ -1168,7 +1168,7 @@ public class Manager_Menu {
 					
 					try {
 						con = pool.getConnection();
-						String sql = "select * from menu where menu_no = ?,menu_name = ? , menu_gubn = ?, menu_isSale = ? ";
+						String sql = "select * from menu where menu_no = ?,menu_name = ? AND menu_gubn = ? AND menu_isSale = ? ";
 						pstmt = con.prepareStatement(sql);
 						pstmt.setInt(1, numb);
 						rs = pstmt.executeQuery();
