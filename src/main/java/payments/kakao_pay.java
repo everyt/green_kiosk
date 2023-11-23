@@ -119,10 +119,10 @@ public class kakao_pay extends HttpServlet {
 			this.bfdatas.put("quantity", "1"); //Integer
 			this.bfdatas.put("total_amount", String.valueOf(all_money)); //Integer
 			this.bfdatas.put("tax_free_amount", "500"); //Integer
-			this.bfdatas.put("approval_url", "https://nodove.duckdns.org"+request.getContextPath()+"/kakao_pay/success"); //String
+			this.bfdatas.put("approval_url", "http://nodove.duckdns.org"+request.getContextPath()+"/kakao_pay/success"); //String
 			this.bfdatas.put("cancel_url", "https://nodove.duckdns.org"+request.getContextPath()+"/kakao_pay/fail"); //String
 			this.bfdatas.put("fail_url", "https://nodove.duckdns.org"+request.getContextPath()+"/kakao_pay/cancel"); //String
-			
+			//"https://nodove.duckdns.org"+
 			String data = "{";
 			
 			for(Map.Entry<String, String> entry : this.bfdatas.entrySet()) {
@@ -150,6 +150,7 @@ public class kakao_pay extends HttpServlet {
 			if (pg_token == null || pg_token.trim().equals("")) {
 				response.sendError(403);
 			} else {
+				session = request.getSession();
 				String s_foods = String.valueOf(session.getAttribute("kakao_foods"));
 				List<Map<String, String>> foods = gson.fromJson(s_foods, new TypeToken<List<Map<String, String>>>() {}.getType());
 				Map<String, Object> bfdatas = gson.fromJson(String.valueOf(session.getAttribute("bfdatas")), new TypeToken<HashMap<String, Object>>(){}.getType());
@@ -270,6 +271,8 @@ public class kakao_pay extends HttpServlet {
 					bean.setOrder_use_mile(false);
 					o_mgr.addOrder(bean);
 				}
+				
+				response.sendRedirect("/kiosk/purchase/finally.jsp");
 			}
 		}
 	}
