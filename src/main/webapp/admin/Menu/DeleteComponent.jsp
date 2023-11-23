@@ -35,11 +35,7 @@
 		script.println("</script>");
 	} else {
 		script.println("<script>");
-        %>
-       	<script>
-       		window.opener.updateMenu('<%=menuType%>');
-       	</script>
-        <%
+		script.println("opener.updateMenu('"+menuType+"')");
  		script.println("window.close();");
 		script.println("</script>");
 	}

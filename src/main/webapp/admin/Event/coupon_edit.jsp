@@ -4,10 +4,12 @@
 <%@ page import="java.util.ArrayList" %>
 <jsp:useBean id="mgr" scope="page" class="coupon.Coupon_kind_Mgr"/>
 <jsp:useBean id="bean" scope="page" class="coupon.Coupon_kind_Bean"/>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<script>var contextpath="<%=request.getContextPath()%>"</script>
 <title>쿠폰 수정하기</title>
 <script src="<%=request.getContextPath()%>/assets/js/admin/Event/coupon.js"></script>
 <%@ include file="/admin/layouts/bootstrap.jsp"%>

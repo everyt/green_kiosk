@@ -63,7 +63,7 @@ function open_register() {
 	for( Menu_menu_Bean menu : Menu ) {
 	%>
 			<div class="w3-quarter">
-        <img src="<%=menu.getMenu_imgPath() %>"  width="300" height="300" alt="hamburger0" style="width:100%">
+        <img src="<%=menu.getMenu_imgPath() %>" alt="hamburger0" style="width:100%; height:300px">
       <h3><%=menu.getMenu_name() %></h3>
 	  <p><%=menu.getMenu_content() %></p>
    </div>	
@@ -75,23 +75,8 @@ function open_register() {
   <hr id="about">
   
   <!-- Footer -->
+<%@ include file="/index/base/footer.jsp" %>
 
-    <div class="w3-third w3-serif">
-      <h3>인기 태그</h3>
-      <p>
-        <span class="w3-tag w3-black w3-margin-bottom">???가게 전주점</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">햄버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">수제 버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">감자튀김</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">치킨버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">데리버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">불고기버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">치즈버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">전주 맛집</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">키오스크</span>
-        
-      </p>
-    </div>
 
 <!-- End page content -->
 </div>

@@ -206,7 +206,7 @@ public class admin_coupon extends HttpServlet {
 			Map<String, String> data = gson.fromJson(body, new TypeToken<Map<String, String>>(){}.getType());
 			
 			Integer numb = Integer.parseInt(data.get("numb"));
-			boolean res = this.mgr.updateKind(bean);
+			boolean res = this.mgr.deleteKind(numb);
 			if (res) {
 				out.write("{\"result\":\"success\"}");
 			} else {

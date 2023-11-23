@@ -10,8 +10,8 @@ public class Orders_VO {
 	private Integer order_no;
 	private Timestamp order_time;
 	private ArrayList<Map<String, String>> order_foods;
-	private Integer	order_price;
-	private Integer order_discount;
+	private long order_price;
+	private long order_discount;
 	private ArrayList<Map<String, String>> order_coupon;
 	private String order_type;
 	private boolean order_use_mile;
@@ -31,10 +31,10 @@ public class Orders_VO {
 	public ArrayList<Map<String, String>> getOrder_foods() {
 		return order_foods;
 	}
-	public Integer getOrder_price() {
+	public long getOrder_price() {
 		return order_price;
 	}
-	public Integer getOrder_discount() {
+	public long getOrder_discount() {
 		return order_discount;
 	}
 	public ArrayList<Map<String, String>> getOrder_coupon() {
@@ -70,10 +70,10 @@ public class Orders_VO {
 	public void setOrder_foods(ArrayList<Map<String, String>> order_foods) {
 		this.order_foods = order_foods;
 	}
-	public void setOrder_price(Integer order_price) {
+	public void setOrder_price(long order_price) {
 		this.order_price = order_price;
 	}
-	public void setOrder_discount(Integer order_discount) {
+	public void setOrder_discount(long order_discount) {
 		this.order_discount = order_discount;
 	}
 	public void setOrder_coupon(ArrayList<Map<String, String>> order_coupon) {

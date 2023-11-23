@@ -3,6 +3,7 @@
 <%@ page import = "coupon.Coupon_kind_Bean" %>
 <%@ page import = "coupon.Coupon_kind_Mgr" %>
 <%@ page import = "java.util.Vector" %>
+
 <%
 Coupon_kind_Mgr mgr = new Coupon_kind_Mgr();
 Vector<Coupon_kind_Bean> Kinds = mgr.readAllKind();
@@ -17,11 +18,6 @@ Vector<Coupon_kind_Bean> Kinds = mgr.readAllKind();
 		}
 	</style>
 </head>
-<script>
-function delete_coupon_type(numb) {
-	
-}
-</script>
 <body>
 <div style="display: grid; justify-content: center; width: 100%;">
 	<table width="100%" border=1  cellpadding=2 cellspacing=10 style="display: grid;border-collapse: collapse; margin-top: 4%;">
@@ -69,7 +65,7 @@ function delete_coupon_type(numb) {
 			<%} %>
 		</tbody>
 	</table>
-	<a href="javascript:void(0)" class="btn btn-primary my-2" onclick="openPopup('/green_kiosk/admin/Event/coupon_make.jsp')">쿠폰 등록하기</a>
+	<a href="javascript:void(0)" class="btn btn-primary my-2" onclick="openPopup('<%=request.getContextPath()%>/admin/Event/coupon_make.jsp')">쿠폰 등록하기</a>
 </div>
 </body>
 </html>

@@ -9,8 +9,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
+import menu.Menu_component_Bean;
+import menu.Menu_menu_Bean;
+
 
 import all.DBConnectionMgr;
+import orders.Orders_Bean;
 
 /**
  * 
@@ -446,6 +450,47 @@ public boolean change_pw1(String mem_id) {
 		pool.freeConnection(con, pstmt);
 	}
 	return flag;
+}
+
+
+// 추천메뉴 페이지
+public Vector<Menu_menu_Bean> getMgrcList() {
+	DBConnectionMgr pool = new DBConnectionMgr();
+	Connection con = null;
+	PreparedStatement pstmt = null;
+	ResultSet rs = null;
+	Menu_menu_Bean bean = null;
+	Vector<Menu_menu_Bean> vlist = new Vector<Menu_menu_Bean>();
+	try {
+		con = pool.getConnection();
+		String sql = "select * from menu";
+	    pstmt = con.prepareStatement(sql);
+		rs = pstmt.executeQuery();
+		while (rs.next()) {
+			bean = new Menu_menu_Bean();
+			bean.setMenu_no(rs.getInt("menu_no"));
+			bean.setMenu_name(rs.getString("menu_name"));
+			bean.setMenu_gubn(rs.getString("menu_gubn"));
+			bean.setMenu_isSale(rs.getInt("menu_isSale"));
+			bean.setMenu_imgPath(rs.getString("menu_imgPath"));
+			bean.setMenu_component(rs.getString("menu_component"));
+			bean.setMenu_price(rs.getInt("menu_price"));
+			bean.setMenu_sell_amount(rs.getInt("menu_sell_amount"));
+			bean.setMenu_recommend(rs.getInt("menu_recommend"));
+			bean.setMenu_content(rs.getString("menu_content"));
+			bean.setMenu_isUse(rs.getInt("menu_isUse"));
+			bean.setMenu_couponable(rs.getInt("menu_couponable"));
+			 if (bean.getMenu_recommend() == 1) {
+			        vlist.add(bean);
+			    }
+			vlist.add(bean);
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+		pool.freeConnection(con, pstmt, rs);
+	}
+	return vlist;
 }
 
 }
