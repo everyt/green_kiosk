@@ -86,11 +86,7 @@
 						{
 							PrintWriter script = response.getWriter();
 							script.println("<script>");
-					        %>
-					       	<script>
-					       		window.opener.updateMenu('<%=menuType%>');
-					       	</script>
-					        <%
+							script.println("opener.updateMenu('"+menuType+"')");
 							script.println("window.close();");
  							script.println("</script>");
 							//table insert 실패 했을 경우
@@ -135,11 +131,7 @@
 					{
 						PrintWriter script = response.getWriter();
 						script.println("<script>");
-					        %>
-					       	<script>
-					       		window.opener.updateMenu('<%=menuType%>');
-					       	</script>
-					        <%
+						script.println("opener.updateMenu('"+menuType+"')");
 						script.println("window.close();");
 						script.println("</script>");
 						//table insert 실패 했을 경우

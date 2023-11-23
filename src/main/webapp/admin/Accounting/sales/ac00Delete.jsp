@@ -72,7 +72,7 @@
 							</tr>
 							<tr>
 								<td colspan="3" align="center">
-								<input type="submit" value="삭제완료"> &nbsp; &nbsp; 
+								<input type="button" onclick="sub()" value="삭제완료"> &nbsp; &nbsp; 
 								<input type="button" value="코드목록" onClick="history.go(-1)">
 								<input style="display:none" name="order_no" value="<%=numb %>"/></td>						
 							

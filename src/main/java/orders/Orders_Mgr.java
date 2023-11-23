@@ -3,6 +3,7 @@ package orders;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -130,7 +131,7 @@ public class Orders_Mgr {
 	public Vector<Orders_Bean> getAllOrdersByTime(String startDate, String endDate) {
 		Vector<Orders_Bean> vector = new Vector<Orders_Bean>();
 		try {
-			this.Initializer("SELECT * FROM orders WHERE DATE_FORMAT(order_time, '%Y-%m-%d') BETWEEN ? AND ?");
+			this.Initializer("SELECT * FROM orders WHERE order_time BETWEEN date(?) AND date(?)");
 			this.pst.setString(1 , startDate);
 			this.pst.setString(2, endDate);
 			this.rs = this.pst.executeQuery();
@@ -159,6 +160,41 @@ public class Orders_Mgr {
 		}
 		return vector;
 	}
+	
+	
+	public Vector<Orders_Bean> getAllOrdersByDate(Date startDate, Date endDate) {
+		Vector<Orders_Bean> vector = new Vector<Orders_Bean>();
+		try {
+			this.Initializer("SELECT * FROM orders WHERE order_time BETWEEN date(?) AND date(?)");
+			this.pst.setDate(1, new java.sql.Date(startDate.getTime()));
+			this.pst.setDate(2, new java.sql.Date(endDate.getTime()));
+			this.rs = this.pst.executeQuery();
+			while (this.rs.next()) {
+				Orders_Bean bean = new Orders_Bean();
+	            bean.setOrder_no(this.rs.getInt("order_no"));
+	            bean.setOrder_time(this.rs.getTimestamp("order_time"));
+	            bean.setOrder_foods(this.rs.getString("order_foods"));
+	            bean.setOrder_price(this.rs.getLong("order_price"));
+	            bean.setOrder_discount(this.rs.getLong("order_discount"));
+	            bean.setOrder_coupon(this.rs.getString("order_coupon"));
+	            bean.setOrder_type(this.rs.getString("order_type"));
+	            bean.setOrder_use_mile(this.rs.getBoolean("order_use_mile"));
+	            bean.setOrder_use_amount(this.rs.getInt("order_use_mile_amount"));
+	            bean.setOrder_add_mile(this.rs.getBoolean("order_add_mile"));
+	            bean.setOrder_add_amount(this.rs.getInt("order_add_mile_amount"));
+	            bean.setOrder_is_maked(this.rs.getBoolean("order_is_maked"));
+	            bean.set_who(this.rs.getString("order_who"));
+	            bean.setOrder_is_togo(this.rs.getBoolean("order_is_togo"));
+	            vector.add(bean);
+	        }
+		} catch (Exception error) {
+			error.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+		return vector;
+	}
+
 	
 	public Vector<Orders_Bean> getOrderByNo(int no) {
 		Vector<Orders_Bean> vector = new Vector<Orders_Bean>();
@@ -348,18 +384,16 @@ public class Orders_Mgr {
 				boolean flag = false;
 				try {
 					con = pool.getConnection();
-					sql = "update orders set order_time=?, order_foods=?, order_price=?, order_discount=?, order_coupon=?, order_type=?, order_is_maked = ? where order_no = ?";
+					sql = "update orders set order_time=?, order_price=?, order_discount=?, order_coupon=?, order_type=?, order_is_maked = ? where order_no = ?";
 					pstmt = con.prepareStatement(sql);
 					pstmt.setTimestamp(1, bean.getOrder_time());
-					pstmt.setString(2, bean.getOrder_foods());
-					System.out.println("sdsd" + bean.getOrder_foods());
-					pstmt.setLong(3, bean.getOrder_price());
-					pstmt.setLong(4, bean.getOrder_discount());
-					pstmt.setString(5, bean.getOrder_coupon());
-					pstmt.setString(6, bean.getOrder_type());
-					pstmt.setBoolean(7, bean.isOrder_is_maked());
+					pstmt.setLong(2, bean.getOrder_price());
+					pstmt.setLong(3, bean.getOrder_discount());
+					pstmt.setString(4, bean.getOrder_coupon());
+					pstmt.setString(5, bean.getOrder_type());
+					pstmt.setBoolean(6, bean.isOrder_is_maked());
 					System.out.println("sdsd" + bean.getOrder_no());
-					pstmt.setInt(8, bean.getOrder_no());
+					pstmt.setInt(7, bean.getOrder_no());
 					if (pstmt.executeUpdate() == 1) {
 						flag = true;
 					};

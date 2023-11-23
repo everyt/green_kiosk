@@ -36,7 +36,7 @@ public class Event_Screen extends HttpServlet {
 		}
 		
 		if (endPoint.equals("/Coupon")) {
-			RequestDispatcher rd = request.getRequestDispatcher("/index/event/event2.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/index/event/coupon.jsp");
 			rd.forward(request, response);
 		}
 		

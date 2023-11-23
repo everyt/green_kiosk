@@ -13,7 +13,7 @@
 <%@ include file="/admin/layouts/indexBase.jsp" %>
 <%@ include file="/admin/layouts/bootstrap.jsp"%> 
 <%@ include file="/admin/layouts/header.jsp" %>
-
+<script>sessionStorage.setItem("context", "<%=request.getContextPath()%>")</script>
 </head>
 <body>
 <%@ include file="/admin/layouts/left.jsp" %>

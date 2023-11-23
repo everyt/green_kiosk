@@ -54,6 +54,79 @@ public class Coupon_kind_Mgr {
         }
     }
     
+    public Coupon_kind_Bean get_type_with_name(String name) {
+    	Coupon_kind_Bean type = new Coupon_kind_Bean();
+    	try {
+    		this.Initializer("SELECT * FROM `coupon_type` WHERE `coupon_name` = ?");
+    		this.pst.setString(1, name);
+    		this.rs = this.pst.executeQuery();
+    		if (this.rs.next()) {
+    			type.setNumb(this.rs.getInt("numb"));
+	            type.setName(this.rs.getString("name"));
+	            type.setDesc(this.rs.getString("desc"));
+	            type.setDiscount_per(this.rs.getInt("discount_per"));
+	            type.setVaild_date(this.rs.getInt("vaild_date"));
+	            type.setEnable(this.rs.getBoolean("enable"));
+	            type.setCategory(this.gson.fromJson(this.rs.getString("category"), new TypeToken<List<String>>() {}.getType()));
+	            type.setDefault_coupon(this.rs.getBoolean("default_coupon"));
+    		}
+    	} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+    	
+    	return type;
+    }
+    
+    public Vector<Coupon_kind_Bean> get_printable(String user_id) {
+		Vector<Coupon_kind_Bean> base_vector = new Vector<Coupon_kind_Bean>();
+		Vector<String> printed_coupon = new Vector<String>(); //이미 발급한 쿠폰
+		Vector<Coupon_kind_Bean> res_vector = new Vector<Coupon_kind_Bean>();
+		
+		try {
+			this.Initializer("SELECT * FROM coupon_type WHERE enable = true");
+			this.rs = this.pst.executeQuery();
+			while (this.rs.next()) {
+				Coupon_kind_Bean bean = new Coupon_kind_Bean();
+	            bean.setNumb(this.rs.getInt("numb"));
+	            bean.setName(this.rs.getString("name"));
+	            bean.setDesc(this.rs.getString("desc"));
+	            bean.setDiscount_per(this.rs.getInt("discount_per"));
+	            bean.setVaild_date(this.rs.getInt("vaild_date"));
+	            bean.setEnable(this.rs.getBoolean("enable"));
+	            bean.setCategory(this.gson.fromJson(this.rs.getString("category"), new TypeToken<List<String>>() {}.getType()));
+	            bean.setDefault_coupon(this.rs.getBoolean("default_coupon"));
+	            base_vector.add(bean);
+	        }
+        } catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+		
+		try {
+			this.Initializer("SELECT coupon_name FROM coupon WHERE `coupon_owner` = ?");
+			this.pst.setString(1, user_id);
+			this.rs = this.pst.executeQuery();
+			while (this.rs.next()) {
+				printed_coupon.add(this.rs.getString("coupon_name"));
+	        }
+        } catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+		
+		for (Coupon_kind_Bean bean : base_vector) {
+			if (printed_coupon.contains(bean.getName()) == false) {
+				res_vector.add(bean);
+			}
+		}
+		
+		return res_vector;
+    }
+    
 	public Vector<Coupon_kind_Bean> readAllKind() {
 		Vector<Coupon_kind_Bean> vector = new Vector<Coupon_kind_Bean>();
 		try {
