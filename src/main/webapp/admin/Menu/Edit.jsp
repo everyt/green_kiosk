@@ -69,7 +69,6 @@
 								        <option value="음료" <%= "음료".equals(menu_gubn) ? "selected" : "" %>>음료</option>
 								        <option value="세트" <%= "세트".equals(menu_gubn) ? "selected" : "" %>>세트</option>
 								        <option value="사이드" <%= "사이드".equals(menu_gubn) ? "selected" : "" %>>사이드</option>
-								        <option value="이벤트" <%= "이벤트".equals(menu_gubn) ? "selected" : "" %>>이벤트</option>
 								    </select>
 								</div>
 							</td>

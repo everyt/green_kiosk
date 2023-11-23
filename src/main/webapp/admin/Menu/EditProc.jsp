@@ -82,9 +82,7 @@
 		int menu_sell_amount = Integer.parseInt(multi.getParameter("menu_sell_amount"));
 		
 		if (multi.getParameter("menu_gubn").equals("재료")){
-			
-		} else if (multi.getParameter("menu_gubn").equals("이벤트")){
-			
+			//쓸 일 없음 (component 부분)
 		} else {
 				menuBean = new Menu_menu_Bean();
 				menuBean.setMenu_no(menu_no);

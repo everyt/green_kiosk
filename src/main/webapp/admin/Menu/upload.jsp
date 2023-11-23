@@ -43,7 +43,6 @@
 								  <option value="세트">세트</option>
 								  <option value="재료">재료</option>
 								  <option value="사이드">사이드</option>
-								  <option value="이벤트">이벤트</option>
 								</select>
 								</div>
 							</td>
