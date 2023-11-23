@@ -5,11 +5,14 @@
 <jsp:useBean id="memberBean" class="user.Member_Bean"/>
 <jsp:setProperty  name="memberBean" property="*"/>
 <%
-		//String mem_id = String.valueOf(session.getAttribute("find_pw_id"));
+   String mem_pw = request.getParameter("mem_pw");
+   System.out.println(mem_pw); 
+ 
+//String mem_id = String.valueOf(session.getAttribute("find_pw_id"));
 		String mem_id = request.getParameter("mem_id");
 		System.out.println("unregi.jsp 에서 이동한 id = " + mem_id);
-		memberBean.setMem_id(mem_id);
-	  boolean result = userMgr.change_pw1(mem_id); 
+/* 		memberBean.setMem_id(mem_id);
+ */	  boolean result = userMgr.delete_pw1(mem_id,mem_pw);  
 	  if(result){
 %>
 <script type="text/javascript">

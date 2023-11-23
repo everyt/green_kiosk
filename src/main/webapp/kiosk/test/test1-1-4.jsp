@@ -19,11 +19,14 @@
   const hrefTo1 = (type) => {
     MicroModal.show('modal-1-1');
     MicroModal.init(); // 모달 초기화
+
   };
 
   const hrefTo2 = (type) => {
     MicroModal.init(); // 모달 초기화
     MicroModal.show('modal-2');
+    MicroModal.close('modal-1');
+
   };
 
   const hrefTo3 = (type) => {
@@ -54,12 +57,22 @@
   let basketArray = [];
   
 //장바구니에 메뉴 추가
-  const addToBasket = (menuName, price) => {
+  const addToBasket = (menuName, price, SubName, Subprice, DrinkName, Drinkprice) => {
       const menuItem = {
           name: menuName,
           price: price,
           amount: 1, // 초기 수량은 1로 설정
       };
+      const SubItem = {           
+          name: SubName,
+          price: Subprice,
+          amount: 1,    
+          }
+      const DrinkItem = {           
+              name: DrinkName,
+              price: Drinkprice,
+              amount: 1,    
+              }
 
       // 이미 장바구니에 있는지 확인
       const existingItem = basketArray.find(item => item.name === menuName);
@@ -74,6 +87,8 @@
 
       // 장바구니 업데이트
       updateBasket();
+      
+
   };
 
 
@@ -96,7 +111,7 @@
     
     });
 
-    document.getElementById('menu').innerText = '버거 이름: ' + menuNames.join(', ');
+    document.getElementById('menu').innerText = menuNames.join(', ');
     document.getElementById('count').innerText = '총 수량: ' + itemCount + '개';
     document.getElementById('price').innerText = '총 금액: ' + totalPrice + '원';
 
@@ -104,14 +119,7 @@
 
     if (orderDetailsDiv) {
       orderDetailsDiv.innerHTML = ''; // 이전 내용 초기화
-
-      
-      
-      basketArray.forEach(item => {
-        const orderItemDiv = document.createElement('div');
-        orderItemDiv.innerHTML = `<span>${item.name}</span> | <span>${item.amount}개</span> | <span>${item.price * item.amount}원</span>`;
-        orderDetailsDiv.appendChild(orderItemDiv);    
-      });
+  	
     }
   };
 
@@ -119,90 +127,151 @@
   // 예제에서는 각 메뉴의 클릭 이벤트에 addToBasket 함수를 추가하였습니다.
 	document.addEventListener('DOMContentLoaded', function () {
 
-  // 실제로는 각 메뉴 클릭 시 해당 메뉴의 이름과 가격을 전달하여야 합니다.
-  document.querySelector('.item1').addEventListener('click', () => addToBasket('데리버거', 3500));
-  document.querySelector('.item2').addEventListener('click', () => addToBasket('더블 데리버거', 3500));
-  document.querySelector('.item3').addEventListener('click', () => addToBasket('불고기버거', 3500));
-  document.querySelector('.item4').addEventListener('click', () => addToBasket('더블 불고기버거', 3500));
-  document.querySelector('.item5').addEventListener('click', () => addToBasket('치킨버거', 3500));
-  document.querySelector('.item6').addEventListener('click', () => addToBasket('더블 치킨버거', 3500));
-  document.querySelector('.item7').addEventListener('click', () => addToBasket('치즈버거', 3500));
-  document.querySelector('.item8').addEventListener('click', () => addToBasket('더블 클래식 치즈버거', 3500));
-	
-  document.querySelector('.item1-1').addEventListener('click', () => openModal('포테이토', 1500));
-  document.querySelector('.item2-1').addEventListener('click', () => openModal('양념감자', 2500));	
-	});
+	  document.querySelector('.item1').addEventListener('click', () => addToBasket('데리버거', 3500));
+	  document.querySelector('.item2').addEventListener('click', () => addToBasket('더블 데리버거', 3500));
+	  document.querySelector('.item3').addEventListener('click', () => addToBasket('불고기버거', 3500));
+	  document.querySelector('.item4').addEventListener('click', () => addToBasket('더블 불고기버거', 3500));
+	  document.querySelector('.item5').addEventListener('click', () => addToBasket('치킨버거', 3500));
+	  document.querySelector('.item6').addEventListener('click', () => addToBasket('더블 치킨버거', 3500));
+	  document.querySelector('.item7').addEventListener('click', () => addToBasket('치즈버거', 3500));
+	  document.querySelector('.item8').addEventListener('click', () => addToBasket('더블 클래식 치즈버거', 3500));
+	  
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	  
+		 document.querySelector('.item1-1').addEventListener('click', () => addToBasket('포테이토', 1500));
+		 document.querySelector('.item3-1').addEventListener('click', () => addToBasket('포테이토(L)', 2300));	
+		 document.querySelector('.item4-1').addEventListener('click', () => addToBasket('치즈 스틱', 1800));	
+		 document.querySelector('.item5-1').addEventListener('click', () => addToBasket('치즈 볼', 1800));	
+		 document.querySelector('.item6-1').addEventListener('click', () => addToBasket('치킨 너겟', 1800));	
+		 document.querySelector('.item7-1').addEventListener('click', () => addToBasket('오징어 링', 1800));	
+		 document.querySelector('.item8-1').addEventListener('click', () => addToBasket('웨지 포테이토', 2000));	
+
+		 
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	  
+ 		document.querySelectorAll('.potato1').forEach((item) => {
+		    item.addEventListener('click', () => {
+		      addToBasket('양념감자(어니언)', 1500);
+		      MicroModal.show('modal-2');
+		      MicroModal.close('modal-1-1');
+		       MicroModal.close('modal-1');
+		        });
+		      });
+
+	   document.querySelectorAll('.potato2').forEach((item) => {
+		     item.addEventListener('click', () => {
+		       addToBasket('양념감자(치즈)', 1500);
+		       MicroModal.show('modal-2');
+		       MicroModal.close('modal-1-1');
+		       MicroModal.close('modal-1');
+
+		        });
+		      });
+
+	   document.querySelectorAll('.potato3').forEach((item) => {
+		      item.addEventListener('click', () => {
+		       addToBasket('양념감자(칠리)', 1500);
+		       MicroModal.show('modal-2');
+		       MicroModal.close('modal-1-1');
+		       MicroModal.close('modal-1');
+
+		        });
+		      });
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	  
+
+		document.querySelector('.item1-2').addEventListener('click', () => {addToBasket('코카콜라', 1500);
+		  MicroModal.close('modal-2');
+		 });
+		 document.querySelector('.item2-2').addEventListener('click', () => {addToBasket('제로콜라', 1500);
+		  MicroModal.close('modal-2');
+		 });	
+		 document.querySelector('.item3-2').addEventListener('click', () => {addToBasket('스프라이트', 1500);
+		  MicroModal.close('modal-2');
+		 });;	
+		 document.querySelector('.item4-2').addEventListener('click', () => {addToBasket('스프라이트 제로',1500);
+		  MicroModal.close('modal-2');
+		 });	
+		 document.querySelector('.item5-2').addEventListener('click', () => {addToBasket('밀키스', 1500);
+		  MicroModal.close('modal-2');
+		 });
+		 document.querySelector('.item6-2').addEventListener('click', () => {addToBasket('마운틴듀', 1500);
+		  MicroModal.close('modal-2');
+		 });	
+		 document.querySelector('.item8-2').addEventListener('click', () => {addToBasket('오렌지쥬스', 2500);
+		  MicroModal.close('modal-2');
+		 });
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	  
+		 document.querySelectorAll('.fanta1').forEach((item) => {
+				    item.addEventListener('click', () => {
+				      addToBasket('환타(포도)', 1500);
+				      MicroModal.close('modal-2-1');
+				       MicroModal.close('modal-2');
+
+				 		  });
+				      });
+
+			   document.querySelectorAll('.fanta2').forEach((item) => {
+				     item.addEventListener('click', () => {
+				       addToBasket('환타(파인애플)', 1500);
+				       MicroModal.close('modal-2-1');
+				       MicroModal.close('modal-2');
+
+				    	 });
+				      });
+
+			   document.querySelectorAll('.fanta3').forEach((item) => {
+				      item.addEventListener('click', () => {
+				       addToBasket('환타(오렌지)', 1500);
+				       MicroModal.close('modal-2-1');
+				       MicroModal.close('modal-2');
+
+				        });
+				      });
+
+		 
+		 
+		});
 
 
-  // 클릭한 햄버거 정보를 저장할 변수
-  let selectedBurger = {};
 
 
-  // 햄버거를 클릭했을 때 모달 창을 열고 정보를 표시하는 함수
-const openModal = (burgerName, burgerPrice) => {
-    selectedBurger = {
-        name: burgerName,
-        price: burgerPrice,
-    };
+		  
+		  
+	  
+	  
+	  
 
+	  
+	  
+/*	
     // 모달 창에 햄버거 정보 표시
     document.getElementById('modalBurgerName').innerText = selectedBurger.name;
-    document.getElementById('modalBurgerPrice').innerText = selectedBurger.price;
+    document.getElementById('modalBurgerPrice').innerText = selectedBurger.price
     
-    addToBasket(selectedBurger.name, selectedBurger.price);
-
+    
+    const modal1Items = document.querySelectorAll('.modal-1-item');
+    modal1Items.forEach((item) => {
+      item.addEventListener('click', () => {
+        selectedAdditionalItem = {
+          name: item.querySelector('.item-name').innerText,
+          price: parseInt(item.querySelector('.item-price').innerText),
+        };
+        addToBasket(selectedAdditionalItem.name, selectedAdditionalItem.price);
+        MicroModal.close('modal-1');
+        MicroModal.show('modal-2');
+        MicroModal.init(); // 모달 초기화
+      });
+    });
 
     MicroModal.close('modal-1-1');
     MicroModal.show('modal-2');
-};
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-	const addToBasket1 = (subName, subPrice) => {
-	  const subItem = {
-	    name: subName,
-	    price: subPrice,
-	    amount: 1,
-	  };
-    
-    // 이미 장바구니에 있는지 확인
-    const existingItem = basketArray.find(item => item.name === item.name);
-
-    if (existingItem) {
-      existingItem.amount++;
-    } else {
-      basketArray.push(subItem);
-    }
-
-    const updateBasket = () => {
-
-        console.log(basketArray);
-      };
+    MicroModal.init(); // 모달 초기화
+  };
   
-  	document.addEventListener('DOMContentLoaded', function () {
-
-
-  	let selectedSub = {};
-
-	const openModal = (subName, subPrice) => {
-		   selectedSub = {
-		      name: subName,
-		      price: subPrice,
-		      
-		    };
-
-		   
-    // 모달 창에 햄버거 정보 표시
-    document.getElementById('modalSubName').innerText = selectedSub.name;
-    document.getElementById('modalSubPrice').innerText = selectedSub.price;
-
-		   
-		   
-    MicroModal.close('modal-1');
-    MicroModal.show('modal-2');
-	};
-  });
-};
+  
+ */ 
+  
+  
 </script>
+
 
 
 </head>
@@ -308,89 +377,88 @@ const openModal = (burgerName, burgerPrice) => {
     <div class="modal__overlay" tabindex="-1">
       <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
         <main class="modal__content" id="modal-1-content">
-				<div class= "chucheon1 color3"><h1>선택한 메뉴</h1></div>
-					<div class="qqw">	ㅇㅇㅇㅇ	</div>
 				<div class= "chucheon2 color3"><h1>추천 메뉴</h1></div>
 					<div class="page1" onclick="hrefTo2()"><H1 style="color:black;">다 음</H1></div>		
 					<div class="page3" onclick="back()"><H1 style="color:black;">닫 기</H1></div>		
 				
 
-	<div class="item1-1" onclick="hrefTo2('item1-1')">
-		<div class="rowbox">
-			<img src="../images/potato.jpg" >
-				<div class="colbox">
-				  <H1>포테이토</H1>
-				  <h2 style="color:blue;" >3500~</h2>
-				</div>
-		</div>
-	</div>
+ <!-- 포테이토 메뉴 아이템 -->
+	<div class="item1-1 modal-1-item" onclick="hrefTo2('item1-1')">
+      <div class="rowbox">
+        <img src="../images/potato.jpg" >
+        <div class="colbox">
+          <h1>포테이토</h1>
+          <h2 style="color:blue;" >1500</h2>
+        </div>
+      </div>
+    </div>
+
+	<div class="item2-1 modal-1-item" onclick="hrefTo1('item2-1')">
+      <div class="rowbox">
+        <img src="../images/potato1.jpg" >
+        <div class="colbox">
+          <h1>양념 감자</h1>
+          <h2 style="color:blue;" >1700</h2>
+        </div>
+      </div>
+    </div>
 	
-	<div class="item2-1" onclick="hrefTo1('item2-1')">
-		<div class="rowbox">
- 			<img src="../images/potato1.jpg" >
- 				<div class="colbox">
- 				     <H1>양념 감자</H1>
- 					  <h2 style="color:blue;" >3500~</h2>
- 				</div>
-		</div>
-	</div>
-	
-	<div class="item3-1">
+	<div class="item3-1" onclick="hrefTo2('item1-1')">
 		<div class="rowbox">
  			<img src="../images/potato2.jpg" >
  				<div class="colbox">
  				     <H1>포테이토(L)</H1>
- 					  <h2 style="color:blue;" >3500~</h2>
+ 					  <h2 style="color:blue;" >2300</h2>
  				</div>
 		</div>
 	</div>
 	
-	<div class="item4-1">
+	<div class="item4-1" onclick="hrefTo2('item1-1')">
 		<div class="rowbox">
  			<img src="../images/cheese.jpg" >
  				<div class="colbox">
  				     <H1>치즈 스틱</H1>
- 				 	 <h2 style="color:blue;" >3500~</h2>
+ 				 	 <h2 style="color:blue;" >1800</h2>
  				</div>
 		</div>
 	</div>
 	
-	<div class="item5-1">
+	<div class="item5-1" onclick="hrefTo2('item1-1')">
 		<div class="rowbox">
  			<img src="../images/cheese2.jpg" >
  				<div class="colbox">
  				     <H1>치즈 볼</H1>
- 				  	<h2 style="color:blue;" >3500~</h2>
+ 				  	<h2 style="color:blue;" >1800</h2>
  				</div>
 		</div>	
 	</div>
 	
-	<div class="item6-1">
+	<div class="item6-1" onclick="hrefTo2('item1-1')">
 		<div class="rowbox">
  			<img src="../images/chicken.jpg" >
  				<div class="colbox">
  				     <H1>치킨 너겟</H1>
- 					  <h2 style="color:blue;" >3500~</h2>
+ 					  <h2 style="color:blue;" >1800</h2>
  				</div>
 		</div>
 	</div>
 	
-	<div class="item7-1">
+	<div class="item7-1" onclick="hrefTo2('item1-1')">
 		<div class="rowbox">
  			<img src="../images/ojingeo.jpg" >
  				<div class="colbox">
  				     <H1>오징어 링</H1>
- 					  <h2 style="color:blue;" >3500~</h2>
+ 					  <h2 style="color:blue;" >1800</h2>
  				</div>
 		</div>	
 	</div>
 	
-	<div class="item8-1">
+	<div class="item8-1" onclick="hrefTo2('item1-1')">
 		<div class="rowbox">
  			<img src="../images/potato3.jpg" >
  				<div class="colbox">
  				     <H1>웨지 <br>포테이토</H1>
- 					  <h2 style="color:blue;" >3500~</h2>
+ 					  <h2 style="color:blue;" >2000</h2>
  				</div>
 		</div>	
 	</div>
@@ -418,33 +486,24 @@ const openModal = (burgerName, burgerPrice) => {
 	</div>
   </div>
 
-
-
-
-
-
-
-
-
-
-
 <!-- 음료수 modal -->
 
 <div class= "menu">
   <div class="modal micromodal-slide" id="modal-2" aria-hidden="true">
     <div class="modal__overlay" tabindex="-1">
       <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-        <main class="modal__content" id="modal-1-content">
-				<div class= "chucheon1 color3"><h1>선택한 메뉴</h1></div>
-					<div class="qqw">	ㅇㅇㅇㅇ	</div>
-				<div class= "chucheon2 color3"><h1>추천 메뉴</h1></div>
+        <main class="modal__content1" id="modal-1-content">
+	        	<div class= "chucheon2 color3"><h1>추천 메뉴</h1></div>
+					<div class="page2" onclick="back2()"><H1 style="color:black;">이 전</H1></div>		
+					<div class="page2-1" onclick="back2()"><H1 style="color:black;">닫 기</H1></div>		
+	
 
 	<div class="item1-2 ">
 		<div class="rowbox">
 			<img src="../images/cola.jpg" >
 				<div class="colbox">
-				  <H1>데리버거</H1>
-				  <h2 style="color:blue;" >3500~</h2>
+				  <H1>코카콜라</H1>
+				  <h2 style="color:blue;" >1500</h2>
 				</div>
 		</div>
 	</div>
@@ -453,8 +512,8 @@ const openModal = (burgerName, burgerPrice) => {
 		<div class="rowbox">
  			<img src="../images/cola1.jpg" >
  				<div class="colbox">
- 				     <H1>데리버거</H1>
- 					  <h2 style="color:blue;" >3500~</h2>
+ 				     <H1>제로콜라</H1>
+ 					  <h2 style="color:blue;" >1500</h2>
  				</div>
 		</div>
 	</div>
@@ -463,8 +522,8 @@ const openModal = (burgerName, burgerPrice) => {
 		<div class="rowbox">
  			<img src="../images/saida.jpg" >
  				<div class="colbox">
- 				     <H1>데리버거</H1>
- 					  <h2 style="color:blue;" >3500~</h2>
+ 				     <H1>스프라이트</H1>
+ 					  <h2 style="color:blue;" >1500</h2>
  				</div>
 		</div>
 	</div>
@@ -473,8 +532,8 @@ const openModal = (burgerName, burgerPrice) => {
 		<div class="rowbox">
  			<img src="../images/saida1.jpg" >
  				<div class="colbox">
- 				     <H1>데리버거</H1>
- 				 	 <h2 style="color:blue;" >3500~</h2>
+ 				     <H1>스프라이트<br> 제로</H1>
+ 				 	 <h2 style="color:blue;" >1500</h2>
  				</div>
 		</div>
 	</div>
@@ -483,8 +542,8 @@ const openModal = (burgerName, burgerPrice) => {
 		<div class="rowbox">
  			<img src="../images/milkiseu.jpg" >
  				<div class="colbox">
- 				     <H1>데리버거</H1>
- 				  	<h2 style="color:blue;" >3500~</h2>
+ 				     <H1>밀키스</H1>
+ 				  	<h2 style="color:blue;" >1500</h2>
  				</div>
 		</div>	
 	</div>
@@ -493,8 +552,8 @@ const openModal = (burgerName, burgerPrice) => {
 		<div class="rowbox">
  			<img src="../images/mauntindyu.jpg" >
  				<div class="colbox">
- 				     <H1>데리버거</H1>
- 					  <h2 style="color:blue;" >3500~</h2>
+ 				     <H1>마운틴듀</H1>
+ 					  <h2 style="color:blue;" >1500</h2>
  				</div>
 		</div>
 	</div>
@@ -502,9 +561,9 @@ const openModal = (burgerName, burgerPrice) => {
 	<div class="item7-2">
 		<div class="rowbox">
  			<img src="../images/fanta.jpg" >
- 				<div class="colbox" onclick="hrefTo1()">
- 				     <H1>데리버거</H1>
- 					  <h2 style="color:blue;" >3500~</h2>
+ 				<div class="colbox" onclick="hrefTo3()">
+ 				     <H1>환타</H1>
+ 					  <h2 style="color:blue;" >1500</h2>
  				</div>
 		</div>	
 	</div>
@@ -513,8 +572,8 @@ const openModal = (burgerName, burgerPrice) => {
 		<div class="rowbox">
  			<img src="../images/orange juice.jpg" >
  				<div class="colbox">
- 				     <H1>데리버거</H1>
- 					  <h2 style="color:blue;" >3500~</h2>
+ 				     <H1>오렌지쥬스</H1>
+ 					  <h2 style="color:blue;" >2500</h2>
  				</div>
 		</div>	
 	</div>
@@ -526,14 +585,36 @@ const openModal = (burgerName, burgerPrice) => {
 </div>
 
 
+  <div class="modal micromodal-slide" id="modal-2-1" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1">
+      <div class="modal__container1" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+        <main class="modal__content2" id="modal-2-content">
+				<div class="potato"><h1 style="background-color:#b4fffb">맛을 선택하세요.</h1></div>
+				<div class="fanta1"><h1>포도</h1></div>
+				<div class="fanta2"><h1>파인애플</h1></div>
+				<div class="fanta3"><h1>오렌지</h1></div>
+				<div class="page5" id="close_btn" onclick="back3()"><H1 style="color:black;">닫 기</H1></div>		
+
+		</main>
+	  </div>
+	</div>
+  </div>
+
+
+
+</div>
+
+
+
+
 	<div class="order" id="totalOrder" style="width: inherit; font-weight: 400; font-size: 1.2rem; border-radius: 0; justify-content: space-between; background-color: #eee;">
 			 	<div >
 	  			<span style="font-size:36px; font-weight: 600; color:black;margin :10px">총주문내역</span>
 			 	</div>
 			  	<div class="menu" >
 			  	<span class="Ordermenu" id="menu" style="font-size:36px; font-weight: 600; color:black;margin :10px"></span>
-			    </div>
-			 
+			   </div>
+
 			  	<div class="count" >
 			  	<span class="count" id="count" style="font-size:36px; font-weight: 600; color:black;margin :10px"></span>  
 			    </div>
@@ -567,11 +648,5 @@ const openModal = (burgerName, burgerPrice) => {
 
     
 </script>
-
-
-
-
-
-
 </body>
 </html>

@@ -91,7 +91,7 @@ function open_register() {
 			int menu_isUse = menu_bean.getMenu_isUse();
 			int menu_couponable = menu_bean.getMenu_couponable();
 	  %>					
-					 
+
 					  
 						<div class="w3-quarter" style="max-width: 300px;">
 						    <img src="<%=menu_imgPath%>" alt="<%=menu_imgPath%>" style="width:100%; height:300px">
