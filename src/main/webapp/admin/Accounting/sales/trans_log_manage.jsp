@@ -1,19 +1,77 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.Vector"%>
+    <%@ page import="java.util.Vector"%>
 <%@ page import="orders.Orders_Bean"%>
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import= "java.util.ArrayList" %>
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="com.google.gson.reflect.TypeToken" %>
+<!DOCTYPE html>
+<html>
+<head>
 
+<meta charset="UTF-8">
+<title>매장 관리 페이지</title>
+<link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/admin/coupon.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/admin/Accounting/account.css" />
+<!-- 스크립트 리팩토링! -->
+<script src="<%=request.getContextPath() %>/assets/js/admin/menu_main_1.js"></script>
+<script src="<%=request.getContextPath()%>/assets/js/admin/account/account.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script>
+     Orders_Bean bean = new Orders_Bean();
 
+   String orders_foods = request.getParameter("orders_foods");
+   Bean.setOrder_foods(request.getParameter("order_foods"))
+	
+	
+
+</script>
+<%@ include file="/admin/layouts/indexBase.jsp" %>
+<%@ include file="/admin/layouts/header.jsp" %>
+<%@ include file="/admin/admin_check/check.jsp" %>
+
+<!-- 스타일 리팩토링! -->
+<style>
+table {
+  border-collapse: collapse;
+  width:90%;
+}
+
+tr, td {
+	border-width:1px
+}
+
+.mainContent div h2 {    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    align-self: center;}
+ 
+.text-over-cut {
+  display: block;
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+</style>
+<!-- 스타일 리팩토링! -->
 
 <jsp:useBean id="menuMgr" class="menu.Manager_Menu"/>
 
+
+	
+
+     </head>
 <%
 
 
@@ -30,46 +88,14 @@ int AllPrice = 0;
 
 	
 %>
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8">
-	<title>코드관리</title>
 
-<link rel="stylesheet" href="/post_inc/datatables/jquery.dataTables.min.css">
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"></script>
-<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-<script>
-     Orders_Bean bean = new Orders_Bean();
-
-   String orders_foods = request.getParameter("orders_foods");
-   Bean.setOrder_foods(request.getParameter("order_foods"))
-	
-	
-
-</script>
-
-<style>
-table {
-  border-collapse: collapse;
-  width:90%;
-}
- 
-.text-over-cut {
-  display: block;
-  width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 0;
-}
-</style>
-	
-
-     </head>
 <body leftmargin="0" topmargin="0">
 
-<div align="center">
+	<div class="layout_left">
+		<%@ include file="/admin/layouts/left.jsp" %>
+	</div>
+<div class="mainContent" id="mainContent">
+<div style="align-content: center; display: flex; flex-direction: column; flex-wrap: wrap;">
     <br/>
 		<h2>매장 관리 페이지</h2>
     <br>
@@ -82,13 +108,14 @@ table {
                	       } else {
               %>
 		
-				  <table  border="1">
+				  <table border="1">
 				  <thead>
-				  <tr>
-			<th colspan="11">코드 등록 자료수 : <%=listSize%></th>
-		</tr>
+				  
 				  </thead>
 				  <tbody class="getMenuList" id="getMenuList">
+				  <tr align="center">
+						<th colspan="11" >코드 등록 자료수 : <%=listSize%></th>
+					</tr>
 					<tr align="center" bgcolor="#D0D0D0" height="120%">
 						<td>번호</td> 
 						<td>판매 일시</td>
@@ -97,7 +124,8 @@ table {
 						<td>할인</td>
 						<td>쿠폰</td>
 						<td>결제 방식</td>
-						<td>사용된 마일리지</td>
+						<td>마일리지</td>
+						<td>주문 현황</td>
 						<td>수정</td>
 						<td>삭제</td>
 					</tr>
@@ -113,51 +141,24 @@ table {
 				    	long order_discount = bean.getOrder_discount();
 				    	String order_coupon = bean.getOrder_coupon();
 				    	String order_type = bean.getOrder_type();
-				    	int order_use_amount = bean.getOrder_use_amount();
-				   
-				    	int count = 0;
+				    	boolean order_use_mile = bean.isOrder_use_mile();
+				        boolean order_is_maked = bean.isOrder_is_maked();
+				    	
 				        if (i < 10) {
 				        
 				    %>
-
 				    <tr>
 						<td align="center">
  						   <%=order_no%>
 						</td>
 						<td align="center">
- 						   <%=String.valueOf(order_time).substring(0, String.valueOf(order_time).length()-2)%>
+ 						   <%=order_time%>
 						</td>
-
-						<% 
-						
-						Gson gson = new Gson();
-						
-							List<Map<String, Object>> parsedData = gson.fromJson(order_foods, new TypeToken<List<Map<String, Object>>>() {}.getType());
-							
-							Map<String, Integer> menuMap = new HashMap<>();
-							String productInfo = "";
-							
-							for (Map<String, Object> order : parsedData ) {
-								for (Map.Entry<String, Object> entry : order.entrySet()){
-									String menuName = entry.getKey();
-							        Object value = entry.getValue();
-							        if ("name".equals(menuName)) {
-										productInfo += value + " X ";
-							        } else if ("amount".equals(menuName)) {
-										productInfo += value + "개, ";
-							        }
-									
-								}
-							}
-						
-							productInfo = productInfo.replaceAll(", $", "");
-
- 						%>
- 						
- 						<td align="center" class="text-over-cut">
-							<%=productInfo%>
+						<td align="center">
+						<div class="text-over-cut">
+						 <%=order_foods%>
+						</div>
 						</td>
-						
 						<td align="center">
  						   <%=order_price%>
 						</td>
@@ -171,7 +172,10 @@ table {
  						   <%=order_type%>
 						</td>
 						<td align="center">
- 						   <%=order_use_amount%>
+ 						   <%=order_use_mile%>
+						</td>
+						<td align="center">
+ 						   <%=order_is_maked%>
 						</td>
 							<td align="center">
 						   <input type="button" value="수정" onClick="loadContent('sales/ac00up.jsp?numb=<%=order_no%>');" >
@@ -184,12 +188,7 @@ table {
 				    
               </tr>
 				<%} else {}
-				        }//for
-				        
-				        
-				        
-				       %>
-				 
+				        }//for%>
 				<%
 				}//if
 				%> 
@@ -200,7 +199,7 @@ table {
 		 <tr>
 	
 		</table>
-
+	</div>
 </div>
 
 <script>
@@ -213,7 +212,10 @@ table {
 	{
 		location.href = "ac00up.jsp?order_no=" + order_no; 
 	}
-		
-</script>  
+	
+
+	
+	
+</script>
 </body>
 </html>

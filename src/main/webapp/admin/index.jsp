@@ -11,7 +11,7 @@
 <%@ include file="/admin/layouts/indexBase.jsp" %>
 <%@ include file="/admin/layouts/header.jsp" %>
 <%@ include file="/admin/admin_check/check.jsp" %>
-
+<script>sessionStorage.setItem('context', "<%=request.getContextPath()%>")</script>
 </head>
 
 <body>

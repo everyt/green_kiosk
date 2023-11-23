@@ -32,16 +32,23 @@
 function barChart2() {
 
 const dateValues = priceSumDate.map(date => new Date(date).getDate());
-console.log("priceSumDate : " + priceSumDate);
+
   const ctx = document.getElementById('myChart2');
+  const colors = priceweekily.map((value, index, array ) => {
+	  if (index > 0) {
+		  return value > array[index - 1] ? 'blue' : 'red';
+	  }
+	  return 'blue';
+  });
   new Chart(ctx, {
     type: 'line',
     data: {
       labels: ['일요일' ,'월요일' , '화요일', '수요일', '목요일' , '금요일' , '토요일'],
       datasets: [{
         label: '요일별 매출 (단위 : 원)',
-        data: priceSumdaily,
-        borderWidth: 1
+        data: priceweekily,
+        borderWidth: 1,
+        borderColor: colors,
       }]
     },
     options: {
@@ -65,6 +72,7 @@ console.log("priceSumDate : " + priceSumDate);
     }
   });
 }
+
 
 
 function barChart3() {
@@ -108,33 +116,51 @@ function barChart3() {
 }
 
 
-function getCookieValue(cookieName) {
-	const name = cookieName + "=";
-	const decodedCookie = decodeURIComponent(document.cookie);
-	const cookieArray = decodedCookie.split(';');
-		
-	for (let i = 0; i < cookieArray.length; i++) {
-		let cookie = cookieArray[i].trim();
-		if (cookie.indexOf(name) === 0) {
-			return cookie.substring(name.length, cookie.length);
-		}
-	}
-	return "";
+
+
+
+function barChart4() {
+    const existingChart = Chart.getChart('myChart4');
+    if (existingChart) {
+        existingChart.destroy();
+    }
+
+  const entriesTermArray = Array.from(menuAmountTermMap.entries());
+  const menuTermData = entriesTermArray.map(([name, amount]) => ({ name, amount }));
+  menuTermData.sort((a, b) => b.amount - a.amount);
+  const top20MenuTermData = menuTermData.slice(0, 20);
+  console.log("entriesTermArray : " + entriesTermArray);
+	console.log(top20MenuTermData.map(item => item.name));
+		console.log(top20MenuTermData.map(item => item.amount));
+	
+    const ctx = document.getElementById('myChart4').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: top20MenuTermData.map(item => item.name),
+            datasets: [{
+                label: '판매량',
+                data: top20MenuTermData.map(item => item.amount),
+                	borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: `선택한 기간의 메뉴별 판매량`
+                }
+            }
+        }
+    });
 }
-
-function cookieSeparate(cookieObject) {
-  const labels = Array.from(cookieObject.keys());
-  const data = Array.from(cookieObject.values());
-
-
-  return {
-    labels: labels,
-    data: data,
-    label: '# of Votes'
-  };
-}
-
 
 window.addEventListener('DOMContentLoaded', function() {
-     barChart();
+     //barChart();
 });

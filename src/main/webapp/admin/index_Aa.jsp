@@ -1,24 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
 
+<meta charset="UTF-8">
+<title>관리자 페이지</title>
+<link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/admin/coupon.css">
+<script src="<%=request.getContextPath() %>/assets/js/admin/menu_main_1.js"></script>
+<script src="<%=request.getContextPath()%>/assets/js/admin/index/index_main.js"></script>
+<%@ include file="/admin/layouts/indexBase.jsp" %>
+<%@ include file="/admin/layouts/header.jsp" %>
+<%@ include file="/admin/admin_check/check.jsp" %>
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index/index_main.js"></script>
+</head>
 
-<%-- <script>
-const foods = new Map();
-const foods2 = new Map();
-const foods3 = new Map();
-</script>
-<%@ include file ="/admin/layouts/index/index_parsing.jsp" %>
-<script>
-foods.set("data_value", '<%=values.toString()%>')
-foods.set("data_key", '<%=keys.toString() %>')
-foods2.set("data_value2", '<%=values2.toString()%>')
-foods2.set("data_key2", '<%=keys2.toString() %>')
-foods3.set("data_value3", '<%=values3.toString()%>')
-foods3.set("data_key3", '<%=keys3.toString() %>')
-</script> --%>
+<body>
+<br/>
+	<div class="layout_left">
+		<%@ include file="/admin/layouts/left.jsp" %>
+	</div>
 <main class="mainContent">
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
@@ -69,3 +70,7 @@ foods3.set("data_key3", '<%=keys3.toString() %>')
   </div>
 </main>
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js"></script>
+	<br/>
+</body>
+<script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/admin/index_index.js"></script>
+</html>

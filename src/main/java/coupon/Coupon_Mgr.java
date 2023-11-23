@@ -71,6 +71,35 @@ public class Coupon_Mgr {
 	            bean.setCoupon_expireDate(this.rs.getTimestamp("coupon_expireDate"));
 	            bean.setCoupon_limitTime1(this.rs.getTimestamp("coupon_limitTime1"));
 	            bean.setCoupon_limitTime2(this.rs.getTimestamp("coupon_limitTime2"));
+	            bean.set_owner(this.rs.getString("coupon_owner"));
+	            vector.add(bean);
+	        }
+        } catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			this.Closer();
+		}
+		return vector;
+	}
+	
+	public Vector<Coupon_Bean> getUserCoupon(String user_id) {
+		Vector<Coupon_Bean> vector = new Vector<Coupon_Bean>();
+		try {
+			this.Initializer("SELECT * FROM coupon WHERE coupon_owner = ? AND coupon_used = false");
+			this.pst.setString(1, user_id);
+			this.rs = this.pst.executeQuery();
+			while (this.rs.next()) {
+				Coupon_Bean bean = new Coupon_Bean();
+	            bean.setCoupon_no(this.rs.getInt("coupon_no"));
+	            bean.setCoupon_name(this.rs.getString("coupon_name"));
+	            bean.setCoupon_code(this.rs.getString("coupon_code"));
+	            bean.setCoupon_menuNo(this.rs.getInt("coupon_menuNo"));
+	            bean.setCoupon_discount(this.rs.getInt("coupon_discount"));
+	            bean.setCoupon_issueDate(this.rs.getTimestamp("coupon_issueDate"));
+	            bean.setCoupon_expireDate(this.rs.getTimestamp("coupon_expireDate"));
+	            bean.setCoupon_limitTime1(this.rs.getTimestamp("coupon_limitTime1"));
+	            bean.setCoupon_limitTime2(this.rs.getTimestamp("coupon_limitTime2"));
+	            bean.set_owner(this.rs.getString("coupon_owner"));
 	            vector.add(bean);
 	        }
         } catch (Exception e) {
@@ -114,6 +143,7 @@ public class Coupon_Mgr {
 	            bean.setCoupon_expireDate(this.rs.getTimestamp("coupon_expireDate"));
 	            bean.setCoupon_limitTime1(this.rs.getTimestamp("coupon_limitTime1"));
 	            bean.setCoupon_limitTime2(this.rs.getTimestamp("coupon_limitTime2"));
+	            bean.set_owner(this.rs.getString("coupon_owner"));
 	        }
         } catch (Exception e) {
 			e.printStackTrace();

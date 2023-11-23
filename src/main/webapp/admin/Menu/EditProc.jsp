@@ -90,15 +90,10 @@
 				
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
-		        %>
-		       	<script>
-		       		window.opener.updateMenu('<%=menuType%>');
-		       	</script>
-		        <%
+				script.println("opener.updateMenu('"+menuType+"')");
 				script.println("window.close();");
 				script.println("</script>");
- 				script.println("window.close()");
-				script.println("</script>");
+
 			}
 		} else { //null 값 처리 실패
 			PrintWriter script = response.getWriter();

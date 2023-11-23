@@ -1,14 +1,15 @@
 var menuType = "all";
 var priceSumdaily = [0,0,0,0,0,0,0];
+var priceweekily = [0,0,0,0,0,0,0];
 var priceSumDate = ['','','','','','',''];
 var menuAmountMap = new Map();
-var keyValuePairs  = [];
+var menuAmountTermMap = new Map();
+var week_total = 0;
 
-function updateMenu(menuType) {
-    document.cookie = "menuType=" + menuType;
+function updateMenu(type, time) {
     $.ajax({
         type: "POST",
-        url: "./index/getMenuData?type=" + menuType,
+        url: "./index/getMenuData?type=" + type + "&time=" + time,
         dataType: "json",
         data: {
             type: menuType
@@ -18,66 +19,26 @@ function updateMenu(menuType) {
             if (response && response.length > 0) {
                 if (type == "all"){
                 var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily } = processMenuData(response);
-				console.log("모든 주문한 음식들 : " + allOrderFoods);
 
 					var orderInfoArray = JSON.parse("[" + allOrderFoods + "]");
-					var keyValuePairs  = [];
-					
+										
 					orderInfoArray.forEach(function(order) {
-					    var keys = Object.keys(order);
-					    var values = Object.values(order);
-					    
-					    
-
-					    // 키와 값을 객체로 묶어서 keyValuePairs 배열에 추가
-					    var keyValueObject = {};
-					    keys.forEach(function(key, index) {
-					        keyValueObject[key] = values[index];
-					    });
-					    keyValuePairs.push(keyValueObject);
-					});
-					
-					// 키와 값 출력
-					keyValuePairs.forEach(function(pair) {
-					    console.log('Object:', pair);
-					    console.log('-------------------');
-					});
-					
-					var menuAmountMap = {};
-					
-					orderInfoArray.forEach(function(order) {
-						order.forEach(function(item) {
-							var menuName = item.name;
-							var amount = parseInt(item.amount);
-							
-							if(menuAmountMap[menuName]) {
-								menuAmountMap[menuName] += amount;
-							} else {
-								menuAmountMap[menuName] = amount;
-							}
-						});
-					});
-					
-					for (var menu in menuAmountMap){
-   						 console.log('Menu:', menu, 'Amount:', menuAmountMap[menu]); 	
-   						 console.log(menuAmountMap[menu]);
-					}
-
-
-
-
-
-
-
-				let	totalAmountByNameCookie = getCookieValue("totalAmountByName");
-				let totalAmountByNameCookieObject = JSON.parse(totalAmountByNameCookie);
-				
-				let totalAmountByNameFromCookie =  new Map(Object.entries(totalAmountByNameCookieObject));
-				totalAmountByNameFromCookie.forEach((value, key) => {
+				    order.forEach(function(item) {
+				        var menuName = item.name;
+				        var amount = parseInt(item.amount);
+										        
+				        if (menuAmountMap.has(menuName)) {
+				            menuAmountMap.set(menuName, menuAmountMap.get(menuName) + amount);
+				        } else {
+				            menuAmountMap.set(menuName, amount);
+				        }
+				    });
 				});
-                // Update HTML
-                updateHTML(priceSumDay, priceSumWeek, priceSumMonth, priceSumdaily);
-
+				                				     
+				 barChart3();
+				barChart2();
+				}
+				//response if's else 
             } else {
                 console.error("No data received or data is empty.");
             }
@@ -91,9 +52,76 @@ function updateMenu(menuType) {
 
 
 
+//이번 달 고정 매출 계산 
+
+function getindexinfo(type) {
+    $.ajax({
+        type: "POST",
+        url: "./index/getIndexInfo?type=" + type,
+        dataType: "json",
+        data: {
+            type: menuType
+        },
+        contentType: "application/json; charset=UTF-8",
+        success: function (response) {
+            if (response && response.length > 0) {
+                if (type == "all"){
+                var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily } = processMenuData(response);
+				
+                // Update HTML
+                updateHTML(priceSumDay, priceSumWeek, priceSumMonth, priceSumdaily);
+				     
+				} else {
+					getWeekinfo()
+				}
+				//response if's else 
+            } else {
+                console.error("No data received or data is empty.");
+            }
+        },
+
+        error: function (xhr, status, error) {
+            console.error("Ajax request failed:", status, error);
+        }
+    });
+}
 
 
-function processMenuData(response) {
+function getWeekinfo() {
+	let type = "all"
+    $.ajax({
+        type: "POST",
+        url: "./index/getMenuData?time=week&type=" + type,
+        dataType: "json",
+        data: {
+            type: menuType
+        },
+        contentType: "application/json; charset=UTF-8",
+        success: function (response) {
+            if (response && response.length > 0) {
+                if (type == "all"){
+                var { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily } = processMenuData(response, "week");
+				
+                // Update HTML
+                updateHTML(priceSumDay, priceSumWeek, priceSumMonth, priceSumdaily);
+				     
+				}
+				//response if's else 
+            } else {
+                console.error("No data received or data is empty.");
+            }
+        },
+
+        error: function (xhr, status, error) {
+            console.error("Ajax request failed:", status, error);
+        }
+    });
+}
+
+
+
+function processMenuData(response, type) {
+
     var foodSales = {};
     var foodCount = {};
     var priceSumDay = 0;
@@ -113,49 +141,85 @@ function processMenuData(response) {
         var orderDate = new Date(order_time).toISOString().slice(0, 10);
         var order_price = response[i].order_price;
 	    var order_foods = response[i].order_foods; // 주문 음식 정보를 JSON으로 파싱
+	    var order_type = response[i].order_type;
        allOrderFoods.push(order_foods);
        allTime.push(order_time);   
 	    var orderDay = new Date(orderDate).getDay();
 	    
 	    
-        if (orderDate == currentDate) {
-            priceSumDay += order_price;
-		} 
-		//orderDate == startDate, currentDate == endDate //
-        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) < 7) {
-            priceSumWeek += order_price;
-      		  if (!priceSumDate.includes(orderDate)) {
-        			priceSumDate[orderDay] = orderDate; 
-        			}
-            priceSumdaily[orderDay] += order_price;
-        }
+
 		
-        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) <= 30) {
-            priceSumMonth += order_price;
-        }
+		 if (type == "week") {
+			 if (orderDate == currentDate) {
+           		 priceSumDay += order_price;
+			} 
+			 
+					//orderDate == startDate, currentDate == endDate //
+	        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) < 7) {
+	            priceSumWeek += order_price;
+	      		  if (!priceSumDate.includes(orderDate)) {
+	        			priceSumDate[orderDay] = orderDate; 
+	        			}
+	            priceweekily[orderDay] += order_price;
+	        }
+	        
+	        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) <= 30) {
+	            week_total += order_price;
+	        }
+		} else if (type == "term") {
+			
+			} else {
+			 if (orderDate == currentDate) {
+           		 priceSumDay += order_price;
+			} 
+			
+			//orderDate == startDate, currentDate == endDate //
+	        if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) < 7) {
+	            priceSumWeek += order_price;
+	      		  if (!priceSumDate.includes(orderDate)) {
+	        			priceSumDate[orderDay] = orderDate; 
+	        			}
+	            priceSumdaily[orderDay] += order_price;
+	        }
+	        
+	         if (dateDiff(orderDate, currentDate) >= 0 && dateDiff(orderDate, currentDate) <= 30) {
+	            priceSumMonth += order_price;
+	        }
+		}
+
+       
         
         
     }   
+		 
+	
     return { priceSumDay, priceSumWeek, priceSumMonth, foodCount, foodSales, allOrderFoods, allTime, priceSumdaily };
 }
 
-function updateHTML(priceSumDay, priceSumWeek, priceSumMonth, totalAmountByNameFromCookie) {
+function updateHTML(priceSumDay, priceSumWeek, priceSumMonth) {
+	const pathname = "/" + window.location.pathname.split("/")[1] + "/";
+	const origin = window.location.origin;
+	const contextPath = origin + pathname;
 var htmlTemplate =
-    '<div class="col-xl-3 col-md-6 mb-4">' +
+    '<div class="col-xl-3 col-md-6 mb-4"  onclick="openPopup(\'' + contextPath + '/admin/index/sales_list.jsp?term=day' + '\')">' +
     createCard2('일일 매출', priceSumDay) +
     '</div>' +
-    '<div class="col-xl-3 col-md-6 mb-4">' +
-    createCard2('이번 주 매출', priceSumWeek) +
+    '<div class="col-xl-3 col-md-6 mb-4"  onclick="openPopup(\'' + contextPath + '/admin/index/sales_list.jsp?term=week' + '\')">' +
+    createCard2('이번 주 매출', week_total) +
     '</div>' +
-    '<div class="col-xl-3 col-md-6 mb-4">' +
+    '<div class="col-xl-3 col-md-6 mb-4" onclick="openPopup(\'' + contextPath + '/admin/index/sales_list.jsp?term=month' + '\')">' +
     createCard2('이번 달 매출', priceSumMonth) +
     '</div>';
-    //$('.getMenuList').empty().html(htmlTemplate);
+    $('.getMenuList').empty().html(htmlTemplate);
 }
 
 
 window.addEventListener('DOMContentLoaded', function() {
-    updateMenu(menuType);
+    updateMenu('all', 'month');
+/*updateMenu('all', 'week');*/
+getWeekinfo("week");
+getindexinfo('all');
+barChart4();
 });
 
 
@@ -230,127 +294,115 @@ function openPopup(url) {
 }
 
 
-function getCookieValue(cookieName) {
-	const name = cookieName + "=";
-	const decodedCookie = decodeURIComponent(document.cookie);
-	const cookieArray = decodedCookie.split(';');
-		
-	for (let i = 0; i < cookieArray.length; i++) {
-		let cookie = cookieArray[i].trim();
-		if (cookie.indexOf(name) === 0) {
-			return cookie.substring(name.length, cookie.length);
-		}
-	}
-	return "";
+
+
+function updateChartInterval(startDate, endDate) {
+    $.ajax({
+        type: "POST",
+        url: "./index/getChartWithDate?startDate=" + startDate + "&endDate=" + endDate,
+        dataType: "json",
+        data: {
+            type: menuType
+        },
+        contentType: "application/json; charset=UTF-8",
+        success: function (response) {
+            if (response && response.length > 0) {
+                var {allOrderFoods, allTime} = processMenuData(response, "term");
+
+					let orderInfoArray1 = JSON.parse("[" + allOrderFoods + "]");
+					menuAmountTermMap = new Map()
+										
+					orderInfoArray1.forEach(function(order) {
+				    order.forEach(function(item) {
+				        var menuName = item.name;
+				        var amount = parseInt(item.amount);
+						
+				        if (menuAmountTermMap.has(menuName)) {
+				            menuAmountTermMap.set(menuName, menuAmountTermMap.get(menuName) + amount);
+				        } else {
+				            menuAmountTermMap.set(menuName, amount);
+				        }
+				    });
+				});
+				
+				console.log("barChart4 parsing menuAmountTermMap : " + menuAmountTermMap);
+				barChart4();
+				
+            } else {
+                console.error("No data received or data is empty.");
+            }
+        },
+
+        error: function (xhr, status, error) {
+            console.error("Ajax request failed:", status, error);
+        }
+    });
 }
 
-function cookieSeparate(cookieObject) {
-    const keyValuePairs = Array.from(cookieObject.entries()).map(([key, value]) => `${key}: ${value}`);
+
+function updateChart() {
+    const startDate1 = new Date(document.getElementById('startDate').value);
+    const endDate1 = new Date(document.getElementById('endDate').value);
     
-    // Join the array into a single string
-    return keyValuePairs.join("<br>");
+    const startDate = changeDateFormat(startDate1);
+    const endDate = changeDateFormat(endDate1);
+    
+    updateChartInterval(startDate, endDate);
 }
-
-
-function JSONparsing(){
-const keys = JSON.parse(foods.get("data_key"))
-const values = JSON.parse(foods.get("data_value"))
-let foods_list = new Array();
-let foods_map = new Map();
-let i = 0
-keys.forEach((entry) => {
+// datePicker로 받은 date 형식 변경하기
+function changeDateFormat(value) {
+	const year = value.getFullYear();
+	const month = (value.getMonth() + 1).toString().padStart(2, '0');
+	const day = value.getDate().toString().padStart(2, '0');
 	
-	if (entry === "index" && i != 0) {
-		foods_list.unshift(foods_map);
-		foods_map = new Map();
-	}
-	foods_map.set(entry, values[i])
-	i = i + 1
-})
-
-
-let totalAmountByName = new Map();
-
-foods_list.forEach(foods_map => {
-
-    for (const [key, value] of foods_map.entries()) {
-        if (key === "name") {
-
-            let name = value;
-
-            let amount = parseInt(foods_map.get("amount"));
-            if (totalAmountByName.has(name)) {
-                totalAmountByName.set(name, totalAmountByName.get(name) + amount);
-            } else {
-                totalAmountByName.set(name, amount);
-            }
-        }
-    }
-});
-
-let totalAmountByNameObject = {};
-totalAmountByName.forEach((value , key) => {
-	totalAmountByNameObject[key] = value;
-});
-
-let totalAmountByNameJSON = JSON.stringify(totalAmountByNameObject);
-document.cookie = "totalAmountByName=" + totalAmountByNameJSON;
-// 결과 출력
-
+	const dateString = year + '-' + month + '-' + day;
+	
+	return dateString;
 }
+
+
+
+
+
+
+    //ac00.jsp
+  function getFoodList2(value)
+	{
+		const menuMap = new Map();
+		
+    var parsedData = JSON.parse("["+ value +"]");
+    parsedData.forEach(function(order) {
+    	order.forEach(function(item) {
+    		//menu name
+    		var menuName = item.name;
+    		//menu amount
+    		var amount = parseInt(item.amount);
+    		
+    		if(menuMap.has(menuName)) { 
+    			menuMap.set(menuName, menuMap.get(menuName) + amount);
+    		} else {
+    			menuMap.set(menuName, amount);
+    		}
+    	});
+    });
+
+
+    const menuArray = Array.from(menuMap.entries());
+    const menuData = menuArray.map(([menuName, amount]) => ({menuName, amount}));
+    let res = "";
+    let i = 0;
+    menuArray.forEach((ele) => {
+			res += ele[0] + " X " + ele[1] + ", "	
+	})
+	
+	document.regFrm.order_foods.value = res.substring(0, res.length-2)
+
+	}
+	
+	
 
 window.addEventListener('DOMContentLoaded', function() {
-   JSONparsing();
-});
-
-
-function JSONparsing2(){
-const keys = JSON.parse(foods2.get("data_key2"))
-const values = JSON.parse(foods2.get("data_value2"))
-let foods_list = new Array();
-let foods_map = new Map();
-let i = 0
-keys.forEach((entry) => {
-	
-	if (entry === "index" && i != 0) {
-		foods_list.unshift(foods_map);
-		foods_map = new Map();
-	}
-	foods_map.set(entry, values[i])
-	i = i + 1
-})
-
-
-let totalAmountByName2 = new Map();
-
-foods_list.forEach(foods_map => {
-
-    for (const [key, value] of foods_map.entries()) {
-        if (key === "name") {
-
-            let name = value;
-
-            let amount = parseInt(foods_map.get("amount"));
-            if (totalAmountByName2.has(name)) {
-                totalAmountByName2.set(name, totalAmountByName2.get(name) + amount);
-            } else {
-                totalAmountByName2.set(name, amount);
-            }
-        }
-    }
-});
-
-let totalAmountByNameObject = {};
-totalAmountByName2.forEach((value , key) => {
-	totalAmountByNameObject[key] = value;
-});
-
-let totalAmountByNameJSON = JSON.stringify(totalAmountByNameObject);
-document.cookie = "totalAmountByName2=" + totalAmountByNameJSON;
-// 결과 출력
-
-}
-
-window.addEventListener('DOMContentLoaded', function() {
-   JSONparsing2();
+	value = document.getElementById("ac00foods").value;
+	console.log("ac00foods : " + value);
+    getFoodList2(value);
 });
