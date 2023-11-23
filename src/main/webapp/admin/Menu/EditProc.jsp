@@ -40,7 +40,10 @@
 		
 		int menu_isUse = 0;
 		int menu_isSale = 0;
-
+		int menu_couponable = 0;
+		int menu_recommend = 0;
+		
+		
 		String menuIsSaleParameter = multi.getParameter("menu_isSale");
 		if (menuIsSaleParameter != null && !menuIsSaleParameter.isEmpty()) {
 		    menu_isSale = 1;
@@ -51,11 +54,23 @@
 		    menu_isUse = 1;
 		}
 		
+		String menuCouponableParameter = multi.getParameter("menu_couponable");
+		if (menuCouponableParameter != null && !menuCouponableParameter.isEmpty()) {
+			menu_couponable = 1;
+		}
+		
+		String menuRecommendParameter = multi.getParameter("menu_recommend");
+		if (menuRecommendParameter != null && !menuRecommendParameter.isEmpty()) {
+			menu_recommend = 1;
+		}
+		
 		if (		multi.getParameter("menu_no") != null && !multi.getParameter("menu_no").isEmpty() &&
 				multi.getParameter("menu_name") != null && !multi.getParameter("menu_name").isEmpty() && 
 			    multi.getParameter("menu_gubn") != null && !multi.getParameter("menu_gubn").isEmpty() &&
 			    multi.getParameter("menu_price") != null && !multi.getParameter("menu_price").isEmpty() &&
-			    multi.getParameter("menu_content") != null && !multi.getParameter("menu_content").isEmpty())
+			    multi.getParameter("menu_content") != null && !multi.getParameter("menu_content").isEmpty() &&
+			    multi.getParameter("menu_component") != null && !multi.getParameter("menu_component").isEmpty() &&
+				multi.getParameter("menu_sell_amount") != null && !multi.getParameter("menu_sell_amount").isEmpty()) 
 		{
 		int menu_no = Integer.parseInt(multi.getParameter("menu_no"));
 		String fileName = multi.getFilesystemName("menu_imgPath");
@@ -63,6 +78,8 @@
 		String menu_gubn = multi.getParameter("menu_gubn");
 		int menu_price = Integer.parseInt(multi.getParameter("menu_price"));
 		String menu_content = multi.getParameter("menu_content");
+		String menu_component = multi.getParameter("menu_component");
+		int menu_sell_amount = Integer.parseInt(multi.getParameter("menu_sell_amount"));
 		
 		if (multi.getParameter("menu_gubn").equals("재료")){
 			
@@ -83,9 +100,10 @@
 				menuBean.setMenu_price(menu_price);
 				menuBean.setMenu_content(menu_content); 
 				menuBean.setMenu_isUse(menu_isUse);
-				menuBean.setMenu_component("0");
-				menuBean.setMenu_sell_amount(0);
-				menuBean.setMenu_recommend(0);
+				menuBean.setMenu_couponable(menu_couponable);
+				menuBean.setMenu_recommend(menu_recommend);
+				menuBean.setMenu_component(menu_component);
+				menuBean.setMenu_sell_amount(menu_sell_amount);
 				boolean result = menuMgr.updateMenu(menuBean);
 				
 				PrintWriter script = response.getWriter();
