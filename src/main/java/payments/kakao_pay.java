@@ -271,6 +271,8 @@ public class kakao_pay extends HttpServlet {
 					bean.setOrder_use_mile(false);
 					o_mgr.addOrder(bean);
 				}
+				
+				response.sendRedirect("/kiosk/purchase/finally.jsp");
 			}
 		}
 	}
