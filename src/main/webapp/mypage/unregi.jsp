@@ -15,10 +15,13 @@
 	
 	Member_Mgr u_mgr = new Member_Mgr();
 	Member_Bean bean = u_mgr.getMember(String.valueOf(mem_id));
+	String mem_ac = "";
 	if (bean == null) {
 		%> <script> alert("로그인 상태가 아닙니다.");location.href="<%=cPath %>/"</script> <%
+	} else {
+		bean.getMem_ac();
 	}
-	String mem_ac = bean.getMem_ac();
+	
 	
 	Vector<Orders_Bean> orders = mgr.getOrdersByUser(String.valueOf(mem_id)); %>
 <html>
@@ -107,19 +110,24 @@ function edit() {
 				</td>
 				<!-- 해당 위치 고정 -->
 				<td rowspan="4" width="80%">
+				
 					<table cellspacing="0" cellpadding="2" width="100%" height="100%">
 						<tr>
+							<td>
 							<!-- 내용 위치 고정 이 사이에 -->
-												<h1>회원탈퇴</h1>
-			<form action="NewFile1.jsp" method="post">			
-					아이디: <input type="text" name="mem_id">
-				<br>
-					패스워드: <input type="password" name="mem_pw">
-				<br>
-					<input type="submit" value="회원탈퇴">
-				<br>
-				
-			</form>
+								<form action="NewFile1.jsp" method="POST" class="joinForm" name="regFrom" style="transform: translate(-20%, -30%)">                                                                     
+							      <div class="textForm">
+							        <input name="mem_id" type="text" class="regi_name" placeholder="아이디">
+							        <label for="mem_id" style="position:absolute; transform: translateX(-415px) translateY(3px); width:100px;">아이디 : </label>
+							      </div>
+							      <div class="textForm">
+							        <input name="mem_pw" type="text" maxlength="11" class="cellphoneNo" oninput="maxLengthCheck(this)" placeholder="비밀번호">
+							      	<label for="mem_pw" style="position:absolute; transform: translateX(-427px) translateY(3px); width:100px;">비밀번호 : </label>
+							      </div>
+
+							      <input type="submit" class="btn" style="transform: translateX(-50%) translateY(100%);" value="회 원 탈 퇴"/>
+							    </form>
+							  </td>
 							<!-- 내용 위치 고정 이 사이에 -->
 						</tr>
 					</table>
