@@ -57,7 +57,7 @@ public class Coupon_kind_Mgr {
     public Coupon_kind_Bean get_type_with_name(String name) {
     	Coupon_kind_Bean type = new Coupon_kind_Bean();
     	try {
-    		this.Initializer("SELECT * FROM `coupon_type` WHERE `coupon_name` = ?");
+    		this.Initializer("SELECT * FROM `coupon_type` WHERE `name` = ?");
     		this.pst.setString(1, name);
     		System.out.println(name);
     		this.rs = this.pst.executeQuery();

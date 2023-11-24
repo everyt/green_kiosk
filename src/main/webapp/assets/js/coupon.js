@@ -1,9 +1,9 @@
 function cate_pop(cate, can_cate, couname) {
 	let s_category = document.querySelector("."+cate)
-	document.querySelector(".one").attributes.onclick.value = "cate_pop('one',\""+can_cate+"\")"
-	document.querySelector(".set").attributes.onclick.value = "cate_pop('set',\""+can_cate+"\")"
-	document.querySelector(".side").attributes.onclick.value = "cate_pop('side',\""+can_cate+"\")"
-	document.querySelector(".drink").attributes.onclick.value = "cate_pop('drink',\""+can_cate+"\")"
+	document.querySelector(".one").attributes.onclick.value = "cate_pop('one',\""+can_cate+"\", '"+couname+"')"
+	document.querySelector(".set").attributes.onclick.value = "cate_pop('set',\""+can_cate+"\", '"+couname+"')"
+	document.querySelector(".side").attributes.onclick.value = "cate_pop('side',\""+can_cate+"\", '"+couname+"')"
+	document.querySelector(".drink").attributes.onclick.value = "cate_pop('drink',\""+can_cate+"\", '"+couname+"')"
 	let can_cates = JSON.parse(can_cate.replaceAll("\'", "\""))
 	let a_cates = ""
 	can_cates.forEach((a_cate) => {
@@ -119,15 +119,7 @@ function pop_select(name, cate, can_cate, couname) {
 				}
 				
 				if (response.status == 400) {
-					response.json().then((data) => {
-						if (data.reason == "invaild_coupon") {
-							alert(`쿠폰 발급에 실패하였습니다.\n쿠폰정보가 올바르지 않습니다.`)
-						}
-						
-						if (data.reason == "menu_not_found") {
-							alert(`쿠폰 발급에 실패하였습니다.\n선택한 메뉴를 찾을수 없습니다.`)
-						}
-					})
+					alert(`쿠폰 발급에 실패하였습니다.\n쿠폰정보가 올바르지 않습니다.`)
 				}
 				
 				if (response.status == 401) {

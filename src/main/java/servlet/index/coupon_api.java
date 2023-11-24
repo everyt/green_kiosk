@@ -82,23 +82,39 @@ public class coupon_api extends HttpServlet {
 				
 				if (printable_name.contains(name)) {
 					this.ck_bean = ck_mgr.get_type_with_name(name);
-					Random rnd = new Random();
-					StringBuffer buf = new StringBuffer();
-					for(int i=0;i<16;i++){
-						if(rnd.nextBoolean()){
-							buf.append((char)((int)(rnd.nextInt(26))+97));
-						}else{
-							buf.append((rnd.nextInt(10)));
+					List<Coupon_Bean> c_beans = mgr.readAllCoupon();
+					List<String> cur_coupons = new ArrayList<String>();
+					String code = "";
+					for (Coupon_Bean coupon : c_beans) {
+						cur_coupons.add(coupon.getCoupon_code());
+					}
+					boolean repeat = true;
+					while (repeat) {
+						Random rnd = new Random();
+						StringBuffer buf = new StringBuffer();
+						for(int i=0;i<16;i++){
+							if(rnd.nextBoolean()){
+								buf.append((char)((int)(rnd.nextInt(26))+97));
+							}else{
+								buf.append((rnd.nextInt(10)));
+							}
+						}
+						code = buf.toString();
+						
+						if (cur_coupons.contains(code) == false) {
+							repeat = false;
 						}
 					}
 					
-					String code = buf.toString();
+					
+
 					this.m_bean = this.m_mgr.getMenuwithName(menu);
 					if (this.m_bean != null) {
-						if (cate == this.m_bean.getMenu_gubn()) {
+						if (cate.equals(this.m_bean.getMenu_gubn())) {
 							if (ck_bean.getCategory().contains(cate)) {
 								this.bean.setCoupon_code(code);
-								this.bean.set_owner(String.valueOf("mem_id"));
+								this.bean.set_owner(String.valueOf(mem_id));
+								System.out.println(this.bean.get_owner());
 								this.bean.setCoupon_discount(ck_bean.getDiscount_per());
 								this.bean.setCoupon_name(ck_bean.getName());
 								this.bean.setCoupon_menuNo(this.m_bean.getMenu_no());
@@ -109,16 +125,16 @@ public class coupon_api extends HttpServlet {
 									response.sendError(500);
 								}
 							} else {
-								response.sendError(400, "{\"reason\":\"invaild_coupon\"}");
+								response.sendError(400, "{\"reason\":\"invaild_couponc\"}");
 							}
 						} else {
-							response.sendError(400, "{\"reason\":\"invaild_coupon\"}");
+							response.sendError(400, "{\"reason\":\"invaild_couponb\"}");
 						}
 					} else {
 						response.sendError(400, "{\"reason\":\"menu_not_found\"}");
 					}
 				} else {
-					response.sendError(400,  "{\"reason\":\"invaild_coupon\"}");
+					response.sendError(400,  "{\"reason\":\"invaild_coupona\"}");
 				}
 			} else {
 				response.sendError(401);

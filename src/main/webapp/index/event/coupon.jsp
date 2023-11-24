@@ -130,7 +130,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	<div class="coupon_tables" style="display:flex">
 		<table border="1" style="width:40%">
 			<tr style="background-color: powderblue">
-				<th width="50%">쿠폰명</th>
+				<th width="45%">쿠폰명</th>
 				<th>할인율</th>
 				<th width="20%">유효기간</th>
 				<th width="20%">발급하기</th>
@@ -195,15 +195,18 @@ window.addEventListener('DOMContentLoaded', function() {
 				<th width="30%">쿠폰명</th>
 				<th width="30%">쿠폰번호</th>
 				<th width="15%">남은일수</th>
+				<th>할인율</th>
 				<th>선택한 메뉴 명</th>
 			</tr>
 			<%
 			int user_count = 0;
 			for (Coupon_Bean user_coupon : user_coupons) {
 				String base_code = user_coupon.getCoupon_code();
-				String code = base_code.substring(0,3) + " - " + base_code.substring(4, 8) + " - " + base_code.substring(9, 13) + " - " + base_code.substring(14, 18);
+				System.out.println(base_code);
+				String code = base_code.substring(0,4) + " - " + base_code.substring(4, 8) + " - " + base_code.substring(8, 12) + " - " + base_code.substring(12);
 				
 				int vaild_date = c_k_mgr.get_type_with_name(user_coupon.getCoupon_name()).getVaild_date();
+				Menu_menu_Bean m_bean = m_mgr.getMenu(user_coupon.getCoupon_menuNo());
 				user_count += 1;
 				if (vaild_date != -1) {
 					LocalDateTime issueday = user_coupon.getCoupon_issueDate().toLocalDateTime();
@@ -216,7 +219,8 @@ window.addEventListener('DOMContentLoaded', function() {
 						<td align="center"><%=user_coupon.getCoupon_name() %></td>
 						<td align="center"><%=code %></td>
 						<td align="center"><%=vaild_date %> 일</td>
-						<td></td>
+						<td align="center"><%=user_coupon.getCoupon_discount() %> %</td>
+						<td align="center"><%=m_bean.getMenu_name() %></td>
 					</tr>
 					<%
 					}//if 
@@ -226,6 +230,8 @@ window.addEventListener('DOMContentLoaded', function() {
 						<td align="center"><%=user_coupon.getCoupon_name() %></td>
 						<td align="center"><%=code %></td>
 						<td align="center">무제한</td>
+						<td align="center"><%=user_coupon.getCoupon_discount() %> %</td>
+						<td align="center"><%=m_bean.getMenu_name() %></td>
 					</tr>
 					<%
 				}
@@ -239,6 +245,7 @@ window.addEventListener('DOMContentLoaded', function() {
 			for (int i = 0; i < deff; i++) {
 				%>
 				<tr style="background-color:bisque" height="12.5%">
+					<td align="center"></td>
 					<td align="center"></td>
 					<td align="center"></td>
 					<td align="center"></td>
