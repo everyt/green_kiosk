@@ -101,11 +101,40 @@ function cate_pop(cate, can_cate, couname) {
 
 //쿠폰 음식 선택
 function pop_select(name, cate, can_cate, couname) {
+	let context = sessionStorage.getItem("context")
 	let can_cates = JSON.parse(can_cate.replaceAll("squot", "\""))
 	if (can_cates.includes(cate)) {
 		let con = confirm(`정말 ${couname} 으로\n${name} 쿠폰을 발급하시겠습니까?\n이 작업은 취소할 수 없습니다!`)
-		if (cou) {
-			
+		if (con) {
+			fetch(context+"/api/coupon/get", {
+				method: "POST",
+				body: JSON.stringify({
+					"name": couname,
+					"menu": name,
+					"menu_cate": cate
+				})
+			}).then((response) => {
+				if (response.status == 200) {
+					location.reload();
+				}
+				
+				if (response.status == 400) {
+					response.json().then((data) => {
+						if (data.reason == "invaild_coupon") {
+							alert(`쿠폰 발급에 실패하였습니다.\n쿠폰정보가 올바르지 않습니다.`)
+						}
+						
+						if (data.reason == "menu_not_found") {
+							alert(`쿠폰 발급에 실패하였습니다.\n선택한 메뉴를 찾을수 없습니다.`)
+						}
+					})
+				}
+				
+				if (response.status == 401) {
+					alert("로그인이 필요합니다.");
+					location.href = context+"/"
+				}
+			})
 		}
 	} else {
 		alert("해당 쿠폰으로 발급할수 없는 메뉴입니다!")

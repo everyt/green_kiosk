@@ -59,6 +59,7 @@ public class Coupon_kind_Mgr {
     	try {
     		this.Initializer("SELECT * FROM `coupon_type` WHERE `coupon_name` = ?");
     		this.pst.setString(1, name);
+    		System.out.println(name);
     		this.rs = this.pst.executeQuery();
     		if (this.rs.next()) {
     			type.setNumb(this.rs.getInt("numb"));
