@@ -214,16 +214,26 @@ window.addEventListener('DOMContentLoaded', function() {
 					LocalDateTime now = LocalDateTime.now();
 					
 					if (now.isBefore(endday)) {
-					%>
-					<tr style="background-color:bisque" height="12.5%">
-						<td align="center"><%=user_coupon.getCoupon_name() %></td>
-						<td align="center"><%=code %></td>
-						<td align="center"><%=vaild_date %> 일</td>
-						<td align="center"><%=user_coupon.getCoupon_discount() %> %</td>
-						<td align="center"><%=m_bean.getMenu_name() %></td>
-					</tr>
-					<%
-					}//if 
+						%>
+						<tr style="background-color:bisque" height="12.5%">
+							<td align="center"><%=user_coupon.getCoupon_name() %></td>
+							<td align="center"><%=code %></td>
+							<td align="center"><%=vaild_date %> 일</td>
+							<td align="center"><%=user_coupon.getCoupon_discount() %> %</td>
+							<td align="center"><%=m_bean.getMenu_name() %></td>
+						</tr>
+						<%
+					} else {
+						%>
+						<tr style="background-color:bisque" height="12.5%">
+							<td align="center"></td>
+							<td align="center"></td>
+							<td align="center"></td>
+							<td align="center"></td>
+							<td align="center"></td>
+						</tr>
+						<%
+					}
 				} else {
 					%>
 					<tr style="background-color:bisque" height="12.5%">
