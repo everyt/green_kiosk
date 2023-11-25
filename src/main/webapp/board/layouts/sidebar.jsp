@@ -5,7 +5,7 @@
 
 <div class="sidebar">
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
-    <a href="<%=request.getContextPath()%>/board/index.jsp" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+    <a href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/board/index.jsp')" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
       <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
 		게시판입니다
     </a>
@@ -18,9 +18,9 @@
         </a>
       </li>
       <li>
-        <a href="" class="nav-link link-dark">
+        <a href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/board/write/write.jsp')" class="nav-link link-dark">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-          Dashboard
+          글쓰기
         </a>
       </li>
       <li>
@@ -43,7 +43,7 @@
       </li>
     </ul>
     <hr>
-    <div class="dropdown">
+	<div class="dropdown">
       <a href="<%=request.getContextPath()%>/mypage/personal.jsp" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
         <img src="https://nodove.duckdns.org/downloadfile2/cat.jpg" alt="" width="32" height="32" class="rounded-circle me-2" >
         <strong>사용자 이름</strong>
