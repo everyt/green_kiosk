@@ -182,6 +182,73 @@ public class BoardMgr {
 		return flag;
 	}
 	
+	//추천 수 업데이트
+	public Long updateLikecount(Long board_no)
+	{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		ResultSet rs = null;
+		int result = 0;
+		Long post_likecount = 0L;
+		try {
+			con = pool.getConnection();
+			sql = "UPDATE board SET post_likecount =post_likecount + 1 WHERE post_no = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setLong(1, board_no);
+			result = pstmt.executeUpdate();
+			if (result == 1) {
+				pool.freeConnection(con, pstmt);
+				con = pool.getConnection();
+				sql = "SELECT post_likecount FROM board WHERE post_no =? ";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setLong(1, board_no);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					post_likecount = rs.getLong("post_likecount");
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		return post_likecount;
+	}
+	
+	//조회수 업데이트 
+	public Long updateViewcount(Long board_no)
+	{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		ResultSet rs = null;
+		int result = 0;
+		Long post_viewcount = 0L;
+		try {
+			con = pool.getConnection();
+			sql = "UPDATE board SET post_viewcount =post_viewcount + 1 WHERE post_no = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setLong(1, board_no);
+			result = pstmt.executeUpdate();
+			if (result == 1) {
+				pool.freeConnection(con, pstmt);
+				con = pool.getConnection();
+				sql = "SELECT post_viewcount FROM board WHERE post_no =? ";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setLong(1, board_no);
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					post_viewcount = rs.getLong("post_viewcount");
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		return post_viewcount;
+	}
 	
 	// 1. 메뉴 관리 페이지 - 메뉴 삭제
 	public int deleteMenu(int menu_no) {

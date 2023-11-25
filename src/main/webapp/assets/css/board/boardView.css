@@ -28,21 +28,20 @@ pre {
 }
 
 
-.container {
+.container, #board_commentArea {
     width: 70%; /* Set the width of the container */
     margin: 0 auto; /* Center the container horizontally */
 }
 
 /* Comment section styles */
-.boardView_comment {
-    width: 59%; /* Set the width of the comment section */
-    margin: 0 auto; /* Center the comment section horizontally */
+#board_commentArea {
+    padding-top :200px;
 }
 
 /* Adjustments for smaller screens */
 @media (max-width: 768px) {
     .container,
-    .boardView_comment {
+    #board_commentArea {
         width: 100%; /* Full width on smaller screens */
     }
 }
@@ -80,14 +79,23 @@ pre {
 }
 
 
-    .recommend-button {
-        display: inline-flex;
-        align-items: center;
-        cursor: pointer;
-        border: 1px solid #007bff; /* Border color for the button */
-        border-radius: 5px; /* Rounded corners for the button */
-        padding: 5px 10px; /* Adjust padding as needed */
-    }
+.recommend-button {
+    display: flex;
+    justify-content: center; /* Center the button horizontally */
+    align-items: center;
+    cursor: pointer;
+    border: 2px solid #007bff; /* Border color for the button */
+    border-radius: 5px; /* Rounded corners for the button */
+    padding: 5px 10px; /* Adjust padding as needed */
+    margin: 10px auto; /* Center the button and add margin as needed */
+    width: 80px; /* Adjust the width as needed */
+    max-width: 120px; /* Maximum width for the button */
+}
+
+.recommend-button.active {
+    background-color: #007bff; /* Background color when active */
+    color: #ffffff; /* Text color when active */
+}
 
     .recommend-icon {
         width: 20px; /* Adjust the size as needed */
@@ -105,14 +113,14 @@ pre {
         background-color: #007bff; /* Background color when active */
         color: #ffffff; /* Text color when active */
     }
-.recommend-button {
+
+
+#icons_in_header {
     display: flex;
-    justify-content: center; /* Center the button horizontally */
-    align-items: center;
-    cursor: pointer;
-    border: 1px solid #007bff; /* Border color for the button */
-    border-radius: 5px; /* Rounded corners for the button */
-    padding: 5px 10px; /* Adjust padding as needed */
-    margin: 10px auto; /* Center the button and add margin as needed */
-    max-width: 120px; /* Set a maximum width for the button */
+    align-items: center; /* 세로 중앙 정렬 */
+}
+
+#icons_in_header img,
+#recommend-loading {
+    margin-right: 10px; /* 각 아이콘들 간의 간격 조절 */
 }
