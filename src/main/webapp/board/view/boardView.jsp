@@ -10,47 +10,53 @@
 <title>post_view page</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/board/layout.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/board/boardView.css">
-<script src="<%=request.getContextPath()%>/assets/js/board/boardView.js"></script>
 <%@ include file="/board/bootstrap.jsp" %>
 <%@include file="/board/layouts/Bean.jsp" %>
 <%@include file="/board/layouts/header.jsp" %>
 
 </head>
 <body>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="<%=request.getContextPath()%>/assets/js/board/boardView.js"></script>
 <%@include file="/board/layouts/sidebar.jsp" %>
+<%
+	Long post_no = Long.parseLong(request.getParameter("post_no"));
+	
+	BoardMgr bMgr = new BoardMgr();
+	boardBean bean = bMgr.getBoard(post_no);
+	
+    String post_time = null;
+    String post_title = null;
+    String post_content = null;
+    String post_filePath = null;
+    Long post_writer = 0L;
+    String post_writer_id = null;
+    Long post_viewcount = 0L;
+    Long post_likecount = 0L;
+    Long count = 0L;
 
-	<%
-		Long post_no = Long.parseLong(request.getParameter("post_no"));
-		
-		BoardMgr bMgr = new BoardMgr();
-		boardBean bean = bMgr.getBoard(post_no);
-		
-	    String post_time = null;
-	    String post_title = null;
-	    String post_content = null;
-	    String post_filePath = null;
-	    Long post_writer = 0L;
-	    String post_writer_id = null;
-	    Long post_viewcount = 0L;
-	    Long post_likecount = 0L;
-	    Long count = 0L;
+    	post_no = bean.getPost_no();
+    	post_time = bean.getPost_time();
+    	post_title =  bean.getPost_title();
+    	post_content = bean.getPost_content();
+    	post_filePath = bean.getPost_filePath();
+    	post_writer = bean.getPost_writer();
+    	post_writer_id = bMgr.findUser(post_writer);
+    	post_viewcount = bean.getPost_viewcount();
+    	post_likecount = bean.getPost_likecount(); 
+    	
+        HttpServletRequest requestPage = (HttpServletRequest) pageContext.getRequest();
 
-	    	post_no = bean.getPost_no();
-	    	post_time = bean.getPost_time();
-	    	post_title =  bean.getPost_title();
-	    	post_content = bean.getPost_content();
-	    	post_filePath = bean.getPost_filePath();
-	    	post_writer = bean.getPost_writer();
-	    	post_writer_id = bMgr.findUser(post_writer);
-	    	post_viewcount = bean.getPost_viewcount();
-	    	post_likecount = bean.getPost_likecount(); 
-	    	
-	        HttpServletRequest requestPage = (HttpServletRequest) pageContext.getRequest();
+        String CurrentUrl = requestPage.getRequestURL()+"?post_no=" + post_no;
 
-	        String CurrentUrl = requestPage.getRequestURL()+"?post_no=" + post_no;
+    	
+%>
 
-	    	
-	%>
+<script>
+window.addEventListener('DOMContentLoaded', function(){
+	increaseViewcount(<%=post_no%>);
+});
+</script>
 	
 <br/><br/>
 <div class="container">
@@ -76,10 +82,17 @@
                     </td >
                     
                     <td>
-	                    <div class="icons_in_header" id="icons_in_header">
-	                   		 <img src="<%=request.getContextPath()%>/assets/images/board/eye.svg"><%=post_viewcount%>
-	                   		 <img src="<%=request.getContextPath()%>/assets/images/board/hand-thumbs-up.svg"><%=post_likecount%>
-	                    </div>		
+						<div class="icons_in_header" id="icons_in_header">
+						    <img src="<%=request.getContextPath()%>/assets/images/board/eye.svg">
+						    <div class="viewcount-loading" id="viewcount-loading">
+						    	<span class="viewcount-label"><%=post_viewcount%></span>
+						    </div>
+						    &nbsp;
+						    <img src="<%=request.getContextPath()%>/assets/images/board/hand-thumbs-up.svg">
+						    <div class="recommend-loading2" id="recommend-loading2" >
+						        <span class="recommend-label2"><%=post_likecount%></span>
+						    </div>				 
+						</div>	
                     </td>            
                 </tr>
             </table>
@@ -94,59 +107,25 @@
 			            </div>
 			        </div>
               </div>
-				<div class="recommend-button" onclick="toggleRecommendation(this)">
+              </div>
+				<div class="recommend-button" id="recommend-button" onclick="increaseRecommendation(<%=post_no%>)">
 				    <img class="recommend-icon" src="<%=request.getContextPath()%>/assets/images/board/hand-thumbs-up.svg" alt="Thumbs Up">
+				  <div class="recommend-loading" id="recommend-loading">
 				    <span class="recommend-label">추천 <%=post_likecount%></span>
+			    </div>
 				</div>
         </div>
     </div>
-</div>
+    <!--  여긴 댓글 구간  -->
+    <div class="board_commentArea" id="board_commentArea">
+		<hr>	
+		<div class="board_commentUpdate" id="board_commentUpdate"></div>
+	</div>
 
-	
-<!--  여긴 댓글 구간  -->
-<div class="boardView_comment">
-	<section class="mb-5">
-	    <div class="card bg-light">
-	        <div class="card-body">
-	            <!-- Comment form-->
-	            <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
-	            <!-- Comment with nested comments-->
-	            <div class="d-flex mb-4">
-	                <!-- Parent comment-->
-	                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..."></div>
-	                <div class="ms-3">
-	                    <div class="fw-bold">Commenter Name</div>
-	                    If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
-	                    <!-- Child comment 1-->
-	                    <div class="d-flex mt-4">
-	                        <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..."></div>
-	                        <div class="ms-3">
-	                            <div class="fw-bold">Commenter Name</div>
-	                            And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You can't get investors.
-	                        </div>
-	                    </div>
-	                    <!-- Child comment 2-->
-	                    <div class="d-flex mt-4">
-	                        <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..."></div>
-	                        <div class="ms-3">
-	                            <div class="fw-bold">Commenter Name</div>
-	                            When you put money directly to a problem, it makes a good headline.
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
-	            <!-- Single comment-->
-	            <div class="d-flex">
-	                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..."></div>
-	                <div class="ms-3">
-	                    <div class="fw-bold">Commenter Name</div>
-	                    When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	</section>
-</div>
+
+
+
+
 
 				
 				
