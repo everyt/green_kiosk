@@ -41,7 +41,7 @@
 
 <ul class="w3-ul">
     <li class="w3-bar w3-border">
-        <a href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/board/view/boardView.jsp?post_no=<%=post_no%>')">
+        <a href="<%=request.getContextPath()%>/board/view/boardView.jsp?post_no=<%=post_no%>">
         <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right"></span>
         <img src="<%=request.getContextPath()%>/assets/images/cat.jpg" class="w3-bar-item w3-circle w3-hide-small" style="width:85px">
         <div class="w3-bar-item">

@@ -1,14 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.io.*,java.util.*" %>
+<%@ page import="javax.servlet.*,javax.servlet.http.*" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>post_view page</title>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/board/layout.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/board/boardView.css">
+<script src="<%=request.getContextPath()%>/assets/js/board/boardView.js"></script>
+<%@ include file="/board/bootstrap.jsp" %>
 <%@include file="/board/layouts/Bean.jsp" %>
+<%@include file="/board/layouts/header.jsp" %>
+
 </head>
 <body>
+<%@include file="/board/layouts/sidebar.jsp" %>
+
 	<%
 		Long post_no = Long.parseLong(request.getParameter("post_no"));
 		
@@ -34,38 +44,64 @@
 	    	post_writer_id = bMgr.findUser(post_writer);
 	    	post_viewcount = bean.getPost_viewcount();
 	    	post_likecount = bean.getPost_likecount(); 
+	    	
+	        HttpServletRequest requestPage = (HttpServletRequest) pageContext.getRequest();
+
+	        String CurrentUrl = requestPage.getRequestURL()+"?post_no=" + post_no;
+
+	    	
 	%>
 	
-
+<br/><br/>
 <div class="container">
-	<div class="row">
-		<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
-			<thead>
-				<tr>
-					<th colspan = "3" style="background-color: #dddddd; text-align:center;"> 게시글 읽기 </th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><strong>제목</strong></td>
-					<td colspan ="2" style="padding-right:230px;"><%=post_title %> &nbsp;&nbsp;</td>
-				</tr>
-				<tr>
-					<td><strong>이름 / 작성일자</strong></td>
-					<td style="padding-right:230px"><span class="post_writer_id"><%=post_writer_id %></span> &nbsp; | &nbsp; <%=post_time.substring(0,19) %></td>
-				</tr>
-			<tr>
-   		</tr>
-				<tr>
-					<td><strong><br/>내용</strong></td>
-					<td colspan="2" style="min-height: 700px; text-align: left; padding-right:10px;"> 
-						 <br/><pre><%=post_content%></pre><br/>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	</div>
+    <div class="row">
+        <div class="mainDivid" id="mainDivid-1">
+        <div class="page_category" id="page_category">게시글 읽기</div>
+        <hr>
+        </div>
+        <div class="post-details">
+            <table>
+                <tr>
+                    <td colspan="2">
+                    <br/>
+                        <h1 class="post_title" id="boardView_post_title"><%= post_title %></h1>
+                        <br/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;<span class="post_writer_id" id="boardView_post_writer_id"><%= post_writer_id %></span>
+                         &nbsp; | &nbsp; <img src="<%=request.getContextPath()%>/assets/images/board/clock.svg">&nbsp;<%= post_time.substring(0, 19) %>
+                    <br/>
+                    </td >
+                    
+                    <td>
+	                    <div class="icons_in_header" id="icons_in_header">
+	                   		 <img src="<%=request.getContextPath()%>/assets/images/board/eye.svg"><%=post_viewcount%>
+	                   		 <img src="<%=request.getContextPath()%>/assets/images/board/hand-thumbs-up.svg"><%=post_likecount%>
+	                    </div>		
+                    </td>            
+                </tr>
+            </table>
+              <div class="under_title">
+              <hr>
+              <div class="currentPageUrl" id="currentPageUrl" onclick="copyToClipboard('<%=CurrentUrl%>')">	
+              	<img src="<%=request.getContextPath()%>/assets/images/board/clipboard.svg">&nbsp;<%=CurrentUrl%>
+              </div>
+			        <div class="post-content">
+			            <div style="min-height: 400px; text-align: left; padding: 15px;">
+			                <pre><%= post_content %></pre>
+			            </div>
+			        </div>
+              </div>
+				<div class="recommend-button" onclick="toggleRecommendation(this)">
+				    <img class="recommend-icon" src="<%=request.getContextPath()%>/assets/images/board/hand-thumbs-up.svg" alt="Thumbs Up">
+				    <span class="recommend-label">추천 <%=post_likecount%></span>
+				</div>
+        </div>
+    </div>
+</div>
+
 	
 <!--  여긴 댓글 구간  -->
 <div class="boardView_comment">
@@ -111,6 +147,9 @@
 	    </div>
 	</section>
 </div>
+
+				
+				
 <!-- 댓글 구간 끝 -->
 </body>
 </html>

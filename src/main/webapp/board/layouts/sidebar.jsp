@@ -5,7 +5,7 @@
 
 <div class="sidebar">
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
-    <a href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/board/index.jsp')" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+    <a href="<%=request.getContextPath()%>/board/index.jsp" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
       <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
 		게시판입니다
     </a>
