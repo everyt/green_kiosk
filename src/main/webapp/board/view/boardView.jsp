@@ -109,7 +109,8 @@ window.addEventListener('DOMContentLoaded', function(){
 			        </div>
               </div>
               </div>
-				<div class="recommend-button" id="recommend-button" onclick="increaseRecommendation(<%=post_no%>)">
+              <br/>
+				<div class="recommend-button" id="recommend-button" onclick="increaseRecommendation(<%=post_no%>)" style="max-width:120px">
 				    <img class="recommend-icon" src="<%=request.getContextPath()%>/assets/images/board/hand-thumbs-up.svg" alt="Thumbs Up">
 				  <div class="recommend-loading" id="recommend-loading">
 				    <span class="recommend-label">추천 <%=post_likecount%></span>
