@@ -54,6 +54,7 @@
 
 <script>
 window.addEventListener('DOMContentLoaded', function(){
+	console.log("increaseViewcount 새로고침으로 실행");
 	increaseViewcount(<%=post_no%>);
 });
 </script>

@@ -67,9 +67,11 @@ function increaseViewcount(post_no){
         url: "./increaseViewcount",
         data: { post_no: post_no },
         dataType: "json",
+        cache: false, //한번 cache 막아봅시다.
         success: function (response) {
             if (response && response.post_viewcount !== undefined) {
                 // 성공적으로 서버에서 응답을 받으면 추천 수 업데이트
+                console.log("post_viewcount : " + response.post_viewcount);
                 updatePostViewcount(post_no, response.post_viewcount);
             } else {
                 console.log("올바르지 않은 JSON format 입니다.");
