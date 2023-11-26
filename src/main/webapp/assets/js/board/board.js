@@ -198,3 +198,24 @@ function loadContent(url) {
 /*window.addEventListener('DOMContentLoaded', function() {
     loadContent(url);
 });*/
+
+function getThumbNail(link, postId){
+    var htmlCode = link.replace(/\n/g, '');
+
+	var parser = new DOMParser();
+	var doc = parser.parseFromString(htmlCode, 'text/html');
+	
+	var firstImgTag = doc.querySelector('img');
+	
+	if (firstImgTag){
+		  var fileLink = firstImgTag.getAttribute('src');
+		    console.log(fileLink);
+		    
+		    var thumbnailImg = document.getElementById('thumbnail' + postId);
+		    if (thumbnailImg) {
+				thumbnailImg.src = fileLink;
+			} 
+	} else {
+		  console.log('이미지가 없습니다.');
+	}
+}
