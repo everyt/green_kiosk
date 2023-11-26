@@ -1,4 +1,4 @@
-var menuType = "all";
+/*var menuType = "all";
 
 function updateMenu(menuType) {
 	document.cookie = "menuType=" + menuType;
@@ -99,8 +99,8 @@ function updateMenu(menuType) {
                 $('.getMenuList').html(chatListHtml);					
 				}
             } else {
-/*                alert("Failed to fetch chat list.");
-*/            }
+                alert("Failed to fetch chat list.");
+            }
         },
         error: function (xhr, status, error) {
             console.error("Ajax request failed:", status, error);
@@ -108,12 +108,12 @@ function updateMenu(menuType) {
     });
 }
 
-
-window.addEventListener('DOMContentLoaded', function() {
+*/
+/*window.addEventListener('DOMContentLoaded', function() {
     updateMenu(menuType);
 });
 
-
+*/
 function formatNumber(number) {
     // 숫자를 3자리마다 쉼표로 구분
     var df = new Intl.NumberFormat('ko-KR');

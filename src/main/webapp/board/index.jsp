@@ -7,6 +7,7 @@
 <title>게시판</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/board/layout.css">
 <script src="<%=request.getContextPath()%>/assets/js/board/board.js"></script>
+
 <%@ include file="/board/bootstrap.jsp" %>
 <%@ include file="/board/layouts/header.jsp" %>
 </head>
