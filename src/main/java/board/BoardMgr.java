@@ -307,28 +307,72 @@ public class BoardMgr {
 		return post_viewcount;
 	}
 	
-	// 1. 메뉴 관리 페이지 - 메뉴 삭제
-	public int deleteMenu(int menu_no) {
+	// 1. 게시판 - 게시판 삭제
+	public int deleteBoardAction(Long post_no) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		ResultSet rs = null;
+		int flag = -1;
 		try {
 			con = pool.getConnection();
-			sql = "DELETE FROM menu WHERE menu_no=?";
+			sql = "DELETE FROM board WHERE post_no=?";
+
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, menu_no);
-			pstmt.executeUpdate();
-			return 1;
+			pstmt.setLong(1, post_no);
+			flag = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt, rs);
 		}
 		//실패시 -1 반환
-		return -1;
+		return flag;
 	}
 	
+	public boolean editBoardAction(HttpServletRequest req) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		ResultSet rs = null;
+		boolean flag = false;
+		int result = 0;
+		Long post_writer = 0L;
+		try {
+			con = pool.getConnection();
+			sql = "SELECT distinct member.mem_no FROM member JOIN board ON member.mem_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, req.getParameter("post_writer"));
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				post_writer = rs.getLong("mem_no");
+				result = 1;
+			}
+			if (result == 1)
+			{
+			pool.freeConnection(con, pstmt, rs);
+			con = pool.getConnection();
+			sql = "UPDATE board SET edit_post_time = now(), post_title = ?, "
+					+ "post_content = ?, post_writer = ? WHERE post_no = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, req.getParameter("post_title"));
+			pstmt.setString(2, req.getParameter("post_content"));
+			pstmt.setLong(3, post_writer);
+			pstmt.setLong(4, Long.parseLong(req.getParameter("post_no")));
+			if (pstmt.executeUpdate() == 1)
+				flag = true;
+			} else {
+				flag = false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		return flag;
+	}
+
+ 
 	
 	
 }

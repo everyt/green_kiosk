@@ -120,7 +120,7 @@ function getCommentList(post_no, post_writer)
 function updateCommentList(post_no, commentList, post_writer) {
     var HTML_commentList = commentList.map(function (comment) {
 	var commentWriterCheck = (String(comment.comment_writer) === String(post_writer)) ? '작성자' : '';
-	
+
 	var decodedContent;
 	try {
 		  decodedContent = decodeURIComponent(comment.comment_content, "UTF-8");
@@ -177,3 +177,60 @@ function inputComment() {
         }
     });
 }
+
+
+
+// board delete empty @return redirect to index page
+function board_delete_Action(post_no)
+{
+	    var isConfirmed = confirm("정말로 삭제하시겠습니까?");
+		
+		if (isConfirmed) {
+			performDelete(post_no);
+		} else {
+			console.log("삭제 취소");
+		}
+}
+function performDelete(post_no) {
+	    $.ajax({
+        type: "POST",
+        url: "./deleteBoardAction",
+        data: {
+	 		post_no : post_no
+        },
+        dataType: "text",
+        cache: false,
+        success: function (response) {
+			console.log("삭제 성공");
+			window.location.href = contextPath + "/board/index.jsp";
+        },
+        error: function (xhr, status, error) {
+            console.error("삭제 실패:", status, error);
+        }
+    });
+}
+//board edit @return
+function board_edit_Action(post_no)
+{
+			window.location.href = contextPath + `/board/write/edit.jsp?post_no=${post_no}`;
+}
+/*
+function board_edit_Action(post_no)
+{
+	    $.ajax({
+        type: "POST",
+        url: "./editBoardAction",
+        data: {
+	 		post_no : post_no
+        },
+        dataType: "text",
+        cache: false,
+        success: function (response) {
+			console.log("삭제 성공");
+			window.location.href = contextPath + "/board/index.jsp";
+        },
+        error: function (xhr, status, error) {
+            console.error("삭제 실패:", status, error);
+        }
+    });
+}*/

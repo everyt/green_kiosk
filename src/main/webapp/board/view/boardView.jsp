@@ -13,7 +13,9 @@
 <%@ include file="/board/bootstrap.jsp" %>
 <%@include file="/board/layouts/Bean.jsp" %>
 <%@include file="/board/layouts/header.jsp" %>
-
+<script>
+	var contextPath = '<%= request.getContextPath() %>';
+</script>
 </head>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
@@ -119,8 +121,14 @@ window.addEventListener('DOMContentLoaded', function(){
 				    <img class="recommend-icon" src="<%=request.getContextPath()%>/assets/images/board/hand-thumbs-up.svg" alt="Thumbs Up">
 				  <div class="recommend-loading" id="recommend-loading">
 				    <span class="recommend-label">추천 <%=post_likecount%></span>
-			    </div>
+				    </div>
 				</div>
+	      <% if(mem_id.equals(post_writer_id)) { %>
+				<div class="button_actions" id="button_actions">
+				    <button type="button" class="board_delete" id="board_delete" onclick="board_delete_Action(<%=post_no%>)">삭제하기</button>
+				    <button type="button" class="board_edit" id="board_edit" onclick="board_edit_Action(<%=post_no%>)">수정하기</button>
+				</div>
+              <% } %>
 				<br/>
         </div>
     </div>
