@@ -176,7 +176,7 @@ public class Coupon_Mgr {
 		java.util.Date date = null;
 		Integer vaild_date = 0;
 		boolean used = false;
-		String coupon_name;
+		String coupon_name = "";
 		Map<String, String> result = new HashMap<String, String>();
 		result.put("result", "failed");
 		result.put("reason", "unknown");
@@ -187,7 +187,7 @@ public class Coupon_Mgr {
 	        if (this.rs.next()) {
 	            date = this.rs.getDate("coupon_issueDate");
 	            used = this.rs.getBoolean("coupon_used");
-	            coupon_name = this.rs.getString("coupon_name")
+	            coupon_name = this.rs.getString("coupon_name");
 	            if (used) {
 	            	result.put("reason", "already_used");
 		        	return result;
