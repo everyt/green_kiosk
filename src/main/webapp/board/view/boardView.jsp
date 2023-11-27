@@ -133,6 +133,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			     <!-- 댓글 입력 -->
 		<div class="comment_input" id="comment_input">
 			<div class="comment_form" id="comment_form">
+				<div class="scrollBottom" id="scrollBottom" style="display :none"></div>
 				<textarea class="comment_content" name="comment_content" placeholder="댓글을 입력하세요..."></textarea>
 					<input type="hidden" name="comment_writer" value="<%=mem_id%>">
 					<input type="hidden" name="comment_post_no" value="<%=post_no%>">

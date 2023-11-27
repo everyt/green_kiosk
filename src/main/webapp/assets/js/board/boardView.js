@@ -120,12 +120,20 @@ function getCommentList(post_no, post_writer)
 function updateCommentList(post_no, commentList, post_writer) {
     var HTML_commentList = commentList.map(function (comment) {
 	var commentWriterCheck = (String(comment.comment_writer) === String(post_writer)) ? '작성자' : '';
-
+	
+	var decodedContent;
+	try {
+		  decodedContent = decodeURIComponent(comment.comment_content, "UTF-8");
+	} catch (error) {
+		console.log("내용 디코딩 오류 : ", error);
+		decodedContent = "";
+	}
+	
         return `
             <div class="comment_list_Map" id="comment_list_Map">
                 <p> ${comment.comment_writer_id} <span class="commentWriterCheck">${commentWriterCheck}
                 <br/></span>&nbsp;<span class="date"> ${comment.comment_time}</span></p>
-                <p>&nbsp;${decodeURI(comment.comment_content, "UTF-8")}</p>
+                <p>&nbsp;${decodedContent}</p>
             </div><hr/>
         `;
     }).join(''); 
@@ -141,11 +149,13 @@ function inputComment() {
     var commentWriter = $('[name="comment_writer"]').val();
     var commentPostNo = $('[name="comment_post_no"]').val();
 
+    var encodedContent = encodeURIComponent(commentContent);
+
     $.ajax({
         type: "POST",
         url: "./inputComment",
         data: {
-            comment_content: commentContent,
+            comment_content: encodedContent,
             comment_writer: commentWriter,
             comment_post_no: commentPostNo
         },
@@ -154,7 +164,12 @@ function inputComment() {
         success: function (response) {
             getCommentList(commentPostNo, commentWriter);
 			$('.comment_content').val('');
-			$('html, body').animate({ scrollTop: $(document).height() }, 'slow');
+			//$('html, body').animate({ scrollTop: $(document).height() }, 'slow');
+     		 // $('#scrollTop').css('display', 'block').animate({ scrollTop: $('#scrollTop').offset().top }, 'slow');
+	     	var currentScrollTop = $(window).scrollTop();
+	        var newScrollTop = currentScrollTop + 200;
+	        $('html, body').animate({ scrollTop: newScrollTop }, 'slow');
+
         },
         error: function (xhr, status, error) {
             console.error("댓글 입력 실패:", status, error);

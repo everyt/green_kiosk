@@ -122,9 +122,7 @@ public class commentMgr {
 			if (result == 1)
 			{
 			pool.freeConnection(con, pstmt, rs);
-			System.out.println(req.getParameter("comment_content"));
-			System.out.println(comment_writer);
-			System.out.println(Long.parseLong(req.getParameter("comment_post_no")));
+
 			con = pool.getConnection();
 			sql = "INSERT INTO comment(comment_content, comment_time, comment_writer, comment_post_no)"
 					+ "VALUES (?, now(), ?, ?)";
@@ -134,7 +132,7 @@ public class commentMgr {
 			pstmt.setLong(3, comment_post_no);
 			if (pstmt.executeUpdate() == 1)
 			{ flag = true; }
-			System.out.println("flag : " + flag);
+
 		} else {
 			flag = false;
 		}
