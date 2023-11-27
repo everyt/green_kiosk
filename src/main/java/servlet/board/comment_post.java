@@ -1,6 +1,7 @@
 package servlet.board;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class comment_post extends HttpServlet {
 	    try {
 	        return "{"
 	                + "\"comment_no\":\"" + comment.getComment_no() + "\","
-	                + "\"comment_content\":\"" + comment.getComment_content() + "\","
+	                + "\"comment_content\":\"" + URLEncoder.encode(comment.getComment_content(), "UTF-8") + "\","
 	                + "\"comment_time\":\"" + comment.getComment_time() + "\","
 	                + "\"comment_writer\":\"" + comment.getComment_writer() + "\","
 	                + "\"comment_writer_id\":\"" + comment.getComment_writer_id() + "\","

@@ -125,7 +125,7 @@ function updateCommentList(post_no, commentList, post_writer) {
             <div class="comment_list_Map" id="comment_list_Map">
                 <p> ${comment.comment_writer_id} <span class="commentWriterCheck">${commentWriterCheck}
                 <br/></span>&nbsp;<span class="date"> ${comment.comment_time}</span></p>
-                <p>&nbsp;${comment.comment_content}</p>
+                <p>&nbsp;${decodeURI(comment.comment_content)}</p>
             </div><hr/>
         `;
     }).join(''); 
