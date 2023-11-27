@@ -126,11 +126,10 @@ window.addEventListener('DOMContentLoaded', function(){
 				    <button type="button" class="board_edit" id="board_edit" onclick="board_edit_Action(<%=post_no%>)">수정하기</button>
 				</div>
               <% } %>
-				<br/>
         </div>
     </div>
     <!--  여긴 댓글 구간  -->
-
+	
     <div class="board_commentArea" id="board_commentArea">
     	<div class="comment_list_menu" id="comment_list_menu">댓글 목록<span id="list_amount"></span></div>
 		<hr>

@@ -47,7 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
     getFirstImageLink(`<%=post_content%>`, <%=post_no%>);
 });
 </script>
-
+<%  String mysqlDatetime = post_time; %>
+<%@include file="/board/layouts/timeCalculate.jsp" %>
 <ul class="w3-ul">
     <li class="w3-bar w3-border">
         <a href="<%=request.getContextPath()%>/board/view/boardView.jsp?post_no=<%=post_no%>">
@@ -57,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
             class="w3-bar-item w3 w3-hide-small" style="width:100px">
             <div class="w3-bar-item">
                 <span class="w3-large"><%=post_writer_id%></span>
-                <span class="post_time"><%=post_time%></span>
+                <span class="post_Formatted_time" id="post_Formatted_time"><%=formattedDateTime%></span>
                 <br>
                 <span><%=post_title%></span>
             </div>

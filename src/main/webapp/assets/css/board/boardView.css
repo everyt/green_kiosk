@@ -35,7 +35,7 @@ pre {
 
 /* Comment section styles */
 #board_commentArea {
-    padding-top :200px;
+    padding-top :10px;
     padding-left : 120px;
     padding-right : 80px;
 }
@@ -164,7 +164,7 @@ pre {
 
 /* Comment section styles */
 #board_commentArea {
-    padding-top :200px;
+    padding-top :10px;
     padding-left : 120px;
     padding-right : 80px;
 }
@@ -326,4 +326,8 @@ pre {
     border-radius: 5px; /* Rounded corners for the button */
     padding: 5px 10px; /* Adjust padding as needed */
     margin: 10px auto; /* Center the button and add margin as needed */
+}
+
+.post-details {
+	padding-bottom: 100px;
 }
