@@ -26,7 +26,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
 	<div class="container">
 		<div class="row">
-			<form method="post" name="board_post" action="./writeAction" enctype="mulipart/form-data" accept-charset = "utf-8">
+			<form method="post" name="board_post" action="./writeAction" enctype="mulipart/form-data" accept-charset = "utf-8" onclick="getThumbNail()">
 				<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 					<thead>
 						<tr>

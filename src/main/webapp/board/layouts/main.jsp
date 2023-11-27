@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/board/layouts_main.css">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <%@include file="/board/layouts/Bean.jsp" %>
 <div class="mainPage">
 
@@ -41,24 +42,29 @@ for (int i = 0; i < vlist.size(); i++) {
     post_likecount = vlist.get(i).getPost_likecount(); 
     count++;
 %>
- <script>
- 	getThumbNail(`<%=post_content%>`, <%=post_no%>); 
- </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    getFirstImageLink(`<%=post_content%>`, <%=post_no%>);
+});
+</script>
 
 <ul class="w3-ul">
     <li class="w3-bar w3-border">
         <a href="<%=request.getContextPath()%>/board/view/boardView.jsp?post_no=<%=post_no%>">
-        <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right"></span>
-        <img id= "thumbnail<%=post_no%>" src="<%=request.getContextPath()%>/assets/images/cat.jpg" class="w3-bar-item w3-circle w3-hide-small" style="width:85px">
-        <div class="w3-bar-item">
-            <span class="w3-large"><%=post_writer_id%></span>
-            <span class="post_time"><%=post_time%></span>
-            <br>
-            <span><%=post_title%></span>
-        </div>
+            <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right"></span>
+            <!-- 이미지를 동적으로 변경할 대상 -->
+            <img id="thumbnail<%=post_no%>" src="https://nodove.duckdns.org/downloadfile2/boardSave/e6ad4e1c-0cff-484c-94bf-736840297d4f_3.webp
+            " class="w3-bar-item w3 w3-hide-small" style="width:100px">
+            <div class="w3-bar-item">
+                <span class="w3-large"><%=post_writer_id%></span>
+                <span class="post_time"><%=post_time%></span>
+                <br>
+                <span><%=post_title%></span>
+            </div>
         </a>
     </li>
- </ul>
+</ul>
+
 <%
    }
 %>

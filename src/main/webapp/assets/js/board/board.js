@@ -199,23 +199,42 @@ function loadContent(url) {
     loadContent(url);
 });*/
 
-function getThumbNail(link, postId){
+/*function getFirstImageLink(link, post_no) {
     var htmlCode = link.replace(/\n/g, '');
 
-	var parser = new DOMParser();
-	var doc = parser.parseFromString(htmlCode, 'text/html');
-	
-	var firstImgTag = doc.querySelector('img');
-	
-	if (firstImgTag){
-		  var fileLink = firstImgTag.getAttribute('src');
-		    console.log(fileLink);
-		    
-		    var thumbnailImg = document.getElementById('thumbnail' + postId);
-		    if (thumbnailImg) {
-				thumbnailImg.src = fileLink;
-			} 
-	} else {
-		  console.log('이미지가 없습니다.');
-	}
-}
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(htmlCode, 'text/html');
+
+    var firstImgTag = doc.querySelector('img');
+
+    if (firstImgTag) {
+        var fileLink = firstImgTag.getAttribute('src');
+        var HTML_ThumNail = 
+       `	<img id="thumbnail<%=post_no%>" src="${fileLink}" class="w3-bar-item w3-circle w3-hide-small" style="width:85px">`;            
+		$(`#thumbnail${post_no}`).html(HTML_ThumNail);
+		console.log(HTML_ThumNail);
+    } else {
+        console.log('이미지가 없습니다.');
+    }
+}*/
+
+
+    function getFirstImageLink(link, post_no) {
+        var htmlCode = link.replace(/\n/g, '');
+
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(htmlCode, 'text/html');
+
+        var firstImgTag = doc.querySelector('img');
+
+        if (firstImgTag) {
+            var fileLink = firstImgTag.getAttribute('src');
+            // 이미지 URL을 동적으로 변경
+            console.log(fileLink);
+            $(`#thumbnail${post_no}`).attr('src', fileLink);
+            console.log('이미지가 성공적으로 변경되었습니다.');
+			
+        } else {
+            console.log('이미지가 없습니다.');
+        }
+    }
