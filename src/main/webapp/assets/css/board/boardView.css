@@ -319,4 +319,11 @@ pre {
     display: inline-block; /* Display buttons in a line */
     margin-left: 10px; /* Add some margin between the buttons */
     margin-top: 50px;
+    justify-content: center; /* Center the button horizontally */
+    align-items: center;
+    cursor: pointer;
+    border: 2px solid #007bff; /* Border color for the button */
+    border-radius: 5px; /* Rounded corners for the button */
+    padding: 5px 10px; /* Adjust padding as needed */
+    margin: 10px auto; /* Center the button and add margin as needed */
 }

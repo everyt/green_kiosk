@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
         <a href="<%=request.getContextPath()%>/board/view/boardView.jsp?post_no=<%=post_no%>">
             <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right"></span>
             <!-- 이미지를 동적으로 변경할 대상 -->
-            <img id="thumbnail<%=post_no%>" src="https://nodove.duckdns.org/downloadfile2/boardSave/e6ad4e1c-0cff-484c-94bf-736840297d4f_3.webp
-            " class="w3-bar-item w3 w3-hide-small" style="width:100px">
+            <img id="thumbnail<%=post_no%>" src="<%=request.getContextPath()%>/assets/images/board/onlyText.png" 
+            class="w3-bar-item w3 w3-hide-small" style="width:100px">
             <div class="w3-bar-item">
                 <span class="w3-large"><%=post_writer_id%></span>
                 <span class="post_time"><%=post_time%></span>
