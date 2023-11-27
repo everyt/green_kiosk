@@ -16,11 +16,8 @@ int pageNum = 1;
 
 if (request.getParameter("pageNum") != null && !request.getParameter("pageNum").isEmpty()) {
     pageNum = Integer.parseInt(request.getParameter("pageNum"));
-    System.out.println("pageNum => " + pageNum);
-} else {
-    System.out.println("pageNum(null) => " + pageNum);
 
-}
+} 
 
 BoardMgr bMgr = new BoardMgr();
 /* List<boardBean> list = bMgr.getBoardList();  
@@ -71,9 +68,9 @@ for (int i = 0; i < vlist.size(); i++) {
 <%
     Vector<boardBean> vlistAll = bMgr.getBoardList1(0, pageSize);
     int listSizeAll = vlistAll.size();
-    System.out.println("listSizeAll => " + listSizeAll);
+
     int totalPages = (int) Math.ceil((double) listSizeAll / pageSize);
-    System.out.println("totalPages => " + totalPages);
+
 
     for (int i = 1; i <= totalPages; i++) {
  %>

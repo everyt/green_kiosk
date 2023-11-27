@@ -153,10 +153,12 @@ function inputComment() {
         cache: false,
         success: function (response) {
             getCommentList(commentPostNo, commentWriter);
-            console.log("댓글 입력 성공:", response);
+			$('.comment_content').val('');
+			$('html, body').animate({ scrollTop: $(document).height() }, 'slow');
         },
         error: function (xhr, status, error) {
             console.error("댓글 입력 실패:", status, error);
+            console.log("Server response:", xhr.responseText);
         }
     });
 }

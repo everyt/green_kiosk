@@ -107,9 +107,11 @@ public class commentMgr {
 		boolean flag = false;
 		int result = 0;
 		Long comment_writer = 0L;
+		String comment_content = req.getParameter("comment_content");
+		Long comment_post_no = Long.parseLong(req.getParameter("comment_post_no"));
 		try {
 			con = pool.getConnection();
-			sql = "SELECT distinct member.mem_no FROM member JOIN comment ON member.mem_id = ?";
+			sql = "SELECT  member.mem_no FROM member where member.mem_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, req.getParameter("comment_writer"));
 			rs = pstmt.executeQuery();
@@ -120,18 +122,19 @@ public class commentMgr {
 			if (result == 1)
 			{
 			pool.freeConnection(con, pstmt, rs);
+			System.out.println(req.getParameter("comment_content"));
+			System.out.println(comment_writer);
+			System.out.println(Long.parseLong(req.getParameter("comment_post_no")));
 			con = pool.getConnection();
 			sql = "INSERT INTO comment(comment_content, comment_time, comment_writer, comment_post_no)"
 					+ "VALUES (?, now(), ?, ?)";
 			pstmt = con.prepareStatement(sql);
-			System.out.println("comment_content" + req.getParameter("comment_content"));
-			System.out.println("comment_writer" + comment_writer);
-			System.out.println("comment_post_no" + req.getParameter("comment_post_no"));
-			pstmt.setString(1, req.getParameter("comment_content"));
+			pstmt.setString(1, comment_content);
 			pstmt.setLong(2, comment_writer);
-			pstmt.setLong(3, Long.parseLong(req.getParameter("comment_post_no")));
+			pstmt.setLong(3, comment_post_no);
 			if (pstmt.executeUpdate() == 1)
-			{ flag = true; } 
+			{ flag = true; }
+			System.out.println("flag : " + flag);
 		} else {
 			flag = false;
 		}
