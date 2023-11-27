@@ -9,7 +9,7 @@
 
 <div class="w3-container">
   <h2>게시글 목록</h2>
-  <br/>
+  <br/> 
 <%
 int pageSize = 10; // Set your desired page size here
 int pageNum = 1;

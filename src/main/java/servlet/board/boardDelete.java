@@ -25,9 +25,9 @@ public class boardDelete extends HttpServlet {
     	{
     		BoardMgr bMgr = new BoardMgr();
     		Long post_no = Long.parseLong(request.getParameter("post_no"));
-    		System.out.println(post_no);
+
     		int result = bMgr.deleteBoardAction(post_no);
-    		System.out.println(result);
+
     		if (result == 1)
     		{
         		response.sendRedirect(request.getContextPath()+"/board/index.jsp");

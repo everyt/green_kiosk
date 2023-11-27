@@ -20,17 +20,12 @@ window.addEventListener('DOMContentLoaded', function() {
     tinymce_editor();
 });
 </script>
+<%@include file="/board/layouts/login_check.jsp" %>
 </head>
 <body>
 <%@ include file="/board/layouts/sidebar.jsp" %>
 
 	<%
-		String mem_id=null;
-		if(session.getAttribute("mem_id")!=null){
-			mem_id=(String)session.getAttribute("mem_id");
-		} else {
-			PrintWriter script = response.getWriter();
-		}
 		
 		Long post_no = Long.parseLong(request.getParameter("post_no"));
 		
@@ -84,7 +79,7 @@ window.addEventListener('DOMContentLoaded', function() {
 				<input type="hidden" name="post_time" value="<%=post_time%>">
 				<input type="hidden" name ="post_no" value="<%=post_no%>">
 				<input type="hidden" name="post_writer" value="<%=mem_id%>">
-				<input type="submit" class="btn btn-success pull-right" value="글쓰기">
+				<input type="submit" class="btn btn-success pull-right" value="수정완료">
 				<input type="reset" class="btn btn" value="다시쓰기">
 		</form>
 		</div>

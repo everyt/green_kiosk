@@ -10,6 +10,7 @@
 <title>post_view page</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/board/layout.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/board/boardView.css">
+<%@include file="/board/layouts/login_check.jsp" %>
 <%@ include file="/board/bootstrap.jsp" %>
 <%@include file="/board/layouts/Bean.jsp" %>
 <%@include file="/board/layouts/header.jsp" %>
@@ -52,10 +53,6 @@
 
         String CurrentUrl = requestPage.getRequestURL()+"?post_no=" + post_no;
 
-		String mem_id=null;
-		if(session.getAttribute("mem_id")!=null){
-			mem_id=(String)session.getAttribute("mem_id");
-		}
 %>
 
 <script>

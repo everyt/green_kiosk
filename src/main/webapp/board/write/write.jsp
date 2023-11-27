@@ -19,19 +19,11 @@ window.addEventListener('DOMContentLoaded', function() {
     tinymce_editor();
 });
 </script>
+<%@include file="/board/layouts/login_check.jsp" %>
 </head>
 <body>
 <%@ include file="/board/layouts/sidebar.jsp" %>
 
-	<%
-		String mem_id=null;
-		if(session.getAttribute("mem_id")!=null){
-			mem_id=(String)session.getAttribute("mem_id");
-		} else {
-			PrintWriter script = response.getWriter();
-			
-		}
-	%>
 	<div class="container">
 		<div class="row">
 			<form method="post" name="board_post" action="./writeAction" enctype="mulipart/form-data" accept-charset = "utf-8">
