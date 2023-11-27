@@ -32,6 +32,7 @@
 	        border-width: 0 0 2px 0;
 	       '
 	       placeholder='쿠폰 번호'
+				 readonly
 	      ></input>
 		    <div class="rowbox">
 		      <div class="numeric-keypad" onClick="handleKeypad(1)">1</div>
