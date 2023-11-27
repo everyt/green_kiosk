@@ -1,6 +1,7 @@
 package servlet.board;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +38,12 @@ public class comment_post extends HttpServlet {
                 response.getWriter().write(jsonResponse);
 
 	    	} else if ("/board/view/inputComment".equals(endPoint)) {
-	    		Long comment_post_no = Long.parseLong(request.getParameter("comment_post_no"));
 	    		commentMgr cMgr = new commentMgr();
 	    		boolean result = cMgr.insertComment(request);
-	        	if (result) {
-	        		response.sendRedirect(request.getContextPath()+"/board/view/boardView.jsp?post_no="+comment_post_no);
-	        	}
+	    		if (result == true) {
+		    		response.setContentType("application/json;charset=UTF-8");
+		    		response.getWriter().write("{ \"success\": true, \"message\": \"댓글 입력 성공\" }");
+	    		}
 	    	}
 	    }
 	   	
@@ -50,7 +51,7 @@ public class comment_post extends HttpServlet {
 	    try {
 	        List<String> jsonComments = new ArrayList<>();
 	        for (commentBean comment : commentList) {
-	            String jsonComment = convertCommentToJson(comment);
+	            String jsonComment = convertCommentToDecodeJson(comment);
 	            if (!jsonComment.isEmpty()) {
 	                jsonComments.add(jsonComment);
 	            }
@@ -67,11 +68,22 @@ public class comment_post extends HttpServlet {
 	    }
 	}
 
-	private String convertCommentToJson(commentBean comment) {
+	/*
+	 * private String convertCommentToJson(commentBean comment) { try { return "{" +
+	 * "\"comment_no\":\"" + comment.getComment_no() + "\"," +
+	 * "\"comment_content\":\"" + comment.getComment_content() + "\"," +
+	 * "\"comment_time\":\"" + comment.getComment_time() + "\"," +
+	 * "\"comment_writer\":\"" + comment.getComment_writer() + "\"," +
+	 * "\"comment_writer_id\":\"" + comment.getComment_writer_id() + "\"," +
+	 * "\"comment_post_no\":\"" + comment.getComment_post_no() + "\"" + "}"; } catch
+	 * (Exception e) { e.printStackTrace(); return ""; } }
+	 */
+	
+	private String convertCommentToDecodeJson(commentBean comment) {
 	    try {
 	        return "{"
 	                + "\"comment_no\":\"" + comment.getComment_no() + "\","
-	                + "\"comment_content\":\"" + URLEncoder.encode(comment.getComment_content(), "UTF-8") + "\","
+	                + "\"comment_content\":\"" + URLDecoder.decode(comment.getComment_content(), "UTF-8") + "\","
 	                + "\"comment_time\":\"" + comment.getComment_time() + "\","
 	                + "\"comment_writer\":\"" + comment.getComment_writer() + "\","
 	                + "\"comment_writer_id\":\"" + comment.getComment_writer_id() + "\","

@@ -125,7 +125,7 @@ function updateCommentList(post_no, commentList, post_writer) {
             <div class="comment_list_Map" id="comment_list_Map">
                 <p> ${comment.comment_writer_id} <span class="commentWriterCheck">${commentWriterCheck}
                 <br/></span>&nbsp;<span class="date"> ${comment.comment_time}</span></p>
-                <p>&nbsp;${decodeURI(comment.comment_content)}</p>
+                <p>&nbsp;${decodeURI(comment.comment_content, "UTF-8")}</p>
             </div><hr/>
         `;
     }).join(''); 
@@ -135,3 +135,28 @@ function updateCommentList(post_no, commentList, post_writer) {
     $('#board_commentUpdate').html(HTML_commentList);
 }
 
+
+function inputComment() {
+    var commentContent = $('.comment_content').val();
+    var commentWriter = $('[name="comment_writer"]').val();
+    var commentPostNo = $('[name="comment_post_no"]').val();
+
+    $.ajax({
+        type: "POST",
+        url: "./inputComment",
+        data: {
+            comment_content: commentContent,
+            comment_writer: commentWriter,
+            comment_post_no: commentPostNo
+        },
+        dataType: "json",
+        cache: false,
+        success: function (response) {
+            getCommentList(commentPostNo, commentWriter);
+            console.log("댓글 입력 성공:", response);
+        },
+        error: function (xhr, status, error) {
+            console.error("댓글 입력 실패:", status, error);
+        }
+    });
+}

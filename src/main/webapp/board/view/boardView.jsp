@@ -132,18 +132,14 @@ window.addEventListener('DOMContentLoaded', function(){
 		<div class="board_commentUpdate" id="board_commentUpdate"></div>
 			     <!-- 댓글 입력 -->
 		<div class="comment_input" id="comment_input">
-			<form method="post" action="./inputComment" class="comment_form" name="comment_form" accept-charset="utf-8">
+			<div class="comment_form" id="comment_form">
 				<textarea class="comment_content" name="comment_content" placeholder="댓글을 입력하세요..."></textarea>
 					<input type="hidden" name="comment_writer" value="<%=mem_id%>">
 					<input type="hidden" name="comment_post_no" value="<%=post_no%>">
-				<button type="submit" onclick="getCommentList(<%=post_no%>,<%=post_writer%>)">입력</button>
-			</form>
+				<button type="button" onclick="inputComment()">입력</button>
+			</div>
 		</div>
 	</div>
-
-
-
-
 
 
 				

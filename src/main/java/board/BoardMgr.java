@@ -107,7 +107,7 @@ public class BoardMgr {
 		        	sql = "select * from board ORDER BY post_no DESC";
 			        pstmt = con.prepareStatement(sql);
 		        } else {
-			        sql = "SELECT * FROM board LIMIT ? OFFSET ?";
+			        sql = "SELECT * FROM board ORDER BY post_no DESC LIMIT ? OFFSET ? ";
 			        pstmt = con.prepareStatement(sql);
 			        pstmt.setInt(1, pageSize);
 			        pstmt.setInt(2, offset);
