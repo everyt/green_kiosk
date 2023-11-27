@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.Vector"%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/board/layouts_main.css">
 <%@include file="/board/layouts/Bean.jsp" %>
 <div class="mainPage">
 
@@ -10,32 +11,38 @@
   <h2>게시글 목록</h2>
   <br/>
 <%
-	BoardMgr bMgr = new BoardMgr();
-	List <boardBean> list = bMgr.getBoardList();	
-	
-    Long post_no = 0L;
-    String post_time = null;
-    String post_title = null;
-    String post_content = null;
-    String post_filePath = null;
-    Long post_writer = 0L;
-    String post_writer_id = null;
-    Long post_viewcount = 0L;
-    Long post_likecount = 0L;
-    Long count = 0L;
+int pageSize = 10; // Set your desired page size here
+int pageNum = 1;
 
-    for (int i = 0; i < list.size(); i++)
-    {
-    	post_no = list.get(i).getPost_no();
-    	post_time = list.get(i).getPost_time();
-    	post_title = list.get(i).getPost_title();
-    	post_content = list.get(i).getPost_content();
-    	post_filePath = list.get(i).getPost_filePath();
-    	post_writer = list.get(i).getPost_writer();
-    	post_writer_id = bMgr.findUser(post_writer);
-    	post_viewcount = list.get(i).getPost_viewcount();
-    	post_likecount = list.get(i).getPost_likecount(); 
-    	count++;
+if (request.getParameter("pageNum") != null && !request.getParameter("pageNum").isEmpty()) {
+    pageNum = Integer.parseInt(request.getParameter("pageNum"));
+    System.out.println("pageNum => " + pageNum);
+} else {
+    System.out.println("pageNum(null) => " + pageNum);
+
+}
+
+BoardMgr bMgr = new BoardMgr();
+/* List<boardBean> list = bMgr.getBoardList();  
+ */
+Vector<boardBean> vlist = bMgr.getBoardList1(pageNum, pageSize);
+int listSize = vlist.size();
+Long post_no, post_writer;
+String post_time, post_title, post_content, post_filePath, post_writer_id;
+Long post_viewcount, post_likecount;
+Long count = 0L;
+
+for (int i = 0; i < vlist.size(); i++) {
+    post_no = vlist.get(i).getPost_no();
+    post_time = vlist.get(i).getPost_time();
+    post_title = vlist.get(i).getPost_title();
+    post_content = vlist.get(i).getPost_content();
+    post_filePath = vlist.get(i).getPost_filePath();
+    post_writer = vlist.get(i).getPost_writer();
+    post_writer_id = bMgr.findUser(post_writer);
+    post_viewcount = vlist.get(i).getPost_viewcount();
+    post_likecount = vlist.get(i).getPost_likecount(); 
+    count++;
 %>
  <script>
  	getThumbNail(`<%=post_content%>`, <%=post_no%>); 
@@ -60,3 +67,20 @@
 %>
 	</div>
 </div>
+<div>
+<%
+    Vector<boardBean> vlistAll = bMgr.getBoardList1(0, pageSize);
+    int listSizeAll = vlistAll.size();
+    System.out.println("listSizeAll => " + listSizeAll);
+    int totalPages = (int) Math.ceil((double) listSizeAll / pageSize);
+    System.out.println("totalPages => " + totalPages);
+
+    for (int i = 1; i <= totalPages; i++) {
+ %>
+    <div class="pagination">
+        <a href="<%=request.getContextPath()%>/board/index.jsp?pageNum=<%=i%>"><%= i %></a>
+    </div>
+<%
+    }
+%>
+                </div>

@@ -89,6 +89,52 @@ public class BoardMgr {
 		}
 		return list;
 	}
+	/**
+	 *  게시판 페이징
+	 * @return
+	 */
+	public Vector<boardBean> getBoardList1(int pageNum, int pageSize){
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		Vector <boardBean> vlist = new Vector <boardBean>();
+		try {
+			 con = pool.getConnection();
+		        // Calculate the starting index for the pagination
+		        int offset = ((pageNum-1) * pageSize);
+		        if (pageNum == 0) {
+		        	sql = "select * from board ORDER BY post_no DESC";
+			        pstmt = con.prepareStatement(sql);
+		        } else {
+			        sql = "SELECT * FROM board LIMIT ? OFFSET ?";
+			        pstmt = con.prepareStatement(sql);
+			        pstmt.setInt(1, pageSize);
+			        pstmt.setInt(2, offset);
+		        }
+		        // Use the LIMIT and OFFSET clauses for pagination
+
+		        rs = pstmt.executeQuery();
+			while(rs.next()) {
+				boardBean bean = new boardBean();
+				bean = new boardBean();
+				bean.setPost_no(rs.getLong("post_no"));
+				bean.setPost_time(rs.getString("post_time"));
+				bean.setPost_title(rs.getString("post_title"));
+				bean.setPost_content(rs.getString("post_content"));
+				bean.setPost_writer(rs.getLong("post_writer"));
+				bean.setPost_viewcount(rs.getLong("post_viewcount"));
+				bean.setPost_likecount(rs.getLong("post_likecount"));
+				bean.setPost_filePath(rs.getString("post_filePath"));
+				vlist.add(bean);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return vlist;
+	}
 	
 	public String findUser(Long post_writer)
 	{
