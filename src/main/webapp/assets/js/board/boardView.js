@@ -123,7 +123,8 @@ function updateCommentList(post_no, commentList, post_writer) {
 
         return `
             <div class="comment_list_Map" id="comment_list_Map">
-                <p> ${comment.comment_writer_id} <span class="commentWriterCheck">${commentWriterCheck}</span>&nbsp; ${comment.comment_time}</p>
+                <p> ${comment.comment_writer_id} <span class="commentWriterCheck">${commentWriterCheck}
+                <br/></span>&nbsp;<span class="date"> ${comment.comment_time}</span></p>
                 <p>&nbsp;${comment.comment_content}</p>
             </div><hr/>
         `;
@@ -133,3 +134,4 @@ function updateCommentList(post_no, commentList, post_writer) {
     $('#list_amount').text(` (${totalCommentCount}개)`);
     $('#board_commentUpdate').html(HTML_commentList);
 }
+

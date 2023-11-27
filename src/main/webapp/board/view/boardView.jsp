@@ -50,7 +50,10 @@
 
         String CurrentUrl = requestPage.getRequestURL()+"?post_no=" + post_no;
 
-    	
+		String mem_id=null;
+		if(session.getAttribute("mem_id")!=null){
+			mem_id=(String)session.getAttribute("mem_id");
+		}
 %>
 
 <script>
@@ -118,13 +121,24 @@ window.addEventListener('DOMContentLoaded', function(){
 				    <span class="recommend-label">추천 <%=post_likecount%></span>
 			    </div>
 				</div>
+				<br/>
         </div>
     </div>
     <!--  여긴 댓글 구간  -->
+
     <div class="board_commentArea" id="board_commentArea">
     	<div class="comment_list_menu" id="comment_list_menu">댓글 목록<span id="list_amount"></span></div>
 		<hr>
 		<div class="board_commentUpdate" id="board_commentUpdate"></div>
+			     <!-- 댓글 입력 -->
+		<div class="comment_input" id="comment_input">
+			<form method="post" action="./inputComment" class="comment_form" name="comment_form" accept-charset="utf-8">
+				<textarea class="comment_content" name="comment_content" placeholder="댓글을 입력하세요..."></textarea>
+					<input type="hidden" name="comment_writer" value="<%=mem_id%>">
+					<input type="hidden" name="comment_post_no" value="<%=post_no%>">
+				<button type="submit" onclick="getCommentList(<%=post_no%>,<%=post_writer%>)">입력</button>
+			</form>
+		</div>
 	</div>
 
 

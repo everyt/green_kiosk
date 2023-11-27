@@ -275,3 +275,36 @@ pre {
     border-color: transparent transparent #f2f2f2 transparent; /* Adjust the last value for the border color */
     transform: translateX(-50%);
 }
+
+.date { font-size: 12px; color: #909090; margin-top: 5px; }
+.commentWriterCheck { font-size : 14px; padding: 10px;}
+
+.comment_input {
+    padding-bottom: 50px;
+    padding-top: 10px;
+    margin-bottom: 20px; /* Removed the duplicate entry */
+}
+
+.comment_form {
+    display: flex;
+}
+
+.comment_form textarea {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.comment_form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer; /* Added cursor property for better UX */
+}
+
+
+.comment_form button:hover {
+    background-color: #45a049;
+}
