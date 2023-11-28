@@ -175,12 +175,17 @@ function handleCommentEditFocus(element, post_no, comment_no, commentContent) {
 
 
 function inputComment() {
-    var commentContent = $('.comment_content').val();
+    var commentContent = $('.comment_content').val().trim(); 
     var commentWriter = $('[name="comment_writer"]').val();
     var commentPostNo = $('[name="comment_post_no"]').val();
 
     var encodedContent = encodeURIComponent(commentContent);
 
+    if (commentContent === "") {
+        alert("댓글 내용을 입력하세요.");
+        return; 
+    }
+    
     $.ajax({
         type: "POST",
         url: "./inputComment",

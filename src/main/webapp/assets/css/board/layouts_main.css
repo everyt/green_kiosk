@@ -27,3 +27,28 @@
     color: #888; 
     margin-left : 7px;
 }
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Adjust as needed */
+    margin-bottom: 30px;
+}
+
+.pagination {
+    display: inline-block;
+    margin: 0 5px; /* Adjust spacing between pagination links */
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+}
+
+.pagination a:hover {
+    background-color: #ddd;
+}

@@ -78,13 +78,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     int totalPages = (int) Math.ceil((double) listSizeAll / pageSize);
 
-
-    for (int i = 1; i <= totalPages; i++) {
- %>
-    <div class="pagination">
-        <a href="<%=request.getContextPath()%>/board/index.jsp?pageNum=<%=i%>"><%= i %></a>
-    </div>
-<%
-    }
 %>
-                </div>
+
+    <div class="pagination-container">
+    	<% for (int i = 1; i <= totalPages; i++) { %>
+        	<div class="pagination">
+           	 <a href="<%=request.getContextPath()%>/board/index.jsp?pageNum=<%=i%>"><%= i %></a>
+        	</div>
+    	<% } %>
+	</div>
+</div>
