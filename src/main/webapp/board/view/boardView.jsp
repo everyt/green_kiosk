@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
 <%@ page import="java.io.*,java.util.*" %>
 <%@ page import="javax.servlet.*,javax.servlet.http.*" %>
 
@@ -72,7 +73,7 @@ window.addEventListener('DOMContentLoaded', function(){
     <div class="row">
         <div class="mainDivid" id="mainDivid-1">
         <div class="page_category" id="page_category">게시글 읽기</div>
-        <hr>
+        <hr class="page_category">
         </div>
         <div class="post-details">
             <table>

@@ -310,8 +310,9 @@ pre {
 }
 
 #button_actions {
-    text-align: right; /* Align buttons to the right */
-    padding-top: 10px;
+    text-align: center; /* Align buttons to the right */
+    padding-top: 50px;
+    padding-left: 1000px;
     margin-top: 20px;
 }
 
@@ -341,4 +342,8 @@ pre {
     white-space: nowrap;   
     margin-top: -40px;
     
+}
+
+.under_title, .post_title, .post_writer_id, .page_category{
+    margin-left : 100px;
 }
