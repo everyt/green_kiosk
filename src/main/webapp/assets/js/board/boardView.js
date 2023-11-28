@@ -131,7 +131,7 @@ function getCommentList(post_no, post_writer)
 
 function updateCommentList(post_no, commentList, post_writer) {
     var HTML_commentList = commentList.map(function (comment) {
-	var commentWriterCheck = (String(comment.comment_writer) === String(post_writer)) ? '작성자' : '';
+	var commentWriterCheck = (String(comment.comment_writer) === String(post_writer)) ? '글쓴이': '';
 	
 	var decodedContent;
 	var formattedDateTime = formatDateTimeDifference(comment.comment_time);
@@ -179,6 +179,11 @@ function inputComment() {
     var commentWriter = $('[name="comment_writer"]').val();
     var commentPostNo = $('[name="comment_post_no"]').val();
 
+    if (commentContent.length > 1000) {
+    alert("댓글은 1000자 이하로 작성해야 합니다.");
+    return;
+    }
+    
     var encodedContent = encodeURIComponent(commentContent);
 
     if (commentContent === "") {

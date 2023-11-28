@@ -24,13 +24,15 @@ public class boardEditAction extends HttpServlet {
     	if ("/board/write/editBoardAction".equals(endPoint))
     	{
     		BoardMgr bMgr = new BoardMgr();
-
+    		
+    		Long post_no = Long.parseLong(request.getParameter("post_no"));
+    		
     		boolean result = bMgr.editBoardAction(request);
-
+    		
     		if (result == true)
     		{
     			System.out.println("수정 성공");
-        		response.sendRedirect(request.getContextPath()+"/board/index.jsp");
+        		response.sendRedirect(request.getContextPath()+"/board/view/boardView.jsp?post_no=" + post_no);
     		} else {
     	        request.setAttribute("editFailure", "게시물 수정에 실패했습니다.");
     	        response.sendRedirect(request.getHeader("referer"));
