@@ -46,16 +46,16 @@
       <% if (mem_profile_img == null) { %>
       <img src="<%=request.getContextPath()%>/assets/images/board/human_icon.jpg" alt="" width="32" height="32" class="rounded-circle me-2" id="profileImage">
       <% } else { %>
-      <img src="nodove.duckdns.org<%=mem_profile_img%>" alt="" width="32" height="32" class="rounded-circle me-2" id="profileImage">
+      <img src="<%=mem_profile_img%>" alt="" width="32" height="32" class="rounded-circle me-2" id="profileImage">
       <% } %>
         <strong><%=(String)session.getAttribute("mem_id")%></strong>
       </a>
       <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
         <li><a class="dropdown-item" href="<%=request.getContextPath()%>/board/index.jsp">게시판</a></li>
-        <li><a class="dropdown-item" href="#">작성글 보기</a></li>
+        <li><a class="dropdown-item" href="<%=request.getContextPath()%>/board/view/user.jsp">작성글 보기</a></li>
         <li><a class="dropdown-item" href="<%=request.getContextPath()%>/mypage/personal.jsp">회원 정보 수정</a></li>
         <li><a class="dropdown-item" href="javascript:void(0)" 
-        onclick="openPopupMember(`<%=request.getContextPath()%>/board/write/memberEdit.jsp?mem_id=<%=(String)session.getAttribute("mem_id")%>`)">게시판 이미지 변경</a></li>
+        onclick="openPopupMember(`<%=request.getContextPath()%>/board/write/memberEdit.jsp?mem_id=<%=(String)session.getAttribute("mem_id")%>`)">프로필 이미지 변경</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="#">로그아웃</a></li>
       </ul>
