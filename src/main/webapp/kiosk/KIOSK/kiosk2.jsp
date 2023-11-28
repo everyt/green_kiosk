@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>Insert title here</title>
+<title>Green KIOSK </title>
 
 <link href="style3.css" rel="stylesheet" type="text/css">
 <script src='https://unpkg.com/micromodal/dist/micromodal.min.js'></script>
@@ -140,6 +140,11 @@
 		        }
 		    }
 		});
+    function cancelOrder() {
+	    sessionStorage.removeItem('basketArray');
+	    basketArray = []; // Clear the local array as well
+	    updateBasket(); // Update the basket display
+	}
 	    
 	    //장바구니 표시 업데이트
 	    const updateBasket = () => {

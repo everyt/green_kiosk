@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>Insert title here</title>
+<title>Green KIOSK </title>
 
 <link href="style3.css" rel="stylesheet" type="text/css">
 <script src='https://unpkg.com/micromodal/dist/micromodal.min.js'></script>
@@ -226,7 +226,7 @@
 		});
 	    
     function cancelOrder() {
-	    sessionStorage.clear('basketArray');
+	    sessionStorage.removeItem('basketArray');
 	    basketArray = []; // Clear the local array as well
 	    updateBasket(); // Update the basket display
 	}
@@ -310,8 +310,7 @@
 	          // 항목이 없는 경우 원래의 레이아웃으로 전환 (예: 블록)
 	          deleteButton.style.display = 'none'; // 원래의 display 값으로 설정
 	      }    
-	  //-------------------------------------------------------------------------------------------------------------------------------------------------------    
-
+//-------------------------------------------------------------------------------------------------------------------------------------------------------    
 	  	document.addEventListener('click', function (event) {
 	  	    if (event.target.classList.contains('delete')) {
 	  	        // 클릭한 요소의 부모 요소를 확인하고, 부모가 존재할 때만 처리합니다.
@@ -329,13 +328,16 @@
 	  	    // basketArray에서 deletedIndex에 해당하는 위치의 요소를 제외하고 새로운 배열을 생성합니다.
 	  	
 	  	    basketArray = basketArray.filter(function(_, index) { 
-	  	        return index !== deletedIndex - 1;
+	  	        return index !== deletedIndex;
 	  	    });
 	  	
 	  	    // 장바구니 디스플레이를 업데이트합니다.
 	  	    updateBasket();
+	  	    sessionStorage.setItem('basketArray', JSON.stringify(basketArray));
+	  	
 	  	};
-	  		
+
+
 	      const clearBasket = () => {
 	          basketArray = [];
 	          updateBasket();
