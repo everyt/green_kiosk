@@ -225,6 +225,13 @@
 		    }
 		});
 	    
+    function cancelOrder() {
+	    sessionStorage.clear('basketArray');
+	    basketArray = []; // Clear the local array as well
+	    updateBasket(); // Update the basket display
+	}
+	    
+	    
 	    //장바구니 표시 업데이트
 	    const updateBasket = () => {
 	      console.log(basketArray);
@@ -232,7 +239,7 @@
 	      // 총 가격과 항목 수를 계산합니다
 	      let totalPrice = 0;
 	      let itemCount = 0;
-	  	let menuNames = [];
+	  	  let menuNames = [];
 	  	
 	      basketArray.forEach(item => {
 	          menuNames.push(item.name); // 메뉴 이름을 배열에 추가
