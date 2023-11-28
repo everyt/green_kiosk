@@ -141,7 +141,7 @@ function updateCommentList(post_no, commentList, post_writer) {
 		console.log("내용 디코딩 오류 : ", error);
 		decodedContent = "";
 	}
-	
+
 return `
 
 	    <div class="comment_list_Map" id="comment_list_Map">
@@ -149,9 +149,8 @@ return `
 	            <span class="comment_writer_id">${comment.comment_writer_id}</span>
 	            <span class="commentWriterCheck">${commentWriterCheck}</span>
 	            <span class="date">${formattedDateTime}</span>
-	            ${String(comment.comment_writer) === String(post_writer) ? `
+	            ${Number(comment.comment_writer) === Number(session_mem_no) ? `
 	                <div class="comment_actions">
-
 	                    <button type="button" class="comment_delete_button" onclick="comment_deleteAction(${post_no}, ${comment.comment_no}, ${post_writer})">
 	                        <img src='${contextPath}/assets/images/board/x-square.svg'>
 	                    </button>
@@ -263,7 +262,8 @@ function performCommentDelete(post_no, comment_no, post_writer) {
         url: "./deleteCommentAction",
         data: {
 	 		post_no : post_no,
-	 		comment_no : comment_no
+	 		comment_no : comment_no,
+	 		post_writer : post_writer
         },
         dataType: "text",
         cache: false,

@@ -50,6 +50,9 @@
     	post_viewcount = bean.getPost_viewcount();
     	post_likecount = bean.getPost_likecount(); 
     	
+    	String session_mem_id = (String)session.getAttribute("mem_id");
+    	Long comment_writer_id = bMgr.find_mem_no(session_mem_id);
+    	
         HttpServletRequest requestPage = (HttpServletRequest) pageContext.getRequest();
 
         String CurrentUrl = requestPage.getRequestURL()+"?post_no=" + post_no;
@@ -57,6 +60,7 @@
 %>
 
 <script>
+var session_mem_no = <%=comment_writer_id%>;
 window.addEventListener('DOMContentLoaded', function(){
 	increaseViewcount(<%=post_no%>);
 	getCommentList(<%=post_no%>,<%=post_writer%>);

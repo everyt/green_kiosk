@@ -136,6 +136,7 @@ public class BoardMgr {
 		return vlist;
 	}
 	
+	//mem_no로 mem_id 찾기
 	public String findUser(Long post_writer)
 	{
 		Connection con = null;
@@ -155,6 +156,32 @@ public class BoardMgr {
 				result = rs.getString("writer_id");
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return result;
+	}
+	//mem_id로 mem_no 찾기
+	public Long find_mem_no (String mem_id)
+	{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		Long result = 0L;
+		try {
+			con = pool.getConnection();
+			sql = "SELECT member.mem_no AS mem_no from member where member.mem_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, mem_id);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+			{
+				result = rs.getLong("mem_no");
+			}
+		} catch (Exception e)
+		{
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt, rs);
