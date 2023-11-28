@@ -3,8 +3,10 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Date" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.Duration" %>
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="user.Member_Mgr" %>
 <%@ page import="user.Member_Bean" %>
@@ -15,6 +17,7 @@
 <%@ page import="coupon.Coupon_Mgr" %>
 <%@ page import="menu.Manager_Menu" %>
 <%@ page import="menu.Menu_menu_Bean" %>
+<%@ include file="/index/base/head_import.jsp"%>
 <%
 	String cPath = request.getContextPath();
 
@@ -39,13 +42,27 @@
 	Vector<Coupon_kind_Bean> printable_coupons = c_k_mgr.get_printable(String.valueOf(mem_id));
 	
 	printable_count = printable_coupons.size();
-	user_coupon_count = user_coupons.size();
+	user_coupon_count = 0;
+
+	
+	for (Coupon_Bean user_coupon : user_coupons) {
+		String coupon = user_coupon.getCoupon_code();
+		Map<String, String> c_vaild = c_mgr.checkCouponVaild(coupon);
+		
+		if (c_vaild.get("result").equals("success")) {
+			user_coupon_count += 1;
+		} else {
+			System.out.println("code : "+coupon);
+			System.out.println("reason : "+c_vaild.get("reason"));
+		}
+	}
 	
 	if (printable_count >= user_coupon_count) {
 		maxsize = printable_count;
 	} else {
 		maxsize = user_coupon_count;
 	}
+	
 	
 
 	Gson gson = new Gson();
@@ -125,11 +142,11 @@ window.addEventListener('DOMContentLoaded', function() {
     </div>
 	<div class="coupon_title">
 		<span style="transform: translate(120%, -110%); position: absolute; font-weight: 900">발급 가능한 쿠폰 ( <%=printable_count %> 개 )</span>
-		<span style="transform: translate(525%, -110%); position: absolute; font-weight: 900">사용 가능한 쿠폰 ( <%=user_coupon_count %> 개 )</span>
+		<span style="transform: translate(690%, -110%); position: absolute; font-weight: 900">미사용 쿠폰 ( <%=user_coupon_count %> 개 )</span>
 	</div>
 	<div class="coupon_tables" style="display:flex">
 		<table border="1" style="width:40%">
-			<tr style="background-color: powderblue">
+			<tr style="background-color: powderblue" height="12.5%">
 				<th width="45%">쿠폰명</th>
 				<th>할인율</th>
 				<th width="20%">유효기간</th>
@@ -180,9 +197,10 @@ window.addEventListener('DOMContentLoaded', function() {
 		for (int i = 0; i < deffp; i++) {
 			%>
 			<tr style="background-color:powderblue" height="12.5%">
-				<td align="center"></td>
-				<td align="center"></td>
-				<td align="center"></td>
+				<td align="center">ㅤ</td>
+				<td align="center">ㅤ</td>
+				<td align="center">ㅤ</td>
+				<td align="center">ㅤ</td>
 			</tr>
 			<%
 		}
@@ -191,7 +209,7 @@ window.addEventListener('DOMContentLoaded', function() {
 		
 			
 		<table border="1" style="width:60%; margin-left: 2%">
-			<tr style="background-color:bisque">
+			<tr style="background-color:bisque" height="12.5%">
 				<th width="30%">쿠폰명</th>
 				<th width="30%">쿠폰번호</th>
 				<th width="15%">남은일수</th>
@@ -213,26 +231,45 @@ window.addEventListener('DOMContentLoaded', function() {
 					LocalDateTime endday = issueday.plusDays(vaild_date);
 					LocalDateTime now = LocalDateTime.now();
 					
+					Duration duration = Duration.between(issueday, now);
+					long days = duration.toDays();
+					
 					if (now.isBefore(endday)) {
-						%>
-						<tr style="background-color:bisque" height="12.5%">
-							<td align="center"><%=user_coupon.getCoupon_name() %></td>
-							<td align="center"><%=code %></td>
-							<td align="center"><%=vaild_date %> 일</td>
-							<td align="center"><%=user_coupon.getCoupon_discount() %> %</td>
-							<td align="center"><%=m_bean.getMenu_name() %></td>
-						</tr>
-						<%
+						if (vaild_date-days > 4) {
+							%>
+							<tr style="background-color:bisque" height="12.5%">
+								<td align="center"><%=user_coupon.getCoupon_name() %></td>
+								<td align="center"><%=code %></td>
+								<td align="center"><%=vaild_date-days %> 일</td>
+								<td align="center"><%=user_coupon.getCoupon_discount() %> %</td>
+								<td align="center"><%=m_bean.getMenu_name() %></td>
+							</tr>
+							<%
+						} else {
+							if (vaild_date-days == 1) {
+								%>
+								<tr style="background-color:pink" height="12.5%">
+									<td align="center"><%=user_coupon.getCoupon_name() %></td>
+									<td align="center"><%=code %></td>
+									<td align="center">내일 만료</td>
+									<td align="center"><%=user_coupon.getCoupon_discount() %> %</td>
+									<td align="center"><%=m_bean.getMenu_name() %></td>
+								</tr>
+								<%
+							} else {
+								%>
+								<tr style="background-color:pink" height="12.5%">
+									<td align="center"><%=user_coupon.getCoupon_name() %></td>
+									<td align="center"><%=code %></td>
+									<td align="center"><%=vaild_date-days %> 일</td>
+									<td align="center"><%=user_coupon.getCoupon_discount() %> %</td>
+									<td align="center"><%=m_bean.getMenu_name() %></td>
+								</tr>
+								<%
+							}
+						}
 					} else {
-						%>
-						<tr style="background-color:bisque" height="12.5%">
-							<td align="center"></td>
-							<td align="center"></td>
-							<td align="center"></td>
-							<td align="center"></td>
-							<td align="center"></td>
-						</tr>
-						<%
+
 					}
 				} else {
 					%>
@@ -255,11 +292,11 @@ window.addEventListener('DOMContentLoaded', function() {
 			for (int i = 0; i < deff; i++) {
 				%>
 				<tr style="background-color:bisque" height="12.5%">
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"></td>
-					<td align="center"></td>
+					<td align="center">ㅤ</td>
+					<td align="center">ㅤ</td>
+					<td align="center">ㅤ</td>
+					<td align="center">ㅤ</td>
+					<td align="center">ㅤ</td>
 				</tr>
 				<%
 			}

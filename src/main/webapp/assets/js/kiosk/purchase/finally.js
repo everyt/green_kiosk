@@ -114,7 +114,24 @@ var Recipie = /** @class */ (function () {
     }
     return Recipie;
 }());
+var initSessionStorage = function () {
+    var couponArray = sessionStorage.getItem('couponArray');
+    if (couponArray !== null && couponArray !== undefined) {
+        detailedFetch('/green_kiosk/api/kiosk/purchase/coupon/expire', 'POST', encodeURIComponent(couponArray));
+    }
+    sessionStorage.removeItem('basketArray');
+    sessionStorage.removeItem('couponArray');
+    sessionStorage.removeItem('mileage');
+    sessionStorage.removeItem('order');
+    sessionStorage.removeItem('coupon');
+    sessionStorage.removeItem('mobile');
+    sessionStorage.removeItem('bag');
+    sessionStorage.removeItem('shop');
+    sessionStorage.removeItem('smile');
+    sessionStorage.removeItem('card');
+};
 var handleClickCancleRecipie = function () {
+    initSessionStorage();
     location.href = 'main.jsp';
 };
 var handleClickOkRecipie = function (orderObject, element, pk) {
@@ -204,6 +221,7 @@ var handleClickOkRecipie = function (orderObject, element, pk) {
     var canvas = document.querySelector('.canvas');
     var canvasCtx = canvas.getContext('2d');
     var barcode = new Barcode(recipie.barcode, canvasCtx, 400, 140);
+    initSessionStorage();
 };
 var insertOrder_g = null;
 var getPk = function () { return __awaiter(_this, void 0, void 0, function () {
