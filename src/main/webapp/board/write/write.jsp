@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', function() {
 <%@include file="/board/layouts/login_check.jsp" %>
 </head>
 <body>
-<%@ include file="/board/layouts/sidebar.jsp" %>
+<%@ include file="/board/layouts/sidebar.jsp" %> 
 
 	<div class="container">
 		<div class="row">

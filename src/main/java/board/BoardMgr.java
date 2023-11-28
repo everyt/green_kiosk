@@ -357,6 +357,55 @@ public class BoardMgr {
 		return flag;
 	}
 	
+		//게시판 사용자 이미지 변경하기
+	public boolean updateProfileImg(String filePath, Long mem_no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		boolean flag = false;
+		try {
+			con = pool.getConnection();
+			sql = "UPDATE member SET mem_profile_img = ? where mem_no = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, filePath);
+			pstmt.setLong(2, mem_no);
+			int count = pstmt.executeUpdate();
+			if (count > 0)
+				flag = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		return flag;
+	}
+
+	public String getProfileImg(Long mem_no)
+	{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		String result = null;
+		try {
+			con = pool.getConnection();
+			sql = "SELECT mem_profile_img FROM member WHERE mem_no = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setLong(1, mem_no);
+			rs = pstmt.executeQuery();
+			if(rs.next())
+			{
+				result = rs.getString("mem_profile_img");
+			}
+		} catch(Exception e)
+		{
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return result;
+	}
+	
 	public boolean editBoardAction(HttpServletRequest req) {
 		Connection con = null;
 		PreparedStatement pstmt = null;

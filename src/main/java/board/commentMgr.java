@@ -58,6 +58,34 @@ public class commentMgr {
 	    }
 	    return list;
 	}
+	
+   //post_no으로 댓글 개수 구하기
+	public Long getCommentCount(Long comment_post_no) {
+	    Connection con = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    String sql = null;
+	    Long commentCount = 0L;
+
+	    try {
+	        con = pool.getConnection();
+	        sql = "SELECT COUNT(*) AS count FROM comment WHERE comment_post_no = ?";
+	        pstmt = con.prepareStatement(sql);
+	        pstmt.setLong(1, comment_post_no);
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            commentCount = rs.getLong("count");
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        pool.freeConnection(con, pstmt, rs);
+	    }
+
+	    return commentCount;
+	}
 
 	public String findUser(Long comment_writer)
 	{

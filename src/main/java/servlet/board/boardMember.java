@@ -15,8 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import board.BoardMgr;
 
-@WebServlet("/board/write/MemberFileUpload")
+
+@WebServlet({"/board/write/MemberFileUpload", "/board/write/memberImgEditAction"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2 MB
 maxFileSize = 1024 * 1024 * 10,      // 10 MB
 maxRequestSize = 1024 * 1024 * 50)   // 50 MB
@@ -31,6 +33,7 @@ public class boardMember extends HttpServlet {
 	   	{
 			try {
 				Part filePart = request.getPart("file");
+				String mem_id = request.getParameter("mem_id");
 				String fileName = UUID.randomUUID().toString() + "_" + filePart.getSubmittedFileName();
 				
 				String uploadPath = "/usr/local/tomcat/webapps/downloadfile2/userImg/" + fileName;
@@ -40,8 +43,13 @@ public class boardMember extends HttpServlet {
 				}
 				
 	            String relativePath = "/downloadfile2/userImg/" + fileName;
-				response.getWriter().write(relativePath);
-				
+	            BoardMgr bMgr = new BoardMgr();
+	            Long mem_no = bMgr.find_mem_no(mem_id);
+	            boolean result = bMgr.updateProfileImg(relativePath, mem_no);
+	            if (result == true)
+	            {
+	            	response.getWriter().write(relativePath);
+	            }
 			}	catch (Exception e) {
 	            e.printStackTrace();
 	            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

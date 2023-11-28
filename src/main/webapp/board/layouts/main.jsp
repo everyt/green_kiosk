@@ -20,7 +20,8 @@ if (request.getParameter("pageNum") != null && !request.getParameter("pageNum").
 
 } 
 
-BoardMgr bMgr = new BoardMgr();
+BoardMgr bMgr = new BoardMgr(); 
+commentMgr cMgr = new commentMgr(); 
 /* List<boardBean> list = bMgr.getBoardList();  
  */
 Vector<boardBean> vlist = bMgr.getBoardList1(pageNum, pageSize);
@@ -32,6 +33,7 @@ Long count = 0L;
 
 for (int i = 0; i < vlist.size(); i++) {
     post_no = vlist.get(i).getPost_no();
+    Long commentNum = cMgr.getCommentCount(post_no); 
     post_time = vlist.get(i).getPost_time();
     post_title = vlist.get(i).getPost_title();
     post_content = vlist.get(i).getPost_content();
@@ -55,12 +57,17 @@ document.addEventListener('DOMContentLoaded', function() {
             <span class="w3-bar-item w3-button w3-white w3-xlarge w3-right"></span>
             <!-- 이미지를 동적으로 변경할 대상 -->
             <img id="thumbnail<%=post_no%>" src="<%=request.getContextPath()%>/assets/images/board/default-background.png" 
-            class="w3-bar-item w3 w3-hide-small" style="width:100px">
+            class="w3-bar-item w3 w3-hide-small" style="width:100px; height:80px;" >
             <div class="w3-bar-item">
-                <span class="w3-large"><%=post_writer_id%></span>
+            	<span class="post_post_title" id="post_post_title"><%=post_title%></span>
+            	<% if (commentNum > 0) { %>
+                <span class="post_comment_num" id="post_comment_num">[<%=commentNum%>]</span>
+                <% } %>
+				<span class="likeBR2"></span>
+                <span class="post_post_writer_id" id="post_post_writer_id"><%=post_writer_id%></span>
+                <span class="post_post_viewcount" id="post_post_viewcount">조회&nbsp;<%=post_viewcount%></span>
+                <span class="post_post_likecount" id="post_post_likecount"><img src="<%=request.getContextPath()%>/assets/images/board/hand-thumbs-up.svg"><%=post_likecount%></span>
                 <span class="post_Formatted_time" id="post_Formatted_time"><%=formattedDateTime%></span>
-                <br>
-                <span><%=post_title%></span>
             </div>
         </a>
     </li>

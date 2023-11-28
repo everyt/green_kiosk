@@ -1,8 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import = "java.io.PrintWriter" %>
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="<%=request.getContextPath()%>/assets/js/board/sidebar.js"></script>
+<script src="<%=request.getContextPath()%>/assets/js/board/boardMember.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<%@ include file="/board/layouts/Bean.jsp" %>
+<script>
+	var mem_id = '<%= (String)session.getAttribute("mem_id") %>';
+</script>
+<%
+	BoardMgr boardMgr = new BoardMgr();
+	String memID = (String)session.getAttribute("mem_id");
+	Long mem_no = boardMgr.find_mem_no(memID);
+	String mem_profile_img = boardMgr.getProfileImg(mem_no);
+%>
 <div class="sidebar">
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
     <a href="<%=request.getContextPath()%>/board/index.jsp" class="d-flex align-items-center mb-3 mb-m
@@ -31,7 +43,11 @@
     <hr>
 	<div class="dropdown">
       <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="<%=request.getContextPath()%>/assets/images/board/human_icon.jpg" alt="" width="32" height="32" class="rounded-circle me-2">
+      <% if (mem_profile_img == null) { %>
+      <img src="<%=request.getContextPath()%>/assets/images/board/human_icon.jpg" alt="" width="32" height="32" class="rounded-circle me-2" id="profileImage">
+      <% } else { %>
+      <img src="nodove.duckdns.org<%=mem_profile_img%>" alt="" width="32" height="32" class="rounded-circle me-2" id="profileImage">
+      <% } %>
         <strong><%=(String)session.getAttribute("mem_id")%></strong>
       </a>
       <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
