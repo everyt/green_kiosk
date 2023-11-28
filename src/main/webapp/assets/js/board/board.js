@@ -172,6 +172,23 @@ $('#mainContent').load('menu_main.jsp').fadeIn("slow");
 	  }
 	}*/
 	
+function openPopupMember(url) {
+  var popupWidth = 300;
+  var popupHeight = 400;
+  var popupX = window.screen.width / 2 - popupWidth / 2;
+  var popupY = window.screen.height / 2 - popupHeight / 2;
+
+  // Check if the popup would go off the screen
+  if (popupX < 0) {
+    popupX = 0;
+  }
+  if (popupY < 0) {
+    popupY = 0;
+  }
+
+  var popup = window.open(url, 'PopupWindow', 'width=' + popupWidth + ', height=' + popupHeight + ', scrollbars=yes, left=' + popupX + ', top=' + popupY);
+}
+
 	
 function openPopup(url) {
   var popupWidth = 500;
