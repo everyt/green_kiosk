@@ -22,6 +22,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="<%=request.getContextPath()%>/assets/js/board/boardView.js"></script>
+<script src="<%=request.getContextPath()%>/assets/js/board/timeCalculate.js"></script>
 <%@include file="/board/layouts/sidebar.jsp" %>
 <%
 	Long post_no = Long.parseLong(request.getParameter("post_no"));
@@ -57,7 +58,6 @@
 
 <script>
 window.addEventListener('DOMContentLoaded', function(){
-	console.log("increaseViewcount 새로고침으로 실행");
 	increaseViewcount(<%=post_no%>);
 	getCommentList(<%=post_no%>,<%=post_writer%>);
 });
@@ -114,9 +114,9 @@ window.addEventListener('DOMContentLoaded', function(){
               </div>
               </div>
               <br/>
-				<div class="recommend-button" id="recommend-button" onclick="increaseRecommendation(<%=post_no%>)" style="max-width:120px">
+				<div class="recommend-button" id="recommend-button-<%=post_no %>" onclick="increaseRecommendation(<%=post_no%>)" style="max-width:120px">
 				    <img class="recommend-icon" src="<%=request.getContextPath()%>/assets/images/board/hand-thumbs-up.svg" alt="Thumbs Up">
-				  <div class="recommend-loading" id="recommend-loading">
+				  <div class="recommend-loading" id="recommend-loading-<%=post_no%>">
 				    <span class="recommend-label">추천 <%=post_likecount%></span>
 				    </div>
 				</div>
@@ -144,6 +144,7 @@ window.addEventListener('DOMContentLoaded', function(){
 				<button type="button" onclick="inputComment()">입력</button>
 			</div>
 		</div>
+		<div class="comment_input_position" id="comment_input_position"></div>
 	</div>
 
 

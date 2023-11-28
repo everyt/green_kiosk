@@ -145,4 +145,28 @@ public class commentMgr {
 	}
 	
 	
+	//댓글 삭제
+	public int deleteCommentAction(Long comment_post_no, Long comment_no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		ResultSet rs = null;
+		int flag = -1;
+		try {
+			con = pool.getConnection();
+			sql = "DELETE FROM comment WHERE comment_post_no=? AND comment_no = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setLong(1, comment_post_no);
+			pstmt.setLong(2, comment_no);
+			flag = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		//실패시 -1 반환
+		return flag;
+	}
+	
+	
 }

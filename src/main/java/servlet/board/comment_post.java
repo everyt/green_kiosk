@@ -39,9 +39,7 @@ public class comment_post extends HttpServlet {
 
 	    	} else if ("/board/view/inputComment".equals(endPoint)) {
 	    		commentMgr cMgr = new commentMgr();
-	    		System.out.println(request.getParameter("comment_content"));
-	    		System.out.println(request.getParameter("comment_writer"));
-	    		System.out.println(request.getParameter("comment_post_no"));
+
 	    		boolean result = cMgr.insertComment(request);
 	    		if (result == true) {
 		    		response.setContentType("application/json;charset=UTF-8");
