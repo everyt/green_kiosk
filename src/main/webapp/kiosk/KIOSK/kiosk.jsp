@@ -54,16 +54,15 @@
 <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
     <div class="modal__overlay" tabindex="-1">
         <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-            <div class="modal__content" id="modal-1-content">
-			<div class= "chucheon2 color3"><h1>추천 메뉴</h1></div>
+  			<div class= "chucheon2 color3"><h1>추천 메뉴</h1></div>
+  	        <div class="modal__content" id="modal-1-content">
 <!--  음료 메뉴 -->
 <%
-	int menuLength1 = vector.size();
 	
 	if (vector.isEmpty()){
 		out.println("등록된 메뉴가 없습니다.");
 	} else {
-		for (int i = 0; i < menuLength1; i++) {
+		for (int i = 0; i < menuLength; i++) {
 			Menu_menu_Bean bean = vector.get(i);
 			if (bean.getMenu_gubn().equals("음료")) {
 %>
@@ -81,6 +80,42 @@
 		</div>
 	</div>
 </div>
+<!--  사이드 메뉴 -->
+<div class="modal micromodal-slide" id="modal-2" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1">
+        <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+  			<div class= "chucheon2 color3"><h1>추천 메뉴</h1></div>
+  	        <div class="modal__content" id="modal-2-content">
+<%
+	
+	if (vector.isEmpty()){
+		out.println("등록된 메뉴가 없습니다.");
+	} else {
+		for (int i = 0; i < menuLength; i++) {
+			Menu_menu_Bean bean = vector.get(i);
+			if (bean.getMenu_gubn().equals("사이드")) {
+%>
+<div class="flex-item" onclick="handleOnClick('<%=bean.getMenu_no()%>', '<%=bean.getMenu_name()%>', '<%=bean.getMenu_price()%>')">
+	<img src="<%=bean.getMenu_imgPath() %>">
+	<span id="drink" style="font-size:36px; margin :10px" ><%=bean.getMenu_name() %></span>
+	<span id="don" style="font-size:30px; margin :10px; color:blue;" ><%=bean.getMenu_price() %></span> 
+</div>
+<%
+			}
+		}
+	}
+%>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
 		<div class="order" id="totalOrder" >
 		  	<div class="price" id ="totalPrice" ></div>
 		  	<div class="Ordermenu" >
@@ -109,7 +144,23 @@
 	
 		document.getElementById('modal-1-content').addEventListener('click', function (event) {
 		    MicroModal.close('modal-1');
+		    MicroModal.show('modal-2');
 		});
+		document.getElementById('modal-2-content').addEventListener('click', function (event) {
+		    MicroModal.close('modal-1');
+		    MicroModal.close('modal-2');
+		});
+		
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 	    let basketArray = [];
 
@@ -300,16 +351,16 @@
 	  
 	  
 function jumoon0() {
-	location.href = "test1-1-5.jsp";
+	location.href = "kiosk.jsp";
 }		
 function jumoon1() {
-	location.href = "test2.jsp";
+	location.href = "kiosk2.jsp";
 }		
 function jumoon2() {
-	location.href = "test3.jsp";
+	location.href = "kiosk3.jsp";
 }		
 function jumoon3() {
-	location.href = "test4.jsp";
+	location.href = "kiosk4.jsp";
 }	
 function basket() {
 	location.href = "../purchase/main.jsp";
