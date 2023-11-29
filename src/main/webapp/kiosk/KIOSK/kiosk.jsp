@@ -310,6 +310,8 @@
 	          // 항목이 없는 경우 원래의 레이아웃으로 전환 (예: 블록)
 	          deleteButton.style.display = 'none'; // 원래의 display 값으로 설정
 	      }    
+	      
+	      
 //-------------------------------------------------------------------------------------------------------------------------------------------------------    
 	  	document.addEventListener('click', function (event) {
 	  	    if (event.target.classList.contains('delete')) {
@@ -319,24 +321,20 @@
 	  	            // 클릭한 요소의 부모 요소에서 인덱스를 가져옵니다.
 	  	            const deletedIndex = Array.from(parent.children).indexOf(event.target.parentNode);
 	  	            // deleteBasket 함수를 호출하고 삭제할 인덱스를 전달합니다.
-	  	            deleteBasket(deletedIndex);
+	  	            deleteBasket(deletedIndex-1);
 	  	        }
 	  	    }
 	  	});
 
 	  	const deleteBasket = (deletedIndex) => {
-	  	    // basketArray에서 deletedIndex에 해당하는 위치의 요소를 제외하고 새로운 배열을 생성합니다.
-	  	
 	  	    basketArray = basketArray.filter(function(_, index) { 
 	  	        return index !== deletedIndex;
 	  	    });
 	  	
-	  	    // 장바구니 디스플레이를 업데이트합니다.
-	  	    updateBasket();
 	  	    sessionStorage.setItem('basketArray', JSON.stringify(basketArray));
+	  	    updateBasket();
 	  	
 	  	};
-
 
 	      const clearBasket = () => {
 	          basketArray = [];
