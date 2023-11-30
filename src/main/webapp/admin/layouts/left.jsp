@@ -40,9 +40,6 @@
 	  <%
 	  //Event page 일 경우 
 	  } else if (menuType.equals("Event")){ %>
-  	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="updateMenu('component')">재료</a>
-  	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="updateMenu('onSale')">이벤트 등록된 상품</a>
-	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/admin/Event/calender.jsp')">calender</a>
 	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/admin/Event/coupon.jsp')">발급된 쿠폰 관리</a>
 	  <a class="w3-bar-item w3-button w3-hover-black" href="javascript:void(0)" onclick="loadContent('<%=request.getContextPath()%>/admin/Event/coupon_info.jsp')">쿠폰 관리</a>
 	  <% 
