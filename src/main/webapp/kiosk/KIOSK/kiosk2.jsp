@@ -14,7 +14,7 @@
 </head>
 <body>
 	<div class="container">
-	    <div class="head color1" align="center">	<h1>Green KIOSK</h1> <br></div>
+      <div class="head" align="center"><img src='https://nodove.duckdns.org/assets/images/logo.png' style="width:400px; height:70px;" />
 		<div class="main color2" align="center">	
 		    <div class="page"onclick="jumoon0()" ><h2>단 품</h2></div>
 		 	<div class="page"onclick="jumoon1()" ><h2>세 트</h2></div>
@@ -37,13 +37,13 @@
 			
 %>
 <div class="flex-item" onclick="handleOnClick('<%=bean.getMenu_no()%>', '<%=bean.getMenu_name()%>', '<%=bean.getMenu_price()%>')">
-	<div class="rowbox">
-	    <img src="<%=bean.getMenu_imgPath() %>">
-		<div class="colbox">
-		    <span id="hamburger0" style="font-size:36px; margin :10px" ><%=bean.getMenu_name() %></span>
-		    <span id="don" style="font-size:30px; margin :10px; color:blue;" ><%=bean.getMenu_price() %></span>
-		</div>
-	</div>
+  <div class="rowbox">
+    <img src="<%=bean.getMenu_imgPath() %>">
+    <div class="colbox">
+      <span id="hamburger0" style="font-size:36px; margin :10px" ><%=bean.getMenu_name() %></span>
+      <span id="don" style="font-size:30px; margin :10px; color:blue;" ><%=bean.getMenu_price() %></span>
+    </div>
+  </div>
 </div>
 <%
 			}
@@ -154,40 +154,41 @@
 	      let totalPrice = 0;
 	      let itemCount = 0;
 	  	let menuNames = [];
-	  	
-	      basketArray.forEach(item => {
-	          menuNames.push(item.name); // 메뉴 이름을 배열에 추가
-	          totalPrice += item.price * item.amount;
-	          itemCount += item.amount;
-	  	    sessionStorage.setItem('basketArray', JSON.stringify(basketArray));
-	      });
 	      
 	      element = document.getElementById('totalOrder');
-	      
+
+	        if (basketArray !== null && basketArray !== undefined) {
+	            
+	            basketArray.forEach(item => {
+	                menuNames.push(item.name); // 메뉴 이름을 배열에 추가
+	                totalPrice += item.price * item.amount;
+	                itemCount += item.amount;
+	              sessionStorage.setItem('basketArray', JSON.stringify(basketArray));
+	            });
 	  //-------------------------------------------------------------------------------------------------------------------------------------------------------    
-	      let html = '<div class="price,count" style="display:flex; width:95vw;justify-content: flex-end;">';
-	      html += '<div class="totalcount" >';
-	      html += itemCount + '개</span>';
-	      html += '</div>';
-	      html += '<div class="totalprice">';
-	      html += '<span>총 금액: ' + totalPrice + '원</span>';
-	      html += '</div>';
-	      html += '</div>';
+        let html = '<div style="display:flex; justify-content: flex-end; width: 100%; background-color: #bb2649;"><div class="price,count" style="display:flex; width:95vw;justify-content: flex-end;">';
+        html += '<div class="totalcount" >';
+        html += '<span style="color:white;">' + itemCount + '개</span>';
+        html += '</div>';
+        html += '<div class="totalprice">';
+        html += '<span style="color:white;">총 금액: ' + totalPrice + '원</span>';
+        html += '</div>';
+        html += '</div></div>';
 	      
 	      
 	      for (let i = 0; i < basketArray.length; i++) {
 	          html += '<div class="box" data-index="' + i + '">'
 	           			
-	          html += '<span class="Ordermenu" style="font-size:36px; font-weight: 600; color:black;margin :10px">' + basketArray[i].name + '</span>'
+	          html += '<span class="Ordermenu" style="font-size:36px; font-weight: 400; color:black;margin :10px">' + basketArray[i].name + '</span>'
 	  	
-	          html += '<span class="count" style="font-size:36px; font-weight: 600; color:black;margin :10px">' + basketArray[i].amount + '</span>'  
+	          html += '<span class="count" style="font-size:36px; font-weight: 400; color:black;margin :10px">' + basketArray[i].amount + '</span>'  
 
 	          html += ' <div class="arrow-container">'
 	          html += ' <div class="arrow-up"(\'' + basketArray[i].name + '\')">&#9650;</div>';
 	          html += ' <div class="arrow-down" (\'' + basketArray[i].name +'\')">&#9660;</div>';
 	  		html += '</div>'
 	                  	
-	          html += '<span class="price" style="font-size:36px; font-weight: 600; color:black;margin :10px">' + basketArray[i].price + '</span>'
+	          html += '<span class="price" style="font-size:36px; font-weight: 400; color:black;margin :10px">' + basketArray[i].price + '</span>'
 
 	          html += '<h2 class="delete">삭제</h2>'
 	  		html += '</div>'
@@ -206,7 +207,10 @@
 	      element.innerHTML = html;
 
 	  //-------------------------------------------------------------------------------------------------------------------------------------------------------    
-
+        } else {
+            element.innerHTML = '';
+          }
+	  
 	  	const orderDetailsDiv = document.getElementById('orderDetails');
 
 	      if (orderDetailsDiv) {
@@ -249,14 +253,6 @@
 	  	
 	  	};
 
-	      const clearBasket = () => {
-	          basketArray = [];
-	          updateBasket();
-	      };
-	      document.querySelector('.alldelete').addEventListener('click', () => {
-	          clearBasket();
-	      });  
-
 	    };
 
 	    window.onload = () => {
@@ -287,7 +283,8 @@ function basket() {
 }	
 	  
 	  
-	  
+
+updateBasket();
 	</script>
 </body>
 </html>
