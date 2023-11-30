@@ -34,7 +34,7 @@
   } else {
     for (int i = 0; i < menuLength; i++) {
       Menu_menu_Bean bean = vector.get(i);
-      if (bean.getMenu_gubn().equals("단품")) {
+      if (bean.getMenu_gubn().equals("사이드")) {
       
 %>
 <div class="flex-item" onclick="handleOnClick('<%=bean.getMenu_no()%>', '<%=bean.getMenu_name()%>', '<%=bean.getMenu_price()%>')">
