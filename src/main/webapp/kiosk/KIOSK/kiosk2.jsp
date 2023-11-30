@@ -13,28 +13,29 @@
 <script src='https://unpkg.com/micromodal/dist/micromodal.min.js'></script>
 </head>
 <body>
-	<div class="container">
-      <div class="head" align="center"><img src='https://nodove.duckdns.org/assets/images/logo.png' style="width:400px; height:70px;" />
-		<div class="main color2" align="center">	
-		    <div class="page"onclick="jumoon0()" ><h2>단 품</h2></div>
-		 	<div class="page"onclick="jumoon1()" ><h2>세 트</h2></div>
-		 	<div class="page"onclick="jumoon2()" ><h2>음 료 수</h2></div>
-		 	<div class="page"onclick="jumoon3()" ><h2>사 이 드</h2></div>
-		</div>
-<div class="flex-wrapper">
+
+  <div class="container" style="zoom: 0.5;">
+      <div class="head" align="center"><img src='https://nodove.duckdns.org/assets/images/logo.png' style="width:400px; height:70px;" /> </div>
+    <div class="main color2" align="center">  
+        <div class="page"onclick="jumoon0()" ><h2>단 품</h2></div>
+      <div class="page"onclick="jumoon1()" ><h2>세 트</h2></div>
+      <div class="page"onclick="jumoon2()" ><h2>음 료 수</h2></div>
+      <div class="page"onclick="jumoon3()" ><h2>사 이 드</h2></div>
+    </div>
+<div class="flex-wrapper" style="width: 100%;">
 <!--  단품 메뉴 -->
 <%
-	Vector<Menu_menu_Bean> vector = mMgr.getMenuList(0);
-	
-	int menuLength = vector.size();
+  Vector<Menu_menu_Bean> vector = mMgr.getMenuList(0);
+  
+  int menuLength = vector.size();
 
-	if (vector.isEmpty()){
-		out.println("등록된 메뉴가 없습니다.");
-	} else {
-		for (int i = 0; i < menuLength; i++) {
-			Menu_menu_Bean bean = vector.get(i);
-			if (bean.getMenu_gubn().equals("세트")) {
-			
+  if (vector.isEmpty()){
+    out.println("등록된 메뉴가 없습니다.");
+  } else {
+    for (int i = 0; i < menuLength; i++) {
+      Menu_menu_Bean bean = vector.get(i);
+      if (bean.getMenu_gubn().equals("세트")) {
+      
 %>
 <div class="flex-item" onclick="handleOnClick('<%=bean.getMenu_no()%>', '<%=bean.getMenu_name()%>', '<%=bean.getMenu_price()%>')">
   <div class="rowbox">
@@ -46,9 +47,9 @@
   </div>
 </div>
 <%
-			}
-		}
-	}
+      }
+    }
+  }
 %>
 </div>
 
