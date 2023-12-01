@@ -79,6 +79,11 @@ public class Mileage_Servlet extends HttpServlet {
 		String endPoint = req.getServletPath();
 		
 		logger.info(LOGGER_NAME + ": Processing HTTP POST request by \"" + endPoint + "\"");
+		
+		requestBody = requestBody.substring(1, requestBody.length() - 1);
+		requestBody = requestBody.replace("\\", "");
+		
+		System.out.println(requestBody);
 
 		Type type = new TypeToken<Mileage_VO>() {}.getType();
 		Mileage_VO mileage_vo = gson.fromJson(requestBody, type);
@@ -95,7 +100,7 @@ public class Mileage_Servlet extends HttpServlet {
 		} else if (mileage_vo.getType().equals("cardNumber")) {
 			if (member_mgr.checkCard(mileage_vo.getValue())) {
 				out.write("{"
-						+ "\"result\":"
+						+ "\"result\": true, \"body\":"
 						+ gson.toJson(mileage_vo)
 						+ "}");
 			} else {
