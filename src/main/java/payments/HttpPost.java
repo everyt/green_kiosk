@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -72,7 +73,10 @@ public class HttpPost {
 				
 				System.out.println("http 오류 데이터 : "+eb.toString());
 				Map<String, Object> data = gson.fromJson(eb.toString(), new TypeToken<Map<String, Object>>(){});
-				return (String) data.get("error_message");
+				Map<String, Object> error = new HashMap<String, Object>();
+				error.put("result", "error");
+				error.put("reason", data.get("error_message"));
+				return error.toString();
 			} else {
 				br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));	
 				sb = new StringBuffer(); 	       
