@@ -24,6 +24,8 @@ import com.google.gson.reflect.TypeToken;
 import all.DBConnectionMgr;
 import orders.Orders_Bean;
 
+
+
 public class Manager_Menu {
 	
 	private DBConnectionMgr pool;
@@ -52,7 +54,6 @@ public class Manager_Menu {
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				bean = new Menu_menu_Bean();
-				bean = new Menu_menu_Bean();
 				bean.setMenu_no(rs.getInt("menu_no"));
 				bean.setMenu_name(rs.getString("menu_name"));
 				bean.setMenu_gubn(rs.getString("menu_gubn"));
@@ -64,6 +65,7 @@ public class Manager_Menu {
 				bean.setMenu_price(rs.getInt("menu_price"));
 				bean.setMenu_sell_amount(rs.getInt("menu_sell_amount"));
 				bean.setMenu_recommend(rs.getInt("menu_recommend"));
+				bean.setMenu_couponable(rs.getInt("menu_couponable"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -809,36 +811,49 @@ public class Manager_Menu {
 		}
 		
 		// 3. 회계 관리 페이지 - 거래 내역
-		public Vector<Orders_Bean> getMgrorderList() {
-			Connection con = null;
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			String sql = null;
-			Vector<Orders_Bean> vlist = new Vector<Orders_Bean>();
-			try {
-				con = pool.getConnection();
-				sql = "select * from orders";
-			    pstmt = con.prepareStatement(sql);
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					Orders_Bean bean = new Orders_Bean();
-					bean.setOrder_no(rs.getInt("order_no"));
-					bean.setOrder_time(rs.getTimestamp("order_time"));
-					bean.setOrder_foods(rs.getString("order_foods"));
-					bean.setOrder_price(rs.getInt("order_price"));
-					bean.setOrder_discount(rs.getInt("order_discount"));
-					bean.setOrder_coupon(rs.getString("order_coupon"));
-					bean.setOrder_type(rs.getString("order_type"));
-					bean.setOrder_add_mile(rs.getBoolean("order_add_mile"));
-					bean.setOrder_is_maked(rs.getBoolean("order_is_maked"));
-					vlist.add(bean);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				pool.freeConnection(con, pstmt, rs);
-			}
-			return vlist;
+		public Vector<Orders_Bean> getMgrorderList(int pageNum, int pageSize) {
+		    Connection con = null;
+		    PreparedStatement pstmt = null;
+		    ResultSet rs = null;
+		    String sql = null;
+		    Vector<Orders_Bean> vlist = new Vector<Orders_Bean>();
+
+		    try {
+		        con = pool.getConnection();
+		        // Calculate the starting index for the pagination
+		        int offset = ((pageNum-1) * pageSize);
+		        if (pageNum == 0) {
+		        	sql = "select * from orders order by order_no desc";
+			        pstmt = con.prepareStatement(sql);
+		        } else {
+			        sql = "SELECT * FROM orders LIMIT ? OFFSET ?";
+			        pstmt = con.prepareStatement(sql);
+			        pstmt.setInt(1, pageSize);
+			        pstmt.setInt(2, offset);
+		        }
+		        // Use the LIMIT and OFFSET clauses for pagination
+
+		        rs = pstmt.executeQuery();
+
+		        while (rs.next()) {
+		            Orders_Bean bean = new Orders_Bean();
+		            bean.setOrder_no(rs.getInt("order_no"));
+		            bean.setOrder_time(rs.getTimestamp("order_time"));
+		            bean.setOrder_foods(rs.getString("order_foods"));
+		            bean.setOrder_price(rs.getLong("order_price"));
+		            bean.setOrder_discount(rs.getInt("order_discount"));
+		            bean.setOrder_coupon(rs.getString("order_coupon"));
+		            bean.setOrder_type(rs.getString("order_type"));
+		            bean.setOrder_use_amount(rs.getInt("order_use_mile_amount"));
+		            vlist.add(bean);
+		        }
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    } finally {
+		        pool.freeConnection(con, pstmt, rs);
+		    }
+
+		    return vlist;
 		}
 				
 		 // 3. 회계 관리 페이지 - 거래내역추가
@@ -916,56 +931,72 @@ public class Manager_Menu {
 	
 		
 		// 3. 회계 관리 페이지 - 거래 내역 페이지 분활
-		public Map<String, Object> getSalesList2(int pageNum) {
-			List<String> list = new Vector<>();
-			Map<String, Object> res = new HashMap<String, Object>();
-			
-		        	
-		        	Connection con = null;
-					PreparedStatement pstmt = null;
-					ResultSet rs = null;
-					String sql = null;
-			
-			try {
-				con = pool.getConnection();
-				sql = "select * from orders LIMIT 10 OFFSET ?";
-			    pstmt = con.prepareStatement(sql);
-			    pstmt.setInt(1,  (pageNum - 1) * 10);
-			    rs = pstmt.executeQuery();
-				while (rs.next()) {
-					Orders_Bean vo = new Orders_Bean();
-					vo.setOrder_no(rs.getInt("order_no"));
-					vo.setOrder_time(rs.getTimestamp("order_time"));
-					vo.setOrder_foods(rs.getString("order_foods"));
-					vo.setOrder_price(rs.getInt("order_price"));
-					vo.setOrder_discount(rs.getInt("order_discount"));
-					vo.setOrder_coupon(rs.getString("order_coupon"));
-					vo.setOrder_type(rs.getString("order_type"));
-					vo.setOrder_add_mile(rs.getBoolean("order_add_mile"));
-					vo.setOrder_is_maked(rs.getBoolean("order_is_maked"));
-					  list.add(vo);
-				}
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					pool.freeConnection(con);
-				}
-			
-			try {
-				con = pool.getConnection();
-				sql = "select count(\"order_no\") as count from orders";
-			    pstmt = con.prepareStatement(sql);
-			    pstmt.setInt(1,  (pageNum - 1) * 10);
-			    rs = pstmt.executeQuery();
-			    res.put("length", rs.getInt("count"));
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					pool.freeConnection(con);
-				}
-				res.put("data", list);
-				return res;
-			}
+		public Map<String, Object> getSalesList2(int pageNum1) {
+		    List<Orders_Bean> list = new ArrayList<>();
+		    Map<String, Object> res = new HashMap<>();
+
+		    Connection con = null;
+		    PreparedStatement pstmt = null;
+		    ResultSet rs = null;
+		    String sql = null;
+
+		    try {
+		        con = pool.getConnection();
+
+		        // Retrieve paginated sales data
+		        int pageSize = 10;
+		        int offset = (pageNum1 - 1) * pageSize;
+
+		        sql = "SELECT * FROM orders LIMIT ? OFFSET ?";
+		        pstmt = con.prepareStatement(sql);
+		        pstmt.setInt(1, pageSize);
+		        pstmt.setInt(2, offset);
+		        rs = pstmt.executeQuery();
+
+		        while (rs.next()) {
+		            Orders_Bean vo = new Orders_Bean();
+		            vo.setOrder_no(rs.getInt("order_no"));
+		            vo.setOrder_time(rs.getTimestamp("order_time"));
+		            vo.setOrder_foods(rs.getString("order_foods"));
+		            vo.setOrder_price(rs.getInt("order_price"));
+		            vo.setOrder_discount(rs.getInt("order_discount"));
+		            vo.setOrder_coupon(rs.getString("order_coupon"));
+		            vo.setOrder_type(rs.getString("order_type"));
+		            vo.setOrder_add_mile(rs.getBoolean("order_add_mile"));
+		            vo.setOrder_is_maked(rs.getBoolean("order_is_maked"));
+		            list.add(vo);
+		        }
+
+		        // Retrieve total count of records
+		        sql = "SELECT COUNT(order_no) as count FROM orders";
+		        pstmt = con.prepareStatement(sql);
+		        rs = pstmt.executeQuery();
+
+		        int totalCount = 0;
+		        if (rs.next()) {
+		            totalCount = rs.getInt("count");
+		        }
+
+		        // Populate the result map
+		        res.put("data", list);
+		        res.put("currentPage", pageNum1);
+		        res.put("pageSize", pageSize);
+		        res.put("totalCount", totalCount);
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    } finally {
+		        try {
+		            if (rs != null) rs.close();
+		            if (pstmt != null) pstmt.close();
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		        pool.freeConnection(con);
+		    }
+
+		    return res;
+		}
 	
 		// 3. 회계 관리 페이지 - 재료 입고
 		public boolean insertComponent(Menu_component_Bean bean) {
@@ -1158,6 +1189,45 @@ public class Manager_Menu {
 					}
 					return true;
 				}
+				
+				public Menu_menu_Bean getMenuwithName(String name) {
+					Connection con = null;
+					PreparedStatement pstmt = null;
+					ResultSet rs = null;
+					Menu_menu_Bean bean = null;		
+					
+					try {
+						con = pool.getConnection();
+						String sql = "select * from menu where menu_name = ?";
+						pstmt = con.prepareStatement(sql);
+						pstmt.setString(1, name);
+						rs = pstmt.executeQuery();
+						if (rs.next()) {
+							bean = new Menu_menu_Bean();
+							bean.setMenu_no(rs.getInt("menu_no"));
+							bean.setMenu_name(rs.getString("menu_name"));
+							bean.setMenu_gubn(rs.getString("menu_gubn"));
+							bean.setMenu_isSale(rs.getInt("menu_isSale"));
+							bean.setMenu_isUse(rs.getInt("menu_isUse"));
+							bean.setMenu_imgPath(rs.getString("menu_imgPath"));
+							bean.setMenu_component(rs.getString("menu_component"));
+							bean.setMenu_content(rs.getString("menu_content")); 
+							bean.setMenu_price(rs.getInt("menu_price"));
+							bean.setMenu_sell_amount(rs.getInt("menu_sell_amount"));
+							bean.setMenu_recommend(rs.getInt("menu_recommend"));
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+				
+						pool.freeConnection(con);
+					}
+					
+					return bean;
+				}
+			
+				
+
 //--------------------------------------------------------------------------------
 	//menu_file download
 

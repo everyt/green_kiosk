@@ -23,7 +23,7 @@ import coupon.Coupon_kind_Mgr;
 /**
  * Servlet implementation class admin_coupon
  */
-@WebServlet({ "/admin_coupon", "/api/admin/coupon/add", "/api/admin/coupon/search" })
+@WebServlet({ "/admin_coupon", "/api/admin/coupon/add", "/api/admin/coupon/search", "/api/admin/coupon/update", "/api/admin/coupon/delete"  })
 public class admin_coupon extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Gson gson = new Gson();
@@ -113,6 +113,104 @@ public class admin_coupon extends HttpServlet {
 				} else {
 					out.write("{\"result\":\"failed\",\"reason\":\"unknown error\"}");
 				}
+			};
+		}
+		
+		if (endPoint.equals("/api/admin/coupon/update")) {
+	        String body = null;
+	        StringBuilder stringBuilder = new StringBuilder();
+	        BufferedReader bufferedReader = null;
+	 
+	        try {
+	            ServletInputStream inputStream = request.getInputStream();
+	            if (inputStream != null) {
+	                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+	                char[] charBuffer = new char[128];
+	                int bytesRead = -1;
+	                while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
+	                    stringBuilder.append(charBuffer, 0, bytesRead);
+	                }
+	            }
+	        } catch (IOException ex) {
+	            throw ex;
+	        } finally {
+	            if (bufferedReader != null) {
+	                try {
+	                    bufferedReader.close();
+	                } catch (IOException ex) {
+	                    throw ex;
+	                }
+	            }
+	        }
+	 
+	        body = stringBuilder.toString();
+			Map<String, String> data = gson.fromJson(body, new TypeToken<Map<String, String>>(){}.getType());
+			
+			Integer numb = Integer.parseInt(data.get("numb"));
+			String name = data.get("name");
+			String desc = data.get("desc");
+			Integer discount_per = Integer.parseInt(data.get("discount_per"));
+			String enable = data.get("enable");
+			Integer vaild_date = Integer.parseInt(data.get("vaild_date"));
+			PrintWriter out = response.getWriter();
+			List<String> categorys = gson.fromJson(data.get("category"), new TypeToken<List<String>>(){}.getType());
+			this.bean.setNumb(numb);
+			this.bean.setCategory(categorys);
+			this.bean.setName(name);
+			this.bean.setDesc(desc);
+			this.bean.setDiscount_per(discount_per);
+			this.bean.setVaild_date(vaild_date);
+			if (enable.equals("true")) {
+				this.bean.setEnable(true);
+			} else {
+				this.bean.setEnable(false);
+			}
+			this.bean.setDefault_coupon(false);
+			boolean res = this.mgr.updateKind(bean);
+			if (res) {
+				out.write("{\"result\":\"success\"}");
+			} else {
+				out.write("{\"result\":\"failed\",\"reason\":\"unknown error\"}");
+			};
+		}
+		
+		if (endPoint.equals("/api/admin/coupon/delete")) {
+			PrintWriter out = response.getWriter();
+	        String body = null;
+	        StringBuilder stringBuilder = new StringBuilder();
+	        BufferedReader bufferedReader = null;
+	 
+	        try {
+	            ServletInputStream inputStream = request.getInputStream();
+	            if (inputStream != null) {
+	                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+	                char[] charBuffer = new char[128];
+	                int bytesRead = -1;
+	                while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
+	                    stringBuilder.append(charBuffer, 0, bytesRead);
+	                }
+	            }
+	        } catch (IOException ex) {
+	            throw ex;
+	        } finally {
+	            if (bufferedReader != null) {
+	                try {
+	                    bufferedReader.close();
+	                } catch (IOException ex) {
+	                    throw ex;
+	                }
+	            }
+	        }
+	 
+	        body = stringBuilder.toString();
+			Map<String, String> data = gson.fromJson(body, new TypeToken<Map<String, String>>(){}.getType());
+			
+			Integer numb = Integer.parseInt(data.get("numb"));
+			boolean res = this.mgr.deleteKind(numb);
+			if (res) {
+				out.write("{\"result\":\"success\"}");
+			} else {
+				out.write("{\"result\":\"failed\",\"reason\":\"unknown error\"}");
 			};
 		}
 	}

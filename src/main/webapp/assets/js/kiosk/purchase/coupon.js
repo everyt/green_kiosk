@@ -49,11 +49,11 @@ var handleKeypad = function (num) {
 };
 var generateCouponHTML = function (arr) {
     var couponHTML = '';
-    if (arr.length > 0) {
+    if (arr && arr.length > 0) {
         document.getElementById('couponDOM2').style.display = 'inline-block';
         for (var i = 0; i < arr.length; i++) {
             couponHTML += "<div class='rowbox' style='border: solid #ddd; border-width: 0 0 2px 0; align-self: center; padding: 3px 0;'>";
-            couponHTML += "<span style='width: 120px;'>" + arr[i].name + "</span>";
+            couponHTML += "<span style='width: 200px;'>" + arr[i].name + "</span>";
             couponHTML += "</div>";
         }
     }
@@ -66,14 +66,14 @@ var generateCouponHTML = function (arr) {
 (function () {
     var couponArray = [];
     var couponItem = sessionStorage.getItem('couponArray');
-    if (couponItem !== null || couponItem !== undefined) {
+    if (couponItem !== null && couponItem !== undefined) {
         couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
     }
     generateCouponHTML(couponArray);
 })();
 var handleClickCancle2 = function () {
     var couponItem = sessionStorage.getItem('couponArray');
-    if (couponItem !== null || couponItem !== undefined) {
+    if (couponItem === null || couponItem === undefined) {
         sessionStorage.setItem('coupon', JSON.stringify(false));
     }
     location.href = 'main.jsp';
@@ -83,7 +83,7 @@ var clearKeypad = function () {
     input.value = '';
 };
 var handleCouponForm = function () { return __awaiter(_this, void 0, void 0, function () {
-    var couponCodeElement, couponCode, couponTextElement_1, coupon, coupon2, couponItem, couponArray, couponTextElement_2;
+    var couponCodeElement, couponCode, couponTextElement_1, coupon, fetchCoupon, couponItem, couponArray, body, couponTextElement_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -97,32 +97,34 @@ var handleCouponForm = function () { return __awaiter(_this, void 0, void 0, fun
                 }, 3000);
                 return [3 /*break*/, 3];
             case 1:
+                couponCode = couponCode.replace(/-/g, '');
                 coupon = {
                     'code': couponCode,
                 };
                 return [4 /*yield*/, detailedFetch('/green_kiosk/api/kiosk/purchase/coupon', 'POST', encodeURIComponent(JSON.stringify(coupon)))];
             case 2:
-                coupon2 = _a.sent();
-                if (coupon2[0].code !== 'x' && coupon2[0].code !== 't') {
+                fetchCoupon = _a.sent();
+                if (fetchCoupon.result) {
                     couponItem = sessionStorage.getItem('couponArray');
                     couponArray = [];
-                    if (couponItem !== null || couponItem !== undefined) {
+                    body = fetchCoupon.body;
+                    if (couponItem !== null && couponItem !== undefined) {
                         couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
-                        couponArray.push(coupon2[0]);
+                        couponArray.push(body);
                     }
                     else {
-                        couponArray = coupon2;
+                        couponArray = [body];
                     }
                     sessionStorage.setItem('couponArray', JSON.stringify(couponArray));
                     generateCouponHTML(couponArray);
-                    console.log(1);
+                    couponCodeElement.value = '';
                 }
                 else {
                     couponTextElement_2 = document.getElementById('couponText');
-                    if (coupon.code === 'x') {
+                    if (fetchCoupon.body === 'invalid') {
                         couponTextElement_2.innerHTML = '<span style="color: red;">유효하지 않은 쿠폰입니다.</span>';
                     }
-                    else {
+                    else if (fetchCoupon.body === 'over-time') {
                         couponTextElement_2.innerHTML = '<span style="color: red;">현재 사용 불가능한 쿠폰입니다.</span>';
                     }
                     setTimeout(function () {

@@ -15,11 +15,11 @@ const handleKeypad = (num) => {
 const generateCouponHTML = (arr: any[]) => {
   let couponHTML = '';
 
-  if (arr.length > 0) {
+  if (arr && arr.length > 0) {
     document.getElementById('couponDOM2').style.display = 'inline-block';
     for (let i = 0; i < arr.length; i++) {
       couponHTML += `<div class='rowbox' style='border: solid #ddd; border-width: 0 0 2px 0; align-self: center; padding: 3px 0;'>`;
-      couponHTML += `<span style='width: 120px;'>` + arr[i].name + `</span>`;
+      couponHTML += `<span style='width: 200px;'>` + arr[i].name + `</span>`;
       couponHTML += `</div>`;
     }
   } else {
@@ -34,7 +34,7 @@ const generateCouponHTML = (arr: any[]) => {
 (() => {
   let couponArray = [];
   const couponItem = sessionStorage.getItem('couponArray');
-  if (couponItem !== null || couponItem !== undefined) {
+  if (couponItem !== null && couponItem !== undefined) {
     couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
   }
   generateCouponHTML(couponArray);
@@ -42,11 +42,9 @@ const generateCouponHTML = (arr: any[]) => {
 
 const handleClickCancle2 = () => {
   const couponItem = sessionStorage.getItem('couponArray');
-
-  if (couponItem !== null || couponItem !== undefined) {
+  if (couponItem === null || couponItem === undefined) {
     sessionStorage.setItem('coupon', JSON.stringify(false));
   }
-
   location.href = 'main.jsp';
 };
 
@@ -57,7 +55,7 @@ const clearKeypad = () => {
 
 const handleCouponForm = async () => {
   const couponCodeElement = document.querySelector('#couponCode') as HTMLInputElement;
-  const couponCode = couponCodeElement.value;
+  let couponCode = couponCodeElement.value;
   if (!couponRegex.test(couponCode)) {
     const couponTextElement = document.getElementById('couponText');
     couponTextElement.innerHTML = '<span style="color: red;">올바르지 않은 쿠폰 코드입니다.</span>';
@@ -65,31 +63,33 @@ const handleCouponForm = async () => {
       couponTextElement.innerHTML = '할인 쿠폰 코드를 입력해 주세요.';
     }, 3000);
   } else {
+    couponCode = couponCode.replace(/-/g, '');
     const coupon = {
       'code': couponCode,
     };
-    const coupon2 = await detailedFetch(
+    const fetchCoupon: fetchCouponType = await detailedFetch(
       '/green_kiosk/api/kiosk/purchase/coupon',
       'POST',
       encodeURIComponent(JSON.stringify(coupon)),
     );
-    if (coupon2[0].code !== 'x' && coupon2[0].code !== 't') {
+    if (fetchCoupon.result) {
       const couponItem = sessionStorage.getItem('couponArray');
-      let couponArray = [];
-      if (couponItem !== null || couponItem !== undefined) {
+      let couponArray: couponType[] = [];
+      const body = fetchCoupon.body;
+      if (couponItem !== null && couponItem !== undefined) {
         couponArray = JSON.parse(sessionStorage.getItem('couponArray'));
-        couponArray.push(coupon2[0]);
+        couponArray.push(body as couponType);
       } else {
-        couponArray = coupon2;
+        couponArray = [body as couponType];
       }
       sessionStorage.setItem('couponArray', JSON.stringify(couponArray));
       generateCouponHTML(couponArray);
-      console.log(1);
+      couponCodeElement.value = '';
     } else {
       const couponTextElement = document.getElementById('couponText');
-      if (coupon.code === 'x') {
+      if (fetchCoupon.body === 'invalid') {
         couponTextElement.innerHTML = '<span style="color: red;">유효하지 않은 쿠폰입니다.</span>';
-      } else {
+      } else if (fetchCoupon.body === 'over-time') {
         couponTextElement.innerHTML = '<span style="color: red;">현재 사용 불가능한 쿠폰입니다.</span>';
       }
       setTimeout(() => {

@@ -12,6 +12,9 @@ public class Coupon_Bean {
         private Timestamp coupon_expireDate;
         private Timestamp coupon_limitTime1;
         private Timestamp coupon_limitTime2;
+        private String coupon_owner;
+        private boolean coupon_used;
+        
         public int getCoupon_no() {
                 return coupon_no;
         }
@@ -66,4 +69,16 @@ public class Coupon_Bean {
         public void setCoupon_limitTime2(Timestamp coupon_limitTime2) {
                 this.coupon_limitTime2 = coupon_limitTime2;
         }
+		public String get_owner() {
+			return coupon_owner;
+		}
+		public void set_owner(String coupon_owner) {
+			this.coupon_owner = coupon_owner;
+		}
+		public boolean getCoupon_used() {
+			return coupon_used;
+		}
+		public void setCoupon_used(boolean coupon_used) {
+			this.coupon_used = coupon_used;
+		}
 }

@@ -13,12 +13,49 @@
     <%@ include file="/admin/layouts/bootstrap.jsp"%> 
     <%@ include file="/admin/admin_check/check.jsp" %>
     <%@ include file="/admin/layouts/header.jsp" %>
-    <script type="text/script" src="<%=cPath%>/assets/js/admin/account/account.js"></script>
 </head>
 <body>
     <%@ include file="/admin/layouts/left.jsp" %>
     <div class="mainContent" id="mainContent">
-        <%@ include file="/admin/Accounting/main/menu_main.jsp" %> 
+        <main>
+          <section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">매장 관리 페이지</h1>
+        <p class="lead text-body-secondary"></p>
+        <p>
+          <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('sales/ac00.jsp')">거래 내역 페이지</a>
+          <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('inventory/iv00.jsp')">재고 관리 페이지</a>
+          <!-- <a href="#" class="btn btn-secondary my-2"></a> -->
+        </p>
+      </div>
     </div>
+  </section></main>
+    </div>
+
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+	
+});
+function loadContent(url) {
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      // Ajax 요청이 완료되고 페이지를 가져온 경우 메인 페이지를 업데이트
+      document.getElementById('mainContent').innerHTML = xhr.responseText;
+      if (url.includes("sales/ac00up.jsp?numb=")) {
+    	  getFoodList(orderFoodsValue);
+      }
+      sessionStorage.setItem("context", "<%=request.getContextPath()%>")
+      // 맨 상단으로 가도록
+      window.scrollTo(0, 0);
+    }
+  };
+  xhr.open('GET', url, true);
+  xhr.send();
+}
+</script>
+
+
 </body>
 </html>

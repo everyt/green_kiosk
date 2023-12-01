@@ -4,6 +4,7 @@
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ include file="/index/base/head_import.jsp"%>
 <script> let res = "false"; </script>
 <%
 	String cPath = request.getContextPath();
@@ -11,6 +12,7 @@
 	Object mem_id = session.getAttribute("mem_id");
 	Object failed_count = session.getAttribute("failed_count");
 	Object pw_ok = session.getAttribute("pw_ok");
+
 	if (pw_ok != null) {
 		String s_pw_ok = String.valueOf(pw_ok);
 		if (s_pw_ok.equals("true")) {
@@ -62,6 +64,10 @@
 	String mem_card = "";
 	if (mem_id != null) {
 		bean = u_mgr.getMember(String.valueOf(mem_id));
+		if (bean == null) {
+			%> <script> alert("로그인 상태가 아닙니다.");location.href="<%=cPath %>/"</script> <%
+		} else {
+		}
 		mem_ac = bean.getMem_ac();
 		mem_pw = bean.getMem_pw();
 		mem_card = bean.get_card();
@@ -205,6 +211,7 @@ function edit() {
 							        <input name="mem_phone" type="text" maxlength="11" class="cellphoneNo" oninput="maxLengthCheck(this)" placeholder="전화번호" value=<%=bean.getMem_phone() %>>
 							      	<label for="mem_name" style="position:absolute; transform: translateX(-427px) translateY(3px); width:100px;">전화번호 : </label>
 							      </div>
+							      
 							      <input type="button" onclick="edit()" class="btn" style="transform: translateX(-50%) translateY(100%);" value="수 정 하 기"/>
 							    </form>
 							</td>
@@ -221,21 +228,7 @@ function edit() {
   
   <!-- Footer -->
 
-    <div class="w3-third w3-serif">
-      <h3>인기 태그</h3>
-      <p>
-        <span class="w3-tag w3-black w3-margin-bottom">???가게 전주점</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">햄버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">수제 버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">감자튀김</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">치킨버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">데리버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">불고기버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">치즈버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">전주 맛집</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">키오스크</span>
-      </p>
-    </div>
+<%@ include file="/index/base/footer.jsp" %>
 
 <!-- End page content -->
 </div>

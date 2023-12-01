@@ -80,11 +80,7 @@
 				
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
-		        %>
-		       	<script>
-		       		window.opener.updateMenu('<%=menuType%>');
-		       	</script>
-		        <%
+				script.println("opener.updateMenu('component')");
  				script.println("window.close()");
 				script.println("</script>");
 			}

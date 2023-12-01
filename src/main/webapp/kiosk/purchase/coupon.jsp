@@ -19,23 +19,21 @@
 	    </article>
 	    <article class="colbox" style="border: 2px solid #eee; padding: 10px;">
 		    <div id="couponText" style="margin-bottom: 16px;">할인 쿠폰 코드를 입력해 주세요.</div>
-		    <form name="couponForm" method="post" action="./process/process-coupon.jsp">
-		      <input type="text"
-		       id='couponCode'
-		       name='couponCode'
-		       size="16"
-		       style='
-		        margin-bottom: 24px;
-		        font-size: 1.2rem;
-		        font-weight: 500;
-		        outline: none;
-		        border: solid #ddd;
-		        border-width: 0 0 2px 0;
-		       '
-		       placeholder='쿠폰 번호'
-		       readOnly
-		      ></input>
-		    </form>
+	      <input type="text"
+	       id='couponCode'
+	       name='couponCode'
+	       size="16"
+	       style='
+	        margin-bottom: 24px;
+	        font-size: 1.2rem;
+	        font-weight: 500;
+	        outline: none;
+	        border: solid #ddd;
+	        border-width: 0 0 2px 0;
+	       '
+	       placeholder='쿠폰 번호'
+				 readonly
+	      ></input>
 		    <div class="rowbox">
 		      <div class="numeric-keypad" onClick="handleKeypad(1)">1</div>
 		       <div class="numeric-keypad" onClick="handleKeypad(2)">2</div>
@@ -59,10 +57,15 @@
     </section>
   </main>
   <footer class="rowbox">
-    <div class="payment-ok" onClick="handleCouponForm()">확인</div>
-    <div class="payment-cancle" onClick="handleClickCancle2()">취소</div>
+    <div class="payment-ok" onClick="handleCouponForm()">쿠폰 사용</div>
+    <div class="payment-cancle" onClick="handleClickCancle2()">뒤로가기</div>
   </footer>
   <script src="../../assets/js/kiosk/purchase/detailedFetch.js"></script>
   <script src="../../assets/js/kiosk/purchase/coupon.js"></script>
+	<script>
+		const handleScanBarcode = () => {
+			location.href = './scanner.jsp?by=coupon';
+		}
+	</script>
 </body>
 </html>

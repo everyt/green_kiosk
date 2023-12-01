@@ -3,6 +3,7 @@
 <%@ page import = "coupon.Coupon_kind_Bean" %>
 <%@ page import = "coupon.Coupon_kind_Mgr" %>
 <%@ page import = "java.util.Vector" %>
+
 <%
 Coupon_kind_Mgr mgr = new Coupon_kind_Mgr();
 Vector<Coupon_kind_Bean> Kinds = mgr.readAllKind();
@@ -53,18 +54,18 @@ Vector<Coupon_kind_Bean> Kinds = mgr.readAllKind();
 						<td>발급 불가능</td>
 					<%} %>
 					
-					<td>수정</td>
+					<td onclick="openPopup('/green_kiosk/admin/Event/coupon_edit.jsp?numb='+<%=bean.getNumb() %>)" style="cursor:pointer">수정</td>
 					
 					<% if (bean.isDefault_coupon()) {%>
-						<td>삭제 불가능</td>
+						<td style="cursor:no-drop" title="기본 쿠폰은 삭제할 수 없습니다.">삭제 불가능</td>
 					<%} else { %>
-						<td>삭제</td>
+						<td style="cursor:pointer" onclick="delete_coupon_type(<%=bean.getNumb() %>)">삭제</td>
 					<%} %>
 				</tr>
 			<%} %>
 		</tbody>
 	</table>
-	<a href="javascript:void(0)" class="btn btn-primary my-2" onclick="openPopup('/green_kiosk/admin/Event/coupon_make.jsp')">쿠폰 등록하기</a>
+	<a href="javascript:void(0)" class="btn btn-primary my-2" onclick="openPopup('<%=request.getContextPath()%>/admin/Event/coupon_make.jsp')">쿠폰 등록하기</a>
 </div>
 </body>
 </html>

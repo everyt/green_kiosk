@@ -4,6 +4,7 @@
 <%@ page import="user.Member_Mgr" %>
 <%@ page import="user.Member_Bean" %>
 <%@ page import="java.util.Vector" %>
+<%@ include file="/index/base/head_import.jsp"%>
 <script> let res = "false"; </script>
 <%
 	Orders_Mgr mgr = new Orders_Mgr();
@@ -15,10 +16,13 @@
 	
 	Member_Mgr u_mgr = new Member_Mgr();
 	Member_Bean bean = u_mgr.getMember(String.valueOf(mem_id));
+	String mem_ac = "";
 	if (bean == null) {
 		%> <script> alert("로그인 상태가 아닙니다.");location.href="<%=cPath %>/"</script> <%
+	} else {
+		bean.getMem_ac();
 	}
-	String mem_ac = bean.getMem_ac();
+	
 	
 	Vector<Orders_Bean> orders = mgr.getOrdersByUser(String.valueOf(mem_id)); %>
 <html>
@@ -107,19 +111,24 @@ function edit() {
 				</td>
 				<!-- 해당 위치 고정 -->
 				<td rowspan="4" width="80%">
+				
 					<table cellspacing="0" cellpadding="2" width="100%" height="100%">
 						<tr>
+							<td>
 							<!-- 내용 위치 고정 이 사이에 -->
-												<h1>회원탈퇴</h1>
-			<form action="NewFile1.jsp" method="post">
-					아이디: <input type="text" name="mem_id">
-				<br>
-					패스워드: <input type="password" name="passwd">
-				<br>
-					<input type="submit" value="회원탈퇴">
-				<br>
-				
-			</form>
+								<form action="NewFile1.jsp" method="POST" class="joinForm" name="regFrom" style="transform: translate(-20%, -30%)">                                                                     
+							      <div class="textForm">
+							        <input name="mem_id" type="text" class="regi_name" placeholder="아이디">
+							        <label for="mem_id" style="position:absolute; transform: translateX(-415px) translateY(3px); width:100px;">아이디 : </label>
+							      </div>
+							      <div class="textForm">
+							        <input name="mem_pw" type="text" maxlength="11" class="cellphoneNo" oninput="maxLengthCheck(this)" placeholder="비밀번호">
+							      	<label for="mem_pw" style="position:absolute; transform: translateX(-427px) translateY(3px); width:100px;">비밀번호 : </label>
+							      </div>
+
+							      <input type="submit" class="btn" style="transform: translateX(-50%) translateY(100%);" value="회 원 탈 퇴"/>
+							    </form>
+							  </td>
 							<!-- 내용 위치 고정 이 사이에 -->
 						</tr>
 					</table>
@@ -134,21 +143,7 @@ function edit() {
   
   <!-- Footer -->
 
-    <div class="w3-third w3-serif">
-      <h3>인기 태그</h3>
-      <p>
-        <span class="w3-tag w3-black w3-margin-bottom">???가게 전주점</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">햄버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">수제 버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">감자튀김</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">치킨버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">데리버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">불고기버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">치즈버거</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">전주 맛집</span>
-        <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">키오스크</span>
-      </p>
-    </div>
+<%@ include file="/index/base/footer.jsp" %>
 
 <!-- End page content -->
 </div>

@@ -3,6 +3,7 @@
 <%@ include file="/admin/layouts/BeanManager.jsp" %>
 
 
+
 <main>
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
@@ -10,7 +11,7 @@
         <h1 class="fw-light">매장 관리 페이지</h1>
         <p class="lead text-body-secondary"></p>
         <p>
-          <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('sales/ac00.jsp');updateMenu('all')">거래 내역 페이지</a>
+          <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('sales/ac00.jsp')">거래 내역 페이지</a>
           <a href="javascript:void(0)" class="btn btn-primary my-2" onClick="loadContent('inventory/iv00.jsp')">재고 관리 페이지</a>
           <!-- <a href="#" class="btn btn-secondary my-2"></a> -->
         </p>
@@ -104,12 +105,19 @@ sleep(1)
     updateMenu("all", 1);
 });
 <script>
+window.addEventListener('DOMContentLoaded', function() {
+	
+});
 function loadContent(url) {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
       // Ajax 요청이 완료되고 페이지를 가져온 경우 메인 페이지를 업데이트
       document.getElementById('mainContent').innerHTML = xhr.responseText;
+      if (url.includes("sales/ac00up.jsp?numb=")) {
+    	  getFoodList(orderFoodsValue);
+      }
+      sessionStorage.setItem("context", "<%=request.getContextPath()%>")
       // 맨 상단으로 가도록
       window.scrollTo(0, 0);
     }

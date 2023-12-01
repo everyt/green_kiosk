@@ -11,10 +11,9 @@ public class Menu_menu_Bean {
 	private int menu_price;        //메뉴가격
 	private int menu_sell_amount;  //메뉴의 판매 수량
 	private int menu_recommend;    //추천 메뉴 분류
-	private String menu_content;
+	private String menu_content;   //메뉴에 대한 설명
 	private  int menu_isUse;           
 	private int menu_couponable; //메뉴 쿠폰 사용 여부 
-	
 	
 	public int getMenu_no() {
 		return menu_no;

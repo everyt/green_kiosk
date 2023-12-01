@@ -60,5 +60,10 @@
   </div>
   <script src="../../assets/js/kiosk/purchase/detailedFetch.js"></script>
   <script src="../../assets/js/kiosk/purchase/smile.js"></script>
+  <script>
+    const handleScanBarcode = () => {
+      location.href = './scanner.jsp?by=smile';
+    }
+    </script>
 </body>
 </html>

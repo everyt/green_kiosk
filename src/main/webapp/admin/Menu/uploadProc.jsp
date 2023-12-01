@@ -11,6 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="<%=request.getContextPath()%>/assets/js/admin/Menu/menu_main.js"></script>
 <title>menu_uploadProcess</title>
 </head>
 <body>
@@ -40,7 +41,8 @@
 		int menu_isUse = 0;
 		int menu_isSale = 0;
 		int menu_couponable = 0;
-
+		int menu_recommend = 0;
+		
 		String menuIsSaleParameter = multi.getParameter("menu_isSale");
 		if (menuIsSaleParameter != null && !menuIsSaleParameter.isEmpty()) {
 		    menu_isSale = 1;
@@ -53,6 +55,11 @@
 		String menuCouponableParameter = multi.getParameter("menu_couponable");
 		if (menuCouponableParameter != null && !menuCouponableParameter.isEmpty()) {
 			menu_couponable = 1;
+		}
+		
+		String menuRecommendParameter = multi.getParameter("menu_recommend");
+		if (menuRecommendParameter != null && !menuRecommendParameter.isEmpty()) {
+			menu_recommend = 1;
 		}
 		
 /***************************************************************************************************************************************************************************
@@ -86,11 +93,7 @@
 						{
 							PrintWriter script = response.getWriter();
 							script.println("<script>");
-					        %>
-					       	<script>
-					       		window.opener.updateMenu('<%=menuType%>');
-					       	</script>
-					        <%
+							script.println("opener.updateMenu('"+menuType+"')");
 							script.println("window.close();");
  							script.println("</script>");
 							//table insert 실패 했을 경우
@@ -128,18 +131,14 @@
 					menuBean.setMenu_couponable(menu_couponable); 
 					menuBean.setMenu_component("0");
 					menuBean.setMenu_sell_amount(0);
-					menuBean.setMenu_recommend(0);
+					menuBean.setMenu_recommend(menu_recommend);
 					boolean result = menuMgr.insertMenu(menuBean);
 					//table insert에 성공 했을 경우
 					if (result == true)
 					{
 						PrintWriter script = response.getWriter();
 						script.println("<script>");
-					        %>
-					       	<script>
-					       		window.opener.updateMenu('<%=menuType%>');
-					       	</script>
-					        <%
+						script.println("opener.updateMenu('"+menuType+"')");
 						script.println("window.close();");
 						script.println("</script>");
 						//table insert 실패 했을 경우
