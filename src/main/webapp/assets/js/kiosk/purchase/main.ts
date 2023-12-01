@@ -292,7 +292,7 @@ const InitializeBasketHTML = (str: string, foods: any[]) => {
       encodeURIComponent(JSON.stringify(item.get('mileage'))),
     );
     if (mileage.result) {
-      const mileAmount = Math.floor((state.price - state.discount) / 10);
+      const mileAmount = Math.floor((state.price - state.discount) / 100);
 
       state.add_mile = true;
       state.add_mile_amount = mileAmount;

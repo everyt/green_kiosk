@@ -42,13 +42,13 @@ const back = () => {
   location.href = 'main.jsp';
 };
 
-const smileRegex = /^01(1|6|7|8|9)-\d{3,4}-\d{4}$/;
+const smileRegex = /^01(0|1|6|7|8|9)-\d{3,4}-\d{4}$/;
 const handleSmileForm = async () => {
   const smileCodeElement = document.querySelector('#smileCode') as HTMLInputElement;
   let smileCode = smileCodeElement.value;
   const smileTypeElement = document.querySelector('#smileType') as HTMLInputElement;
   const smileType = smileTypeElement.value;
-  if (!smileRegex.test(smileCode) && smileType === 'phoneNumber') {
+  if (!smileRegex.test(String(smileCode)) && smileType === 'phoneNumber') {
     const smileTextElement = document.getElementById('smileText');
     smileTextElement.innerHTML = '<span style="color: red;">올바르지 않은 ';
     smileTextElement.innerHTML += '휴대폰';

@@ -1,11 +1,11 @@
 package mile;
 
 public class Mileage_VO {
-	  private int index;
+	  private String index;
 	  private int mileage;
 	  private String value;
 	  private String type;
-		public Mileage_VO(int index, int mileage, String value, String type) {
+		public Mileage_VO(String index, int mileage, String value, String type) {
 			super();
 			this.index = index;
 			this.mileage = mileage;
@@ -13,7 +13,7 @@ public class Mileage_VO {
 			this.type = type;
 		}
 		  
-	public int getIndex() {
+	public String getIndex() {
 		return index;
 	}
 	public int getMileage() {
@@ -25,7 +25,7 @@ public class Mileage_VO {
 	public String getType() {
 		return type;
 	}
-	public void setIndex(int index) {
+	public void setIndex(String index) {
 		this.index = index;
 	}
 	public void setMileage(int mileage) {

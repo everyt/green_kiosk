@@ -295,7 +295,7 @@ var InitializeBasketHTML = function (str, foods) {
             case 6:
                 mileage = _a.sent();
                 if (mileage.result) {
-                    mileAmount = Math.floor((state.price - state.discount) / 10);
+                    mileAmount = Math.floor((state.price - state.discount) / 100);
                     state.add_mile = true;
                     state.add_mile_amount = mileAmount;
                     drawPriceToHTMLElement('#mileageElement', '적립마일리지', state.add_mile_amount);
