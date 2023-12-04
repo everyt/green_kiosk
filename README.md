@@ -7,3 +7,5 @@
 ### [TS 바로가기](./src/main/webapp/assets/js/kiosk/purchase/)
 
 ### [CSS 바로가기](./src/main/webapp/assets/css/)
+
+### [Youtube 작동영상 바로가기](https://www.youtube.com/watch?v=T-1H-DT56p8)
