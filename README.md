@@ -6,4 +6,4 @@
 
 ### [TS 바로가기](./src/main/webapp/assets/js/kiosk/purchase/)
 
-### [TS 바로가기](./src/main/webapp/assets/css/)
+### [CSS 바로가기](./src/main/webapp/assets/css/)
