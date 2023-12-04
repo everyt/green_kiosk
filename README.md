@@ -2,11 +2,8 @@
 키오스크 구현 프로젝트의 백업 포크입니다.
 전 키오스크의 결제 페이지와 그 로직, 엔드포인트를 구현하였습니다.
 
-### [JSP](./src/main/webapp/kiosk/purchase/)
-JSP 바로가기
+### [JSP 바로가기](./src/main/webapp/kiosk/purchase/)
 
-### [TS](./src/main/webapp/assets/js/kiosk/purchase/)
-TS 바로가기
+### [TS 바로가기](./src/main/webapp/assets/js/kiosk/purchase/)
 
-### [TS](./src/main/webapp/assets/css/)
-CSS 바로가기
+### [TS 바로가기](./src/main/webapp/assets/css/)
