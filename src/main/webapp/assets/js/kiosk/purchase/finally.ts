@@ -196,7 +196,7 @@ const handleClickOkRecipie = (orderObject: orderType, element: HTMLElement, pk: 
   html += `</div>`;
   html += `<div class='rowbox' style='justify-content:space-between;width:170px'>`;
   html += `<span>받 은 돈</span>`;
-  html += `<span>${recipie.price}</span>`;
+  html += `<span>${recipie.price - recipie.discount}</span>`;
   html += `</div>`;
   html += `</div>`;
   html += `<span>---------------------------------------------------------------------------</span>`;
